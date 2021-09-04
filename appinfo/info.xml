@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>mediadc</id>
+	<name>MediaDC</name>
+	<summary>Nextcloud Media Duplicate Collector application</summary>
+	<description>**📸📹 Collect photo and video duplicates to save your cloud storage**</description>
+	<version>0.1.0</version>
+	<licence>agpl</licence>
+	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
+	<author mail="bigcat88@icloud.com">Alexander Piskun</author>
+	<namespace>MediaDC</namespace>
+	<documentation>
+		<admin>https://gitlab.com/andrey18106x/mediadc-dev/-/wikis/home</admin>
+	</documentation>
+	<category>tools</category>
+	<website>https://github.com/andrey18106/mediadc</website>
+	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
+	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
+	<screenshot>https://gitlab.com/andrey18106x/mediadc-dev/-/raw/959f81f563a239c8ca6046fe4689ae4b47db9d39/screenshots/screenshot.png</screenshot>
+	<dependencies>
+		<nextcloud min-version="21" max-version="22" />
+		<python min-version="3.6.8" />
+	</dependencies>
+	<settings>
+		<admin>OCA\MediaDC\Settings\AdminSettings</admin>
+	</settings>
+	<repair-steps>
+		<install>
+			<step>OCA\MediaDC\Migration\AppDataInitializationStep</step>
+		</install>
+	</repair-steps>
+	<commands>
+		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>
+		<command>OCA\MediaDC\Command\CollectorCleanupCommand</command>
+	</commands>
+	<background-jobs>
+		<job>OCA\Mediadc\BackgroundJob\CollectorCleanupJob</job>
+	</background-jobs>
+	<navigations>
+		<navigation>
+			<name>MediaDC</name>
+			<route>mediadc.page.index</route>
+			<order>1</order>
+		</navigation>
+	</navigations>
+</info>

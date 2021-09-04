@@ -1,0 +1,69 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+namespace OCA\MediaDC\Command;
+
+use Exception;
+use OCA\MediaDC\Service\CollectorService;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+
+class CollectorCleanupCommand extends Command {
+
+	/** @var CollectorService */
+	private $collectorService;
+
+	public function __construct(CollectorService $collectorService)
+	{
+		parent::__construct();
+
+		$this->collectorService = $collectorService;
+	}
+
+	protected function configure(): void {
+		$this->setName("mediadc:collector:cleanup");
+		$this->setDescription("Executes Collector database cleanup mechanism");
+	}
+
+	protected function execute(InputInterface $input, OutputInterface $output): int {
+		try {
+			$result = $this->collectorService->cleanup();
+			$output->writeln("Collector cleanup result:");
+			$output->writeln("Deleted photos: " . $result['photosDeleted']);
+			$output->writeln("Deleted videos: " . $result['videosDeleted']);
+			return 0;
+		} catch (Exception $e) {
+			$output->writeln("Collector cleanup failed.");
+			$output->writeln($e->getMessage());
+			$output->writeln($e->getTraceAsString());
+			return 1;
+		}
+		return 1;
+	}
+
+}

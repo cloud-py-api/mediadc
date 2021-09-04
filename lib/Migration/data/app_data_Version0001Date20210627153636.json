@@ -1,0 +1,61 @@
+{
+    "settings": [
+        {
+            "name": "hashing_algorithm",
+            "value": "dhash",
+            "displayName": "Hashing algorithm",
+            "description": "Hashing algorithm used by Python background script"
+        },
+        {
+            "name": "similarity_threshold",
+            "value": 90,
+            "displayName": "Similarity threshold",
+            "description": "Hashing algorithm threshold (precision)"
+        },
+        {
+            "name": "hash_size",
+            "value": 16,
+            "displayName": "Hash size",
+            "description": "Computed hash size (8, 16, 32, 64)"
+        },
+        {
+            "name": "python_limit",
+            "value": 1,
+            "displayName": "Running tasks limit",
+            "description": "Maximum number of python background scripts running"
+        },
+        {
+            "name": "exclude_list",
+            "value": {
+                "mask": [],
+                "fileid": []
+            },
+            "displayName": "Exclude list",
+            "description": "Global administrator's exclude list that applies to each task"
+        },
+        {
+            "name": "installed",
+            "value": {
+                "status": false,
+                "available_algorithms": [],
+                "installed_list": {},
+                "video_required": [],
+                "list": {}
+            },
+            "displayName": "MediaDC installed flag",
+            "description": "Installation data with current MediaDC configuration"
+        },
+        {
+            "name": "python_command",
+            "value": "python3",
+            "displayName": "Path or alias to python interpreter",
+            "description": "Absolute path to the python runnable (e.g. /usr/bin/python3) or alias (python3) from system configurations"
+        },
+        {
+            "name": "remote_filesize_limit",
+            "value": 3221225472,
+            "displayName": "Remote/Encrypted file size limit to process",
+            "description": "Maximum file size for requisting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size."
+        }
+    ]
+}
