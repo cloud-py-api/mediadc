@@ -32,12 +32,13 @@
 					<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 					<div style="display: flex; flex-wrap: wrap;">
 						<span style="width: 100%;">
-							<b>{{ t('mediadc', 'Task #') }}{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
+							<b>{{ parseTargetMtype(task) }}</b>
+							{{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
 							({{ formatBytes(Number(task.files_total_size)) }})
 						</span>
-						<span style="width: 100%;">
-							{{ t('mediadc', 'by') }} <span class="task-owner">{{ task.owner + ' ' }}</span>
-							({{ parseUnixTimestamp(task.created_time) }}{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }})
+						<span class="task-time" style="width: 100%;">
+							{{ parseUnixTimestamp(task.created_time) }}
+							{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }}
 						</span>
 					</div>
 				</router-link>
@@ -145,7 +146,7 @@ export default {
 	cursor: pointer;
 }
 
-.task-owner {
+.task-time {
 	color: #585858;
 }
 

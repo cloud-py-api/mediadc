@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
  * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
@@ -26,19 +27,15 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Controller;
 
-use OCA\Files\Event\LoadSidebar;
-use OCA\MediaDC\AppInfo\Application;
 use OCA\Viewer\Event\LoadViewer;
-use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
-use OCP\AppFramework\Services\IInitialState;
 use OCP\EventDispatcher\IEventDispatcher;
-use OCP\IConfig;
 use OCP\IRequest;
-use OCP\IUserSession;
 use OCP\Util;
+
+use OCA\MediaDC\AppInfo\Application;
 
 
 class PageController extends Controller {
@@ -61,7 +58,6 @@ class PageController extends Controller {
 	 * @return TemplateResponse
 	 */
 	public function index(): TemplateResponse {
-		$this->eventDispatcher->dispatchTyped(new LoadSidebar());
 		$this->eventDispatcher->dispatchTyped(new LoadViewer());
 
 		Util::addScript(Application::APP_ID, 'mediadc-main');

@@ -44,10 +44,6 @@ class VideosService {
 		return $this->mapper->find($id);
 	}
 
-	public function getAll(): array {
-		return $this->mapper->findAll();
-	}
-
 	public function getAllFileids(): array {
 		return $this->mapper->findAllFileids();
 	}

@@ -54,7 +54,7 @@ export default {
 	name: 'DetailsListSettings',
 	data() {
 		return {
-			gridSizes: [128, 192, 256, 512],
+			gridSizes: [128, 192, 256, 512, 768],
 			selectedSize: 192,
 			detailsListItemPerPage: 10,
 		}

@@ -23,12 +23,14 @@
 
 <template>
 	<div class="file-thumb" @click="openFile(file)">
-		<img v-show="loaded"
-			:key="file.filepath"
-			:src="imageUrl"
-			:alt="file.filename"
-			:title="file.filepath"
-			@load="onLoad">
+		<div v-if="file.filempart === 'image'" style="display: flex;">
+			<img v-show="loaded"
+				:key="file.filepath"
+				:src="imageUrl"
+				:alt="file.filename"
+				:title="file.filepath"
+				@load="onLoad">
+		</div>
 		<div v-show="!loaded && file.filempart === 'video'"
 			class="placeholder"
 			:style="'min-height: ' + detailsGridSize + 'px'"

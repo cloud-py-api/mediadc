@@ -35,7 +35,8 @@ use OCP\Util;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\CollectorService;
 
-class ActiveTasksWidget implements IWidget {
+
+class RecentTasksWidget implements IWidget {
 
 	/** @var IL10N */
 	protected $il10n;
@@ -105,7 +106,7 @@ class ActiveTasksWidget implements IWidget {
 		Util::addScript(Application::APP_ID, Application::APP_ID . '-dashboard');
 		$this->initialState->provideInitialState(
 			'mediadc-recent-tasks',
-			array_reverse($this->collectorService->getUserRecentTasks())
+			$this->collectorService->getUserRecentTasks(7)
 		);
 	}
 

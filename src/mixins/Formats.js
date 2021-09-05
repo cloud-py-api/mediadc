@@ -28,7 +28,7 @@ const keepAliveInterval = 8
 const targetMType = [
 	t('mediadc', 'Photos'),
 	t('mediadc', 'Videos'),
-	t('mediadc', 'Photos and Videos'),
+	t('mediadc', 'Photos&Videos'),
 ]
 
 export default {

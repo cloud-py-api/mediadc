@@ -17,7 +17,7 @@
 	<website>https://github.com/andrey18106/mediadc</website>
 	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
 	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
-	<screenshot>https://gitlab.com/andrey18106x/mediadc-dev/-/raw/959f81f563a239c8ca6046fe4689ae4b47db9d39/screenshots/screenshot.png</screenshot>
+	<screenshot>https://github.com/andrey18106/mediadc/blob/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="21" max-version="22" />
 		<python min-version="3.6.8" />

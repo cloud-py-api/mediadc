@@ -47,16 +47,17 @@
 					<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 					<div style="display: flex; flex-direction: column;">
 						<span>
-							<b>{{ t('mediadc', 'Task #') }}{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
+							<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
 							({{ formatBytes(Number(task.files_total_size)) }})
+							({{ t('mediadc', 'precision') }} {{ JSON.parse(task.collector_settings).similarity_threshold }}%)
 							<br>
 							<b>{{ t('mediadc', 'Deleted: ') }} </b>
 							{{ task.deleted_files_count }} {{ t('mediadc', 'file(s)') }}
 							({{ formatBytes(Number(task.deleted_files_size)) }})
 						</span>
 						<span>
-							{{ t('mediadc', 'by') }} <span class="task-owner">{{ task.owner + ' ' }}</span>
-							({{ parseUnixTimestamp(task.created_time) }}{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }})
+							{{ parseUnixTimestamp(task.created_time) }}
+							{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }}
 						</span>
 					</div>
 					<div class="app-content-list-menu" style="margin: 0 0 0 10px; position: relative;">
@@ -119,6 +120,7 @@ import DetailsList from '../components/details/DetailsList'
 import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import Configure from '../mixins/Configure'
 import { getCurrentUser } from '@nextcloud/auth'
+import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 
 export default {
 	name: 'CollectorDetails',
@@ -164,10 +166,12 @@ export default {
 		this.$emit('update:loading', true)
 		this.getTaskDetails()
 		this.getTaskInfo()
+		subscribe('updateTaskInfo', this.getDetailFilesTotalSize)
 		this.updater = setInterval(this.getTaskDetails, 5000)
 	},
 	beforeDestroy() {
 		clearInterval(this.updater)
+		unsubscribe('updateTaskInfo', this.getTaskInfo)
 	},
 	methods: {
 		terminateTask(task) {

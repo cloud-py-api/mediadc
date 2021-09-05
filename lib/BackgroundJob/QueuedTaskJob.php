@@ -31,7 +31,7 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
 
 
-class RegularTaskJob extends QueuedJob {
+class QueuedTaskJob extends QueuedJob {
 
 	/** @var CollectorService */
 	private $collectorService;

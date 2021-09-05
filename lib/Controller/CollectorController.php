@@ -34,20 +34,17 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\CollectorTask;
 use OCA\MediaDC\Service\CollectorService;
-use Psr\Log\LoggerInterface;
+
 
 class CollectorController extends Controller {
 
 	/** @var CollectorService */
 	private $service;
 
-	/** @var LoggerInterface */
-	private $logger;
-
-	public function __construct(IRequest $request, CollectorService $service, LoggerInterface $logger) {
+	public function __construct(IRequest $request, CollectorService $service) {
 		parent::__construct(Application::APP_ID, $request);
+
 		$this->service = $service;
-		$this->logger = $logger;
 	}
 
 	/**
