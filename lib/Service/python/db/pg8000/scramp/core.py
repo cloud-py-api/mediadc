@@ -100,12 +100,14 @@ def make_channel_binding(name, ssl_socket):
         if hash_algo in ("md5", "sha1"):
             hash_algo = "sha256"
 
-        if hash_algo == "sha256":
-            hash_f = hashlib.sha256
-        else:
-            raise ScramException(f"Hash algorithm {hash_algo} not recognized.")
-
-        return ("tls-server-end-point", hash_f(cert_bin).digest())
+        try:
+            hash_obj = hashlib.new(hash_algo)
+        except ValueError as e:
+            raise ScramException(
+                f"Hash algorithm {hash_algo} not supported by hashlib. {e}"
+            )
+        hash_obj.update(cert_bin)
+        return ("tls-server-end-point", hash_obj.digest())
     else:
         raise ScramException(f"Channel binding name {name} not recognized.")
 
