@@ -90,6 +90,7 @@ CHANNEL_TYPES = (
 def make_channel_binding(name, ssl_socket):
     if name == "tls-unique":
         return (name, ssl_socket.get_channel_binding(name))
+
     elif name == "tls-server-end-point":
         cert_bin = ssl_socket.getpeercert(binary_form=True)
         cert = Certificate.load(cert_bin)
@@ -101,13 +102,13 @@ def make_channel_binding(name, ssl_socket):
             hash_algo = "sha256"
 
         try:
-            hash_obj = hashlib.new(hash_algo)
+            hash_obj = hashlib.new(hash_algo, cert_bin)
         except ValueError as e:
             raise ScramException(
                 f"Hash algorithm {hash_algo} not supported by hashlib. {e}"
             )
-        hash_obj.update(cert_bin)
-        return ("tls-server-end-point", hash_obj.digest())
+        return "tls-server-end-point", hash_obj.digest()
+
     else:
         raise ScramException(f"Channel binding name {name} not recognized.")
 
@@ -519,6 +520,7 @@ def _get_client_final(
 SERVER_ERROR_INVALID_ENCODING = "invalid-encoding"
 SERVER_ERROR_EXTENSIONS_NOT_SUPPORTED = "extensions-not-supported"
 SERVER_ERROR_INVALID_PROOF = "invalid-proof"
+SERVER_ERROR_INVALID_ENCODING = "invalid-encoding"
 SERVER_ERROR_CHANNEL_BINDINGS_DONT_MATCH = "channel-bindings-dont-match"
 SERVER_ERROR_SERVER_DOES_SUPPORT_CHANNEL_BINDING = "server-does-support-channel-binding"
 SERVER_ERROR_SERVER_DOES_NOT_SUPPORT_CHANNEL_BINDING = (
