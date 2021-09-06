@@ -63,8 +63,8 @@ from .dbapi import (
 from .exceptions import DatabaseError, Error, InterfaceError
 
 
-__version__ = '1.21.0'
-__version_info__ = (1, 21, 0)
+__version__ = '1.21.1'
+__version_info__ = (1, 21, 1)
 
 # Copyright (c) 2007-2009, Mathieu Fenniak
 # Copyright (c) The Contributors
