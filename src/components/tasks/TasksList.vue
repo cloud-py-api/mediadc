@@ -220,7 +220,7 @@ body.theme--dark .task-row {
 	border-color: #717171;
 }
 
-body.theme--dark .task-owner {
+body.theme--dark .task-time {
 	color: #a9a8a8;
 }
 </style>

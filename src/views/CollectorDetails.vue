@@ -176,6 +176,7 @@ export default {
 		this.getTaskDetails()
 		this.getTaskInfo()
 		subscribe('restartTask', () => {
+			this.getTaskInfo()
 			this.getTaskDetails()
 			this.filessize = 0
 			this.filestotal = 0
@@ -388,14 +389,6 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 	border-color: #717171;
 }
 
-.task-owner {
-	color: #585858;
-}
-
-body.theme--dark .task-owner {
-	color: #a9a8a8;
-}
-
 .task-info {
 	margin: 20px 0;
 	border: 1px solid #dadada;
@@ -403,13 +396,19 @@ body.theme--dark .task-owner {
 	padding: 10px 20px;
 	height: 100%;
 	max-height: 94px;
-	max-width: 300px;
+	max-width: 50%;
 	overflow-y: scroll;
 }
 
 @media (max-width: 767px) {
+	.details-row {
+		margin: 0 0 20px;
+	}
+
 	.task-status {
 		flex-direction: column;
+		margin: 0 0 20px;
+		width: 100%;
 	}
 
 	.task-info {

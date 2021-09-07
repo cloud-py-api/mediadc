@@ -23,7 +23,7 @@
 
 <template>
 	<div v-show="opened" class="blackout">
-		<div class="new-task-block">
+		<div class="edit-task-block">
 			<span class="icon-close close-edit-button" @click="closeEditTaskDialog" />
 			<h2>{{ t('mediadc', 'Edit task') }}</h2>
 			<div class="selection-container">
@@ -379,12 +379,11 @@ export default {
 	z-index: 999;
 }
 
-.new-task-block {
+.edit-task-block {
 	border: 1px solid #dadada;
 	border-radius: 5px;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .05);
 	padding: 20px;
-	margin: 10px;
 	width: 100%;
 	max-width: 600px;
 	position: absolute;
@@ -402,6 +401,15 @@ export default {
 @media (max-width: 767px) {
 	.selection-container {
 		flex-wrap: wrap;
+	}
+}
+
+@media (max-width: 540px) {
+	.edit-task-block {
+		width: 90vw;
+		height: 80vh;
+		overflow-y: scroll;
+		top: calc(50% + calc(100% - 96vh));
 	}
 }
 
@@ -443,14 +451,11 @@ export default {
 	padding: 20px;
 	border-radius: 50%;
 	cursor: pointer;
+	opacity: 0.5;
 }
 
-.close-edit-button:hover {
-	background-color: #eee;
-}
-
-.close-edit-button:active {
-	background-color: #ddd;
+.close-edit-button:hover, .close-edit-button:active {
+	opacity: 1;
 }
 
 body.theme--dark .actions-menu-button:hover {
@@ -461,7 +466,11 @@ body.theme--dark .close-edit-button:active {
 	background-color: #5b5b5b;
 }
 
-body.theme--dark .new-task-block, body.theme--dark .block {
+body.theme--dark .edit-task-block, body.theme--dark .block {
 	border-color: #717171;
+}
+
+body.theme--dark .edit-task-block {
+	background-color: #111;
 }
 </style>

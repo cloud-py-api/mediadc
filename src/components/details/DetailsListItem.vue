@@ -24,7 +24,7 @@
 <template>
 	<div class="details-list-item">
 		<div class="details-list-item-title">
-			<span class="icon-projects" style="margin: 0 5px 0 0;" />
+			<span class="icon-projects" style="margin: 0 10px 0 0;" />
 			<span class="group-info" @click="openDetailFiles(detail)">
 				{{ t('mediadc', 'Duplicate group') }} #{{ detail.id }} ({{ JSON.parse(detail.group_files_ids).length }}
 				{{ t('mediadc', 'file(s)') }}{{ files.length > 0 ? ' - ' + formatBytes(getGroupFilesSize(files)) : '' }})
@@ -223,6 +223,7 @@ body.theme--dark .pagination-button:active {
 	display: inline-flex;
 	width: 16px;
 	height: 16px;
+	margin: 0 10px;
 }
 
 .delete-group-btn {

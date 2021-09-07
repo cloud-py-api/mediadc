@@ -134,6 +134,7 @@ export default {
 @media (max-width: 540px) {
 	.task-details-heading {
 		flex-direction: column;
+		text-align: center;
 	}
 }
 
