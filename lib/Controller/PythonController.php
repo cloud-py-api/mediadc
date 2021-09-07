@@ -43,6 +43,7 @@ class PythonController extends Controller {
 	public function __construct(IRequest $request, PythonService $service)
 	{
 		parent::__construct(Application::APP_ID, $request);
+
 		$this->service = $service;
 	}
 

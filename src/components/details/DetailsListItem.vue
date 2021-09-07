@@ -51,6 +51,7 @@ import DetailsGroupList from './DetailsGroupList'
 import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
+import { emit } from '@nextcloud/event-bus'
 
 export default {
 	name: 'DetailsListItem',
@@ -151,6 +152,7 @@ export default {
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${detail.task_id}/detail/${detail.id}`)).then(res => {
 					if (res.data.success) {
 						this.$store.dispatch('deleteDetail', detail)
+						emit('updateTaskInfo')
 						showSuccess(t('mediadc', 'Duplicate group succesffully removed'))
 					} else {
 						showError(t('mediadc', 'Some error occured while deleting duplicate group'))

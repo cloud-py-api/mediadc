@@ -92,6 +92,21 @@ class CollectorTaskMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
+	public function findRecentByOwner(string $owner, int $limit=null, int $offset=null): array {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from($this->tableName)
+			->where(
+				$qb->expr()->eq('owner', $qb->createNamedParameter($owner, IQueryBuilder::PARAM_STR))
+			)
+			->orderBy('created_time', 'desc')
+			->setMaxResults($limit)
+			->setFirstResult($offset);
+
+		return $this->findEntities($qb);
+	}
+
 	public function findAllRunningByOwner(string $owner, int $limit=null, int $offset=null): array {
 		$qb = $this->db->getQueryBuilder();
 

@@ -57,17 +57,6 @@ class VideoMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findAll($limit=null, $offset=null): array {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from($this->tableName)
-			->setMaxResults($limit)
-			->setFirstResult($offset);
-
-		return $this->findEntities($qb);
-	}
-
 	public function findAllFileids($limit=null, $offset=null): array {
 		$qb = $this->db->getQueryBuilder();
 

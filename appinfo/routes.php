@@ -24,15 +24,13 @@
 
 return [
 	'routes' => [
-		['name' => 'api#setUserConfig', 'url' => '/api/v1/config/{key}', 'verb' => 'PUT'],
-
 		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'page#index', 'url' => '/tasks/{taskId}', 'verb' => 'GET', 'postfix' => 'collector'],
 		['name' => 'page#index', 'url' => '/configuration', 'verb' => 'GET', 'postfix' => 'configuration'],
 
 		// SETTINGS API
-		['name' => 'settings#index', 'url' => '/api/v1/settings/', 'verb' => 'GET'],
-		['name' => 'settings#update', 'url' => '/api/v1/settings/', 'verb' => 'PUT'],
+		['name' => 'settings#index', 'url' => '/api/v1/settings', 'verb' => 'GET'],
+		['name' => 'settings#update', 'url' => '/api/v1/settings', 'verb' => 'PUT'],
 		['name' => 'settings#settingById', 'url' => '/api/v1/settings/{id}', 'verb' => 'GET'],
 		['name' => 'settings#getSettingByName', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'GET'],
 		['name' => 'settings#updateSetting', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'PUT'],
@@ -42,7 +40,7 @@ return [
 		['name' => 'python#check', 'url' => '/api/v1/python/check', 'verb' => 'GET'],
 		['name' => 'python#install', 'url' => '/api/v1/python/install', 'verb' => 'GET'],
 		['name' => 'python#installDepsList', 'url' => '/api/v1/python/install/{listName}', 'verb' => 'POST'],
-		['name' => 'python#updateDepsList', 'url' => '/api/v1/python/update/', 'verb' => 'POST'],
+		['name' => 'python#updateDepsList', 'url' => '/api/v1/python/update', 'verb' => 'POST'],
 		['name' => 'python#deleteDepsList', 'url' => '/api/v1/python/delete', 'verb' => 'POST'],
 
 		// COLLECTOR API

@@ -46,13 +46,10 @@ use OCA\MediaDC\Db\CollectorTaskMapper;
 use OCA\MediaDC\Db\CollectorTaskDetail;
 use OCA\MediaDC\Db\CollectorTaskDetailMapper;
 use OCA\MediaDC\Service\PythonService;
-use OCA\MediaDC\BackgroundJob\RegularTaskJob;
+use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
 
 
 class CollectorService {
-
-	/** @var IL10N */
-	protected $l10n;
 
 	/** @var string */
 	private $userId;
@@ -94,13 +91,12 @@ class CollectorService {
 	const TASK_TYPE_AUTO = 'auto';
 
 
-	public function __construct(?string $userId, IRootFolder $rootFolder, IL10N $il10n,
+	public function __construct(?string $userId, IRootFolder $rootFolder,
 								SettingMapper $settingsMapper, CollectorTaskMapper $tasksMapper,
 								CollectorTaskDetailMapper $tasksDetailsMapper,
 								PythonService $pythonService, LoggerInterface $logger,
 								PhotosService $photosService, VideosService $videosService,
 								IJobList $jobList) {
-		$this->il10n = $il10n;
 		$this->userId = $userId;
 		if ($userId !== null) {
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
@@ -288,7 +284,7 @@ class CollectorService {
 	public function createQueuedTask($params = []): CollectorTask {
 		$createdTask = $this->createCollectorTask($params);
 		if ($createdTask !== null) {
-			$this->jobList->add(RegularTaskJob::class, [
+			$this->jobList->add(QueuedTaskJob::class, [
 				'taskId' => $createdTask->getId(),
 				'targetDirectoryIds' => $createdTask->getTargetDirectoryIds(),
 				'excludeList' => $createdTask->getExcludeList(),
@@ -341,19 +337,20 @@ class CollectorService {
 		}
 	}
 
-	public function getCollectorTasks(): array {
-		return $this->tasksMapper->findAll();
-	}
-
 	public function getUserCollectorTasks(): array {
 		return $this->tasksMapper->findAllByOwner($this->userId);
 	}
 
 	/**
+	 * Returns current user's recent tasks
+	 * 
+	 * @param int $limit
+	 * @param int $offset
+	 * 
 	 * @return array
 	 */
-	public function getUserRecentTasks() {
-		return $this->tasksMapper->findAllByOwner($this->userId);
+	public function getUserRecentTasks($limit = null, $offset = null) {
+		return $this->tasksMapper->findRecentByOwner($this->userId, $limit);
 	}
 
 	/**

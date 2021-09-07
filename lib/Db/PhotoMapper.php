@@ -34,17 +34,12 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
 use OCP\DB\IResult;
-use Psr\Log\LoggerInterface;
+
 
 class PhotoMapper extends QBMapper {
 
-	/** @var LoggerInterface */
-	private $logger;
-
-	public function __construct(IDBConnection $db, LoggerInterface $logger) {
+	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_photos');
-
-		$this->logger = $logger;
 	}
 
 	/**
@@ -61,17 +56,6 @@ class PhotoMapper extends QBMapper {
 			);
 
 		return $this->findEntity($qb);
-	}
-
-	public function findAll($limit=null, $offset=null): array {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from($this->tableName)
-			->setMaxResults($limit)
-			->setFirstResult($offset);
-
-		return $this->findEntities($qb);
 	}
 
 	public function findAllFileids($limit=null, $offset=null): array {

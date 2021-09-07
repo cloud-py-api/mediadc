@@ -27,7 +27,7 @@
 			<div v-for="file in files"
 				:key="file.fileid"
 				class="file"
-				:style="'width: ' + detailsGridSize + 'px; min-height: ' + detailsGridSize + 'px;'">
+				:style="'width: ' + detailsGridSize + 'px;'">
 				<DetailsFile :file="file" :files="files" />
 				<div class="file-info">
 					<span class="filename">{{ file.filename }}</span>
@@ -49,6 +49,7 @@ import { generateUrl } from '@nextcloud/router'
 import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import DetailsFile from './DetailsFile'
+import { emit } from '@nextcloud/event-bus'
 
 export default {
 	name: 'DetailsGroupList',
@@ -78,6 +79,7 @@ export default {
 						const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
 						files.splice(fileidIndex, 1)
 						this.$emit('update:files', files)
+						emit('updateTaskInfo')
 						this.$store.dispatch('setTask', res.data.task)
 					})
 			}
@@ -101,7 +103,7 @@ body.theme--dark .details-group {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	max-height: 70vh;
+	max-height: 90vh;
 	overflow-y: scroll;
 }
 

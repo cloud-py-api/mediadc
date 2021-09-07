@@ -70,9 +70,7 @@ export default {
 		AppNavigationSettings,
 		DetailsListSettings,
 	},
-	mixins: [
-		Configure,
-	],
+	mixins: [Configure],
 	data() {
 		return {
 			loading: true,
