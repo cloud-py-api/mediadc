@@ -160,32 +160,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -331,7 +311,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       targetDirectoriesPaths: {},
       targetDirectoriesIds: [],
-      excludeDirectoriesNames: [],
+      excludeDirectoriesPaths: [],
       excludeFileIds: {},
       targetMimeType: 0,
       similarity_threshold: 90,
@@ -393,24 +373,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this2 = this;
 
       this.getDirectoriesPicker(t('mediadc', 'Choose directory to exclude')).pick().then(function (dir) {
-        if (_this2.excludeDirectoriesNames.findIndex(function (targetDir) {
+        if (Object.values(_this2.excludeFileIds).findIndex(function (targetDir) {
           return targetDir === dir;
         }) === -1) {
           if (dir.startsWith('/')) {
             Object(_utils_files__WEBPACK_IMPORTED_MODULE_3__["requestFileInfo"])(dir).then(function (res) {
               var fileid = Object(_utils_files__WEBPACK_IMPORTED_MODULE_3__["getFileId"])(res.data);
-              var contentType = Object(_utils_files__WEBPACK_IMPORTED_MODULE_3__["getContentType"])(res.data);
 
-              if (fileid !== -1 && contentType === '') {
-                // Add directory name
-                _this2.excludeDirectoriesNames.push(dir.split('/')[dir.split('/').length - 1]);
-              } else if (fileid !== -1 && (contentType.split('/')[0] === 'image' || contentType.split('/')[0] === 'video')) {
-                // Add as fileid exclude
-                _this2.excludeFileIds[fileid.toString()] = dir.split('/')[dir.split('/').length - 1];
+              if (fileid !== -1) {
+                _this2.excludeDirectoriesPaths.push(dir);
+
+                _this2.excludeFileIds[fileid.toString()] = dir;
               }
             });
           } else {
-            _this2.excludeDirectoriesNames.push('/');
+            Object(_utils_files__WEBPACK_IMPORTED_MODULE_3__["requestFileInfo"])('/').then(function (res) {
+              var fileid = Object(_utils_files__WEBPACK_IMPORTED_MODULE_3__["getFileId"])(res.data);
+
+              if (fileid !== -1) {
+                _this2.excludeDirectoriesPaths.push(dir);
+
+                _this2.excludeFileIds[fileid.toString()] = '/';
+              }
+            });
           }
         } else {
           Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_1__["showWarning"])(t('mediadc', 'This directory already excluded'));
@@ -425,8 +410,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
         excludeList: {
           user: {
-            mask: [].concat(_toConsumableArray(this.excludeDirectoriesNames), _toConsumableArray(this.customExcludeList)),
-            fileid: Object.keys(this.excludeFileIds)
+            mask: this.customExcludeList,
+            fileid: Object.keys(this.excludeFileIds).map(function (item) {
+              return Number(item);
+            })
           },
           admin: JSON.parse(this.settingByName('exclude_list').value) || {
             mask: [],
@@ -462,29 +449,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       this.targetDirectoriesIds.splice(fileidIndex, 1);
     },
-    removeExcludeDirectory: function removeExcludeDirectory(dir) {
-      var dirIndex = this.excludeDirectoriesNames.findIndex(function (targetDir) {
-        return targetDir === dir;
-      });
-      this.excludeDirectoriesNames.splice(dirIndex, 1);
+    removeExcludeDirectory: function removeExcludeDirectory(fileid) {
+      var _this4 = this;
+
+      if (fileid in this.excludeFileIds) {
+        var dirIndex = this.excludeDirectoriesPaths.findIndex(function (dir) {
+          return dir === _this4.excludeFileIds[fileid];
+        });
+        this.excludeDirectoriesPaths.splice(dirIndex, 1);
+        delete this.excludeFileIds[fileid];
+      }
     },
     removeExcludeFileid: function removeExcludeFileid(fileid) {
       delete this.excludeFileIds[fileid];
     },
     addNewMask: function addNewMask() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.addingCustomMask = true;
       setTimeout(function () {
-        _this4.$refs.customExcludeMask.focus();
+        _this5.$refs.customExcludeMask.focus();
       }, 100);
     },
     addCustomMask: function addCustomMask() {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this.customExcludeMask.length > 0) {
         if (this.customExcludeList.findIndex(function (mask) {
-          return mask === _this5.customExcludeMask;
+          return mask === _this6.customExcludeMask;
         }) === -1) {
           this.customExcludeList.push(this.customExcludeMask);
           this.customExcludeMask = '';
@@ -507,7 +499,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.customExcludeList.splice(maskIndex, 1);
     },
     getTasks: function getTasks() {
-      var _this6 = this;
+      var _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -515,9 +507,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context.prev = _context.next) {
               case 0:
                 _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_0__["generateUrl"])('/apps/mediadc/api/v1/tasks')).then(function (res) {
-                  _this6.$store.dispatch('setTasks', res.data);
+                  _this7.$store.dispatch('setTasks', res.data);
 
-                  _this6.$emit('update:loading', false);
+                  _this7.$emit('update:loading', false);
                 });
 
               case 1:
@@ -531,7 +523,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     resetForm: function resetForm() {
       this.targetDirectoriesPaths = {};
       this.targetDirectoriesIds = [];
-      this.excludeDirectoriesNames = [];
+      this.excludeDirectoriesPaths = [];
       this.excludeFileIds = {};
       this.targetMimeType = 0;
       this.similarity_threshold = this.settingByName('similarity_threshold') !== undefined ? this.settingByName('similarity_threshold').value : 90;
@@ -707,7 +699,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, "\n.tasks-list[data-v-68c8f6ea] {\n\tpadding: 20px;\n\tbackground-color: #E6F3FA;\n\tborder-radius: 5px;\n\twidth: 100%;\n\tmargin: 10px;\n\tmax-width: 600px;\n\tmax-height: 410px;\n\tmin-height: 410px;\n\toverflow-y: scroll;\n}\n.task-row[data-v-68c8f6ea] {\n\tdisplay: flex;\n\talign-items: center;\n\tborder: 1px solid #dadada;\n\tbackground-color: #fff;\n\tborder-radius: 5px;\n\tmargin-bottom: 10px;\n\ttransition: box-shadow .3s;\n}\n.task-row[data-v-68c8f6ea]:hover {\n\tbox-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);\n}\n.task-row:hover .delete-task-button[data-v-68c8f6ea] {\n\tvisibility: visible;\n}\n.task-row a[data-v-68c8f6ea] {\n\tpadding: 10px 0 10px 20px;\n\twidth: 100%;\n\theight: 100%;\n\tdisplay: inline-flex;\n\talign-items: center;\n}\n.delete-task-button[data-v-68c8f6ea] {\n\tdisplay: inline-flex;\n\tvisibility: hidden;\n\twidth: 16px;\n\theight: 16px;\n\tmargin: 10px 20px;\n\tcursor: pointer;\n}\n.task-time[data-v-68c8f6ea] {\n\tcolor: #585858;\n}\n@media (max-width: 540px) {\n.task-row[data-v-68c8f6ea], .task-row a[data-v-68c8f6ea] {\n\t\tflex-direction: column;\n}\n.delete-task-button[data-v-68c8f6ea] {\n\t\tvisibility: visible;\n}\n.badge[data-v-68c8f6ea] {\n\t\tmargin-right: 0;\n\t\tmargin-bottom: 10px;\n}\n}\n.badge[data-v-68c8f6ea] {\n\tdisplay: inline-flex;\n\tpadding: 0 10px;\n\tbackground-color: #eee;\n\tborder-radius: 20px;\n\tmargin-right: 10px;\n}\n.badge.finished[data-v-68c8f6ea] {\n\tbackground-color: #49b382;\n\tcolor: #fff;\n}\n.badge.running[data-v-68c8f6ea] {\n\tbackground-color: #dadada;\n\tcolor: #000;\n}\n.badge.error[data-v-68c8f6ea] {\n\tbackground-color: #bd3f3f;\n\tcolor: #fff;\n}\n.badge.terminated[data-v-68c8f6ea] {\n\tbackground-color: #f17b1b;\n\tcolor: #fff;\n}\n.empty-tasks-list[data-v-68c8f6ea] {\n\tpadding: 20px;\n\twidth: 100%;\n\theight: 80%;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n\tbox-sizing: border-box;\n\tflex-direction: column;\n}\n.empty-tasks-list strong[data-v-68c8f6ea] {\n\tfont-size: 16px;\n\tcolor: #636363;\n}\n.empty-tasks-list img[data-v-68c8f6ea] {\n\tmargin: 20px 0;\n}\nbody.theme--dark .tasks-list[data-v-68c8f6ea] {\n\tbackground-color: #333333;\n}\nbody.theme--dark .task-row[data-v-68c8f6ea] {\n\tbackground-color: #353535;\n\tborder-color: #717171;\n}\nbody.theme--dark .task-owner[data-v-68c8f6ea] {\n\tcolor: #a9a8a8;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.i, "\n.tasks-list[data-v-68c8f6ea] {\n\tpadding: 20px;\n\tbackground-color: #E6F3FA;\n\tborder-radius: 5px;\n\twidth: 100%;\n\tmargin: 10px;\n\tmax-width: 600px;\n\tmax-height: 480px;\n\tmin-height: 410px;\n\toverflow-y: scroll;\n}\n.task-row[data-v-68c8f6ea] {\n\tdisplay: flex;\n\talign-items: center;\n\tborder: 1px solid #dadada;\n\tbackground-color: #fff;\n\tborder-radius: 5px;\n\tmargin-bottom: 10px;\n\ttransition: box-shadow .3s;\n}\n.task-row[data-v-68c8f6ea]:hover {\n\tbox-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);\n}\n.task-row:hover .delete-task-button[data-v-68c8f6ea] {\n\tvisibility: visible;\n}\n.task-row a[data-v-68c8f6ea] {\n\tpadding: 10px 0 10px 20px;\n\twidth: 100%;\n\theight: 100%;\n\tdisplay: inline-flex;\n\talign-items: center;\n}\n.delete-task-button[data-v-68c8f6ea] {\n\tdisplay: inline-flex;\n\tvisibility: hidden;\n\twidth: 16px;\n\theight: 16px;\n\tmargin: 10px 20px;\n\tcursor: pointer;\n}\n.task-time[data-v-68c8f6ea] {\n\tcolor: #585858;\n}\n@media (max-width: 540px) {\n.task-row[data-v-68c8f6ea], .task-row a[data-v-68c8f6ea] {\n\t\tflex-direction: column;\n}\n.delete-task-button[data-v-68c8f6ea] {\n\t\tvisibility: visible;\n}\n.badge[data-v-68c8f6ea] {\n\t\tmargin-right: 0;\n\t\tmargin-bottom: 10px;\n}\n}\n.badge[data-v-68c8f6ea] {\n\tdisplay: inline-flex;\n\tpadding: 0 10px;\n\tbackground-color: #eee;\n\tborder-radius: 20px;\n\tmargin-right: 10px;\n}\n.badge.finished[data-v-68c8f6ea] {\n\tbackground-color: #49b382;\n\tcolor: #fff;\n}\n.badge.running[data-v-68c8f6ea] {\n\tbackground-color: #dadada;\n\tcolor: #000;\n}\n.badge.error[data-v-68c8f6ea] {\n\tbackground-color: #bd3f3f;\n\tcolor: #fff;\n}\n.badge.terminated[data-v-68c8f6ea] {\n\tbackground-color: #f17b1b;\n\tcolor: #fff;\n}\n.empty-tasks-list[data-v-68c8f6ea] {\n\tpadding: 20px;\n\twidth: 100%;\n\theight: 80%;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n\tbox-sizing: border-box;\n\tflex-direction: column;\n}\n.empty-tasks-list strong[data-v-68c8f6ea] {\n\tfont-size: 16px;\n\tcolor: #636363;\n}\n.empty-tasks-list img[data-v-68c8f6ea] {\n\tmargin: 20px 0;\n}\nbody.theme--dark .tasks-list[data-v-68c8f6ea] {\n\tbackground-color: #333333;\n}\nbody.theme--dark .task-row[data-v-68c8f6ea] {\n\tbackground-color: #353535;\n\tborder-color: #717171;\n}\nbody.theme--dark .task-owner[data-v-68c8f6ea] {\n\tcolor: #a9a8a8;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -1341,27 +1333,27 @@ var render = function() {
       _c("div", { staticClass: "block" }, [
         _c("h3", [_vm._v(_vm._s(_vm.t("mediadc", "Exclude directories")))]),
         _vm._v(" "),
-        _vm.excludeDirectoriesNames.length > 0
+        _vm.excludeDirectoriesPaths.length > 0
           ? _c(
               "div",
-              _vm._l(_vm.excludeDirectoriesNames, function(dir) {
+              _vm._l(Object.keys(_vm.excludeFileIds), function(fileid) {
                 return _c(
                   "div",
                   {
-                    key: dir,
+                    key: fileid,
                     staticClass: "selected-excluded-directories-list"
                   },
                   [
                     _c("div", { staticClass: "target-directory" }, [
                       _c("span", { staticStyle: { "overflow-y": "scroll" } }, [
-                        _vm._v(_vm._s(dir))
+                        _vm._v(_vm._s(_vm.excludeFileIds[fileid]))
                       ]),
                       _vm._v(" "),
                       _c("span", {
                         staticClass: "delete-button icon-delete",
                         on: {
                           click: function($event) {
-                            return _vm.removeExcludeDirectory(dir)
+                            return _vm.removeExcludeDirectory(fileid)
                           }
                         }
                       })
@@ -1374,31 +1366,6 @@ var render = function() {
           : _c("div", [
               _c("span", [_vm._v(_vm._s(_vm.t("mediadc", "Not selected")))])
             ]),
-        _vm._v(" "),
-        Object.keys(_vm.excludeFileIds).length > 0
-          ? _c(
-              "div",
-              _vm._l(_vm.excludeFileIds, function(fileid) {
-                return _c("div", { key: fileid }, [
-                  _c("div", { staticClass: "target-directory" }, [
-                    _c("span", { staticStyle: { "overflow-y": "scroll" } }, [
-                      _vm._v(_vm._s(_vm.excludeFileIds[fileid]))
-                    ]),
-                    _vm._v(" "),
-                    _c("span", {
-                      staticClass: "delete-button icon-delete",
-                      on: {
-                        click: function($event) {
-                          return _vm.removeExcludeFileid(fileid)
-                        }
-                      }
-                    })
-                  ])
-                ])
-              }),
-              0
-            )
-          : _vm._e(),
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
@@ -1646,7 +1613,7 @@ var render = function() {
             },
             on: { click: _vm.runCollectorTask }
           },
-          [_vm._v("\n\t\tRun Collector Task\n\t")]
+          [_vm._v("\n\t\t" + _vm._s(_vm.t("mediadc", "Run new Task")) + "\n\t")]
         )
       : _c("button", { attrs: { disabled: "" } }, [
           _c("span", { staticClass: "icon-loading" })
@@ -2176,4 +2143,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=mediadc-2.js.map?v=7368fa6f3a56eb73e539
+//# sourceMappingURL=mediadc-2.js.map?v=1328d4e4da9ed229c593

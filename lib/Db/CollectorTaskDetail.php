@@ -65,7 +65,7 @@ class CollectorTaskDetail extends Entity implements JsonSerializable {
 		return [
 			'id' => $this->getId(),
 			'task_id' => $this->getTaskId(),
-			'group_file_ids' => $this->getGroupFilesIds(),
+			'group_files_ids' => $this->getGroupFilesIds(),
 		];
 	}
 

@@ -26,17 +26,17 @@
 		<div class="details-list-item-title">
 			<span class="icon-projects" style="margin: 0 5px 0 0;" />
 			<span class="group-info" @click="openDetailFiles(detail)">
-				{{ t('mediadc', 'Duplicate group') }} #{{ detail.id }} ({{ JSON.parse(detail.group_file_ids).length }}
+				{{ t('mediadc', 'Duplicate group') }} #{{ detail.id }} ({{ JSON.parse(detail.group_files_ids).length }}
 				{{ t('mediadc', 'file(s)') }}{{ files.length > 0 ? ' - ' + formatBytes(getGroupFilesSize(files)) : '' }})
 			</span>
 			<span :class="!opened ? 'icon-triangle-s open-details-btn' : 'icon-triangle-n open-details-btn'" />
 			<span class="icon-delete delete-group-btn" @click="deleteTaskDetail(detail)" />
 		</div>
-		<div v-if="opened && JSON.parse(detail.group_file_ids).length > itemsPerPage" class="pagination">
+		<div v-if="opened && JSON.parse(detail.group_files_ids).length > itemsPerPage" class="pagination">
 			<span class="icon-view-previous pagination-button"
 				@click="openPrevDetailFiles(detail)" />
 			<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
-			<span>{{ page + 1 }}/{{ Math.ceil(JSON.parse(detail.group_file_ids).length / itemsPerPage) }}</span>
+			<span>{{ page + 1 }}/{{ Math.ceil(JSON.parse(detail.group_files_ids).length / itemsPerPage) }}</span>
 			<span class="icon-view-next pagination-button"
 				@click="openNextDetailFiles(detail)" />
 		</div>
@@ -102,7 +102,7 @@ export default {
 			}
 		},
 		openNextDetailFiles(detail) {
-			if (this.page < Math.ceil(JSON.parse(detail.group_file_ids).length / this.itemsPerPage) - 1) {
+			if (this.page < Math.ceil(JSON.parse(detail.group_files_ids).length / this.itemsPerPage) - 1) {
 				this.page += 1
 				const taskId = detail.task_id
 				const detailId = detail.id
@@ -229,6 +229,12 @@ body.theme--dark .pagination-button:active {
 	visibility: hidden;
 	cursor: pointer;
 	margin: 0 10px;
+}
+
+@media (max-width: 540px) {
+	.delete-group-btn {
+		visibility: visible;
+	}
 }
 
 .details-list-item:hover .delete-group-btn {

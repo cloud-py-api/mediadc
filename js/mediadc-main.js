@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "mediadc-" + ({}[chunkId]||chunkId) + ".js?v=" + {"0":"9439d7ebf8b722a728e6","1":"aeae2a0c9df84319aa3c","2":"7368fa6f3a56eb73e539","3":"500d157937a45ddd4293"}[chunkId] + ""
+/******/ 		return __webpack_require__.p + "mediadc-" + ({}[chunkId]||chunkId) + ".js?v=" + {"0":"9439d7ebf8b722a728e6","1":"a67b385612052a71cef4","2":"1328d4e4da9ed229c593","3":"500d157937a45ddd4293"}[chunkId] + ""
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -56142,7 +56142,8 @@ var state = {
   taskInfo: [],
   details: [],
   paginatedDetails: [],
-  itemsPerPage: 5
+  itemsPerPage: 5,
+  sorted: false
 };
 
 var paginate = function paginate(details, itemsPerPage) {
@@ -56169,8 +56170,11 @@ var mutations = {
     vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'taskInfo', taskInfo);
   },
   setDetails: function setDetails(state, details) {
-    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'details', details);
-    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'paginatedDetails', paginate(details, state.itemsPerPage));
+    var sortedDetails = details.sort(function (a, b) {
+      return state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length;
+    });
+    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'details', sortedDetails);
+    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage));
   },
   deleteDetail: function deleteDetail(state, detail) {
     var detailIndex = state.details.findIndex(function (d) {
@@ -56183,6 +56187,14 @@ var mutations = {
   setDetailsListItemsPerPage: function setDetailsListItemsPerPage(state, itemsPerPage) {
     vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'itemsPerPage', Number(itemsPerPage));
     vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'paginatedDetails', paginate(state.details, Number(itemsPerPage)));
+  },
+  setSorted: function setSorted(state, sorted) {
+    var sortedDetails = state.details.sort(function (a, b) {
+      return sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length;
+    });
+    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'details', sortedDetails);
+    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage));
+    vue__WEBPACK_IMPORTED_MODULE_0__["default"].set(state, 'sorted', sorted);
   }
 };
 var getters = {
@@ -56200,6 +56212,9 @@ var getters = {
   },
   itemsPerPage: function itemsPerPage(state) {
     return state.itemsPerPage;
+  },
+  sorted: function sorted(state) {
+    return state.sorted;
   }
 };
 var actions = {
@@ -56217,6 +56232,9 @@ var actions = {
   },
   setDetailsListItemsPerPage: function setDetailsListItemsPerPage(context, itemsPerPage) {
     context.commit('setDetailsListItemsPerPage', itemsPerPage);
+  },
+  setSorted: function setSorted(context, sorted) {
+    context.commit('setSorted', sorted);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -56453,4 +56471,4 @@ var actions = {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=mediadc-main.js.map?v=1f0b77a0468d409a7369
+//# sourceMappingURL=mediadc-main.js.map?v=015856495d21ca3256b4

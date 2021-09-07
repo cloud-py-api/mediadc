@@ -23,6 +23,7 @@
 
 <template>
 	<div v-if="!loading" class="container">
+		<TasksEdit v-if="editingTask" :opened.sync="editingTask" />
 		<div class="task-details">
 			<div class="task-details-heading">
 				<h2>
@@ -49,7 +50,7 @@
 						<span>
 							<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
 							({{ formatBytes(Number(task.files_total_size)) }})
-							({{ t('mediadc', 'precision') }} {{ JSON.parse(task.collector_settings).similarity_threshold }}%)
+							({{ task !== null && 'collector_settings' in task ? t('mediadc', 'precision: ') + JSON.parse(task.collector_settings).similarity_threshold + '%' : '' }})
 							<br>
 							<b>{{ t('mediadc', 'Deleted: ') }} </b>
 							{{ task.deleted_files_count }} {{ t('mediadc', 'file(s)') }}
@@ -71,6 +72,11 @@
 									</a>
 								</li>
 								<li>
+									<a class="icon-rename" @click="openEditTaskDialog(task)">
+										<span>{{ t('mediadc', 'Edit') }}</span>
+									</a>
+								</li>
+								<li>
 									<a class="icon-pause" @click="terminateTask(task)">
 										<span>{{ t('mediadc', 'Stop') }}</span>
 									</a>
@@ -87,8 +93,8 @@
 				<div class="task-info">
 					<h3>{{ t('mediadc', 'Target directories') }}</h3>
 					<div class="target-directories-list">
-						<div v-for="dir in taskInfo" :key="dir.fileid" class="target-directory-row">
-							<b>[{{ dir.fileowner }}] {{ dir.filepath.replace('/admin/files', '') }}</b> ({{ formatBytes(dir.filesize) }})
+						<div v-for="dir in taskInfo.target_directories" :key="dir.fileid" class="target-directory-row">
+							<b>[{{ dir.fileowner }}] {{ dir.filepath.replace(`/${dir.fileowner}/files`, '') }}</b> ({{ formatBytes(dir.filesize) }})
 						</div>
 					</div>
 				</div>
@@ -121,11 +127,13 @@ import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import Configure from '../mixins/Configure'
 import { getCurrentUser } from '@nextcloud/auth'
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
+import TasksEdit from '../components/tasks/TasksEdit'
 
 export default {
 	name: 'CollectorDetails',
 	components: {
 		DetailsList,
+		TasksEdit,
 	},
 	mixins: [
 		Formats,
@@ -149,6 +157,7 @@ export default {
 			filestotal: 0,
 			actionsOpened: false,
 			collapsedStatus: false,
+			editingTask: false,
 		}
 	},
 	computed: {
@@ -166,12 +175,18 @@ export default {
 		this.$emit('update:loading', true)
 		this.getTaskDetails()
 		this.getTaskInfo()
+		subscribe('restartTask', () => {
+			this.getTaskDetails()
+			this.filessize = 0
+			this.filestotal = 0
+		})
 		subscribe('updateTaskInfo', this.getDetailFilesTotalSize)
 		this.updater = setInterval(this.getTaskDetails, 5000)
 	},
 	beforeDestroy() {
 		clearInterval(this.updater)
 		unsubscribe('updateTaskInfo', this.getTaskInfo)
+		unsubscribe('restartTask')
 	},
 	methods: {
 		terminateTask(task) {
@@ -270,6 +285,9 @@ export default {
 		collapseTaskStatus() {
 			this.collapsedStatus = !this.collapsedStatus
 		},
+		openEditTaskDialog() {
+			this.editingTask = true
+		},
 	},
 }
 </script>
@@ -281,6 +299,12 @@ export default {
 	max-width: 1440px;
 	margin: 0 auto;
 	max-height: 100%;
+}
+
+@media (min-width: 1920px) {
+	.container {
+		max-width: 80vw;
+	}
 }
 
 h2 {

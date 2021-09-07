@@ -32,6 +32,7 @@
 				</span>
 			</h3>
 			<div v-if="details.length > itemsPerPage" class="pagination">
+				<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'" @click="toggleSorting" />
 				<span class="icon-view-previous pagination-button"
 					@click="prevGroupsPage()" />
 				<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
@@ -42,7 +43,7 @@
 		</div>
 		<div v-if="details.length > 0">
 			<div v-for="detail in paginatedDetails[page]"
-				v-show="JSON.parse(detail.group_file_ids).length > 1"
+				v-show="JSON.parse(detail.group_files_ids).length > 1"
 				:key="detail.id"
 				class="task-details-row">
 				<DetailsListItem :detail="detail" />
@@ -83,6 +84,7 @@ export default {
 		...mapGetters([
 			'task',
 			'details',
+			'sorted',
 			'paginatedDetails',
 			'itemsPerPage',
 		]),
@@ -105,6 +107,9 @@ export default {
 				showWarning(t('mediadc', 'Last page reached!'))
 			}
 		},
+		toggleSorting() {
+			this.$store.dispatch('setSorted', !this.sorted)
+		},
 	},
 }
 </script>
@@ -126,6 +131,12 @@ export default {
 	justify-content: space-between;
 }
 
+@media (max-width: 540px) {
+	.task-details-heading {
+		flex-direction: column;
+	}
+}
+
 .pagination {
 	display: flex;
 	align-items: center;
@@ -142,19 +153,30 @@ export default {
 	user-select: none;
 }
 
-.pagination-button:hover {
+.sorting {
+	display: flex;
+}
+
+.toggle-sorting-button {
+	padding: 20px;
+	border-radius: 50%;
+	user-select: none;
+	cursor: pointer;
+}
+
+.pagination-button:hover, .toggle-sorting-button:hover {
 	background-color: #eee;
 }
 
-.pagination-button:active {
+.pagination-button:active, .toggle-sorting-button:active {
 	background-color: #ddd;
 }
 
-body.theme--dark .pagination-button:hover {
+body.theme--dark .pagination-button:hover, body.theme--dark .toggle-sorting-button:hover {
 	background-color: #727272;
 }
 
-body.theme--dark .pagination-button:active {
+body.theme--dark .pagination-button:active, body.theme--dark .toggle-sorting-button:active {
 	background-color: #5b5b5b;
 }
 

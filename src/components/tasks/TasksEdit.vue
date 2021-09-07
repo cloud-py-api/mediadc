@@ -22,113 +22,116 @@
  -->
 
 <template>
-	<div class="new-task-block">
-		<h2>{{ t('mediadc', 'Create a new Task') }}</h2>
-		<div class="selection-container">
-			<div class="block target-directories-block">
-				<h3>{{ t('mediadc', 'Target directories') }}</h3>
-				<div v-if="targetDirectoriesIds.length > 0">
-					<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
-						<div class="target-directory">
-							<span style="overflow-y: scroll;">{{ targetDirectoriesPaths[fileid] }}</span>
-							<span class="delete-button icon-delete" @click="removeTargetDirectory(fileid)" />
+	<div v-show="opened" class="blackout">
+		<div class="new-task-block">
+			<span class="icon-close close-edit-button" @click="closeEditTaskDialog" />
+			<h2>{{ t('mediadc', 'Edit task') }}</h2>
+			<div class="selection-container">
+				<div class="block target-directories-block">
+					<h3>{{ t('mediadc', 'Target directories') }}</h3>
+					<div v-if="targetDirectoriesIds.length > 0">
+						<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
+							<div class="target-directory">
+								<span style="overflow-y: scroll;">{{ targetDirectoriesPaths[fileid] }}</span>
+								<span class="delete-button icon-delete" @click="removeTargetDirectory(fileid)" />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div v-else>
-					<span>{{ t('mediadc', 'Not selected') }}</span>
-				</div>
-				<br>
-				<button @click="openDirectoriesExplorer">
-					<span class="icon-add" />
-					{{ t('mediadc', 'Select') }}
-				</button>
-			</div>
-			<div class="block">
-				<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
-				<div v-if="excludeDirectoriesPaths.length > 0">
-					<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
-						<div class="target-directory">
-							<span style="overflow-y: scroll;">{{ excludeFileIds[fileid] }}</span>
-							<span class="delete-button icon-delete" @click="removeExcludeDirectory(fileid)" />
-						</div>
+					<div v-else>
+						<span>{{ t('mediadc', 'Not selected') }}</span>
 					</div>
-				</div>
-				<div v-else>
-					<span>{{ t('mediadc', 'Not selected') }}</span>
-				</div>
-				<br>
-				<button @click="openExcludeExplorer">
-					<span class="icon-add" />
-					{{ t('mediadc', 'Select') }}
-				</button>
-			</div>
-		</div>
-		<div class="selection-container">
-			<div class="block">
-				<h3>{{ t('mediadc', 'Custom exclude mask') }}</h3>
-				<div v-if="customExcludeList.length > 0" class="custom-masks-list">
-					<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
-						<span>{{ mask }}</span>
-						<span class="icon-delete" style="cursor: pointer;" @click="deleteCustomMask(mask)" />
-					</div>
-				</div>
-				<div v-else>
-					<span>{{ t('mediadc', 'Not added') }}</span>
-				</div>
-				<div v-if="addingCustomMask" style="display: flex; align-items: center;">
-					<input id="custom-exclude-mask"
-						ref="customExcludeMask"
-						v-model="customExcludeMask"
-						type="text"
-						@keyup.enter="addCustomMask"
-						@keyup.esc="cancelAddingCustomMask">
-					<span class="icon-checkmark" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="addCustomMask" />
-					<span class="icon-close" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="cancelAddingCustomMask" />
-				</div>
-				<div style="display: flex; align-items: center; margin: 20px 0;">
-					<button @click="addNewMask">
+					<br>
+					<button @click="openDirectoriesExplorer">
 						<span class="icon-add" />
-						<span>{{ t('mediadc', 'Add mask') }}</span>
+						{{ t('mediadc', 'Select') }}
+					</button>
+				</div>
+				<div class="block">
+					<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
+					<div v-if="excludeDirectoriesPaths.length > 0">
+						<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
+							<div class="target-directory">
+								<span style="overflow-y: scroll;">{{ excludeFileIds[fileid] }}</span>
+								<span class="delete-button icon-delete" @click="removeExcludeDirectory(fileid)" />
+							</div>
+						</div>
+					</div>
+					<div v-else>
+						<span>{{ t('mediadc', 'Not selected') }}</span>
+					</div>
+					<br>
+					<button @click="openExcludeExplorer">
+						<span class="icon-add" />
+						{{ t('mediadc', 'Select') }}
 					</button>
 				</div>
 			</div>
-			<div class="block">
-				<h3 style="margin: 5px 0;">
-					{{ t('mediadc', 'Target Mime Type') }}
-				</h3>
-				<select id="target_mtype"
-					v-model="targetMimeType"
-					name="target_mtype">
-					<option :value="0">
-						{{ t('mediadc', 'Photos') }}
-					</option>
-					<option :value="1">
-						{{ t('mediadc', 'Videos') }}
-					</option>
-					<option :value="2">
-						{{ t('mediadc', 'Photos and Videos') }}
-					</option>
-				</select>
-				<h3 style="margin: 5px 0;">
-					{{ t('mediadc', 'Similarity threshold') }}
-				</h3>
-				<input v-model="similarity_threshold"
-					type="number"
-					min="50"
-					max="100"
-					style="margin: 0 0 10px;">
+			<div class="selection-container">
+				<div class="block">
+					<h3>{{ t('mediadc', 'Custom exclude mask') }}</h3>
+					<div v-if="customExcludeList.length > 0" class="custom-masks-list">
+						<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
+							<span>{{ mask }}</span>
+							<span class="icon-delete" style="cursor: pointer;" @click="deleteCustomMask(mask)" />
+						</div>
+					</div>
+					<div v-else>
+						<span>{{ t('mediadc', 'Not added') }}</span>
+					</div>
+					<div v-if="addingCustomMask" style="display: flex; align-items: center;">
+						<input id="custom-exclude-mask"
+							ref="customExcludeMask"
+							v-model="customExcludeMask"
+							type="text"
+							@keyup.enter="addCustomMask"
+							@keyup.esc="cancelAddingCustomMask">
+						<span class="icon-checkmark" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="addCustomMask" />
+						<span class="icon-close" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="cancelAddingCustomMask" />
+					</div>
+					<div style="display: flex; align-items: center; margin: 20px 0;">
+						<button @click="addNewMask">
+							<span class="icon-add" />
+							<span>{{ t('mediadc', 'Add mask') }}</span>
+						</button>
+					</div>
+				</div>
+				<div class="block">
+					<h3 style="margin: 5px 0;">
+						{{ t('mediadc', 'Target Mime Type') }}
+					</h3>
+					<select id="target_mtype"
+						v-model="targetMimeType"
+						name="target_mtype">
+						<option :value="0">
+							{{ t('mediadc', 'Photos') }}
+						</option>
+						<option :value="1">
+							{{ t('mediadc', 'Videos') }}
+						</option>
+						<option :value="2">
+							{{ t('mediadc', 'Photos and Videos') }}
+						</option>
+					</select>
+					<h3 style="margin: 5px 0;">
+						{{ t('mediadc', 'Similarity threshold') }}
+					</h3>
+					<input v-model="similarity_threshold"
+						type="number"
+						min="50"
+						max="100"
+						style="margin: 0 0 10px;">
+				</div>
 			</div>
+			<button v-if="!runningTask"
+				style="margin: 10px 5px 0"
+				:disabled="Object.keys(targetDirectoriesPaths).length === 0"
+				@click="restartTask">
+				{{ t('mediadc', 'Restart task') }}
+			</button>
+			<button v-else disabled>
+				<span class="icon-loading" />
+			</button>
 		</div>
-		<button v-if="!runningTask"
-			style="margin: 10px 5px 0"
-			:disabled="Object.keys(targetDirectoriesPaths).length === 0"
-			@click="runCollectorTask">
-			{{ t('mediadc', 'Run new Task') }}
-		</button>
-		<button v-else disabled>
-			<span class="icon-loading" />
-		</button>
 	</div>
 </template>
 
@@ -138,9 +141,17 @@ import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialo
 import axios from '@nextcloud/axios'
 import { requestFileInfo, getFileId } from '../../utils/files'
 import { mapGetters } from 'vuex'
+import { getCurrentUser } from '@nextcloud/auth'
+import { emit } from '@nextcloud/event-bus'
 
 export default {
-	name: 'TasksNew',
+	name: 'TasksEdit',
+	props: {
+		opened: {
+			type: Boolean,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			targetDirectoriesPaths: {},
@@ -160,14 +171,34 @@ export default {
 			'settings',
 			'settingByName',
 			'tasks',
+			'task',
+			'taskInfo',
 		]),
 	},
 	beforeMount() {
 		this.similarity_threshold = this.settingByName('similarity_threshold') !== undefined
 			? this.settingByName('similarity_threshold').value
 			: 90
+		this.targetMimeType = JSON.parse(this.task.collector_settings).target_mtype
+		this.similarity_threshold = JSON.parse(this.task.collector_settings).similarity_threshold
+		this.parseTaskSettings()
 	},
 	methods: {
+		parseTaskSettings() {
+			if (this.taskInfo !== null && 'target_directories' in this.taskInfo) {
+				this.taskInfo.target_directories.forEach(dir => {
+					this.targetDirectoriesIds.push(dir.fileid.toString())
+					this.targetDirectoriesPaths[dir.fileid.toString()] = dir.filepath.replace(`/${getCurrentUser().uid}/files`, '')
+				})
+			}
+			if (this.taskInfo !== null && 'exclude_directories' in this.taskInfo) {
+				this.taskInfo.exclude_directories.forEach(dir => {
+					this.excludeDirectoriesPaths.push(dir.filepath.replace())
+					this.excludeFileIds[dir.fileid.toString()] = dir.filepath.replace(`/${getCurrentUser().uid}/files`, '')
+				})
+				this.customExcludeList = JSON.parse(this.task.exclude_list).user.mask
+			}
+		},
 		getDirectoriesPicker(title) {
 			return getFilePickerBuilder(title)
 				.setMultiSelect(false)
@@ -240,9 +271,10 @@ export default {
 				}
 			})
 		},
-		runCollectorTask() {
+		restartTask() {
 			this.runningTask = true
-			axios.post(generateUrl('/apps/mediadc/api/v1/tasks/run'), {
+			axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
+				taskId: this.task.id,
 				targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
 				excludeList: {
 					user: {
@@ -253,17 +285,17 @@ export default {
 				},
 				collectorSettings: {
 					hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'phash',
-					similarity_threshold: this.similarity_threshold,
-					hash_size: this.settingByName('hash_size').value || 64,
+					similarity_threshold: Number(this.similarity_threshold),
+					hash_size: Number(this.settingByName('hash_size').value) || 64,
 					target_mtype: this.targetMimeType,
 				},
 			}).then(res => {
 				this.runningTask = false
 				if (res.data.success) {
-					this.$emit('update:loading', true)
-					this.getTasks()
-					this.resetForm()
-					showSuccess(t('mediadc', 'New task successfully created!'))
+					this.runningTask = false
+					this.closeEditTaskDialog()
+					emit('restartTask')
+					showSuccess(t('mediadc', 'Task successfully restarted!'))
 				} else {
 					showWarning('Some error occured while running Collector Task. Try again.')
 				}
@@ -320,7 +352,7 @@ export default {
 		resetForm() {
 			this.targetDirectoriesPaths = {}
 			this.targetDirectoriesIds = []
-			this.excludeDirectoriesPaths = []
+			this.excludeDirectoriesNames = []
 			this.excludeFileIds = {}
 			this.targetMimeType = 0
 			this.similarity_threshold = this.settingByName('similarity_threshold') !== undefined
@@ -329,11 +361,24 @@ export default {
 			this.customExcludeList = []
 			this.runningTask = false
 		},
+		closeEditTaskDialog() {
+			this.$emit('update:opened', false)
+		},
 	},
 }
 </script>
 
 <style scoped>
+.blackout {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 999;
+}
+
 .new-task-block {
 	border: 1px solid #dadada;
 	border-radius: 5px;
@@ -342,6 +387,11 @@ export default {
 	margin: 10px;
 	width: 100%;
 	max-width: 600px;
+	position: absolute;
+	background-color: #fff;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .selection-container {
@@ -384,6 +434,31 @@ export default {
 	height: 15px;
 	cursor: pointer;
 	margin: 0 10px;
+}
+
+.close-edit-button {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	padding: 20px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.close-edit-button:hover {
+	background-color: #eee;
+}
+
+.close-edit-button:active {
+	background-color: #ddd;
+}
+
+body.theme--dark .actions-menu-button:hover {
+	background-color: #727272;
+}
+
+body.theme--dark .close-edit-button:active {
+	background-color: #5b5b5b;
 }
 
 body.theme--dark .new-task-block, body.theme--dark .block {

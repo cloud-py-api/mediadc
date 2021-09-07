@@ -143,7 +143,12 @@ class CollectorController extends Controller {
 			/** @var CollectorTask */
 			$collectorTask = $this->service->get($taskId);
 			$collectorTaskInfo = $this->service->getTaskInfo($collectorTask);
-			return new JSONResponse(['collectorTaskInfo' => $collectorTaskInfo], Http::STATUS_OK);
+			return new JSONResponse([
+				'collectorTaskInfo' => [
+					'target_directories' => $collectorTaskInfo['target_directories'],
+					'exclude_directories' => $collectorTaskInfo['exclude_directories'],
+				],
+			], Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}

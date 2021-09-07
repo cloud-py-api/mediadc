@@ -383,7 +383,8 @@ class CollectorService {
 	 * @return array target directories info
 	 */
 	public function getTaskInfo($task) {
-		$taskInfo = [];
+		$targetDirectories = [];
+		$excludeDirectories = [];
 		$targetDirectoryIds = json_decode($task->getTargetDirectoryIds());
 		$taskSettings = json_decode($task->getCollectorSettings(), true);
 		$excludeList = json_decode($task->getExcludeList(), true);
@@ -392,7 +393,7 @@ class CollectorService {
 			if (count($nodes) === 1 && $nodes[0] instanceof Folder) {
 				/** @var Folder */
 				$directory = $nodes[0];
-				array_push($taskInfo, [
+				array_push($targetDirectories, [
 					'fileid' => $directory->getId(),
 					'filename' => $directory->getName(),
 					'filesize' => $this->getTargetFolderFilesSize($directory, $taskSettings['target_mtype'], $excludeList),
@@ -402,7 +403,23 @@ class CollectorService {
 				]);
 			}
 		}
-		return $taskInfo;
+		foreach ($excludeList['user']['fileid'] as $excludeFileId) {
+			$nodes = $this->userFolder->getById($excludeFileId);
+			if (count($nodes) === 1 && $nodes[0] instanceof Folder) {
+				/** @var Folder */
+				$directory = $nodes[0];
+				array_push($excludeDirectories, [
+					'fileid' => $directory->getId(),
+					'filename' => $directory->getName(),
+					'fileowner' => $directory->getOwner()->getUID(),
+					'filepath' => $directory->getPath(),
+				]);
+			}
+		}
+		return [
+			'target_directories' => $targetDirectories,
+			'exclude_directories' => $excludeDirectories,
+		];
 	}
 
 	/**
