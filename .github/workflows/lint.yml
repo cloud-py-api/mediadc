@@ -1,5 +1,5 @@
 name: Lint
-on: pull_request
+on: [push, pull_request]
 
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     name: php${{ matrix.php-versions }} lint
     steps:
     - name: Checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@main
     - name: Set up php${{ matrix.php-versions }}
       uses: shivammathur/setup-php@master
       with:
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     name: ESLint
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Set up Node
         uses: actions/setup-node@v2.4.0
         with:
@@ -34,3 +34,13 @@ jobs:
         run: npm ci
       - name: eslint
         run: npm run lint
+
+  python-linters:
+    runs-on: ubuntu-latest
+    name: PyLint
+    steps:
+      - uses: actions/checkout@main
+      - name: Setup pylint
+        run: apt install pylint -y
+      - name: Python lint
+        run: pylint --ignore pg8000,pymyql lib/Service/python/*
