@@ -50,4 +50,4 @@ jobs:
           pip install pylint
       - name: pylint analysis
         run: |
-           pylint --ignore pg8000,pymyql lib/Service/python/* {} \;
+           pylint --ignore pg8000,pymyql lib/Service/python/*
