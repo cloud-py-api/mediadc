@@ -50,6 +50,7 @@ use OCP\AppFramework\Db\Entity;
  * @method int getDeletedFilesSize()
  * @method int getPyPid()
  * @method array getErrors()
+ * @method void setType(string $type)
  * @method void setOwner(string $taskOwner)
  * @method void setTargetDirectoryIds(string $targetDirectoryIds)
  * @method void setExcludeList(string $excludeList)
@@ -63,7 +64,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setFinishedTime(int $taskFinished)
  * @method void setUpdatedTime(int $updatedTime)
  * @method void setPyPid(int $pyPid)
- * @method void setErrors(array $errors)
+ * @method void setErrors(string $errors)
  */
 class CollectorTask extends Entity implements JsonSerializable {
 

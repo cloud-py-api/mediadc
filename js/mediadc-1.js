@@ -2541,7 +2541,12 @@ var render = function() {
                         _c("div", { staticClass: "target-directory" }, [
                           _c(
                             "span",
-                            { staticStyle: { "overflow-y": "scroll" } },
+                            {
+                              staticStyle: {
+                                "overflow-y": "scroll",
+                                "white-space": "nowrap"
+                              }
+                            },
                             [_vm._v(_vm._s(_vm.targetDirectoriesPaths[fileid]))]
                           ),
                           _vm._v(" "),
@@ -4008,4 +4013,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=mediadc-1.js.map?v=2fd2bf39fea4cada2bd8
+//# sourceMappingURL=mediadc-1.js.map?v=dab4320c246f8f5ff8f4

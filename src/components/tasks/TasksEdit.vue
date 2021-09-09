@@ -32,7 +32,7 @@
 					<div v-if="targetDirectoriesIds.length > 0">
 						<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
 							<div class="target-directory">
-								<span style="overflow-y: scroll;">{{ targetDirectoriesPaths[fileid] }}</span>
+								<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
 								<span class="delete-button icon-delete" @click="removeTargetDirectory(fileid)" />
 							</div>
 						</div>

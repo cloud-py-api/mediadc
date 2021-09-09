@@ -1300,9 +1300,16 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "target-directory" }, [
-                      _c("span", { staticStyle: { "overflow-y": "scroll" } }, [
-                        _vm._v(_vm._s(_vm.targetDirectoriesPaths[fileid]))
-                      ]),
+                      _c(
+                        "span",
+                        {
+                          staticStyle: {
+                            "overflow-y": "scroll",
+                            "white-space": "nowrap"
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.targetDirectoriesPaths[fileid]))]
+                      ),
                       _vm._v(" "),
                       _c("span", {
                         staticClass: "delete-button icon-delete",
@@ -2143,4 +2150,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=mediadc-2.js.map?v=482a6056098f43ec19d1
+//# sourceMappingURL=mediadc-2.js.map?v=99e558e1e857624f2ae1

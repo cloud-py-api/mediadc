@@ -30,22 +30,18 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Exception\PythonNotValidException;
-use Psr\Log\LoggerInterface;
+
 
 class PythonService {
 
 	/** @var string */
 	private $cwd;
 
-	/** @var LoggerInterface */
-	private $logger;
-
 	/** @var string */
 	private $pythonCommand;
 
-	public function __construct(SettingMapper $settingMapper, LoggerInterface $logger)
+	public function __construct(SettingMapper $settingMapper)
 	{
-		$this->logger = $logger;
 		/** @var Setting */
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
@@ -60,7 +56,7 @@ class PythonService {
 	 * 
 	 * @param string $scriptName relative path to the Python script
 	 * @param array $scriptParams params to script in array (`['-param1' => value1, '--param2' => value2]`)
-	 * @param Boolean $nonBlocking flag that determines how to run Python script.
+	 * @param boolean $nonBlocking flag that determines how to run Python script.
 	 * @param array $env env variables for python script
 	 * 
 	 * @return array|void
@@ -94,9 +90,11 @@ class PythonService {
 	}
 
 	/**
+	 * @param string @listName
+	 * 
 	 * @return array installation results list
 	 */
-	public function installDependencies(string $listName = ''): array {
+	public function installDependencies($listName = '') {
 		try {
 			$pythonResult = $this->run('/install.py', [
 				'--install' => $listName === '' ? 'required optional' : $listName,
@@ -113,7 +111,7 @@ class PythonService {
 	/**
 	 * @return array list of uninstalled Python packages
 	 */
-	public function checkInstallation(): array {
+	public function checkInstallation() {
 		try {
 			$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
 			return $this->parsePythonOutput($pythonResult);
@@ -126,9 +124,11 @@ class PythonService {
 	}
 
 	/**
+	 * @param array $packagesList
+	 * 
 	 * @return array installed packages list after deleting
 	 */
-	public function deleteDependencies(array $packagesList = []): array {
+	public function deleteDependencies($packagesList = []) {
 		try {
 			$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
 			return $this->parsePythonOutput($pythonResult);
@@ -141,9 +141,11 @@ class PythonService {
 	}
 
 	/**
+	 * @param array $packagesList
+	 * 
 	 * @return array installed packages list after deleting
 	 */
-	public function updateDependencies(array $packagesList = []): array {
+	public function updateDependencies($packagesList = []) {
 		try {
 			$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
 			return $this->parsePythonOutput($pythonResult);
@@ -172,7 +174,7 @@ class PythonService {
 	 * 
 	 * @return bool $isCompatible
 	 */
-	public function isPythonCompatible(): bool {
+	public function isPythonCompatible() {
 		$pythonVersion = $this->getPythonVersion();
 		if ($pythonVersion === null) {
 			return false;
@@ -202,7 +204,7 @@ class PythonService {
 	 *
 	 * @return string
 	 */
-	public function getPhpInterpreter(): string {
+	public function getPhpInterpreter() {
 		static $cachedExecutable = null;
 
 		if ($cachedExecutable !== null) {
@@ -247,7 +249,12 @@ class PythonService {
 		return $cachedExecutable;
 	}
 
-	private function parsePythonOutput(array $pythonResult): array {
+	/**
+	 * @param array $pythonResult
+	 * 
+	 * @return array
+	 */
+	private function parsePythonOutput($pythonResult) {
 		$output = $pythonResult['output'];
 		$result_code = $pythonResult['result_code'];
 		if (count($output) > 0) {

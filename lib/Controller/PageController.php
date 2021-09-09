@@ -60,7 +60,7 @@ class PageController extends Controller {
 	public function index(): TemplateResponse {
 		$this->eventDispatcher->dispatchTyped(new LoadViewer());
 
-		Util::addScript(Application::APP_ID, 'mediadc-main');
+		Util::addScript(Application::APP_ID, Application::APP_ID . '-main');
 
 		$response = new TemplateResponse(Application::APP_ID, 'main');
 

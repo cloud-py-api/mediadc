@@ -30,26 +30,30 @@ use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use Psr\Log\LoggerInterface;
+
 
 class SettingsService {
 
 	/** @var SettingMapper */
 	private $mapper;
 
-	/** @var LoggerInterface */
-	private $logger;
-
-	public function __construct(SettingMapper $settingMapper, LoggerInterface $logger) {
+	public function __construct(SettingMapper $settingMapper) {
 		$this->mapper = $settingMapper;
-		$this->logger = $logger;
 	}
 
-	public function getSettings(): array {
+	/**
+	 * @return array
+	 */
+	public function getSettings() {
 		return $this->mapper->findAll();
 	}
 
-	public function getSettingById(int $id) {
+	/**
+	 * @param int $id
+	 * 
+	 * @return Setting|array
+	 */
+	public function getSettingById($id) {
 		try {
 			return $this->mapper->find($id);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -60,7 +64,12 @@ class SettingsService {
 		}
 	}
 
-	public function getSettingByName(string $name) {
+	/**
+	 * @param string $name
+	 * 
+	 * @return array
+	 */
+	public function getSettingByName($name) {
 		try {
 			return [
 				'success' => true, 
@@ -75,7 +84,9 @@ class SettingsService {
 	}
 
 	/**
-	 * @param Setting $setting
+	 * @param array $setting
+	 * 
+	 * @return array
 	 */
 	public function updateSetting($setting) {
 		try {
@@ -100,7 +111,12 @@ class SettingsService {
 		}
 	}
 
-	public function updateSettings(array $settings) {
+	/**
+	 * @param array $settings
+	 * 
+	 * @return array
+	 */
+	public function updateSettings($settings) {
 		$updated = [];
 		foreach($settings as $setting) {
 			array_push($updated, $this->mapper->update(new Setting([

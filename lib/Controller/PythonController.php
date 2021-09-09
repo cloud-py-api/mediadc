@@ -50,40 +50,56 @@ class PythonController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @return JSONResponse
 	 */
-	public function check(): JSONResponse {
+	public function check() {
 		return new JSONResponse($this->service->checkInstallation(), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @return JSONResponse
 	 */
-	public function install(): JSONResponse {
+	public function install() {
 		return new JSONResponse($this->service->installDependencies(), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @param string $listName python dependecies list name
+	 * 
+	 * @return JSONResponse
 	 */
-	public function installDepsList(string $listName = ''): JSONResponse {
+	public function installDepsList($listName = '') {
 		return new JSONResponse($this->service->installDependencies($listName), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @param array $packagesList python packages names list
+	 * 
+	 * @return JSONResponse
 	 */
-	public function updateDepsList(array $packagesList = []): JSONResponse {
+	public function updateDepsList($packagesList = []) {
 		return new JSONResponse($this->service->updateDependencies($packagesList), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @param array $packagesList python packages names list
+	 * 
+	 * @return JSONResponse
 	 */
-	public function deleteDepsList(array $packagesList = []): JSONResponse {
+	public function deleteDepsList(array $packagesList = []) {
 		return new JSONResponse($this->service->deleteDependencies($packagesList), Http::STATUS_OK);
 	}
 

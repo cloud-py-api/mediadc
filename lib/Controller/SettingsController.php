@@ -32,7 +32,6 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
 use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Service\PhotosService;
 use OCA\MediaDC\Service\SettingsService;
 use OCA\MediaDC\Service\VideosService;
@@ -61,8 +60,10 @@ class SettingsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @return JSONResponse array of all settings
 	 */
-	public function index(): JSONResponse {
+	public function index() {
 		return new JSONResponse($this->service->getSettings(), Http::STATUS_OK);
 	}
 
@@ -71,8 +72,10 @@ class SettingsController extends Controller {
 	 * @NoCSRFRequired
 	 * 
 	 * @param array $settings
+	 * 
+	 * @return JSONResponse
 	 */
-	public function update($settings): JSONResponse {
+	public function update($settings) {
 		return new JSONResponse($this->service->updateSettings($settings), Http::STATUS_OK);
 	}
 
@@ -80,9 +83,11 @@ class SettingsController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
-	 * @param Setting $setting
+	 * @param array $setting
+	 * 
+	 * @return JSONResponse
 	 */
-	public function updateSetting($setting): JSONResponse {
+	public function updateSetting($setting) {
 		return new JSONResponse($this->service->updateSetting($setting), Http::STATUS_OK);
 	}
 
