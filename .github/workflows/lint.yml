@@ -40,7 +40,14 @@ jobs:
     name: PyLint
     steps:
       - uses: actions/checkout@main
-      - name: Python lint
+      - name: Python setup
+        uses: actions/setup-python@v1
         with:
-          pylint-version: 2.x
-        run: pylint --ignore pg8000,pymyql lib/Service/python/*
+          python-version: 3.8
+      - name: pylint installation
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+      - name: pylint analysis
+        run: |
+           find . -name '*.py' -exec pylint --ignore pg8000,pymyql lib/Service/python/* {} \;
