@@ -40,7 +40,7 @@ jobs:
     name: PyLint
     steps:
       - uses: actions/checkout@main
-      - name: Setup pylint
-        run: apt install pylint -y
       - name: Python lint
+        with:
+          pylint-version: 2.x
         run: pylint --ignore pg8000,pymyql lib/Service/python/*
