@@ -52,7 +52,7 @@ jobs:
         run: make
 
       - name: Configure server with app
-        uses: SMillerDev/nextcloud-actions/setup-nextcloud-app@v2
+        uses: SMillerDev/nextcloud-actions/setup-nextcloud-app@master
         with:
           app: ${{ env.APP_NAME }}
           check-code: false
