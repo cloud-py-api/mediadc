@@ -45,12 +45,14 @@ jobs:
 
       - name: Install Krankerl
         run: |
-          wget https://github.com/ChristophWurst/krankerl/releases/download/v0.12.3/krankerl_0.12.3_amd64.deb
-          sudo dpkg -i krankerl_0.12.3_amd64.deb
-          rm krankerl_0.13.2_amd64.deb
-
-      - name: sign for appstore
-        run: make appstore
+          wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.0/krankerl_0.13.0_amd64.deb
+          sudo dpkg -i krankerl_0.13.0_amd64.deb
+      - name: Package app
+        run: krankerl package
+      - uses: actions/upload-artifact@v2
+        with:
+          path: build/artifacts/mediadc.tar.gz
+          if-no-files-found: error
 
       # - name: Setup and Build frontend
       #   run: make
