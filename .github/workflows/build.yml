@@ -64,6 +64,11 @@ jobs:
       #     app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
       #     app_public_crt: ${{ secrets.APP_PUBLIC_CRT }}
 
+      - name: Print working directory
+        run: |
+          pwd
+          ls -l
+
       - name: Upload app tarball
         uses: actions/upload-artifact@v2
         with:
