@@ -37,7 +37,7 @@ jobs:
           coverage: none
 
       - name: Set up server non MySQL
-        uses: SMillerDev/nextcloud-actions/setup-nextcloud@v2
+        uses: SMillerDev/nextcloud-actions/setup-nextcloud@fae87e29aa7cdf1ea0b8033c67f60e75b10be2cd
         with:
           cron: false
           version: ${{ matrix.nextcloud }}
