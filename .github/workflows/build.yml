@@ -48,7 +48,7 @@ jobs:
           wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.2/krankerl_0.13.2_amd64.deb
           sudo dpkg -i krankerl_0.13.2_amd64.deb
 
-      - name: Prime app build
+      - name: Setup and Build frontend
         run: make
 
       - name: Configure server with app
