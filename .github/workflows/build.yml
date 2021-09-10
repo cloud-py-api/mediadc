@@ -49,6 +49,9 @@ jobs:
           sudo dpkg -i krankerl_0.13.2_amd64.deb
           rm krankerl_0.13.2_amd64.deb
 
+      - name: sign for appstore
+        run: make appstore
+
       # - name: Setup and Build frontend
       #   run: make
 
@@ -98,5 +101,5 @@ jobs:
       #     app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
       #     nightly: ${{ github.event.release.prerelease }}
 
-      - name: Delete crt and key from local storage
-        run: rm -f ~/.nextcloud/certificates/*
+      # - name: Delete crt and key from local storage
+      #   run: rm -f ~/.nextcloud/certificates/*
