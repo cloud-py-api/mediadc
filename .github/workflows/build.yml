@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: tarball
-          path: ../server/apps/${{ env.APP_NAME }}/build/artifacts/appstore/${{ env.APP_NAME }}.tar.gz
+          path: build/artifacts/${{ env.APP_NAME }}.tar.gz
           if-no-files-found: error
 
       # - name: Upload app tarball to release
