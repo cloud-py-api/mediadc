@@ -50,3 +50,6 @@ clean:
 clean-dev:
 	rm -rf node_modules
 
+# Packaging
+appstore:
+	krankerl package
