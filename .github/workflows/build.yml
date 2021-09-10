@@ -11,7 +11,6 @@ env:
 
 jobs:
   build_and_publish:
-    environment: release
     runs-on: ubuntu-latest
     name: "Release: build, sign and upload the app"
     strategy:
