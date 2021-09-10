@@ -47,6 +47,7 @@ jobs:
         run: |
           wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.2/krankerl_0.13.2_amd64.deb
           sudo dpkg -i krankerl_0.13.2_amd64.deb
+          rm krankerl_0.13.2_amd64.deb
 
       # - name: Setup and Build frontend
       #   run: make
@@ -68,6 +69,7 @@ jobs:
         run: |
           pwd
           ls -l
+          ls ../ -l
 
       - name: Upload app tarball
         uses: actions/upload-artifact@v2
