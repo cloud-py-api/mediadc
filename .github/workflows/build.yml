@@ -47,11 +47,13 @@ jobs:
         run: |
           wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.0/krankerl_0.13.0_amd64.deb
           sudo dpkg -i krankerl_0.13.0_amd64.deb
+
       - name: Package app
         run: krankerl package
       - uses: actions/upload-artifact@v2
         with:
-          path: build/artifacts/mediadc.tar.gz
+          name: tarball
+          path: build/artifacts/${{ env.APP_NAME }}.tar.gz
           if-no-files-found: error
 
       # - name: Setup and Build frontend
@@ -70,19 +72,12 @@ jobs:
       #     app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
       #     app_public_crt: ${{ secrets.APP_PUBLIC_CRT }}
 
-      - name: Print working directory
-        run: |
-          pwd
-          ls -l
-          ls ../ -l
-          ls ../server/ -l
-
-      - name: Upload app tarball
-        uses: actions/upload-artifact@v2
-        with:
-          name: tarball
-          path: build/artifacts/${{ env.APP_NAME }}.tar.gz
-          if-no-files-found: error
+      # - name: Print working directory
+      #   run: |
+      #     pwd
+      #     ls -l
+      #     ls ../ -l
+      #     ls ../server/ -l
 
       # - name: Upload app tarball to release
       #   uses: svenstaro/upload-release-action@v2
