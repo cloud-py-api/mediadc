@@ -45,8 +45,8 @@ jobs:
 
       - name: Install Krankerl
         run: |
-          wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.2/krankerl_0.13.2_amd64.deb
-          sudo dpkg -i krankerl_0.13.2_amd64.deb
+          wget https://github.com/ChristophWurst/krankerl/releases/download/v0.12.3/krankerl_0.12.3_amd64.deb
+          sudo dpkg -i krankerl_0.12.3_amd64.deb
           rm krankerl_0.13.2_amd64.deb
 
       - name: sign for appstore
