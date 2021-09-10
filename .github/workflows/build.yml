@@ -70,6 +70,7 @@ jobs:
           pwd
           ls -l
           ls ../ -l
+          ls ../server/ -l
 
       - name: Upload app tarball
         uses: actions/upload-artifact@v2
