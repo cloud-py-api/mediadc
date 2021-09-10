@@ -48,8 +48,8 @@ jobs:
           wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.2/krankerl_0.13.2_amd64.deb
           sudo dpkg -i krankerl_0.13.2_amd64.deb
 
-      - name: Setup and Build frontend
-        run: make
+      # - name: Setup and Build frontend
+      #   run: make
 
       - name: Configure server with app
         uses: SMillerDev/nextcloud-actions/setup-nextcloud-app@fae87e29aa7cdf1ea0b8033c67f60e75b10be2cd
