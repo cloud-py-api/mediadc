@@ -53,4 +53,4 @@ jobs:
           pip install pylint
       - name: pylint analysis
         run: |
-           pylint --ignore pg8000,pymysql lib/Service/python/*
+           pylint --rcfile .pylintrc lib/Service/python/*
