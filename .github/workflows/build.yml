@@ -12,7 +12,7 @@ env:
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
-    name: "Release: build, sign and upload the app"
+    name: Build, sign and package app
     strategy:
       matrix:
         php-versions: ['7.4', '8.0']
@@ -32,7 +32,7 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: pdo_sqlite,pdo_mysql,pdo_pgsql,gd,zip
+          extensions: pdo_sqlite,pdo_mysql,pdo_pgsql,gd,zip,openssl
           coverage: none
 
       - name: Set up server non MySQL
