@@ -273,32 +273,35 @@ export default {
 		},
 		restartTask() {
 			this.runningTask = true
-			axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
-				taskId: this.task.id,
-				targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
-				excludeList: {
-					user: {
-						mask: this.customExcludeList,
-						fileid: Object.keys(this.excludeFileIds).map(item => Number(item)),
+			this.getSettings().then(res => {
+				this.$store.dispatch('setSettings', res.data)
+				axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
+					taskId: this.task.id,
+					targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
+					excludeList: {
+						user: {
+							mask: this.customExcludeList,
+							fileid: Object.keys(this.excludeFileIds).map(item => Number(item)),
+						},
+						admin: JSON.parse(this.settingByName('exclude_list').value) || { mask: [], fileid: [] },
 					},
-					admin: JSON.parse(this.settingByName('exclude_list').value) || { mask: [], fileid: [] },
-				},
-				collectorSettings: {
-					hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'phash',
-					similarity_threshold: Number(this.similarity_threshold),
-					hash_size: Number(this.settingByName('hash_size').value) || 64,
-					target_mtype: this.targetMimeType,
-				},
-			}).then(res => {
-				this.runningTask = false
-				if (res.data.success) {
+					collectorSettings: {
+						hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'dhash',
+						similarity_threshold: Number(this.similarity_threshold),
+						hash_size: Number(this.settingByName('hash_size').value) || 64,
+						target_mtype: this.targetMimeType,
+					},
+				}).then(res => {
 					this.runningTask = false
-					this.closeEditTaskDialog()
-					emit('restartTask')
-					showSuccess(t('mediadc', 'Task successfully restarted!'))
-				} else {
-					showWarning('Some error occured while running Collector Task. Try again.')
-				}
+					if (res.data.success) {
+						this.runningTask = false
+						this.closeEditTaskDialog()
+						emit('restartTask')
+						showSuccess(t('mediadc', 'Task successfully restarted!'))
+					} else {
+						showWarning('Some error occured while running Collector Task. Try again.')
+					}
+				})
 			})
 		},
 		removeTargetDirectory(fileid) {
@@ -363,6 +366,9 @@ export default {
 		},
 		closeEditTaskDialog() {
 			this.$emit('update:opened', false)
+		},
+		async getSettings() {
+			return axios.get(generateUrl('/apps/mediadc/api/v1/settings'))
 		},
 	},
 }

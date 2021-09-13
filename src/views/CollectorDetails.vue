@@ -207,29 +207,35 @@ export default {
 			this.toggleActionsPopup()
 			if (this.isValidUser) {
 				this.restarting = true
-				this.getSettings()
-				axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
-					taskId: task.id,
-					targetDirectoryIds: task.target_directory_ids,
-					excludeList: {
-						user: JSON.parse(task.exclude_list).user,
-						admin: JSON.parse(this.settingByName('exclude_list').value),
-					},
-					collectorSettings: JSON.parse(task.collector_settings),
-				}).then(res => {
-					this.restarting = false
-					if (res.data.success) {
-						showSuccess(t('mediadc', 'Task successfully restarted with previous settings!'))
-						this.getTaskDetails()
-						this.filessize = 0
-						this.filestotal = 0
-					} else {
-						showError('Some error occured while restarting Collector Task. Try again.')
-					}
-				}).catch(err => {
-					this.restarting = false
-					console.debug(err)
-					showError('Some error occured while running Collector Task. Try again.')
+				this.getSettings().then(() => {
+					axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
+						taskId: task.id,
+						targetDirectoryIds: task.target_directory_ids,
+						excludeList: {
+							user: JSON.parse(task.exclude_list).user,
+							admin: JSON.parse(this.settingByName('exclude_list').value),
+						},
+						collectorSettings: {
+							hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'dhash',
+							similarity_threshold: Number(JSON.parse(this.task.collector_settings).similarity_threshold),
+							hash_size: Number(this.settingByName('hash_size').value) || 64,
+							target_mtype: Number(JSON.parse(this.task.collector_settings).target_mtype),
+						},
+					}).then(res => {
+						this.restarting = false
+						if (res.data.success) {
+							showSuccess(t('mediadc', 'Task successfully restarted with previous settings!'))
+							this.getTaskDetails()
+							this.filessize = 0
+							this.filestotal = 0
+						} else {
+							showError('Some error occured while restarting Collector Task. Try again.')
+						}
+					}).catch(err => {
+						this.restarting = false
+						console.debug(err)
+						showError('Some error occured while running Collector Task. Try again.')
+					})
 				})
 			} else {
 				showWarning(t('mediadc', 'You are not allowed to restart this task'))

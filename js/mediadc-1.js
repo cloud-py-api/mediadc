@@ -883,40 +883,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this4 = this;
 
       this.runningTask = true;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_0__["generateUrl"])('/apps/mediadc/api/v1/tasks/restart'), {
-        taskId: this.task.id,
-        targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
-        excludeList: {
-          user: {
-            mask: this.customExcludeList,
-            fileid: Object.keys(this.excludeFileIds).map(function (item) {
-              return Number(item);
-            })
-          },
-          admin: JSON.parse(this.settingByName('exclude_list').value) || {
-            mask: [],
-            fileid: []
-          }
-        },
-        collectorSettings: {
-          hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'phash',
-          similarity_threshold: Number(this.similarity_threshold),
-          hash_size: Number(this.settingByName('hash_size').value) || 64,
-          target_mtype: this.targetMimeType
-        }
-      }).then(function (res) {
-        _this4.runningTask = false;
+      this.getSettings().then(function (res) {
+        _this4.$store.dispatch('setSettings', res.data);
 
-        if (res.data.success) {
+        _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_0__["generateUrl"])('/apps/mediadc/api/v1/tasks/restart'), {
+          taskId: _this4.task.id,
+          targetDirectoryIds: JSON.stringify(_this4.targetDirectoriesIds),
+          excludeList: {
+            user: {
+              mask: _this4.customExcludeList,
+              fileid: Object.keys(_this4.excludeFileIds).map(function (item) {
+                return Number(item);
+              })
+            },
+            admin: JSON.parse(_this4.settingByName('exclude_list').value) || {
+              mask: [],
+              fileid: []
+            }
+          },
+          collectorSettings: {
+            hashing_algorithm: JSON.parse(_this4.settingByName('hashing_algorithm').value) || 'dhash',
+            similarity_threshold: Number(_this4.similarity_threshold),
+            hash_size: Number(_this4.settingByName('hash_size').value) || 64,
+            target_mtype: _this4.targetMimeType
+          }
+        }).then(function (res) {
           _this4.runningTask = false;
 
-          _this4.closeEditTaskDialog();
+          if (res.data.success) {
+            _this4.runningTask = false;
 
-          Object(_nextcloud_event_bus__WEBPACK_IMPORTED_MODULE_6__["emit"])('restartTask');
-          Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_1__["showSuccess"])(t('mediadc', 'Task successfully restarted!'));
-        } else {
-          Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_1__["showWarning"])('Some error occured while running Collector Task. Try again.');
-        }
+            _this4.closeEditTaskDialog();
+
+            Object(_nextcloud_event_bus__WEBPACK_IMPORTED_MODULE_6__["emit"])('restartTask');
+            Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_1__["showSuccess"])(t('mediadc', 'Task successfully restarted!'));
+          } else {
+            Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_1__["showWarning"])('Some error occured while running Collector Task. Try again.');
+          }
+        });
       });
     },
     removeTargetDirectory: function removeTargetDirectory(fileid) {
@@ -1009,6 +1013,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     closeEditTaskDialog: function closeEditTaskDialog() {
       this.$emit('update:opened', false);
+    },
+    getSettings: function getSettings() {
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                return _context2.abrupt("return", _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_0__["generateUrl"])('/apps/mediadc/api/v1/settings')));
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     }
   }
 });
@@ -1256,32 +1276,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.isValidUser) {
         this.restarting = true;
-        this.getSettings();
-        _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_3__["generateUrl"])('/apps/mediadc/api/v1/tasks/restart'), {
-          taskId: task.id,
-          targetDirectoryIds: task.target_directory_ids,
-          excludeList: {
-            user: JSON.parse(task.exclude_list).user,
-            admin: JSON.parse(this.settingByName('exclude_list').value)
-          },
-          collectorSettings: JSON.parse(task.collector_settings)
-        }).then(function (res) {
-          _this3.restarting = false;
+        this.getSettings().then(function () {
+          _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_3__["generateUrl"])('/apps/mediadc/api/v1/tasks/restart'), {
+            taskId: task.id,
+            targetDirectoryIds: task.target_directory_ids,
+            excludeList: {
+              user: JSON.parse(task.exclude_list).user,
+              admin: JSON.parse(_this3.settingByName('exclude_list').value)
+            },
+            collectorSettings: {
+              hashing_algorithm: JSON.parse(_this3.settingByName('hashing_algorithm').value) || 'dhash',
+              similarity_threshold: Number(JSON.parse(_this3.task.collector_settings).similarity_threshold),
+              hash_size: Number(_this3.settingByName('hash_size').value) || 64,
+              target_mtype: Number(JSON.parse(_this3.task.collector_settings).target_mtype)
+            }
+          }).then(function (res) {
+            _this3.restarting = false;
 
-          if (res.data.success) {
-            Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showSuccess"])(t('mediadc', 'Task successfully restarted with previous settings!'));
+            if (res.data.success) {
+              Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showSuccess"])(t('mediadc', 'Task successfully restarted with previous settings!'));
 
-            _this3.getTaskDetails();
+              _this3.getTaskDetails();
 
-            _this3.filessize = 0;
-            _this3.filestotal = 0;
-          } else {
-            Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showError"])('Some error occured while restarting Collector Task. Try again.');
-          }
-        }).catch(function (err) {
-          _this3.restarting = false;
-          console.debug(err);
-          Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showError"])('Some error occured while running Collector Task. Try again.');
+              _this3.filessize = 0;
+              _this3.filestotal = 0;
+            } else {
+              Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showError"])('Some error occured while restarting Collector Task. Try again.');
+            }
+          }).catch(function (err) {
+            _this3.restarting = false;
+            console.debug(err);
+            Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showError"])('Some error occured while running Collector Task. Try again.');
+          });
         });
       } else {
         Object(_nextcloud_dialogs__WEBPACK_IMPORTED_MODULE_5__["showWarning"])(t('mediadc', 'You are not allowed to restart this task'));
@@ -4013,4 +4039,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=mediadc-1.js.map?v=dab4320c246f8f5ff8f4
+//# sourceMappingURL=mediadc-1.js.map?v=1503c5f6a720df07b684

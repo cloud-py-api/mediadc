@@ -51,7 +51,7 @@ export default {
 	},
 	methods: {
 		async getSettings() {
-			axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
+			return axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
 				this.$store.dispatch('setSettings', res.data)
 				this.$emit('update:loading', false)
 			})

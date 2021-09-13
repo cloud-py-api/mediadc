@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "mediadc-" + ({}[chunkId]||chunkId) + ".js?v=" + {"0":"9439d7ebf8b722a728e6","1":"dab4320c246f8f5ff8f4","2":"99e558e1e857624f2ae1","3":"500d157937a45ddd4293"}[chunkId] + ""
+/******/ 		return __webpack_require__.p + "mediadc-" + ({}[chunkId]||chunkId) + ".js?v=" + {"0":"9439d7ebf8b722a728e6","1":"1503c5f6a720df07b684","2":"99e558e1e857624f2ae1","3":"500d157937a45ddd4293"}[chunkId] + ""
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -55702,11 +55702,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_0__["generateUrl"])('/apps/mediadc/api/v1/settings')).then(function (res) {
+                return _context.abrupt("return", _nextcloud_axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(Object(_nextcloud_router__WEBPACK_IMPORTED_MODULE_0__["generateUrl"])('/apps/mediadc/api/v1/settings')).then(function (res) {
                   _this.$store.dispatch('setSettings', res.data);
 
                   _this.$emit('update:loading', false);
-                });
+                }));
 
               case 1:
               case "end":
@@ -56471,4 +56471,4 @@ var actions = {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=mediadc-main.js.map?v=a852241896724c8ce1d8
+//# sourceMappingURL=mediadc-main.js.map?v=f527cd01ff5d5d6d4970
