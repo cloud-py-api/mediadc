@@ -45,7 +45,7 @@ def dc_images_init(task_id: int) -> bool:
     results = import_packages(['numpy', 'PIL', 'imagehash'], dest_sym_table=globals())
     if not len(results):
         Imported = True
-        results = import_packages(['pyheif'], dest_sym_table=globals())
+        results = import_packages(['pillow_heif'], dest_sym_table=globals())
         if not len(results):
             Heif_AV1 = True
             print('Images: HEIC(Apple) decoder - enabled.')
@@ -168,10 +168,11 @@ def hash_image_data(algo: str, hash_size: int, image_data: bytes, path: str):
         if path.lower().endswith(('.heic', '.heif',)):
             if not Heif_AV1:
                 return None
-            if pyheif.check(image_data) not in (pyheif.heif_filetype_yes_supported, pyheif.heif_filetype_maybe):
+            if pillow_heif.check(image_data) not in (pillow_heif.heif_filetype_yes_supported,
+                                                     pillow_heif.heif_filetype_maybe):
                 print(f'{path}: Unsupported format.')
                 return None
-            heif_file = pyheif.read(image_data)
+            heif_file = pillow_heif.read(image_data)
             pil_image = PIL.Image.frombytes(heif_file.mode, heif_file.size, heif_file.data,
                                             "raw", heif_file.mode, heif_file.stride,)
         else:

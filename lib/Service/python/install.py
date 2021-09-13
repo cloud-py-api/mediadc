@@ -55,7 +55,7 @@ RequiredPackagesList = {'numpy': 'numpy',
                         }
 OptionalPackagesList = {'scipy': 'scipy',
                         'pywt': 'pywavelets',
-                        'pyheif': 'pyheif',
+                        'pillow_heif': 'pillow_heif',
                         **db.get_optional_packages()
                         }
 AlgorithmsRequirements = {'average': [],
