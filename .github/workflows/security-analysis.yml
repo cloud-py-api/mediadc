@@ -1,4 +1,4 @@
-name: Security Analysis
+name: Security analysis
 
 on:
   pull_request:
