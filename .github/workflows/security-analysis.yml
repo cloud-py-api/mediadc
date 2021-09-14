@@ -3,9 +3,7 @@ name: Security Analysis
 on:
   pull_request:
   push:
-    branches:
-      - master
-      - stable*
+    branches: [main, dev, test]
 
 jobs:
   psalm:
