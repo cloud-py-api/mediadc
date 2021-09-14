@@ -49,6 +49,7 @@ jobs:
 
       - name: Package app
         run: krankerl package
+
       - uses: actions/upload-artifact@v2
         with:
           name: tarball

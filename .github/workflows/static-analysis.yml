@@ -15,15 +15,19 @@ jobs:
       steps:
           - name: Checkout
             uses: actions/checkout@v2
+
           - name: Set up php
             uses: shivammathur/setup-php@master
             with:
                 php-version: 7.4
                 tools: composer:v1
                 coverage: none
+
           - name: Install dependencies
             run: composer i
+
           - name: Install dependencies
             run: composer require --dev christophwurst/nextcloud:${{ matrix.ocp-version }}
+
           - name: Run coding standards check
             run: composer run psalm
