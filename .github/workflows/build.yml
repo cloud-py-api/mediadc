@@ -52,8 +52,8 @@ jobs:
 
       - name: Remove dev python files
         run: |
-          find lib/Service/python -type f -name dev_*.py -exec rm -rf {} \;
-          find lib/Service/python -type f -name test_*.py -exec rm -rf {} \;
+          find lib/Service/python -type f -name dev_*.py -exec rm {} \;
+          find lib/Service/python -type f -name test_*.py -exec rm {} \;
 
       - name: Package app
         run: krankerl package
