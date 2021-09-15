@@ -51,7 +51,9 @@ jobs:
           sudo dpkg -i krankerl_0.13.0_amd64.deb
 
       - name: Remove dev python files
-        run: find ./lib/Service/python -type f -name dev_*.py -exec rm {} \;
+        run: |
+          /bin/bash -c "find lib/Service/python -type f -name dev_*.py -exec rm {} \;"
+          /bin/bash -c "find lib/Service/python -type f -name test_*.py -exec rm {} \;"
 
       - name: Package app
         run: krankerl package
