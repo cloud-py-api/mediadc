@@ -1,3 +1,7 @@
+"""
+Videos processing functions.
+"""
+
 import json
 import traceback
 from files import can_directly_access_file, get_file_full_path, request_file_from_php
@@ -7,31 +11,26 @@ from install import import_packages, check_video
 from dc_images import arr_hash_to_string, arr_hash_from_bytes, calc_hash
 
 
-"""
-/**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license AGPL-3.0-or-later
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 class InvalidVideo(Exception):
@@ -56,10 +55,10 @@ def dc_videos_init(task_id: int) -> bool:
     if Imported:
         return True
     results = import_packages(['numpy', 'PIL', 'imagehash'], dest_sym_table=globals())
-    if not len(results):
+    if not results:
         Imported = True
         results = import_packages(['hexhamming'], dest_sym_table=globals())
-        if not len(results):
+        if not results:
             CHamming = True
             print('Videos: HexHamming module - enabled.')
     else:
@@ -72,7 +71,7 @@ def dc_process_videos(settings: dict, data: list):
         if x['skipped'] is not None:
             if x['skipped'] >= 2:
                 continue
-            elif x['skipped'] != 0:
+            if x['skipped'] != 0:
                 x['hash'] = None
         else:
             x['skipped'] = 0
@@ -139,8 +138,8 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
             raise InvalidVideo
         if not do_hash_video(algo, hash_size, video_info, file_info, data):
             raise InvalidVideo
-    except Exception as e:
-        exception_name = type(e).__name__
+    except Exception as exception_info:
+        exception_name = type(exception_info).__name__
         if video_info is None:
             video_info = {'duration': 0}
         elif not video_info:
@@ -200,7 +199,7 @@ def get_max_first_frame_time(duration_ms) -> int:
 def get_first_timestamp(video_info: dict, data_or_filepath) -> int:
     max_timestamp = get_max_first_frame_time(video_info['duration'])
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn', '-to', f'{max_timestamp}ms']
-    if type(data_or_filepath) == str:
+    if isinstance(data_or_filepath, str):
         result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params, '-i', data_or_filepath,
                                    '-f', 'rawvideo', '-s', f'{FirstFrameResolution}x{FirstFrameResolution}',
                                    '-pix_fmt', 'rgb24', 'pipe:'
@@ -234,7 +233,7 @@ def get_frames(timestamps: list, data_or_filepath, *ffmpeg_out_params) -> list:
         ret.append(b'')
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn']
     for x in range(len(timestamps)):
-        if type(data_or_filepath) == str:
+        if isinstance(data_or_filepath, str):
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
                                        '-ss', f'{timestamps[x]}ms', '-i', data_or_filepath,
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:'

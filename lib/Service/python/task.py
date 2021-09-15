@@ -1,48 +1,47 @@
+"""
+Tasks process logic module.
+"""
+
 import math
 import threading
+import time
 from enum import Enum
 import db
 from files import update_storages_info, is_path_in_exclude
 from dc_images import dc_images_init, dc_process_images, reset_images, save_image_results
 from dc_videos import dc_videos_init, dc_process_videos, reset_videos, save_video_results
 from install import get_installed_algorithms_list
-import time
 
 
-"""
-/**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license AGPL-3.0-or-later
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-TaskKeepaliveInterval = 8
+TASK_KEEP_ALIVE = 8
 
 
 class TaskType(Enum):
-    Image = 0
-    Video = 1
-    ImageAndVideo = 2
+    IMAGE = 0
+    VIDEO = 1
+    IMAGE_VIDEO = 2
 
 
 def init_task_settings(task_info: dict) -> dict:
@@ -92,7 +91,7 @@ def reset_data_groups():
 def analyze_and_lock(task_info: dict, forced: bool) -> bool:
     time.sleep(1)
     if task_info['py_pid'] != 0:
-        if db.get_time() > task_info['updated_time'] + int(TaskKeepaliveInterval) * 3:
+        if db.get_time() > task_info['updated_time'] + int(TASK_KEEP_ALIVE) * 3:
             print('Task was hanging.')
         else:
             print('Task already running.')
@@ -119,14 +118,15 @@ def analyze_and_lock(task_info: dict, forced: bool) -> bool:
 def updated_time_background_thread(task_id: int, exit_event):
     try:
         while True:
-            exit_event.wait(timeout=float(TaskKeepaliveInterval))
+            exit_event.wait(timeout=float(TASK_KEEP_ALIVE))
             if exit_event.is_set():
                 break
             print('BT:Updating keepalive.')
             db.set_task_keepalive(task_id, connection_id=1)
-    except Exception as e:
-        print(f"BT:Exception({type(e).__name__}): `{str(e)}`")
-        db.append_task_error(task_id, f"BT:Exception({type(e).__name__}): `{str(e)}`", connection_id=1)
+    except Exception as exception_info:
+        print(f"BT:Exception({type(exception_info).__name__}): `{str(exception_info)}`")
+        db.append_task_error(task_id, f"BT:Exception({type(exception_info).__name__}): `{str(exception_info)}`",
+                             connection_id=1)
     print('BT:Close DB connection.')
     db.close_connection(1)
     print('BT:Exiting.')
@@ -151,27 +151,27 @@ def process(task_info: dict, forced: bool):
         if len(task_settings):
             module_init_done = True
             task_type = TaskType(task_settings['type'])
-            if task_type in (TaskType.Image, TaskType.Video, TaskType.ImageAndVideo):
+            if task_type in (TaskType.IMAGE, TaskType.VIDEO, TaskType.IMAGE_VIDEO):
                 module_init_done &= dc_images_init(task_settings['id'])
-            if task_type in (TaskType.Video, TaskType.ImageAndVideo) and module_init_done:
+            if task_type in (TaskType.VIDEO, TaskType.IMAGE_VIDEO) and module_init_done:
                 module_init_done &= dc_videos_init(task_settings['id'])
             if module_init_done:
                 start_background_thread(task_settings)
                 time_start = time.perf_counter()
-                if task_type == TaskType.Image:
+                if task_type == TaskType.IMAGE:
                     process_image_task(task_settings)
-                elif task_type == TaskType.Video:
+                elif task_type == TaskType.VIDEO:
                     process_video_task(task_settings)
-                elif task_type == TaskType.ImageAndVideo:
+                elif task_type == TaskType.IMAGE_VIDEO:
                     process_image_task(task_settings)
                     process_video_task(task_settings)
                 task_settings['exit_event'].set()
                 task_settings['b_thread'].join(timeout=2.0)
                 print(f"Task execution_time: {time.perf_counter() - time_start}")
                 db.finalize_task(task_info['id'])
-    except Exception as e:
-        print(f"Exception({type(e).__name__}): `{str(e)}`")
-        db.append_task_error(task_info['id'], f"Exception({type(e).__name__}): `{str(e)}`")
+    except Exception as exception_info:
+        print(f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
+        db.append_task_error(task_info['id'], f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
     finally:
         print('Task unlocked.')
         db.unlock_task(task_info['id'])
@@ -202,61 +202,52 @@ def process_video_task_dirs(directories_ids: list, task_settings: dict):
 
 
 def process_directory_images(dir_id: int, task_settings: dict) -> list:
-    data = db.get_directory_data_image(dir_id, task_settings['mime_dir'], task_settings['mime_image'])
-    if not data:
+    fs_records = db.get_directory_data_image(dir_id, task_settings['mime_dir'], task_settings['mime_image'])
+    if not fs_records:
         return []
-    apply_exclude_list(data, task_settings)
-    sub_dirs = extract_sub_dirs(data, task_settings['mime_dir'])
-    dc_process_images(task_settings, data)
-    if len(data):
-        db.increase_processed_files_count(task_settings['id'], len(data))
+    apply_exclude_list(fs_records, task_settings)
+    sub_dirs = extract_sub_dirs(fs_records, task_settings['mime_dir'])
+    dc_process_images(task_settings, fs_records)
+    if fs_records:
+        db.increase_processed_files_count(task_settings['id'], len(fs_records))
     return sub_dirs
 
 
 def process_directory_videos(dir_id: int, task_settings: dict) -> list:
-    data = db.get_directory_data_video(dir_id, task_settings['mime_dir'], task_settings['mime_video'])
-    if not data:
+    fs_records = db.get_directory_data_video(dir_id, task_settings['mime_dir'], task_settings['mime_video'])
+    if not fs_records:
         return []
-    apply_exclude_list(data, task_settings)
-    sub_dirs = extract_sub_dirs(data, task_settings['mime_dir'])
-    dc_process_videos(task_settings, data)
-    if len(data):
-        db.increase_processed_files_count(task_settings['id'], len(data))
+    apply_exclude_list(fs_records, task_settings)
+    sub_dirs = extract_sub_dirs(fs_records, task_settings['mime_dir'])
+    dc_process_videos(task_settings, fs_records)
+    if fs_records:
+        db.increase_processed_files_count(task_settings['id'], len(fs_records))
     return sub_dirs
 
 
-def apply_exclude_list(data: list, task_settings: dict, where_to_purge=None) -> list:
-    purge = []
-    for n, x in enumerate(data):
-        if x['fileid'] in task_settings['exclude_fileid']:
-            purge.append(n)
-        elif is_path_in_exclude(x['path'], task_settings['exclude_mask']):
-            purge.append(n)
+def apply_exclude_list(fs_records: list, task_settings: dict, where_to_purge=None) -> list:
+    indexes_to_purge = []
+    for index, fs_record in enumerate(fs_records):
+        if fs_record['fileid'] in task_settings['exclude_fileid']:
+            indexes_to_purge.append(index)
+        elif is_path_in_exclude(fs_record['path'], task_settings['exclude_mask']):
+            indexes_to_purge.append(index)
     if where_to_purge is None:
-        for n in reversed(purge):
-            del data[n]
+        for index in reversed(indexes_to_purge):
+            del fs_records[index]
     else:
-        for n in reversed(purge):
-            del where_to_purge[n]
-    return purge
+        for index in reversed(indexes_to_purge):
+            del where_to_purge[index]
+    return indexes_to_purge
 
 
-def extract_sub_dirs(data: list, mime_dir: int) -> list:
+def extract_sub_dirs(fs_records: list, mime_dir: int) -> list:
     sub_dirs = []
-    purge = []
-    for n, x in enumerate(data):
-        if x['mimetype'] == mime_dir:
-            sub_dirs.append(x['fileid'])
-            purge.append(n)
-    for n in reversed(purge):
-        del data[n]
+    indexes_to_purge = []
+    for index, fs_record in enumerate(fs_records):
+        if fs_record['mimetype'] == mime_dir:
+            sub_dirs.append(fs_record['fileid'])
+            indexes_to_purge.append(index)
+    for index in reversed(indexes_to_purge):
+        del fs_records[index]
     return sub_dirs
-
-
-def apply_whitelist(data: dict, whitelist: list):
-    purge = []
-    for n, x in enumerate(data):
-        if not x['path'].lower().endswith(tuple(whitelist)):
-            purge.append(n)
-    for n in reversed(purge):
-        del data[n]

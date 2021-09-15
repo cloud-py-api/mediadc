@@ -2,31 +2,26 @@ import time
 import traceback
 
 
-"""
-/**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license AGPL-3.0-or-later
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 def create_connection(config: dict, provider: str, error_out: list):
@@ -64,13 +59,13 @@ def create_connection(config: dict, provider: str, error_out: list):
                                            database=config['dbname'])
         else:
             raise NotImplementedError(f"create_connection: unknown provider value: {provider}")
-    except Exception as e:
-        internal_handle_db_connect_exception(e, error_out)
+    except Exception as exception_info:
+        internal_handle_db_connect_exception(exception_info, error_out)
     return connection
 
 
-def internal_handle_db_connect_exception(e, error_out: list = None):
-    exception_name = type(e).__name__
+def internal_handle_db_connect_exception(exception_info, error_out: list = None):
+    exception_name = type(exception_info).__name__
     exception_info = str(traceback.format_exc())
     if error_out is not None:
         error_out.append('db_exception_handler:')
@@ -81,4 +76,4 @@ def internal_handle_db_connect_exception(e, error_out: list = None):
     if exception_name in ('InterfaceError', 'OperationalError', 'DatabaseError'):
         time.sleep(0.5)
     else:
-        raise e from None
+        raise exception_info from None

@@ -1,34 +1,33 @@
+"""
+File with helper class to work with `occ` command.
+"""
+
 import subprocess
 import os
 from typing import Union
 from pathlib import Path
 
 
-"""
-/**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license AGPL-3.0-or-later
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 PHP = 'php'
@@ -47,16 +46,14 @@ def init() -> None:
 
 
 def find_occ() -> str:
-    p = Path(os.path.abspath('.'))
+    dir_path = Path(os.path.abspath('.'))
     while True:
-        occ = p.joinpath('occ')
+        occ = dir_path.joinpath('occ')
         if os.path.isfile(occ):
-            break
-        if p == p.parent:
-            occ = 'occ'
-            break
-        p = p.parent
-    return str(occ)
+            return str(occ)
+        if dir_path == dir_path.parent:
+            return 'occ'
+        dir_path = dir_path.parent
 
 
 def php_call(*params, decode: bool = True) -> [bool, Union[str, bytes]]:
@@ -71,10 +68,10 @@ def php_call(*params, decode: bool = True) -> [bool, Union[str, bytes]]:
                 ['sudo', '-u', 'www-data', PHP, *params],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True
             )
-    except subprocess.CalledProcessError as e:
-        return False, f'Error:`{str(e)}`'
-    except Exception as e:
-        return False, f'Error({type(e).__name__}):`{str(e)}`'
+    except subprocess.CalledProcessError as exception_info:
+        return False, f'Error:`{str(exception_info)}`'
+    except Exception as exception_info:
+        return False, f'Error({type(exception_info).__name__}):`{str(exception_info)}`'
     if decode:
         output_result = result.stdout.decode('utf-8').rstrip('\n')
     else:
