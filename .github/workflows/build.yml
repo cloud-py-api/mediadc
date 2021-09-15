@@ -54,6 +54,8 @@ jobs:
         run: |
           /bin/bash -c "find lib/Service/python -type f -name dev_*.py -exec rm {} \;"
           /bin/bash -c "find lib/Service/python -type f -name test_*.py -exec rm {} \;"
+          ls -la
+          ls lib/Service/python -la
 
       - name: Package app
         run: krankerl package
