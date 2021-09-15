@@ -50,13 +50,6 @@ jobs:
           wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.0/krankerl_0.13.0_amd64.deb
           sudo dpkg -i krankerl_0.13.0_amd64.deb
 
-      - name: Remove dev python files
-        run: |
-          /bin/bash -c "find lib/Service/python -type f -name dev_*.py -exec rm {} \;"
-          /bin/bash -c "find lib/Service/python -type f -name test_*.py -exec rm {} \;"
-          ls -la
-          ls lib/Service/python -la
-
       - name: Package app
         run: krankerl package
 
