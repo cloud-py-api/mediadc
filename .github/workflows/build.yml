@@ -47,6 +47,15 @@ jobs:
           wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.0/krankerl_0.13.0_amd64.deb
           sudo dpkg -i krankerl_0.13.0_amd64.deb
 
+      - name: Install dependecies
+        run: npm install
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Build js
+        run: npm run build
+
       - name: Package app
         run: krankerl package
 
@@ -55,9 +64,6 @@ jobs:
           name: tarball
           path: build/artifacts/${{ env.APP_NAME }}.tar.gz
           if-no-files-found: error
-
-      - name: Setup and Build frontend
-        run: make
 
       - name: Configure server with app
         uses: SMillerDev/nextcloud-actions/setup-nextcloud-app@fae87e29aa7cdf1ea0b8033c67f60e75b10be2cd
