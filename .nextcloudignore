@@ -1,10 +1,25 @@
-[package]
-exclude = [
-    ".git",
-    "composer.json",
-    "composer.lock",
-    "krankerl.toml",
-    "node_modules",
-    "tests",
-    "vendor"
-]
+.git
+.github
+/composer.json
+/composer.lock
+/krankerl.toml
+/node_modules
+/tests
+/vendor
+/krankerl.toml
+/.nextcloudignore
+/src
+/webpack.*
+/screenshots
+/Makefile
+/.eslintrc.js
+/.gitattributes
+/.gitignore
+/babel.config.js
+/.pgp_cs.dist
+/psalm.xml
+/stylelint.config.js
+/.pylintrc
+/.npmignore
+/.l10nignore
+/.postcss.config.js
