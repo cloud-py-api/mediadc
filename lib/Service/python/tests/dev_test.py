@@ -4,7 +4,7 @@ Currently it is a dev file for some features testing. Not included in releases, 
 
 import sys
 import platform
-import install
+from lib.Service.python import install
 
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>

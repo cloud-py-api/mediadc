@@ -59,25 +59,25 @@ def dc_images_init(task_id: int) -> bool:
     return Imported
 
 
-def dc_process_images(settings: dict, data: list):
-    for x in data:
-        if x['skipped'] is not None:
-            if x['skipped'] >= 2:
+def dc_process_images(settings: dict, image_records: list):
+    for image_record in image_records:
+        if image_record['skipped'] is not None:
+            if image_record['skipped'] >= 2:
                 continue
-            if x['skipped'] != 0:
-                x['hash'] = None
+            if image_record['skipped'] != 0:
+                image_record['hash'] = None
         else:
-            x['skipped'] = 0
-        if x['hash'] is None:
-            x['hash'] = process_hash(settings['hash_algo'], settings['hash_size'], x, settings['data_dir'],
-                                     settings['remote_filesize_limit'])
+            image_record['skipped'] = 0
+        if image_record['hash'] is None:
+            image_record['hash'] = process_hash(settings['hash_algo'], settings['hash_size'], image_record,
+                                                settings['data_dir'], settings['remote_filesize_limit'])
         else:
             if CHamming:
-                x['hash'] = x['hash'].hex()
+                image_record['hash'] = image_record['hash'].hex()
             else:
-                x['hash'] = arr_hash_from_bytes(x['hash'])
-        if x['hash'] is not None:
-            process_image_record(settings['precision_img'], x['hash'], x['fileid'])
+                image_record['hash'] = arr_hash_from_bytes(image_record['hash'])
+        if image_record['hash'] is not None:
+            process_image_record(settings['precision_img'], image_record['hash'], image_record['fileid'])
 
 
 def process_hash(algo: str, hash_size: int, image_info: dict, data_dir: str, remote_filesize_limit: int):
@@ -136,9 +136,9 @@ def reset_images():
 
 def remove_solo_groups():
     groups_to_remove = []
-    for key in ImagesGroups.keys():
-        if len(ImagesGroups[key]) == 1:
-            groups_to_remove.append(key)
+    for group_key, files_id in ImagesGroups.items():
+        if len(files_id) == 1:
+            groups_to_remove.append(group_key)
     for key in groups_to_remove:
         del ImagesGroups[key]
 
@@ -146,8 +146,8 @@ def remove_solo_groups():
 def save_image_results(task_id: int):
     remove_solo_groups()
     print('Images: Number of groups:', len(ImagesGroups))
-    for v in ImagesGroups.values():
-        store_task_files_group(task_id, json.dumps(v))
+    for files_id in ImagesGroups.values():
+        store_task_files_group(task_id, json.dumps(files_id))
 
 
 def pil_to_hash(algo: str, hash_size: int, pil_image):

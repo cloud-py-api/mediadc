@@ -179,7 +179,7 @@ def close_connection(connection_id: int = 0):
 
 def execute_fetchall(query: str, args=None, connection_id: int = 0) -> list:
     result = []
-    for i in range(3):
+    for _ in range(3):
         connection = internal_get_connection(connection_id)
         if not connection:
             time.sleep(1)
@@ -195,7 +195,7 @@ def execute_fetchall(query: str, args=None, connection_id: int = 0) -> list:
 
 def execute_commit(query: str, args=None, connection_id: int = 0) -> int:
     result = 0
-    for i in range(3):
+    for _ in range(3):
         connection = internal_get_connection(connection_id)
         if not connection:
             time.sleep(1)

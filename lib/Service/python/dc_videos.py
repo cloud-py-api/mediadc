@@ -34,7 +34,7 @@ from dc_images import arr_hash_to_string, arr_hash_from_bytes, calc_hash
 
 
 class InvalidVideo(Exception):
-    pass
+    """Exception for use inside `process_video_hash` function."""
 
 
 VideoGroups = {}  # {group1:[fileid1,fileid2],group2:[fileid3,fileid4]}
@@ -66,25 +66,25 @@ def dc_videos_init(task_id: int) -> bool:
     return Imported
 
 
-def dc_process_videos(settings: dict, data: list):
-    for x in data:
-        if x['skipped'] is not None:
-            if x['skipped'] >= 2:
+def dc_process_videos(settings: dict, video_records: list):
+    for video_record in video_records:
+        if video_record['skipped'] is not None:
+            if video_record['skipped'] >= 2:
                 continue
-            if x['skipped'] != 0:
-                x['hash'] = None
+            if video_record['skipped'] != 0:
+                video_record['hash'] = None
         else:
-            x['skipped'] = 0
-        if x['hash'] is None:
-            process_video_hash(settings['hash_algo'], settings['hash_size'], x, settings['data_dir'],
+            video_record['skipped'] = 0
+        if video_record['hash'] is None:
+            process_video_hash(settings['hash_algo'], settings['hash_size'], video_record, settings['data_dir'],
                                settings['remote_filesize_limit'])
         else:
             if CHamming:
-                x['hash'] = x['hash'].hex()
+                video_record['hash'] = video_record['hash'].hex()
             else:
-                x['hash'] = arr_hash_from_bytes(x['hash'])
-        if x['hash'] is not None:
-            process_video_record(settings['precision_vid'], x['hash'], x['fileid'])
+                video_record['hash'] = arr_hash_from_bytes(video_record['hash'])
+        if video_record['hash'] is not None:
+            process_video_record(settings['precision_vid'], video_record['hash'], video_record['fileid'])
 
 
 def process_video_record(precision: int, video_hash, fileid: int):
@@ -185,8 +185,8 @@ def do_hash_video(algo: str, hash_size: int, video_info: dict, file_info: dict, 
 def build_times_for_hashes(total_duration_ms: int, first_hash_timestamp: int) -> list:
     pre_interval = int((total_duration_ms - first_hash_timestamp) / 10)
     round_factor = len(str(pre_interval)) - 1
-    b = round(pre_interval, ndigits=-round_factor)
-    return [first_hash_timestamp, b, b * 2, b * 4]
+    rounded_hash_timestamp = round(pre_interval, ndigits=-round_factor)
+    return [first_hash_timestamp, rounded_hash_timestamp, rounded_hash_timestamp * 2, rounded_hash_timestamp * 4]
 
 
 def get_max_first_frame_time(duration_ms) -> int:
@@ -282,9 +282,9 @@ def is_frame_too_bright(data: bytes, frame_offset: int, frame_size: int) -> bool
 
 def remove_solo_groups():
     groups_to_remove = []
-    for key in VideoGroups.keys():
-        if len(VideoGroups[key]) == 1:
-            groups_to_remove.append(key)
+    for group_key, files_id in VideoGroups.items():
+        if len(files_id) == 1:
+            groups_to_remove.append(group_key)
     for key in groups_to_remove:
         del VideoGroups[key]
 
@@ -292,5 +292,5 @@ def remove_solo_groups():
 def save_video_results(task_id: int):
     remove_solo_groups()
     print('Videos: Number of groups:', len(VideoGroups))
-    for v in VideoGroups.values():
-        store_task_files_group(task_id, json.dumps(v))
+    for files_id in VideoGroups.values():
+        store_task_files_group(task_id, json.dumps(files_id))

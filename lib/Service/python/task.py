@@ -5,9 +5,11 @@ Tasks process logic module.
 import math
 import threading
 import time
+import os
+import fnmatch
 from enum import Enum
 import db
-from files import update_storages_info, is_path_in_exclude
+from files import update_storages_info
 from dc_images import dc_images_init, dc_process_images, reset_images, save_image_results
 from dc_videos import dc_videos_init, dc_process_videos, reset_videos, save_video_results
 from install import get_installed_algorithms_list
@@ -39,12 +41,14 @@ TASK_KEEP_ALIVE = 8
 
 
 class TaskType(Enum):
+    """Possible task types."""
     IMAGE = 0
     VIDEO = 1
     IMAGE_VIDEO = 2
 
 
 def init_task_settings(task_info: dict) -> dict:
+    """Prepares task for execution, returns a dictionary to pass to process_(image/video)_task functions."""
     if task_info['files_scanned'] > 0:
         db.clear_task_files_scanned_groups(task_info['id'])
     task_settings = {'id': task_info['id'], 'data_dir': db.Config['datadir']}
@@ -84,11 +88,13 @@ def init_task_settings(task_info: dict) -> dict:
 
 
 def reset_data_groups():
+    """Reset any results from previous tasks if they present."""
     reset_images()
     reset_videos()
 
 
 def analyze_and_lock(task_info: dict, forced: bool) -> bool:
+    """Checks if can/need we to work on this task. Returns True if task was locked and must be processed."""
     time.sleep(1)
     if task_info['py_pid'] != 0:
         if db.get_time() > task_info['updated_time'] + int(TASK_KEEP_ALIVE) * 3:
@@ -116,6 +122,7 @@ def analyze_and_lock(task_info: dict, forced: bool) -> bool:
 
 
 def updated_time_background_thread(task_id: int, exit_event):
+    """Every {TASK_KEEP_ALIVE} seconds set `updated_time` of task to current time."""
     try:
         while True:
             exit_event.wait(timeout=float(TASK_KEEP_ALIVE))
@@ -132,15 +139,17 @@ def updated_time_background_thread(task_id: int, exit_event):
     print('BT:Exiting.')
 
 
-def start_background_thread(task_settings: dict):
+def start_background_thread(task_info: dict):
+    """Starts background daemon update thread for value `updated_time` of specified task."""
     print('Starting background thread.')
-    task_settings['exit_event'] = threading.Event()
-    task_settings['b_thread'] = threading.Thread(target=updated_time_background_thread, daemon=True,
-                                                 args=(task_settings['id'], task_settings['exit_event'],))
-    task_settings['b_thread'].start()
+    task_info['exit_event'] = threading.Event()
+    task_info['b_thread'] = threading.Thread(target=updated_time_background_thread, daemon=True,
+                                             args=(task_info['id'], task_info['exit_event'],))
+    task_info['b_thread'].start()
 
 
 def process(task_info: dict, forced: bool):
+    """Top Level function. Checks if we can work on task, and if so - start to process it. Called from `main`."""
     print(f"Processing task: id={task_info['id']}, forced={forced}")
     if not analyze_and_lock(task_info, forced):
         return
@@ -156,7 +165,7 @@ def process(task_info: dict, forced: bool):
             if task_type in (TaskType.VIDEO, TaskType.IMAGE_VIDEO) and module_init_done:
                 module_init_done &= dc_videos_init(task_settings['id'])
             if module_init_done:
-                start_background_thread(task_settings)
+                start_background_thread(task_info)
                 time_start = time.perf_counter()
                 if task_type == TaskType.IMAGE:
                     process_image_task(task_settings)
@@ -165,19 +174,21 @@ def process(task_info: dict, forced: bool):
                 elif task_type == TaskType.IMAGE_VIDEO:
                     process_image_task(task_settings)
                     process_video_task(task_settings)
-                task_settings['exit_event'].set()
-                task_settings['b_thread'].join(timeout=2.0)
                 print(f"Task execution_time: {time.perf_counter() - time_start}")
                 db.finalize_task(task_info['id'])
     except Exception as exception_info:
         print(f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
         db.append_task_error(task_info['id'], f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
     finally:
+        if 'b_thread' in task_info:
+            task_info['exit_event'].set()
+            task_info['b_thread'].join(timeout=2.0)
         print('Task unlocked.')
         db.unlock_task(task_info['id'])
 
 
 def process_image_task(task_settings: dict):
+    """Top Level function to process image task. As input param expects dict from `init_task_settings` function."""
     directories_ids = task_settings['target_dirs']
     apply_exclude_list(db.get_paths_by_ids(directories_ids), task_settings, directories_ids)
     process_image_task_dirs(directories_ids, task_settings)
@@ -185,11 +196,13 @@ def process_image_task(task_settings: dict):
 
 
 def process_image_task_dirs(directories_ids: list, task_settings: dict):
+    """Calls `process_directory_images` for each dir in `directories_ids`. Recursively does that for each sub dir."""
     for dir_id in directories_ids:
         process_image_task_dirs(process_directory_images(dir_id, task_settings), task_settings)
 
 
 def process_video_task(task_settings: dict):
+    """Top Level function to process video task. As input param expects dict from `init_task_settings` function."""
     directories_ids = task_settings['target_dirs']
     apply_exclude_list(db.get_paths_by_ids(directories_ids), task_settings, directories_ids)
     process_video_task_dirs(directories_ids, task_settings)
@@ -197,11 +210,13 @@ def process_video_task(task_settings: dict):
 
 
 def process_video_task_dirs(directories_ids: list, task_settings: dict):
+    """Calls `process_directory_videos` for each dir in `directories_ids`. Recursively does that for each sub dir."""
     for dir_id in directories_ids:
         process_video_task_dirs(process_directory_videos(dir_id, task_settings), task_settings)
 
 
 def process_directory_images(dir_id: int, task_settings: dict) -> list:
+    """Process all files in `dir_id` with mimetype==mime_image and return list of sub dirs for this `dir_id`."""
     fs_records = db.get_directory_data_image(dir_id, task_settings['mime_dir'], task_settings['mime_image'])
     if not fs_records:
         return []
@@ -214,6 +229,7 @@ def process_directory_images(dir_id: int, task_settings: dict) -> list:
 
 
 def process_directory_videos(dir_id: int, task_settings: dict) -> list:
+    """Process all files in `dir_id` with mimetype==mime_video and return list of sub dirs for this `dir_id`."""
     fs_records = db.get_directory_data_video(dir_id, task_settings['mime_dir'], task_settings['mime_video'])
     if not fs_records:
         return []
@@ -226,6 +242,7 @@ def process_directory_videos(dir_id: int, task_settings: dict) -> list:
 
 
 def apply_exclude_list(fs_records: list, task_settings: dict, where_to_purge=None) -> list:
+    """Purge all records according to exclude_(mask/fileid) from `where_to_purge`(or from fs_records)."""
     indexes_to_purge = []
     for index, fs_record in enumerate(fs_records):
         if fs_record['fileid'] in task_settings['exclude_fileid']:
@@ -242,6 +259,7 @@ def apply_exclude_list(fs_records: list, task_settings: dict, where_to_purge=Non
 
 
 def extract_sub_dirs(fs_records: list, mime_dir: int) -> list:
+    """Remove all records from `fs_records` that has `mimetype`=='mime_dir' and return them."""
     sub_dirs = []
     indexes_to_purge = []
     for index, fs_record in enumerate(fs_records):
@@ -251,3 +269,12 @@ def extract_sub_dirs(fs_records: list, mime_dir: int) -> list:
     for index in reversed(indexes_to_purge):
         del fs_records[index]
     return sub_dirs
+
+
+def is_path_in_exclude(path: str, exclude_patterns: list) -> bool:
+    """Checks with fnmatch if `path` is in `exclude_patterns`. Returns true if yes."""
+    name = os.path.basename(path)
+    for pattern in exclude_patterns:
+        if fnmatch.fnmatch(name, pattern):
+            return True
+    return False

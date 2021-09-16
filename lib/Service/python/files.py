@@ -2,8 +2,6 @@
 Helper functions related to get files content or storages info.
 """
 
-import os
-import fnmatch
 import db
 
 
@@ -113,11 +111,3 @@ def get_storage_user_id(storage_id: int) -> str:
         if storage_info['numeric_id'] == storage_id:
             return storage_info['user_id']
     return ''
-
-
-def is_path_in_exclude(path: str, exclude_patterns: list) -> bool:
-    name = os.path.basename(path)
-    for pattern in exclude_patterns:
-        if fnmatch.fnmatch(name, pattern):
-            return True
-    return False

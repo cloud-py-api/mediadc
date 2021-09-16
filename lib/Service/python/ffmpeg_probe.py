@@ -31,6 +31,7 @@ FF_DEBUG = 0
 
 
 def stub_call_ff(app_name: str, *params, stdin_data: bytes = None, ignore_errors: bool = False):
+    """Calls ffmpeg/probe and if error returns: None, error_string. Otherwise returns: value from subprocess.run, ''."""
     try:
         result = subprocess.run(
             [app_name, *params],
@@ -52,18 +53,20 @@ def stub_call_ff(app_name: str, *params, stdin_data: bytes = None, ignore_errors
         return None, f'{app_name} raised {type(exception_info).__name__}: {str(exception_info)}'
 
 
-def get_version(app: str) -> [bool, str, tuple]:
+def get_version(app: str) -> [str, tuple]:
+    """Returns non empty str if error, otherwise returns empty string and tuple with version of ffmpeg/probe."""
     result, err = stub_call_ff(app, '-version')
     if err:
-        return False, err, (0, 0)
+        return err, (0, 0)
     full_reply = result.stdout.decode('utf-8')
     ver_match = re.search(app + r'\sversion\s(\d{1,2})\.(\d{1,2})', full_reply, flags=re.MULTILINE + re.IGNORECASE)
     if ver_match is not None:
-        return True, '', ver_match.groups()
-    return False, f'Cant parse {app} version: {full_reply}', (0, 0)
+        return '', ver_match.groups()
+    return f'Cant parse {app} version: {full_reply}', (0, 0)
 
 
 def ffprobe_parse_results(proc_result) -> dict:
+    """From `ffprobe` proc.stdout returns duration. If error during parse, then returns duration=0."""
     try:
         video_info = json.loads(proc_result.stdout.decode('utf-8'))
         duration = video_info['format']['duration']
@@ -73,6 +76,7 @@ def ffprobe_parse_results(proc_result) -> dict:
 
 
 def is_moov_at_start(std_log) -> bool:
+    """Parses ffprobe output when it called with loglevel=trace and return True if `moov` header is at start of file."""
     trace_log = std_log.decode('utf-8')
     moov_match = re.search(r'(type:\s*\'moov\')', trace_log, re.IGNORECASE)
     mdat_match = re.search(r'(type:\s*\'mdat\')', trace_log, re.IGNORECASE)
@@ -84,6 +88,7 @@ def is_moov_at_start(std_log) -> bool:
 
 
 def ffprobe_get_video_info(path_or_data) -> dict:
+    """Accepts bytes or path. Returns duration in ms. If input is bytes also returns `fast_start` value."""
     if isinstance(path_or_data, str):
         result, err = stub_call_ff('ffprobe', '-hide_banner', '-loglevel', 'fatal', '-print_format', 'json',
                                    '-show_entries', 'format=duration',

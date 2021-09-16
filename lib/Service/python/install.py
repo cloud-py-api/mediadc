@@ -39,6 +39,7 @@ EXTRA_PIP_ARGS = []
 
 
 class ExpandedState(Enum):
+    """State of placement `local` dir in sys.path."""
     DISABLED = 0
     FIRST = 1
     LAST = 2
@@ -163,11 +164,11 @@ def import_packages(packages_names: list, dest_sym_table=None) -> list:
 
 def check_video() -> list:
     video_apps = []
-    success, _error, _ffmpeg_version = get_version('ffmpeg')
-    if not success:
+    error, _ffmpeg_version = get_version('ffmpeg')
+    if error:
         video_apps.append('ffmpeg')
-    success, _error, _ffprobe_version = get_version('ffprobe')
-    if not success:
+    error, _ffprobe_version = get_version('ffprobe')
+    if error:
         video_apps.append('ffprobe')
     return video_apps
 
@@ -183,9 +184,9 @@ def check_packages(packages_list: dict) -> dict:
 def get_installed_algorithms_list() -> list:
     available = []
     if not check_packages(RequiredPackagesList):
-        for algo_name in AlgorithmsRequirements.keys():
+        for algo_name, algo_requirements in AlgorithmsRequirements.items():
             algo_ok = True
-            for import_name in AlgorithmsRequirements[algo_name]:
+            for import_name in algo_requirements:
                 if not import_package(import_name, expand_state=ExpandedState.LAST):
                     algo_ok = False
                     break
@@ -254,7 +255,7 @@ def download_pip(url: str) -> bool:
     if not check_local_dir(create_if_absent=True):
         log_error('Cant create local dir.')
         return False
-    for tries in range(2):
+    for _ in range(2):
         try:
             subprocess.run(
                 ['curl', url, '-o', f'{LocalDir}/get-pip.py'],
@@ -268,7 +269,7 @@ def download_pip(url: str) -> bool:
             break
         except subprocess.TimeoutExpired:
             pass
-    for tries in range(2):
+    for _ in range(2):
         try:
             subprocess.run(
                 ['wget', url, '-O', f'{LocalDir}/get-pip.py'],
@@ -371,10 +372,10 @@ def install(packages_list: dict) -> int:
         if not check_local_dir(create_if_absent=True):
             log_error('Cant create local dir for packages.')
             return 1
-    for x in packages_list:
-        call_result, message = pip_call(['install', packages_list[x]])
+    for package in packages_list:
+        call_result, message = pip_call(['install', packages_list[package]])
         if not call_result:
-            log_error(f'Error during install {x}({packages_list[x]}).\nError:\n{message}')
+            log_error(f'Error during install {package}({packages_list[package]}).\nError:\n{message}')
             ret = 1
     if ret:
         return 1
