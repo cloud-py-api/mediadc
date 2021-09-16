@@ -88,7 +88,7 @@ def is_moov_at_start(std_log) -> bool:
 
 
 def ffprobe_get_video_info(path_or_data) -> dict:
-    """Accepts bytes or path. Returns duration in ms. If input is bytes also returns `fast_start` value."""
+    """Accepts bytes/path. Returns {} or {duration:X ms}. If input is bytes also returns `fast_start` flag."""
     if isinstance(path_or_data, str):
         result, err = stub_call_ff('ffprobe', '-hide_banner', '-loglevel', 'fatal', '-print_format', 'json',
                                    '-show_entries', 'format=duration',

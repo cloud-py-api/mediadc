@@ -36,18 +36,13 @@ def get_file_data(file_info: dict, data_dir: str, remote_filesize_limit: int) ->
         full_path = get_file_full_path(data_dir, file_info['storage'], file_info['path'])
         if not full_path:
             break
-        h_file = None
-        data = bytes(b'')
         try:
-            h_file = open(full_path, "rb")
-            data = h_file.read()
-        except OSError:                     # if we can open file, and exception during read of file - ignore file.
-            if h_file is None:              # we want only require file from php if we cant open it.
-                break
-        finally:
-            if h_file is not None:
-                h_file.close()
-        return data
+            with open(full_path, "rb") as h_file:
+                data = h_file.read()
+                return data
+        except Exception as exception_info:
+            print(f"Exception during reading: {full_path}\n {str(exception_info)}")
+            break
     if file_info['size'] > remote_filesize_limit:
         return b''
     return request_file_from_php(file_info)

@@ -112,7 +112,7 @@ def reset_videos():
 
 
 def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str, remote_filesize_limit: int):
-    video_info = None
+    video_info = {}
     try:
         while True:
             if not can_directly_access_file(file_info):
@@ -132,20 +132,14 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
         if len(data) == 0:
             return
         video_info = ffprobe_get_video_info(data)
-        if not video_info:
-            raise InvalidVideo
-        if not video_info['fast_start']:
+        if not video_info.get('fast_start', False):
             raise InvalidVideo
         if not do_hash_video(algo, hash_size, video_info, file_info, data):
             raise InvalidVideo
     except Exception as exception_info:
-        exception_name = type(exception_info).__name__
-        if video_info is None:
-            video_info = {'duration': 0}
-        elif not video_info:
-            video_info = {'duration': 0}
-        store_err_video_hash(file_info['fileid'], video_info['duration'],
+        store_err_video_hash(file_info['fileid'], video_info.get('duration', 0),
                              file_info['mtime'], file_info['skipped'] + 1)
+        exception_name = type(exception_info).__name__
         if exception_name != 'InvalidVideo':
             print(f"Exception({exception_name}): `{file_info['path']}`:\n`{str(traceback.format_exc())}`")
 
@@ -229,24 +223,24 @@ def get_first_timestamp(video_info: dict, data_or_filepath) -> int:
 
 def get_frames(timestamps: list, data_or_filepath, *ffmpeg_out_params) -> list:
     ret = [False]
-    for x in range(len(timestamps)):
+    for _ in range(len(timestamps)):
         ret.append(b'')
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn']
-    for x in range(len(timestamps)):
+    for index, timestamp in enumerate(timestamps):
         if isinstance(data_or_filepath, str):
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
-                                       '-ss', f'{timestamps[x]}ms', '-i', data_or_filepath,
+                                       '-ss', f'{timestamp}ms', '-i', data_or_filepath,
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:'
                                        )
         else:
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
-                                       '-ss', f'{timestamps[x]}ms', '-i', 'pipe:0',
+                                       '-ss', f'{timestamp}ms', '-i', 'pipe:0',
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:1',
                                        stdin_data=data_or_filepath)
         if err:
             print('DEBUG:', err)
             return ret
-        ret[x + 1] = result.stdout
+        ret[index + 1] = result.stdout
     ret[0] = True
     return ret
 
@@ -256,9 +250,9 @@ def is_frame_too_dark(data: bytes, frame_offset: int, frame_size: int) -> bool:
     total_allowed_dark_pixels = int(((frame_size / 3) / 100) * dark_allow_percent)
     dark_pixels = 0
     frame_bytes = data[frame_size * frame_offset:frame_size * (frame_offset + 1)]
-    for n in range(int(len(frame_bytes) / 3)):
-        pixel = frame_bytes[n * 3:(n + 1) * 3]
-        if pixel[0] <= 0x20 and pixel[1] <= 0x20 and pixel[2] <= 0x20:
+    for pixel_index in range(int(len(frame_bytes) / 3)):
+        pixel_data = frame_bytes[pixel_index * 3:pixel_index * 3 + 3]
+        if pixel_data[0] <= 0x20 and pixel_data[1] <= 0x20 and pixel_data[2] <= 0x20:
             dark_pixels += 1
     if dark_pixels > total_allowed_dark_pixels:
         return True
@@ -270,9 +264,9 @@ def is_frame_too_bright(data: bytes, frame_offset: int, frame_size: int) -> bool
     total_allowed_bright_pixels = int(((frame_size / 3) / 100) * bright_allow_percent)
     bright_pixels = 0
     frame_bytes = data[frame_size * frame_offset:frame_size * (frame_offset + 1)]
-    for n in range(int(len(frame_bytes) / 3)):
-        pixel = frame_bytes[n * 3:(n + 1) * 3]
-        brightness = int(sum([pixel[0], pixel[1], pixel[2]]) / 3)
+    for pixel_index in range(int(len(frame_bytes) / 3)):
+        pixel_data = frame_bytes[pixel_index * 3:pixel_index * 3 + 3]
+        brightness = int(sum([pixel_data[0], pixel_data[1], pixel_data[2]]) / 3)
         if brightness >= 0xFA:
             bright_pixels += 1
     if bright_pixels > total_allowed_bright_pixels:

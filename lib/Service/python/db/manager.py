@@ -1,3 +1,7 @@
+"""
+Main file in db package. Provides interference between nextcloud database and python scripts.
+"""
+
 from enum import Enum
 from datetime import datetime
 import time
@@ -30,6 +34,7 @@ from .connectors import create_connection, internal_handle_db_connect_exception
 
 
 class DbType(Enum):
+    """Known Nextcloud databases enumeration. We dont support SQLite."""
     MYSQL = 1
     PGSQL = 3
     OCI = 4
@@ -81,7 +86,6 @@ def detect_pgsql_socket(config: dict, _php_info: str) -> None:
 
 def init():
     global Config, DatabaseProvider, Warnings
-    occ_cloud.init()
     map_schema = {'datadir': 'datadirectory',
                   'dbname': 'dbname',
                   'dbtprefix': 'dbtableprefix',

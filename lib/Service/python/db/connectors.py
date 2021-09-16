@@ -1,3 +1,7 @@
+"""
+File contains logic for establishing connection to DB.
+"""
+
 import time
 import traceback
 

@@ -30,22 +30,11 @@ from pathlib import Path
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-PHP = 'php'
-OCC = ''
-
-
-def init() -> None:
-    global PHP, OCC
-    for k, v in sorted(os.environ.items()):
-        if k == 'PHP_PATH':
-            PHP = v
-        if k == 'OCC_PATH':
-            OCC = v
-    if not OCC:
-        OCC = find_occ()
-
-
-def find_occ() -> str:
+def init_occ() -> str:
+    """Returns path to `occ` command or if fails find it then just 'occ'."""
+    for env_var_name, env_var_value in sorted(os.environ.items()):
+        if env_var_name == 'OCC_PATH':
+            return env_var_value
     dir_path = Path(os.path.abspath('.'))
     while True:
         occ = dir_path.joinpath('occ')
@@ -56,7 +45,20 @@ def find_occ() -> str:
         dir_path = dir_path.parent
 
 
+def init_php() -> str:
+    """Returns path to php interpreter, that must be set by PHP script before executing python module or 'php'."""
+    for env_var_name, env_var_value in sorted(os.environ.items()):
+        if env_var_name == 'PHP_PATH':
+            return env_var_value
+    return 'php'
+
+
+OCC = init_occ()
+PHP = init_php()
+
+
 def php_call(*params, decode: bool = True) -> [bool, Union[str, bytes]]:
+    """Calls PHP interpreter with specified `params`. Returns: True and output of call or False and error string."""
     try:
         if not os.getenv('DEV_TEST'):
             result = subprocess.run(
@@ -80,12 +82,15 @@ def php_call(*params, decode: bool = True) -> [bool, Union[str, bytes]]:
 
 
 def occ_call(occ_task, *params, decode: bool = True) -> [bool, Union[str, bytes]]:
+    """Wrapper for occ calls. If decode=False then raw stdout data will be returned from occ."""
     return php_call(OCC, occ_task, *params, decode=decode)
 
 
 def get_cloud_config_value(value_name: str) -> [bool, str]:
+    """Returns success flag and decoded utf8 output of `occ config:system:get {value}` command or error string."""
     return occ_call('config:system:get', value_name)
 
 
 def get_cloud_app_config_value(app_name: str, value_name: str) -> [bool, str]:
+    """Returns success flag and decoded utf8 output of `occ config:app:get {app} {value}` command or error string."""
     return occ_call('config:app:get', app_name, value_name)
