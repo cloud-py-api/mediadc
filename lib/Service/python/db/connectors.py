@@ -70,13 +70,13 @@ def create_connection(config: dict, provider: str, error_out: list):
 
 def internal_handle_db_connect_exception(exception_info, error_out: list = None):
     exception_name = type(exception_info).__name__
-    exception_info = str(traceback.format_exc())
+    exception_info_str = str(traceback.format_exc())
     if error_out is not None:
         error_out.append('db_exception_handler:')
-        for each_line in exception_info.splitlines():
+        for each_line in exception_info_str.splitlines():
             error_out.append(each_line)
     else:
-        print('db_exception_handler:', exception_info)
+        print('db_exception_handler:', exception_info_str)
     if exception_name in ('InterfaceError', 'OperationalError', 'DatabaseError'):
         time.sleep(0.5)
     else:
