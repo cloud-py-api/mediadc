@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 namespace OCA\MediaDC\Controller;
@@ -32,7 +34,6 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
 use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Service\PhotosService;
 use OCA\MediaDC\Service\SettingsService;
 use OCA\MediaDC\Service\VideosService;
@@ -61,8 +62,10 @@ class SettingsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @return JSONResponse array of all settings
 	 */
-	public function index(): JSONResponse {
+	public function index() {
 		return new JSONResponse($this->service->getSettings(), Http::STATUS_OK);
 	}
 
@@ -71,8 +74,10 @@ class SettingsController extends Controller {
 	 * @NoCSRFRequired
 	 * 
 	 * @param array $settings
+	 * 
+	 * @return JSONResponse
 	 */
-	public function update($settings): JSONResponse {
+	public function update($settings) {
 		return new JSONResponse($this->service->updateSettings($settings), Http::STATUS_OK);
 	}
 
@@ -80,9 +85,11 @@ class SettingsController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
-	 * @param Setting $setting
+	 * @param array $setting
+	 * 
+	 * @return JSONResponse
 	 */
-	public function updateSetting($setting): JSONResponse {
+	public function updateSetting($setting) {
 		return new JSONResponse($this->service->updateSetting($setting), Http::STATUS_OK);
 	}
 

@@ -1,3 +1,7 @@
+"""
+Videos processing functions.
+"""
+
 import json
 import traceback
 from files import can_directly_access_file, get_file_full_path, request_file_from_php
@@ -7,33 +11,30 @@ from install import import_packages, check_video
 from dc_images import arr_hash_to_string, arr_hash_from_bytes, calc_hash
 
 
-"""
-/**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license GNU AGPL version 3 or any later version
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 class InvalidVideo(Exception):
-    pass
+    """Exception for use inside `process_video_hash` function."""
 
 
 VideoGroups = {}  # {group1:[fileid1,fileid2],group2:[fileid3,fileid4]}
@@ -54,10 +55,10 @@ def dc_videos_init(task_id: int) -> bool:
     if Imported:
         return True
     results = import_packages(['numpy', 'PIL', 'imagehash'], dest_sym_table=globals())
-    if not len(results):
+    if not results:
         Imported = True
         results = import_packages(['hexhamming'], dest_sym_table=globals())
-        if not len(results):
+        if not results:
             CHamming = True
             print('Videos: HexHamming module - enabled.')
     else:
@@ -65,25 +66,25 @@ def dc_videos_init(task_id: int) -> bool:
     return Imported
 
 
-def dc_process_videos(settings: dict, data: list):
-    for x in data:
-        if x['skipped'] is not None:
-            if x['skipped'] >= 2:
+def dc_process_videos(settings: dict, video_records: list):
+    for video_record in video_records:
+        if video_record['skipped'] is not None:
+            if video_record['skipped'] >= 2:
                 continue
-            elif x['skipped'] != 0:
-                x['hash'] = None
+            if video_record['skipped'] != 0:
+                video_record['hash'] = None
         else:
-            x['skipped'] = 0
-        if x['hash'] is None:
-            process_video_hash(settings['hash_algo'], settings['hash_size'], x, settings['data_dir'],
+            video_record['skipped'] = 0
+        if video_record['hash'] is None:
+            process_video_hash(settings['hash_algo'], settings['hash_size'], video_record, settings['data_dir'],
                                settings['remote_filesize_limit'])
         else:
             if CHamming:
-                x['hash'] = x['hash'].hex()
+                video_record['hash'] = video_record['hash'].hex()
             else:
-                x['hash'] = arr_hash_from_bytes(x['hash'])
-        if x['hash'] is not None:
-            process_video_record(settings['precision_vid'], x['hash'], x['fileid'])
+                video_record['hash'] = arr_hash_from_bytes(video_record['hash'])
+        if video_record['hash'] is not None:
+            process_video_record(settings['precision_vid'], video_record['hash'], video_record['fileid'])
 
 
 def process_video_record(precision: int, video_hash, fileid: int):
@@ -111,7 +112,7 @@ def reset_videos():
 
 
 def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str, remote_filesize_limit: int):
-    video_info = None
+    video_info = {}
     try:
         while True:
             if not can_directly_access_file(file_info):
@@ -131,20 +132,14 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
         if len(data) == 0:
             return
         video_info = ffprobe_get_video_info(data)
-        if not video_info:
-            raise InvalidVideo
-        if not video_info['fast_start']:
+        if not video_info.get('fast_start', False):
             raise InvalidVideo
         if not do_hash_video(algo, hash_size, video_info, file_info, data):
             raise InvalidVideo
-    except Exception as e:
-        exception_name = type(e).__name__
-        if video_info is None:
-            video_info = {'duration': 0}
-        elif not video_info:
-            video_info = {'duration': 0}
-        store_err_video_hash(file_info['fileid'], video_info['duration'],
+    except Exception as exception_info:
+        store_err_video_hash(file_info['fileid'], video_info.get('duration', 0),
                              file_info['mtime'], file_info['skipped'] + 1)
+        exception_name = type(exception_info).__name__
         if exception_name != 'InvalidVideo':
             print(f"Exception({exception_name}): `{file_info['path']}`:\n`{str(traceback.format_exc())}`")
 
@@ -184,8 +179,8 @@ def do_hash_video(algo: str, hash_size: int, video_info: dict, file_info: dict, 
 def build_times_for_hashes(total_duration_ms: int, first_hash_timestamp: int) -> list:
     pre_interval = int((total_duration_ms - first_hash_timestamp) / 10)
     round_factor = len(str(pre_interval)) - 1
-    b = round(pre_interval, ndigits=-round_factor)
-    return [first_hash_timestamp, b, b * 2, b * 4]
+    rounded_hash_timestamp = round(pre_interval, ndigits=-round_factor)
+    return [first_hash_timestamp, rounded_hash_timestamp, rounded_hash_timestamp * 2, rounded_hash_timestamp * 4]
 
 
 def get_max_first_frame_time(duration_ms) -> int:
@@ -198,7 +193,7 @@ def get_max_first_frame_time(duration_ms) -> int:
 def get_first_timestamp(video_info: dict, data_or_filepath) -> int:
     max_timestamp = get_max_first_frame_time(video_info['duration'])
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn', '-to', f'{max_timestamp}ms']
-    if type(data_or_filepath) == str:
+    if isinstance(data_or_filepath, str):
         result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params, '-i', data_or_filepath,
                                    '-f', 'rawvideo', '-s', f'{FirstFrameResolution}x{FirstFrameResolution}',
                                    '-pix_fmt', 'rgb24', 'pipe:'
@@ -228,24 +223,24 @@ def get_first_timestamp(video_info: dict, data_or_filepath) -> int:
 
 def get_frames(timestamps: list, data_or_filepath, *ffmpeg_out_params) -> list:
     ret = [False]
-    for x in range(len(timestamps)):
+    for _ in range(len(timestamps)):
         ret.append(b'')
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn']
-    for x in range(len(timestamps)):
-        if type(data_or_filepath) == str:
+    for index, timestamp in enumerate(timestamps):
+        if isinstance(data_or_filepath, str):
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
-                                       '-ss', f'{timestamps[x]}ms', '-i', data_or_filepath,
+                                       '-ss', f'{timestamp}ms', '-i', data_or_filepath,
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:'
                                        )
         else:
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
-                                       '-ss', f'{timestamps[x]}ms', '-i', 'pipe:0',
+                                       '-ss', f'{timestamp}ms', '-i', 'pipe:0',
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:1',
                                        stdin_data=data_or_filepath)
         if err:
             print('DEBUG:', err)
             return ret
-        ret[x + 1] = result.stdout
+        ret[index + 1] = result.stdout
     ret[0] = True
     return ret
 
@@ -255,9 +250,9 @@ def is_frame_too_dark(data: bytes, frame_offset: int, frame_size: int) -> bool:
     total_allowed_dark_pixels = int(((frame_size / 3) / 100) * dark_allow_percent)
     dark_pixels = 0
     frame_bytes = data[frame_size * frame_offset:frame_size * (frame_offset + 1)]
-    for n in range(int(len(frame_bytes) / 3)):
-        pixel = frame_bytes[n * 3:(n + 1) * 3]
-        if pixel[0] <= 0x20 and pixel[1] <= 0x20 and pixel[2] <= 0x20:
+    for pixel_index in range(int(len(frame_bytes) / 3)):
+        pixel_data = frame_bytes[pixel_index * 3:pixel_index * 3 + 3]
+        if pixel_data[0] <= 0x20 and pixel_data[1] <= 0x20 and pixel_data[2] <= 0x20:
             dark_pixels += 1
     if dark_pixels > total_allowed_dark_pixels:
         return True
@@ -269,9 +264,9 @@ def is_frame_too_bright(data: bytes, frame_offset: int, frame_size: int) -> bool
     total_allowed_bright_pixels = int(((frame_size / 3) / 100) * bright_allow_percent)
     bright_pixels = 0
     frame_bytes = data[frame_size * frame_offset:frame_size * (frame_offset + 1)]
-    for n in range(int(len(frame_bytes) / 3)):
-        pixel = frame_bytes[n * 3:(n + 1) * 3]
-        brightness = int(sum([pixel[0], pixel[1], pixel[2]]) / 3)
+    for pixel_index in range(int(len(frame_bytes) / 3)):
+        pixel_data = frame_bytes[pixel_index * 3:pixel_index * 3 + 3]
+        brightness = int(sum([pixel_data[0], pixel_data[1], pixel_data[2]]) / 3)
         if brightness >= 0xFA:
             bright_pixels += 1
     if bright_pixels > total_allowed_bright_pixels:
@@ -281,9 +276,9 @@ def is_frame_too_bright(data: bytes, frame_offset: int, frame_size: int) -> bool
 
 def remove_solo_groups():
     groups_to_remove = []
-    for key in VideoGroups.keys():
-        if len(VideoGroups[key]) == 1:
-            groups_to_remove.append(key)
+    for group_key, files_id in VideoGroups.items():
+        if len(files_id) == 1:
+            groups_to_remove.append(group_key)
     for key in groups_to_remove:
         del VideoGroups[key]
 
@@ -291,5 +286,5 @@ def remove_solo_groups():
 def save_video_results(task_id: int):
     remove_solo_groups()
     print('Videos: Number of groups:', len(VideoGroups))
-    for v in VideoGroups.values():
-        store_task_files_group(task_id, json.dumps(v))
+    for files_id in VideoGroups.values():
+        store_task_files_group(task_id, json.dumps(files_id))

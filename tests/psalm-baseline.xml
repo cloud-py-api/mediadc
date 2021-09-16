@@ -1,2 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.3.1@2feba22a005a18bf31d4c7b9bdb9252c73897476"></files>
+<files psalm-version="4.x-dev@">
+  <file src="lib/Command/CollectorCleanupCommand.php">
+    <UndefinedClass occurrences="1">
+      <code>Command</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Command/CollectorFileContentsCommand.php">
+    <UndefinedClass occurrences="1">
+      <code>Command</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/PageController.php">
+    <UndefinedClass occurrences="1">
+      <code>LoadViewer</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/SettingsController.php">
+    <InvalidReturnType occurrences="1">
+      <code>JSONResponse</code>
+    </InvalidReturnType>
+  </file>
+  <file src="lib/Dashboard/RecentTasksWidget.php">
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;initialState</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;initialState</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="lib/Db/PhotoMapper.php">
+    <UndefinedClass occurrences="2">
+      <code>IResult</code>
+      <code>IResult</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Db/VideoMapper.php">
+    <UndefinedClass occurrences="2">
+      <code>IResult</code>
+      <code>IResult</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Migration/Version0001Date20210627153636.php">
+    <ImplementedParamTypeMismatch occurrences="1">
+      <code>$schemaClosure</code>
+    </ImplementedParamTypeMismatch>
+    <MismatchingDocblockParamType occurrences="1">
+      <code>Closure</code>
+    </MismatchingDocblockParamType>
+    <UndefinedDocblockClass occurrences="1">
+      <code>Closure</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Service/CollectorService.php">
+    <MissingDependency occurrences="1">
+      <code>IRootFolder</code>
+    </MissingDependency>
+    <RedundantCondition occurrences="1">
+      <code>$collectorTask !== null</code>
+    </RedundantCondition>
+    <UndefinedClass occurrences="3">
+      <code>LoggerInterface</code>
+      <code>SharedStorage</code>
+      <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="9">
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>LoggerInterface</code>
+    </UndefinedDocblockClass>
+  </file>
+</files>

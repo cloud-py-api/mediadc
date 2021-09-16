@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -30,7 +31,7 @@
 				<div v-if="targetDirectoriesIds.length > 0">
 					<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
 						<div class="target-directory">
-							<span style="overflow-y: scroll;">{{ targetDirectoriesPaths[fileid] }}</span>
+							<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
 							<span class="delete-button icon-delete" @click="removeTargetDirectory(fileid)" />
 						</div>
 					</div>
@@ -46,24 +47,16 @@
 			</div>
 			<div class="block">
 				<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
-				<div v-if="excludeDirectoriesNames.length > 0">
-					<div v-for="dir in excludeDirectoriesNames" :key="dir" class="selected-excluded-directories-list">
+				<div v-if="excludeDirectoriesPaths.length > 0">
+					<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
 						<div class="target-directory">
-							<span style="overflow-y: scroll;">{{ dir }}</span>
-							<span class="delete-button icon-delete" @click="removeExcludeDirectory(dir)" />
+							<span style="overflow-y: scroll;">{{ excludeFileIds[fileid] }}</span>
+							<span class="delete-button icon-delete" @click="removeExcludeDirectory(fileid)" />
 						</div>
 					</div>
 				</div>
 				<div v-else>
 					<span>{{ t('mediadc', 'Not selected') }}</span>
-				</div>
-				<div v-if="Object.keys(excludeFileIds).length > 0">
-					<div v-for="fileid in excludeFileIds" :key="fileid">
-						<div class="target-directory">
-							<span style="overflow-y: scroll;">{{ excludeFileIds[fileid] }}</span>
-							<span class="delete-button icon-delete" @click="removeExcludeFileid(fileid)" />
-						</div>
-					</div>
 				</div>
 				<br>
 				<button @click="openExcludeExplorer">
@@ -132,7 +125,7 @@
 			style="margin: 10px 5px 0"
 			:disabled="Object.keys(targetDirectoriesPaths).length === 0"
 			@click="runCollectorTask">
-			Run Collector Task
+			{{ t('mediadc', 'Run new Task') }}
 		</button>
 		<button v-else disabled>
 			<span class="icon-loading" />
@@ -144,7 +137,7 @@
 import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
 import axios from '@nextcloud/axios'
-import { requestFileInfo, getFileId, getContentType } from '../../utils/files'
+import { requestFileInfo, getFileId } from '../../utils/files'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -153,7 +146,7 @@ export default {
 		return {
 			targetDirectoriesPaths: {},
 			targetDirectoriesIds: [],
-			excludeDirectoriesNames: [],
+			excludeDirectoriesPaths: [],
 			excludeFileIds: {},
 			targetMimeType: 0,
 			similarity_threshold: 90,
@@ -225,22 +218,23 @@ export default {
 		},
 		openExcludeExplorer() {
 			this.getDirectoriesPicker(t('mediadc', 'Choose directory to exclude')).pick().then(dir => {
-				if (this.excludeDirectoriesNames.findIndex(targetDir => targetDir === dir) === -1) {
+				if (Object.values(this.excludeFileIds).findIndex(targetDir => targetDir === dir) === -1) {
 					if (dir.startsWith('/')) {
 						requestFileInfo(dir).then(res => {
 							const fileid = getFileId(res.data)
-							const contentType = getContentType(res.data)
-							if (fileid !== -1 && contentType === '') {
-								// Add directory name
-								this.excludeDirectoriesNames.push(dir.split('/')[dir.split('/').length - 1])
-							} else if (fileid !== -1
-								&& (contentType.split('/')[0] === 'image' || contentType.split('/')[0] === 'video')) {
-								// Add as fileid exclude
-								this.excludeFileIds[fileid.toString()] = dir.split('/')[dir.split('/').length - 1]
+							if (fileid !== -1) {
+								this.excludeDirectoriesPaths.push(dir)
+								this.excludeFileIds[fileid.toString()] = dir
 							}
 						})
 					} else {
-						this.excludeDirectoriesNames.push('/')
+						requestFileInfo('/').then(res => {
+							const fileid = getFileId(res.data)
+							if (fileid !== -1) {
+								this.excludeDirectoriesPaths.push(dir)
+								this.excludeFileIds[fileid.toString()] = '/'
+							}
+						})
 					}
 				} else {
 					showWarning(t('mediadc', 'This directory already excluded'))
@@ -253,8 +247,8 @@ export default {
 				targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
 				excludeList: {
 					user: {
-						mask: [...this.excludeDirectoriesNames, ...this.customExcludeList],
-						fileid: Object.keys(this.excludeFileIds),
+						mask: this.customExcludeList,
+						fileid: Object.keys(this.excludeFileIds).map(item => Number(item)),
 					},
 					admin: JSON.parse(this.settingByName('exclude_list').value) || { mask: [], fileid: [] },
 				},
@@ -281,9 +275,12 @@ export default {
 			const fileidIndex = this.targetDirectoriesIds.findIndex(id => id === fileid)
 			this.targetDirectoriesIds.splice(fileidIndex, 1)
 		},
-		removeExcludeDirectory(dir) {
-			const dirIndex = this.excludeDirectoriesNames.findIndex(targetDir => targetDir === dir)
-			this.excludeDirectoriesNames.splice(dirIndex, 1)
+		removeExcludeDirectory(fileid) {
+			if (fileid in this.excludeFileIds) {
+				const dirIndex = this.excludeDirectoriesPaths.findIndex(dir => dir === this.excludeFileIds[fileid])
+				this.excludeDirectoriesPaths.splice(dirIndex, 1)
+				delete this.excludeFileIds[fileid]
+			}
 		},
 		removeExcludeFileid(fileid) {
 			delete this.excludeFileIds[fileid]
@@ -324,7 +321,7 @@ export default {
 		resetForm() {
 			this.targetDirectoriesPaths = {}
 			this.targetDirectoriesIds = []
-			this.excludeDirectoriesNames = []
+			this.excludeDirectoriesPaths = []
 			this.excludeFileIds = {}
 			this.targetMimeType = 0
 			this.similarity_threshold = this.settingByName('similarity_threshold') !== undefined

@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 namespace OCA\MediaDC\Controller;
@@ -143,7 +145,12 @@ class CollectorController extends Controller {
 			/** @var CollectorTask */
 			$collectorTask = $this->service->get($taskId);
 			$collectorTaskInfo = $this->service->getTaskInfo($collectorTask);
-			return new JSONResponse(['collectorTaskInfo' => $collectorTaskInfo], Http::STATUS_OK);
+			return new JSONResponse([
+				'collectorTaskInfo' => [
+					'target_directories' => $collectorTaskInfo['target_directories'],
+					'exclude_directories' => $collectorTaskInfo['exclude_directories'],
+				],
+			], Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}

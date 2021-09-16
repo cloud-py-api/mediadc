@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -23,6 +24,7 @@
 
 <template>
 	<div v-if="!loading" class="container">
+		<TasksEdit v-if="editingTask" :opened.sync="editingTask" />
 		<div class="task-details">
 			<div class="task-details-heading">
 				<h2>
@@ -49,7 +51,7 @@
 						<span>
 							<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
 							({{ formatBytes(Number(task.files_total_size)) }})
-							({{ t('mediadc', 'precision') }} {{ JSON.parse(task.collector_settings).similarity_threshold }}%)
+							({{ task !== null && 'collector_settings' in task ? t('mediadc', 'precision: ') + JSON.parse(task.collector_settings).similarity_threshold + '%' : '' }})
 							<br>
 							<b>{{ t('mediadc', 'Deleted: ') }} </b>
 							{{ task.deleted_files_count }} {{ t('mediadc', 'file(s)') }}
@@ -71,6 +73,11 @@
 									</a>
 								</li>
 								<li>
+									<a class="icon-rename" @click="openEditTaskDialog(task)">
+										<span>{{ t('mediadc', 'Edit') }}</span>
+									</a>
+								</li>
+								<li>
 									<a class="icon-pause" @click="terminateTask(task)">
 										<span>{{ t('mediadc', 'Stop') }}</span>
 									</a>
@@ -87,8 +94,8 @@
 				<div class="task-info">
 					<h3>{{ t('mediadc', 'Target directories') }}</h3>
 					<div class="target-directories-list">
-						<div v-for="dir in taskInfo" :key="dir.fileid" class="target-directory-row">
-							<b>[{{ dir.fileowner }}] {{ dir.filepath.replace('/admin/files', '') }}</b> ({{ formatBytes(dir.filesize) }})
+						<div v-for="dir in taskInfo.target_directories" :key="dir.fileid" class="target-directory-row">
+							<b>[{{ dir.fileowner }}] {{ dir.filepath.replace(`/${dir.fileowner}/files`, '') }}</b> ({{ formatBytes(dir.filesize) }})
 						</div>
 					</div>
 				</div>
@@ -121,11 +128,13 @@ import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import Configure from '../mixins/Configure'
 import { getCurrentUser } from '@nextcloud/auth'
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
+import TasksEdit from '../components/tasks/TasksEdit'
 
 export default {
 	name: 'CollectorDetails',
 	components: {
 		DetailsList,
+		TasksEdit,
 	},
 	mixins: [
 		Formats,
@@ -149,6 +158,7 @@ export default {
 			filestotal: 0,
 			actionsOpened: false,
 			collapsedStatus: false,
+			editingTask: false,
 		}
 	},
 	computed: {
@@ -166,12 +176,19 @@ export default {
 		this.$emit('update:loading', true)
 		this.getTaskDetails()
 		this.getTaskInfo()
+		subscribe('restartTask', () => {
+			this.getTaskInfo()
+			this.getTaskDetails()
+			this.filessize = 0
+			this.filestotal = 0
+		})
 		subscribe('updateTaskInfo', this.getDetailFilesTotalSize)
 		this.updater = setInterval(this.getTaskDetails, 5000)
 	},
 	beforeDestroy() {
 		clearInterval(this.updater)
 		unsubscribe('updateTaskInfo', this.getTaskInfo)
+		unsubscribe('restartTask')
 	},
 	methods: {
 		terminateTask(task) {
@@ -191,29 +208,35 @@ export default {
 			this.toggleActionsPopup()
 			if (this.isValidUser) {
 				this.restarting = true
-				this.getSettings()
-				axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
-					taskId: task.id,
-					targetDirectoryIds: task.target_directory_ids,
-					excludeList: {
-						user: JSON.parse(task.exclude_list).user,
-						admin: JSON.parse(this.settingByName('exclude_list').value),
-					},
-					collectorSettings: JSON.parse(task.collector_settings),
-				}).then(res => {
-					this.restarting = false
-					if (res.data.success) {
-						showSuccess(t('mediadc', 'Task successfully restarted with previous settings!'))
-						this.getTaskDetails()
-						this.filessize = 0
-						this.filestotal = 0
-					} else {
-						showError('Some error occured while restarting Collector Task. Try again.')
-					}
-				}).catch(err => {
-					this.restarting = false
-					console.debug(err)
-					showError('Some error occured while running Collector Task. Try again.')
+				this.getSettings().then(() => {
+					axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
+						taskId: task.id,
+						targetDirectoryIds: task.target_directory_ids,
+						excludeList: {
+							user: JSON.parse(task.exclude_list).user,
+							admin: JSON.parse(this.settingByName('exclude_list').value),
+						},
+						collectorSettings: {
+							hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'dhash',
+							similarity_threshold: Number(JSON.parse(this.task.collector_settings).similarity_threshold),
+							hash_size: Number(this.settingByName('hash_size').value) || 64,
+							target_mtype: Number(JSON.parse(this.task.collector_settings).target_mtype),
+						},
+					}).then(res => {
+						this.restarting = false
+						if (res.data.success) {
+							showSuccess(t('mediadc', 'Task successfully restarted with previous settings!'))
+							this.getTaskDetails()
+							this.filessize = 0
+							this.filestotal = 0
+						} else {
+							showError('Some error occured while restarting Collector Task. Try again.')
+						}
+					}).catch(err => {
+						this.restarting = false
+						console.debug(err)
+						showError('Some error occured while running Collector Task. Try again.')
+					})
 				})
 			} else {
 				showWarning(t('mediadc', 'You are not allowed to restart this task'))
@@ -270,6 +293,9 @@ export default {
 		collapseTaskStatus() {
 			this.collapsedStatus = !this.collapsedStatus
 		},
+		openEditTaskDialog() {
+			this.editingTask = true
+		},
 	},
 }
 </script>
@@ -281,6 +307,12 @@ export default {
 	max-width: 1440px;
 	margin: 0 auto;
 	max-height: 100%;
+}
+
+@media (min-width: 1920px) {
+	.container {
+		max-width: 80vw;
+	}
 }
 
 h2 {
@@ -364,14 +396,6 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 	border-color: #717171;
 }
 
-.task-owner {
-	color: #585858;
-}
-
-body.theme--dark .task-owner {
-	color: #a9a8a8;
-}
-
 .task-info {
 	margin: 20px 0;
 	border: 1px solid #dadada;
@@ -379,13 +403,19 @@ body.theme--dark .task-owner {
 	padding: 10px 20px;
 	height: 100%;
 	max-height: 94px;
-	max-width: 300px;
+	max-width: 50%;
 	overflow-y: scroll;
 }
 
 @media (max-width: 767px) {
+	.details-row {
+		margin: 0 0 20px;
+	}
+
 	.task-status {
 		flex-direction: column;
+		margin: 0 0 20px;
+		width: 100%;
 	}
 
 	.task-info {

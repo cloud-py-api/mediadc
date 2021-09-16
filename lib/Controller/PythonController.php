@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 namespace OCA\MediaDC\Controller;
@@ -50,40 +52,56 @@ class PythonController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @return JSONResponse
 	 */
-	public function check(): JSONResponse {
+	public function check() {
 		return new JSONResponse($this->service->checkInstallation(), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @return JSONResponse
 	 */
-	public function install(): JSONResponse {
+	public function install() {
 		return new JSONResponse($this->service->installDependencies(), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @param string $listName python dependecies list name
+	 * 
+	 * @return JSONResponse
 	 */
-	public function installDepsList(string $listName = ''): JSONResponse {
+	public function installDepsList($listName = '') {
 		return new JSONResponse($this->service->installDependencies($listName), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @param array $packagesList python packages names list
+	 * 
+	 * @return JSONResponse
 	 */
-	public function updateDepsList(array $packagesList = []): JSONResponse {
+	public function updateDepsList($packagesList = []) {
 		return new JSONResponse($this->service->updateDependencies($packagesList), Http::STATUS_OK);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * 
+	 * @param array $packagesList python packages names list
+	 * 
+	 * @return JSONResponse
 	 */
-	public function deleteDepsList(array $packagesList = []): JSONResponse {
+	public function deleteDepsList(array $packagesList = []) {
 		return new JSONResponse($this->service->deleteDependencies($packagesList), Http::STATUS_OK);
 	}
 

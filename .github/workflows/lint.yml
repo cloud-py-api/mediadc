@@ -1,0 +1,64 @@
+name: Lint
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev, test]
+
+jobs:
+  php-linters:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: [7.4, 8.0]
+    name: php${{ matrix.php-versions }} lint
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup php${{ matrix.php-versions }}
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-versions }}
+        tools: composer:v1
+        coverage: none
+
+    - name: Lint
+      run: composer run lint
+
+  js-linters:
+    runs-on: ubuntu-latest
+    name: ESLint
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+  python-linters:
+    runs-on: ubuntu-latest
+    name: PyLint
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Python setup
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: pylint installation
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+
+      - name: pylint analysis
+        run: |
+           pylint --rcfile .pylintrc lib/Service/python/*

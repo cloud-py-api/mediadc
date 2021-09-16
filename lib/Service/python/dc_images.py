@@ -1,3 +1,7 @@
+"""
+Images processing functions.
+"""
+
 import io
 import json
 from files import get_file_data
@@ -5,29 +9,26 @@ from db import store_image_hash, store_err_image_hash, store_task_files_group, a
 from install import import_packages
 
 
-"""
-/**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license GNU AGPL version 3 or any later version
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ImagesGroups = {}   # {group1:[fileid1,fileid2],group2:[fileid3,fileid4]}
@@ -43,14 +44,14 @@ def dc_images_init(task_id: int) -> bool:
     if Imported:
         return True
     results = import_packages(['numpy', 'PIL', 'imagehash'], dest_sym_table=globals())
-    if not len(results):
+    if not results:
         Imported = True
-        results = import_packages(['pyheif'], dest_sym_table=globals())
-        if not len(results):
+        results = import_packages(['pillow_heif'], dest_sym_table=globals())
+        if not results:
             Heif_AV1 = True
             print('Images: HEIC(Apple) decoder - enabled.')
         results = import_packages(['hexhamming'], dest_sym_table=globals())
-        if not len(results):
+        if not results:
             CHamming = True
             print('Images: HexHamming module - enabled.')
     else:
@@ -58,25 +59,25 @@ def dc_images_init(task_id: int) -> bool:
     return Imported
 
 
-def dc_process_images(settings: dict, data: list):
-    for x in data:
-        if x['skipped'] is not None:
-            if x['skipped'] >= 2:
+def dc_process_images(settings: dict, image_records: list):
+    for image_record in image_records:
+        if image_record['skipped'] is not None:
+            if image_record['skipped'] >= 2:
                 continue
-            elif x['skipped'] != 0:
-                x['hash'] = None
+            if image_record['skipped'] != 0:
+                image_record['hash'] = None
         else:
-            x['skipped'] = 0
-        if x['hash'] is None:
-            x['hash'] = process_hash(settings['hash_algo'], settings['hash_size'], x, settings['data_dir'],
-                                     settings['remote_filesize_limit'])
+            image_record['skipped'] = 0
+        if image_record['hash'] is None:
+            image_record['hash'] = process_hash(settings['hash_algo'], settings['hash_size'], image_record,
+                                                settings['data_dir'], settings['remote_filesize_limit'])
         else:
             if CHamming:
-                x['hash'] = x['hash'].hex()
+                image_record['hash'] = image_record['hash'].hex()
             else:
-                x['hash'] = arr_hash_from_bytes(x['hash'])
-        if x['hash'] is not None:
-            process_image_record(settings['precision_img'], x['hash'], x['fileid'])
+                image_record['hash'] = arr_hash_from_bytes(image_record['hash'])
+        if image_record['hash'] is not None:
+            process_image_record(settings['precision_img'], image_record['hash'], image_record['fileid'])
 
 
 def process_hash(algo: str, hash_size: int, image_info: dict, data_dir: str, remote_filesize_limit: int):
@@ -103,10 +104,10 @@ def arr_hash_to_string(arr) -> str:
 
 
 def calc_hash(algo: str, hash_size: int, image_path: str, data: bytes):
-    r = hash_image_data(algo, hash_size, data, image_path)
-    if r is None:
+    image_hash = hash_image_data(algo, hash_size, data, image_path)
+    if image_hash is None:
         return None
-    return r.flatten()
+    return image_hash.flatten()
 
 
 def process_image_record(precision: int, img_hash, fileid: int):
@@ -135,9 +136,9 @@ def reset_images():
 
 def remove_solo_groups():
     groups_to_remove = []
-    for key in ImagesGroups.keys():
-        if len(ImagesGroups[key]) == 1:
-            groups_to_remove.append(key)
+    for group_key, files_id in ImagesGroups.items():
+        if len(files_id) == 1:
+            groups_to_remove.append(group_key)
     for key in groups_to_remove:
         del ImagesGroups[key]
 
@@ -145,8 +146,8 @@ def remove_solo_groups():
 def save_image_results(task_id: int):
     remove_solo_groups()
     print('Images: Number of groups:', len(ImagesGroups))
-    for v in ImagesGroups.values():
-        store_task_files_group(task_id, json.dumps(v))
+    for files_id in ImagesGroups.values():
+        store_task_files_group(task_id, json.dumps(files_id))
 
 
 def pil_to_hash(algo: str, hash_size: int, pil_image):
@@ -165,18 +166,19 @@ def pil_to_hash(algo: str, hash_size: int, pil_image):
 
 def hash_image_data(algo: str, hash_size: int, image_data: bytes, path: str):
     try:
-        if path.lower().endswith(('.heic', '.heif',)):
+        if path.lower().endswith(('.heic', '.heif', '.hif',)):
             if not Heif_AV1:
                 return None
-            if pyheif.check(image_data) not in (pyheif.heif_filetype_yes_supported, pyheif.heif_filetype_maybe):
+            if pillow_heif.check(image_data) not in (pillow_heif.heif_filetype_yes_supported,
+                                                     pillow_heif.heif_filetype_maybe):
                 print(f'{path}: Unsupported format.')
                 return None
-            heif_file = pyheif.read(image_data)
+            heif_file = pillow_heif.read(image_data)
             pil_image = PIL.Image.frombytes(heif_file.mode, heif_file.size, heif_file.data,
                                             "raw", heif_file.mode, heif_file.stride,)
         else:
             pil_image = PIL.Image.open(io.BytesIO(image_data))
         return pil_to_hash(algo, hash_size, pil_image)
-    except Exception as e:
-        print(f'Exception({type(e).__name__}): `{path}`: `{str(e)}`')
+    except Exception as exception_info:
+        print(f'Exception({type(exception_info).__name__}): `{path}`: `{str(exception_info)}`')
         return None

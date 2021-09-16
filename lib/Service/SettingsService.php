@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 namespace OCA\MediaDC\Service;
@@ -30,26 +32,30 @@ use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use Psr\Log\LoggerInterface;
+
 
 class SettingsService {
 
 	/** @var SettingMapper */
 	private $mapper;
 
-	/** @var LoggerInterface */
-	private $logger;
-
-	public function __construct(SettingMapper $settingMapper, LoggerInterface $logger) {
+	public function __construct(SettingMapper $settingMapper) {
 		$this->mapper = $settingMapper;
-		$this->logger = $logger;
 	}
 
-	public function getSettings(): array {
+	/**
+	 * @return array
+	 */
+	public function getSettings() {
 		return $this->mapper->findAll();
 	}
 
-	public function getSettingById(int $id) {
+	/**
+	 * @param int $id
+	 * 
+	 * @return Setting|array
+	 */
+	public function getSettingById($id) {
 		try {
 			return $this->mapper->find($id);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -60,7 +66,12 @@ class SettingsService {
 		}
 	}
 
-	public function getSettingByName(string $name) {
+	/**
+	 * @param string $name
+	 * 
+	 * @return array
+	 */
+	public function getSettingByName($name) {
 		try {
 			return [
 				'success' => true, 
@@ -75,7 +86,9 @@ class SettingsService {
 	}
 
 	/**
-	 * @param Setting $setting
+	 * @param array $setting
+	 * 
+	 * @return array
 	 */
 	public function updateSetting($setting) {
 		try {
@@ -100,7 +113,12 @@ class SettingsService {
 		}
 	}
 
-	public function updateSettings(array $settings) {
+	/**
+	 * @param array $settings
+	 * 
+	 * @return array
+	 */
+	public function updateSettings($settings) {
 		$updated = [];
 		foreach($settings as $setting) {
 			array_push($updated, $this->mapper->update(new Setting([
