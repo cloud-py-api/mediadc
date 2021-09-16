@@ -22,4 +22,6 @@
 /.pylintrc
 /.npmignore
 /.l10nignore
-/.postcss.config.js
+/postcss.config.js
+/package.json
+/package-lock.json
