@@ -11,14 +11,6 @@ jobs:
     name: Psalm
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for static-analysis to succeed
-        uses: lewagon/wait-on-check-action@v1.0.0
-        with:
-          ref: ${{ github.ref }}
-          check-name: 'Run tests??'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
-
       - name: Checkout code
         uses: actions/checkout@v2
         with:
