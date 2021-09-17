@@ -33,7 +33,7 @@ jobs:
 
   php-linters:
     needs: changes
-    if: ${{ needs.changes.outputs.php_src == 'true' || github.event == 'workflow_dispatch' }}
+    if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -54,7 +54,7 @@ jobs:
 
   js-linters:
     needs: changes
-    if: ${{ needs.changes.outputs.js_src == 'true' }} || ${{ github.event == 'workflow_dispatch' }}
+    if: ${{ needs.changes.outputs.js_src == 'true' }} || ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     name: ESLint
     steps:
@@ -75,7 +75,7 @@ jobs:
 
   python-linters:
     needs: changes
-    if: ${{ needs.changes.outputs.py_src == 'true' }} || ${{ github.event == 'workflow_dispatch' }}
+    if: ${{ needs.changes.outputs.py_src == 'true' }} || ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     name: PyLint
     steps:
