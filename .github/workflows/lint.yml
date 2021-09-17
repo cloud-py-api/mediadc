@@ -2,8 +2,10 @@ name: Lint
 
 on:
   pull_request:
+    branches: [main, test, dev]
+    types: [closed]
   push:
-    branches: [test, dev]
+    branches: [dev]
   workflow_dispatch:
 
 jobs:
