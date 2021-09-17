@@ -48,6 +48,15 @@ jobs:
     name: PyLint
     steps:
       - uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - 'lib/Service/python/**'
+
+      - if: steps.changes.outputs.src != 'true'
+        run: exit 0
 
       - name: Python setup
         uses: actions/setup-python@v1
