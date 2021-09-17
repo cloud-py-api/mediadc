@@ -11,7 +11,7 @@ on:
 jobs:
   php-linters:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged != false
+    # if: github.event.pull_request.merged != false
     strategy:
       matrix:
         php-versions: [7.4, 8.0]
@@ -73,7 +73,7 @@ jobs:
 
   python-linters:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged != false
+    # if: github.event.pull_request.merged != false
     name: PyLint
     steps:
       - name: Checkout

@@ -11,7 +11,7 @@ on:
 jobs:
   psalm:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged != false
+    # if: github.event.pull_request.merged != false
     name: Psalm
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
 
   npm:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged != false
+    # if: github.event.pull_request.merged != false
     name: npm
     steps:
       - name: Checkout code
