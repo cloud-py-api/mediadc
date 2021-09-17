@@ -33,7 +33,7 @@ jobs:
 
   php-linters:
     needs: changes
-    if: ${{ needs.changes.outputs.php_src == 'true' }} || ${{ github.event == 'workflow_dispatch' }}
+    if: ${{ needs.changes.outputs.php_src == 'true' || github.event == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
