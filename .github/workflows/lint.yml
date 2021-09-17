@@ -9,27 +9,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  php-linters:
+  changes:
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged != false
+    outputs:
+      php_src: ${{ steps.filter.outputs.php_src }}
+      js_src: ${{ steps.filter.outputs.js_src }}
+      py_src: ${{ steps.filter.outputs.py_src }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: ${{ github.ref }}
+        filters: |
+          php_src:
+            - '**/*.php'
+          js_src:
+            - '*.js'
+            - '**/*.js'
+          py_src:
+            - 'lib/Service/python/**'
+            - 'lib/Service/python/*.py'
+
+  php-linters:
+    needs: changes
+    if: ${{ needs.changes.outputs.php_src == 'true' }} || ${{ github.event == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         php-versions: [7.4, 8.0]
     name: php${{ matrix.php-versions }} lint
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - uses: dorny/paths-filter@v2
-      id: changes
-      with:
-        base: ${{ github.ref }}
-        filters: |
-          src:
-            - '**/*.php'
+    - uses: actions/checkout@v2
 
     - name: Setup php${{ matrix.php-versions }}
-      if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
@@ -37,70 +50,42 @@ jobs:
         coverage: none
 
     - name: Lint
-      if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
       run: composer run lint
 
   js-linters:
+    needs: changes
+    if: ${{ needs.changes.outputs.js_src == 'true' }} || ${{ github.event == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged != false
     name: ESLint
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          base: ${{ github.ref }}
-          filters: |
-            src:
-              - '*.js'
-              - '**/*.js'
-
+# https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
+# do we need this step? this is already installed in github's ubuntu...
       - name: Setup Node
-        if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
         uses: actions/setup-node@v2.4.0
         with:
           node-version: 14.x
 
       - name: Install dependencies
-        if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
         run: npm ci
 
       - name: ESLint
-        if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
         run: npm run lint
 
   python-linters:
+    needs: changes
+    if: ${{ needs.changes.outputs.py_src == 'true' }} || ${{ github.event == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged != false
     name: PyLint
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          base: ${{ github.ref }}
-          filters: |
-            src:
-              - 'lib/Service/python/**'
-              - 'lib/Service/python/*.py'
-
-      - name: Python setup
-        if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.8
+      - uses: actions/checkout@v2
 
       - name: pylint installation
-        if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
         run: |
           python -m pip install --upgrade pip
           pip install pylint
 
       - name: pylint analysis
-        if: steps.changes.outputs.src == 'true' || github.event == 'workflow_dispatch'
         run: |
            pylint --rcfile .pylintrc lib/Service/python/*
