@@ -3,7 +3,8 @@ name: Static analysis
 on:
   pull_request:
   push:
-    branches: [main, dev, test]
+    branches: [test, dev]
+  workflow_dispatch:
 
 jobs:
   static-psalm-analysis:

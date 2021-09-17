@@ -2,9 +2,12 @@ name: Build
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
+    tags:
+      - v*
   release:
       types: [created]
+  workflow_dispatch:
 
 env:
   APP_NAME: mediadc
@@ -97,6 +100,8 @@ jobs:
       #     download_url: ${{ steps.attach_to_release.outputs.browser_download_url }}
       #     app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
       #     nightly: ${{ github.event.release.prerelease }}
+
+      #TO DO: here publish release on github too.
 
       # - name: Delete crt and key from local storage
       #   run: rm -f ~/.nextcloud/certificates/*
