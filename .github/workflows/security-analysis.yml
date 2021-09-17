@@ -10,8 +10,9 @@ on:
 
 jobs:
   psalm:
-    name: Psalm
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged != false
+    name: Psalm
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,10 +32,12 @@ jobs:
           sarif_file: results.sarif
 
   npm:
-    name: npm
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged != false
+    name: npm
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Setup Node
         uses: actions/setup-node@v2.4.0

@@ -11,6 +11,7 @@ on:
 jobs:
   static-psalm-analysis:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged != false
     strategy:
         matrix:
           ocp-version: [ 'dev-master', 'dev-stable21', 'dev-stable22' ]
