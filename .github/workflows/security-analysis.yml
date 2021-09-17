@@ -11,11 +11,9 @@ on:
 jobs:
   psalm:
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged != false
     name: Psalm
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
 
@@ -33,12 +31,12 @@ jobs:
 
   npm:
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged != false
     name: npm
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
+# https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
+# do we need this step? this is already installed in github's ubuntu...
       - name: Setup Node
         uses: actions/setup-node@v2.4.0
         with:
