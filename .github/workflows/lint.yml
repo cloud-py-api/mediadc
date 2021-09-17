@@ -55,19 +55,19 @@ jobs:
             src:
               - 'lib/Service/python/**'
 
-      - if: steps.changes.outputs.src != 'true'
-        run: exit 0
-
       - name: Python setup
+        if: steps.changes.outputs.src == 'true'
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
 
       - name: pylint installation
+        if: steps.changes.outputs.src == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install pylint
 
       - name: pylint analysis
+        if: steps.changes.outputs.src == 'true'
         run: |
            pylint --rcfile .pylintrc lib/Service/python/*
