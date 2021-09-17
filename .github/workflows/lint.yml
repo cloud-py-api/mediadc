@@ -3,7 +3,8 @@ name: Lint
 on:
   pull_request:
   push:
-    branches: [main, dev, test]
+    branches: [test, dev]
+  workflow_dispatch:
 
 jobs:
   php-linters:
@@ -16,7 +17,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        base: ${{ github.ref }}
+        filters: |
+          src:
+            - '**/*.php'
+
     - name: Setup php${{ matrix.php-versions }}
+      if: steps.changes.outputs.src == 'true'
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
@@ -24,6 +34,7 @@ jobs:
         coverage: none
 
     - name: Lint
+      if: steps.changes.outputs.src == 'true'
       run: composer run lint
 
   js-linters:
@@ -32,15 +43,27 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            src:
+              - '*.js'
+              - '**/*.js'
+
       - name: Setup Node
+        if: steps.changes.outputs.src == 'true'
         uses: actions/setup-node@v2.4.0
         with:
           node-version: 14.x
 
       - name: Install dependencies
+        if: steps.changes.outputs.src == 'true'
         run: npm ci
 
       - name: ESLint
+        if: steps.changes.outputs.src == 'true'
         run: npm run lint
 
   python-linters:
@@ -55,6 +78,7 @@ jobs:
           filters: |
             src:
               - 'lib/Service/python/**'
+              - 'lib/Service/python/*.py'
 
       - name: Python setup
         if: steps.changes.outputs.src == 'true'
