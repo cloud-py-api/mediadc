@@ -89,3 +89,70 @@ jobs:
       - name: pylint analysis
         run: |
            pylint --rcfile .pylintrc lib/Service/python/*
+
+  psalm:
+    needs: [changes, php-linters]
+    if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    name: Psalm
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Psalm
+        uses: docker://vimeo/psalm-github-actions:4.9.3
+        with:
+          security_analysis: true
+          composer_ignore_platform_reqs: false
+          report_file: results.sarif
+
+      - name: Upload Security Analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif
+
+  static-psalm-analysis:
+    needs: [changes, php-linters]
+    if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          ocp-version: [ 'dev-master', 'dev-stable21', 'dev-stable22' ]
+    name: Nextcloud ${{ matrix.ocp-version }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up php
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 7.4
+          tools: composer:v1
+          coverage: none
+
+      - name: Install dependencies
+        run: composer i
+
+      - name: Install dependencies
+        run: composer require --dev christophwurst/nextcloud:${{ matrix.ocp-version }}
+
+      - name: Run coding standards check
+        run: composer run psalm
+
+  npm:
+    needs: [changes, js-linters]
+    if: ${{ needs.changes.outputs.js_src == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    name: npm
+    steps:
+      - uses: actions/checkout@v2
+
+# https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
+# do we need this step? this is already installed in github's ubuntu...
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 14.x
+
+      - name: Audit
+        run: npm audit
