@@ -31,14 +31,13 @@ jobs:
             - 'lib/Service/python/**'
             - 'lib/Service/python/*.py'
 
-  php-linters:
+  linters-php:
     needs: changes
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-versions: [7.4, 8.0]
-#    name: php ${{ matrix.php-versions }} lint
     steps:
     - uses: actions/checkout@v2
 
@@ -52,7 +51,7 @@ jobs:
     - name: Lint
       run: composer run lint
 
-  js-linters:
+  linters-js:
     needs: changes
     if: ${{ needs.changes.outputs.js_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
@@ -73,7 +72,7 @@ jobs:
       - name: ESLint
         run: npm run lint
 
-  python-linters:
+  linters-python:
     needs: changes
     if: ${{ needs.changes.outputs.py_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
@@ -91,7 +90,7 @@ jobs:
            pylint --rcfile .pylintrc lib/Service/python/*
 
   psalm-analysis:
-    needs: [changes, php-linters]
+    needs: [changes, linters-php]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     name: Psalm
@@ -113,13 +112,13 @@ jobs:
           sarif_file: results.sarif
 
   nextcloud-psalm-analysis:
-    needs: [changes, php-linters]
+    needs: [changes, linters-php]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
         matrix:
           ocp-version: [ 'dev-master', 'dev-stable21', 'dev-stable22' ]
-    name: Nextcloud ${{ matrix.ocp-version }}
+    name: Nextcloud
     steps:
       - uses: actions/checkout@v2
 
@@ -137,10 +136,10 @@ jobs:
         run: composer require --dev christophwurst/nextcloud:${{ matrix.ocp-version }}
 
       - name: Run coding standards check
-        run: composer run psalm
+        run: composer run psalms
 
   npm-auidit:
-    needs: [changes, js-linters]
+    needs: [changes, linters-js]
     if: ${{ needs.changes.outputs.js_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     name: npm-auidit
