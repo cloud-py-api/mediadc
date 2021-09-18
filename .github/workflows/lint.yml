@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [7.4, 8.0]
-    name: php${{ matrix.php-versions }} lint
+    name: php ${{ matrix.php-versions }} lint
     steps:
     - uses: actions/checkout@v2
 
@@ -90,7 +90,7 @@ jobs:
         run: |
            pylint --rcfile .pylintrc lib/Service/python/*
 
-  psalm:
+  psalm-analysis:
     needs: [changes, php-linters]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
@@ -112,7 +112,7 @@ jobs:
         with:
           sarif_file: results.sarif
 
-  static-psalm-analysis:
+  nextcloud-psalm-analysis:
     needs: [changes, php-linters]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
@@ -139,11 +139,11 @@ jobs:
       - name: Run coding standards check
         run: composer run psalm
 
-  npm:
+  npm-auidit:
     needs: [changes, js-linters]
     if: ${{ needs.changes.outputs.js_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    name: npm
+    name: npm-auidit
     steps:
       - uses: actions/checkout@v2
 
