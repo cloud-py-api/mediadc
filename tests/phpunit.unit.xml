@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         failOnWarning="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="MediaDC app tests">
+            <directory suffix="Test.php">./Unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">../lib</directory>
+        </include>
+        <report>
+            <clover outputFile="./clover.unit.xml" />
+        </report>
+    </coverage>
+</phpunit>
