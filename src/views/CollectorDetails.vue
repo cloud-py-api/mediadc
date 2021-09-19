@@ -101,7 +101,9 @@
 				</div>
 			</div>
 			<div v-if="isValidUser" class="details-row">
-				<DetailsList :filessize="filessize" :filestotal="filestotal" />
+				<DetailsList v-if="getStatusBadge(task) === 'finished'"
+					:filessize="filessize"
+					:filestotal="filestotal" />
 			</div>
 			<div v-else>
 				<p style="text-align: center;">
