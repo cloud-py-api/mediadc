@@ -77,7 +77,7 @@ class AppUpdateStep implements IRepairStep {
 					$installed['status'] = $installResult['installed'];
 					$installed['video_required'] = $installResult['video_required'];
 					$installed['available_algorithms'] = $installResult['availabale_algorithms'];
-					$installedSetting->setValue($installed);
+					$installedSetting->setValue(json_encode($installed));
 					$this->settingsService->updateSetting($installedSetting);
 				}
 			}
