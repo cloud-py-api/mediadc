@@ -26,35 +26,46 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\MediaDC\BackgroundJob;
+namespace OCA\MediaDC\Service;
 
-use OCA\MediaDC\Service\CollectorService;
-use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\BackgroundJob\TimedJob;
+use OCP\IDBConnection;
+use OCP\DB\ISchemaWrapper;
+use OCP\DB\QueryBuilder\IQueryBuilder;
+
+use OCA\MediaDC\AppInfo\Application;
 
 
-class CollectorCleanupJob extends TimedJob {
+class CleanupService {
 
-	/** @var CollectorService */
-	private $collectorService;
-	private const collectorEveryWeekInterval = 24 * 60 * 60 * 7;
-	private const collectorEveryFiveMinutes = 60 * 5;
+	/** @var IDBConnection */
+	private $db;
 
-	public function __construct(ITimeFactory $time,
-								CollectorService $collectorService) {
-		parent::__construct($time);
+	/** @var ISchemaWrapper */
+	private $schema;
 
-		$this->collectorService = $collectorService;
-		$this->setInterval(self::collectorEveryWeekInterval);
+	public function __construct(IDBConnection $db, ISchemaWrapper $schema)
+	{
+		$this->db = $db;
+		$this->schema = $schema;
 	}
 
-	/**
-	 * @param array $argument
-	 * 
-	 * @return void
-	 */
-	protected function run($argument) {
-		$this->collectorService->cleanup();
+	public function dropAppTables() {
+		$tables = array_filter($this->schema->getTableNames(),
+			fn($tableName): bool => str_contains($tableName, Application::APP_ID)
+		);
+		foreach ($tables as $table) {
+			$this->db->dropTable($table);
+		}
+		$this->removeAppMigrations();
+	}
+
+	private function removeAppMigrations() {
+		/** @var IQueryBuilder */
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('migrations')->where(
+			$qb->expr()->eq('app', $qb->createNamedParameter(Application::APP_ID, IQueryBuilder::PARAM_STR))
+		);
+		$qb->execute();
 	}
 
 }

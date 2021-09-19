@@ -29,6 +29,12 @@
 		<install>
 			<step>OCA\MediaDC\Migration\AppDataInitializationStep</step>
 		</install>
+		<!-- <uninstall>
+			<step>OCA\MediaDC\Migration\AppDataCleanupStep</step>
+		</uninstall> -->
+		<pre-migration>
+			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
+		</pre-migration>
 	</repair-steps>
 	<commands>
 		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>

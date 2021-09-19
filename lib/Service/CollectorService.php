@@ -89,6 +89,7 @@ class CollectorService {
 
 	const TASK_TYPE_MANUAL = 'manual';
 	const TASK_TYPE_AUTO = 'auto';
+	const TASK_TYPE_QUEUED = 'queued';
 
 
 	public function __construct(?string $userId, IRootFolder $rootFolder,
@@ -219,10 +220,11 @@ class CollectorService {
 
 	/**
 	 * @param array $params task params
+	 * @param boolean $queued queued task flag (task type)
 	 * 
 	 * @return CollectorTask|null created Collector Task
 	 */
-	public function createCollectorTask($params = []) {
+	public function createCollectorTask($params = [], $queued = false) {
 		if (count($params) === 0) {
 			/** @var Setting */
 			$pyAlgorithmSetting = $this->settingsMapper->findByName('hashing_algorithm');
@@ -251,7 +253,7 @@ class CollectorService {
 
 		$task = new CollectorTask([
 			'owner' => $this->userId,
-			'type' => self::TASK_TYPE_MANUAL,
+			'type' => $queued ? self::TASK_TYPE_QUEUED : self::TASK_TYPE_MANUAL,
 			'targetDirectoryIds' => count($params) === 0 ? json_encode([$this->userFolder->getId()]) : json_encode($params['targetDirectoryIds']),
 			'excludeList' => json_encode($excludeList),
 			'collectorSettings' => json_encode([
@@ -290,7 +292,7 @@ class CollectorService {
 	 * @return CollectorTask|null created queued Collector task
 	 */
 	public function createQueuedTask($params = []) {
-		$createdTask = $this->createCollectorTask($params);
+		$createdTask = $this->createCollectorTask($params, true);
 		if ($createdTask !== null) {
 			$this->jobList->add(QueuedTaskJob::class, [
 				'taskId' => $createdTask->getId(),

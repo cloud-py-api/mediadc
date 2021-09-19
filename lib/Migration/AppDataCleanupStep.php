@@ -26,35 +26,32 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\MediaDC\BackgroundJob;
+namespace OCA\MediaDC\Migration;
 
-use OCA\MediaDC\Service\CollectorService;
-use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\BackgroundJob\TimedJob;
+use OCP\Migration\IOutput;
+use OCP\Migration\IRepairStep;
+
+use OCA\MediaDC\Service\CleanupService;
 
 
-class CollectorCleanupJob extends TimedJob {
+class AppDataCleanupStep implements IRepairStep {
 
-	/** @var CollectorService */
-	private $collectorService;
-	private const collectorEveryWeekInterval = 24 * 60 * 60 * 7;
-	private const collectorEveryFiveMinutes = 60 * 5;
+	/** @var CleanupService */
+	private $cleanupService;
 
-	public function __construct(ITimeFactory $time,
-								CollectorService $collectorService) {
-		parent::__construct($time);
-
-		$this->collectorService = $collectorService;
-		$this->setInterval(self::collectorEveryWeekInterval);
+	public function __construct(CleanupService $cleanupService) {
+		$this->cleanupService = $cleanupService;
 	}
 
-	/**
-	 * @param array $argument
-	 * 
-	 * @return void
-	 */
-	protected function run($argument) {
-		$this->collectorService->cleanup();
+	public function getName(): string {
+		return "Cleanup MediaDC static tables data";
+	}
+
+	public function run(IOutput $output) {
+		$output->startProgress(1);
+		$this->cleanupService->dropAppTables();
+		$output->advance(1);
+		$output->finishProgress();
 	}
 
 }
