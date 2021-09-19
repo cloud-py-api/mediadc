@@ -175,9 +175,9 @@ def check_video() -> list:
 
 def check_packages(packages_list: dict) -> dict:
     missing = {}
-    for import_name in packages_list.keys():
+    for import_name, install_name in packages_list.items():
         if not import_package(import_name, expand_state=ExpandedState.LAST):
-            missing[import_name] = packages_list[import_name]
+            missing[import_name] = install_name
     return missing
 
 
@@ -202,22 +202,22 @@ def get_all_boost_packages() -> dict:
 
 def add_package_info(packages_list: dict) -> dict:
     formatted_packages_list = {}
-    for import_name in packages_list.keys():
+    for import_name, install_name in packages_list.items():
         modules = {}
         if import_package(import_name, dest_sym_table=modules):
             version = 'unknown'
             if hasattr(modules[import_name], '__version__'):
                 version = modules[import_name].__version__
-            if str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
-                formatted_packages_list[import_name] = {'package': packages_list[import_name],
+            if ExpandedSitePath and str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
+                formatted_packages_list[import_name] = {'package': install_name,
                                                         'location': 'local',
                                                         'version': str(version)}
             else:
-                formatted_packages_list[import_name] = {'package': packages_list[import_name],
+                formatted_packages_list[import_name] = {'package': install_name,
                                                         'location': 'global',
                                                         'version': str(version)}
         else:
-            formatted_packages_list[import_name] = {'package': packages_list[import_name],
+            formatted_packages_list[import_name] = {'package': install_name,
                                                     'location': 'none',
                                                     'version': 'none'}
     return formatted_packages_list
