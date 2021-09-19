@@ -1,4 +1,4 @@
-name: Lint
+name: Static analysis
 
 on:
   pull_request:

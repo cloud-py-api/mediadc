@@ -45,14 +45,10 @@ class AppUpdateStep implements IRepairStep {
 	/** @var SettingsService */
 	private $settingsService;
 
-	/** @var LoggerInterface */
-	private $logger;
-
 	public function __construct(PythonService $pythonService, SettingsService $settingsService,
 								LoggerInterface $logger) {
 		$this->pythonService = $pythonService;
 		$this->settingsService = $settingsService;
-		$this->logger = $logger;
 	}
 
 	public function getName(): string {
@@ -68,19 +64,21 @@ class AppUpdateStep implements IRepairStep {
 			if (isset($installed['installed_list'])) {
 				if (count($installed['installed_list']['boost']) > 0) {
 					$installResult = $this->pythonService->installDependencies('required optional boost');
-					$this->logger->warning($installResult);
-					if ($installResult['success'] && count($installResult['errors']) === 0) {
-						$installed['installed_list'] = [
-							'required' => $installResult['required'],
-							'optional' => $installResult['optional'],
-							'boost' => $installResult['boost']
-						];
-						$installed['list'] = $installResult['list'];
-						$installedSetting->setValue($installed);
-						$this->settingsService->updateSetting($installedSetting);
-					}
 				} else {
-					$this->pythonService->installDependencies();
+					$installResult = $this->pythonService->installDependencies();
+				}
+				if ($installResult['success'] && count($installResult['errors']) === 0) {
+					$installed['installed_list'] = [
+						'required' => $installResult['required'],
+						'optional' => $installResult['optional'],
+						'boost' => $installResult['boost']
+					];
+					$installed['list'] = $installResult['list'];
+					$installed['status'] = $installResult['installed'];
+					$installed['video_required'] = $installResult['video_required'];
+					$installed['available_algorithms'] = $installResult['availabale_algorithms'];
+					$installedSetting->setValue($installed);
+					$this->settingsService->updateSetting($installedSetting);
 				}
 			}
 		}
