@@ -241,9 +241,8 @@ def is_pip_present(only_global: bool = False) -> bool:
             if m_groups is None:
                 return False
             pip_version = tuple(map(int, str(m_groups.groups()[0]).split('.')))
-            if pip_version[0] <= 9:
-                if pip_version[1] == 0:
-                    return False
+            if pip_version[0] < 19:
+                return False
             return True
     except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
         log_error(f'pip_version raised {type(exception_info).__name__}: {str(exception_info)}')
