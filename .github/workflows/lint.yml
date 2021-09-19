@@ -48,7 +48,7 @@ jobs:
         tools: composer:v1
         coverage: none
 
-    - name: Lint
+    - name: PHP Lint
       run: composer run lint
 
   linters-js:
@@ -61,10 +61,10 @@ jobs:
 
 # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
 # do we need this step? this is already installed in github's ubuntu...
-      - name: Setup Node
-        uses: actions/setup-node@v2.4.0
-        with:
-          node-version: 14.x
+      # - name: Setup Node
+      #   uses: actions/setup-node@v2.4.0
+      #   with:
+      #     node-version: 14.x
 
       - name: Install dependencies
         run: npm ci
@@ -89,11 +89,11 @@ jobs:
         run: |
            pylint --rcfile .pylintrc lib/Service/python/*
 
-  psalm-analysis:
+  security-analysis:
     needs: [changes, linters-php]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    name: Psalm
+    name: Security analysis
     steps:
       - uses: actions/checkout@v2
         with:
@@ -111,14 +111,14 @@ jobs:
         with:
           sarif_file: results.sarif
 
-  nextcloud-psalm-analysis:
+  psalm-analysis:
     needs: [changes, linters-php]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
         matrix:
           ocp-version: [ 'dev-master', 'dev-stable21', 'dev-stable22' ]
-    name: Nextcloud
+    name: Psalm statis-analysis
     steps:
       - uses: actions/checkout@v2
 
@@ -136,22 +136,22 @@ jobs:
         run: composer require --dev christophwurst/nextcloud:${{ matrix.ocp-version }}
 
       - name: Run coding standards check
-        run: composer run psalms
+        run: composer run psalm
 
-  npm-auidit:
+  npm-audit:
     needs: [changes, linters-js]
     if: ${{ needs.changes.outputs.js_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    name: npm-auidit
+    name: npm-audit
     steps:
       - uses: actions/checkout@v2
 
 # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
 # do we need this step? this is already installed in github's ubuntu...
-      - name: Setup Node
-        uses: actions/setup-node@v2.4.0
-        with:
-          node-version: 14.x
+      # - name: Setup Node
+      #   uses: actions/setup-node@v2.4.0
+      #   with:
+      #     node-version: 14.x
 
       - name: Audit
         run: npm audit

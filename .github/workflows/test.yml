@@ -92,10 +92,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-versions }}
 
-      - name: pytest
+      - name: PyTest installation
         uses: actions/pip-action@v1
         with:
           packages: pytest
+
+      - name: PyTest
         run: pytest
 
   # TODO: Add integration tests
