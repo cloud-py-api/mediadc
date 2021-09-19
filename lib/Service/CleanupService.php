@@ -51,7 +51,7 @@ class CleanupService {
 
 	public function dropAppTables() {
 		$tables = array_filter($this->schema->getTableNames(),
-			fn($tableName): bool => str_contains($tableName, Application::APP_ID)
+			fn($tableName): bool => strpos($tableName, Application::APP_ID) !== false
 		);
 		foreach ($tables as $table) {
 			$this->db->dropTable($table);

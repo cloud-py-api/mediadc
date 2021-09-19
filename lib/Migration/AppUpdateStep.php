@@ -30,7 +30,6 @@ namespace OCA\MediaDC\Migration;
 
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use Psr\Log\LoggerInterface;
 
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Service\PythonService;
@@ -45,8 +44,7 @@ class AppUpdateStep implements IRepairStep {
 	/** @var SettingsService */
 	private $settingsService;
 
-	public function __construct(PythonService $pythonService, SettingsService $settingsService,
-								LoggerInterface $logger) {
+	public function __construct(PythonService $pythonService, SettingsService $settingsService) {
 		$this->pythonService = $pythonService;
 		$this->settingsService = $settingsService;
 	}
@@ -76,7 +74,7 @@ class AppUpdateStep implements IRepairStep {
 					$installed['list'] = $installResult['list'];
 					$installed['status'] = $installResult['installed'];
 					$installed['video_required'] = $installResult['video_required'];
-					$installed['available_algorithms'] = $installResult['availabale_algorithms'];
+					$installed['available_algorithms'] = $installResult['available_algorithms'];
 					$installedSetting->setValue(json_encode($installed));
 					$this->settingsService->updateSetting($installedSetting);
 				}
