@@ -37,15 +37,14 @@ class CollectorCleanupJob extends TimedJob {
 
 	/** @var CollectorService */
 	private $collectorService;
+
 	private const collectorEveryWeekInterval = 24 * 60 * 60 * 7;
-	private const collectorEveryFiveMinutes = 60 * 5;
 
 	public function __construct(ITimeFactory $time,
 								CollectorService $collectorService) {
 		parent::__construct($time);
-
 		$this->collectorService = $collectorService;
-		$this->setInterval(24 * 60 * 60 * 7);
+		$this->setInterval(self::collectorEveryWeekInterval);
 	}
 
 	/**

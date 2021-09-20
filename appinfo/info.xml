@@ -41,7 +41,7 @@
 		<command>OCA\MediaDC\Command\CollectorCleanupCommand</command>
 	</commands>
 	<background-jobs>
-		<job>OCA\Mediadc\BackgroundJob\CollectorCleanupJob</job>
+		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
 	</background-jobs>
 	<navigations>
 		<navigation>
