@@ -45,7 +45,7 @@ class CollectorCleanupJob extends TimedJob {
 		parent::__construct($time);
 
 		$this->collectorService = $collectorService;
-		$this->setInterval(self::collectorEveryWeekInterval);
+		$this->setInterval(24 * 60 * 60 * 7);
 	}
 
 	/**
