@@ -34,6 +34,7 @@ use OCP\Migration\IRepairStep;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Service\PythonService;
 use OCA\MediaDC\Service\SettingsService;
+use Psr\Log\LoggerInterface;
 
 
 class AppUpdateStep implements IRepairStep {
@@ -44,9 +45,11 @@ class AppUpdateStep implements IRepairStep {
 	/** @var SettingsService */
 	private $settingsService;
 
-	public function __construct(PythonService $pythonService, SettingsService $settingsService) {
+	public function __construct(PythonService $pythonService, SettingsService $settingsService,
+								LoggerInterface $logger) {
 		$this->pythonService = $pythonService;
 		$this->settingsService = $settingsService;
+		$this->logger = $logger;
 	}
 
 	public function getName(): string {
@@ -59,19 +62,20 @@ class AppUpdateStep implements IRepairStep {
 			/** @var Setting */
 			$installedSetting = $this->settingsService->getSettingByName('installed')['setting'];
 			$installed = json_decode($installedSetting->getValue(), true);
-			if (isset($installed['installed_list'])) {
-				if (count($installed['installed_list']['boost']) > 0) {
-					$installResult = $this->pythonService->installDependencies('required optional boost');
-				} else {
+			$this->logger->warning(json_encode($installed['not_installed_list']) . ", " . strval(count($installed['not_installed_list']['boost']) > 0));
+			if (isset($installed['not_installed_list'])) {
+				if (count($installed['not_installed_list']['boost']) > 0) {
 					$installResult = $this->pythonService->installDependencies();
+				} else {
+					$installResult = $this->pythonService->installDependencies('required optional boost');
 				}
 				if ($installResult['success'] && count($installResult['errors']) === 0) {
-					$installed['installed_list'] = [
+					$installed['not_installed_list'] = [
 						'required' => $installResult['required'],
 						'optional' => $installResult['optional'],
-						'boost' => $installResult['boost']
+						'boost' => $installResult['boost'],
 					];
-					$installed['list'] = $installResult['list'];
+					$installed['installed_list'] = $installResult['installed_list'];
 					$installed['status'] = $installResult['installed'];
 					$installed['video_required'] = $installResult['video_required'];
 					$installed['available_algorithms'] = $installResult['available_algorithms'];
