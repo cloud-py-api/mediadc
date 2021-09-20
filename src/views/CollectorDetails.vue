@@ -95,7 +95,15 @@
 					<h3>{{ t('mediadc', 'Target directories') }}</h3>
 					<div class="target-directories-list">
 						<div v-for="dir in taskInfo.target_directories" :key="dir.fileid" class="target-directory-row">
-							<b>[{{ dir.fileowner }}] {{ dir.filepath.replace(`/${dir.fileowner}/files`, '') }}</b> ({{ formatBytes(dir.filesize) }})
+							<div class="owner-tooltip">
+								<div class="tooltip-title">
+									{{ t('mediadc', 'onwer:') }} {{ dir.fileowner }}
+								</div>
+								<div class="tooltip-content">
+									<b>{{ dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '') }}</b>
+									({{ formatBytes(dir.filesize) }})
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -173,6 +181,9 @@ export default {
 		isValidUser() {
 			return getCurrentUser().uid === this.task.owner
 		},
+		currentUser() {
+			return getCurrentUser().uid
+		},
 	},
 	beforeMount() {
 		this.$emit('update:loading', true)
@@ -231,8 +242,10 @@ export default {
 							this.getTaskDetails()
 							this.filessize = 0
 							this.filestotal = 0
+						} else if (res.data.limit) {
+							showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
 						} else {
-							showError('Some error occured while restarting Collector Task. Try again.')
+							showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 						}
 					}).catch(err => {
 						this.restarting = false
@@ -409,6 +422,40 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 	overflow-y: scroll;
 }
 
+.owner-tooltip {
+	position: relative;
+}
+
+.tooltip-title {
+	display: none;
+	padding: 0 5px;
+	border-radius: 5px;
+	background-color: #000;
+	color: #fff;
+	position: absolute;
+	top: calc(-100% - 5px);
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 12px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.tooltip-title:before {
+	content: '';
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%) rotateZ(45deg);
+	bottom: -3px;
+	width: 10px;
+	height: 10px;
+	background-color: #000;
+	z-index: -1;
+}
+
+.owner-tooltip:hover .tooltip-title {
+	display: block;
+}
+
 @media (max-width: 767px) {
 	.details-row {
 		margin: 0 0 20px;
@@ -431,7 +478,6 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 }
 
 .target-directory-row {
-	overflow-x: scroll;
 	white-space: nowrap;
 }
 

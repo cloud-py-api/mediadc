@@ -37,10 +37,10 @@
             "name": "installed",
             "value": {
                 "status": false,
-                "available_algorithms": [],
                 "installed_list": {},
+                "not_installed_list": {},
                 "video_required": [],
-                "list": {}
+                "available_algorithms": []
             },
             "displayName": "MediaDC installed flag",
             "description": "Installation data with current MediaDC configuration"

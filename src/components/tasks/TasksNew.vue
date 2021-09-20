@@ -265,8 +265,10 @@ export default {
 					this.getTasks()
 					this.resetForm()
 					showSuccess(t('mediadc', 'New task successfully created!'))
+				} else if (res.data.limit) {
+					showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
 				} else {
-					showWarning('Some error occured while running Collector Task. Try again.')
+					showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 				}
 			})
 		},

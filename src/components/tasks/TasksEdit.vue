@@ -299,8 +299,10 @@ export default {
 						this.closeEditTaskDialog()
 						emit('restartTask')
 						showSuccess(t('mediadc', 'Task successfully restarted!'))
+					} else if (res.data.limit) {
+						showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
 					} else {
-						showWarning('Some error occured while running Collector Task. Try again.')
+						showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 					}
 				})
 			})

@@ -98,8 +98,8 @@ class CollectorService {
 								PythonService $pythonService, LoggerInterface $logger,
 								PhotosService $photosService, VideosService $videosService,
 								IJobList $jobList) {
-		$this->userId = $userId;
 		if ($userId !== null) {
+			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
 		}
 		$this->settingsMapper = $settingsMapper;
@@ -123,7 +123,7 @@ class CollectorService {
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
 		$processesRunning = count($this->tasksMapper->findAllRunning());
-		$queuedTask = null;
+		// $queuedTask = null;
 
 		if ($pyLimitSetting !== null && $processesRunning < (int)$pyLimitSetting->getValue()) {
 			$createdTask = $this->createCollectorTask($params);
@@ -134,11 +134,14 @@ class CollectorService {
 				$this->logger->warning("Can't create Collector Task with excluding all target files");
 			}
 		} else {
+			return ['success' => false, 'limit' => true];
 			// Add as Queued job
-			$queuedTask = $this->createQueuedTask($params);
+			// TODO: Add queued mechanism
+			// $queuedTask = $this->createQueuedTask($params);
 		}
 
-		return ['success' => $createdTask !== null, 'queued' => $queuedTask !== null];
+		// return ['success' => $createdTask !== null, 'queued' => $queuedTask !== null];
+		return ['success' => $createdTask !== null, 'limit' => false];
 	}
 
 	/**
@@ -190,7 +193,8 @@ class CollectorService {
 			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
 		} else {
 			// Add as Queued job
-			$queuedTask = $this->createQueuedTask($params);
+			// $queuedTask = $this->createQueuedTask($params);
+			return ['success' => false, 'limit' => true];
 		}
 
 		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null];

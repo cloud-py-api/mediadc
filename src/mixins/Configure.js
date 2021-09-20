@@ -39,15 +39,15 @@ export default {
 		return {
 			installed_setting: null,
 			installed: false,
+			installed_list: [],
+			not_installed_list: {},
+			video_required: [],
+			available_algorithms: [],
+			errors: [],
+			warnings: [],
 			installing: false,
 			checking: false,
 			updating: false,
-			installed_packages_list: {},
-			available_algorithms: [],
-			video_required: [],
-			packages_list: [],
-			errors: [],
-			warnings: [],
 		}
 	},
 	methods: {
@@ -64,11 +64,11 @@ export default {
 					this.installed_setting = res.data.setting
 					this.installed_setting.value = JSON.parse(this.installed_setting.value)
 					this.installed = res.data.setting.value.status
-					this.packages_list = this.installed_setting.value.list
-					this.installed_packages_list = {
-						required: this.installed_setting.value.installed_list.required,
-						optional: this.installed_setting.value.installed_list.optional,
-						boost: this.installed_setting.value.installed_list.boost,
+					this.installed_list = this.installed_setting.value.installed_list
+					this.not_installed_list = {
+						required: this.installed_setting.value.not_installed_list.required,
+						optional: this.installed_setting.value.not_installed_list.optional,
+						boost: this.installed_setting.value.not_installed_list.boost,
 					}
 					this.available_algorithms = this.installed_setting.value.available_algorithms
 					this.video_required = this.installed_setting.value.video_required
@@ -117,7 +117,7 @@ export default {
 		async deleteDepsList(listName) {
 			this.updating = true
 			axios.post(generateUrl('/apps/mediadc/api/v1/python/delete'),
-				{ packagesList: Object.values(this.packages_list[listName]).filter(item => item.location !== 'global').map(item => item.package) }).then(res => {
+				{ packagesList: Object.values(this.installed_list[listName]).filter(item => item.location !== 'global').map(item => item.package) }).then(res => {
 				this.updating = false
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting()
@@ -126,7 +126,7 @@ export default {
 		async updateDepsList(listName) {
 			this.updating = true
 			axios.post(generateUrl('/apps/mediadc/api/v1/python/update'),
-				{ packagesList: Object.values(this.packages_list[listName]).filter(item => item.location !== 'global').map(item => item.package) }).then(res => {
+				{ packagesList: Object.values(this.installed_list[listName]).filter(item => item.location !== 'global').map(item => item.package) }).then(res => {
 				this.updating = false
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting()
@@ -151,8 +151,8 @@ export default {
 		parsePythonResponseData(res) {
 			this.installed = res.data.installed
 			this.installed_setting.value.status = res.data.installed
-			this.installed_setting.value.list = res.data.list
-			this.installed_setting.value.installed_list = {
+			this.installed_setting.value.installed_list = res.data.installed_list
+			this.installed_setting.value.not_installed_list = {
 				required: res.data.required,
 				optional: res.data.optional,
 				boost: res.data.boost,
@@ -160,8 +160,8 @@ export default {
 			this.installed_setting.value.available_algorithms = res.data.available_algorithms
 			this.installed_setting.value.video_required = res.data.video_required
 			this.$store.dispatch('setSetting', this.installed_setting)
-			this.packages_list = res.data.list
-			this.installed_packages_list = {
+			this.installed_list = res.data.installed_list
+			this.not_installed_list = {
 				required: res.data.required,
 				optional: res.data.optional,
 				boost: res.data.boost,

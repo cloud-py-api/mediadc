@@ -34,7 +34,7 @@
 		"lint:fix": "eslint --ext .js,.vue src --fix",
 		"stylelint": "stylelint src",
 		"stylelint:fix": "stylelint src --fix",
-		"test": "jest src/* --config=src/tests/jest.config.js --passWithNoTests",
+		"test": "jest tests/javascript/unit/* --config=tests/javascript/jest.config.js --passWithNoTests",
 		"test:coverage": "jest --coverage"
 	},
 	"dependencies": {
