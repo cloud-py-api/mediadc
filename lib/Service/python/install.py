@@ -345,7 +345,7 @@ def check() -> dict:
            'video_required': check_video(),
            'errors': ErrorsContainer,
            'warnings': db.get_warnings(),
-           'list': {
+           'installed_list': {
                'required': add_package_info(RequiredPackagesList),
                'optional': add_package_info(OptionalPackagesList),
                'boost': add_package_info(get_all_boost_packages())
