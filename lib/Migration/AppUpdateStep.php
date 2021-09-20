@@ -45,11 +45,9 @@ class AppUpdateStep implements IRepairStep {
 	/** @var SettingsService */
 	private $settingsService;
 
-	public function __construct(PythonService $pythonService, SettingsService $settingsService,
-								LoggerInterface $logger) {
+	public function __construct(PythonService $pythonService, SettingsService $settingsService) {
 		$this->pythonService = $pythonService;
 		$this->settingsService = $settingsService;
-		$this->logger = $logger;
 	}
 
 	public function getName(): string {
@@ -62,7 +60,6 @@ class AppUpdateStep implements IRepairStep {
 			/** @var Setting */
 			$installedSetting = $this->settingsService->getSettingByName('installed')['setting'];
 			$installed = json_decode($installedSetting->getValue(), true);
-			$this->logger->warning(json_encode($installed['not_installed_list']) . ", " . strval(count($installed['not_installed_list']['boost']) > 0));
 			if (isset($installed['not_installed_list'])) {
 				if (count($installed['not_installed_list']['boost']) > 0) {
 					$installResult = $this->pythonService->installDependencies();
