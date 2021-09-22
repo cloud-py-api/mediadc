@@ -232,7 +232,7 @@ export default {
 						collectorSettings: {
 							hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'dhash',
 							similarity_threshold: Number(JSON.parse(this.task.collector_settings).similarity_threshold),
-							hash_size: Number(this.settingByName('hash_size').value) || 64,
+							hash_size: Number(this.settingByName('hash_size').value) || 16,
 							target_mtype: Number(JSON.parse(this.task.collector_settings).target_mtype),
 						},
 					}).then(res => {

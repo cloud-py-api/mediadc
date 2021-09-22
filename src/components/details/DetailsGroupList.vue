@@ -51,6 +51,7 @@ import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import DetailsFile from './DetailsFile'
 import { emit } from '@nextcloud/event-bus'
+import { showError } from '@nextcloud/dialogs'
 
 export default {
 	name: 'DetailsGroupList',
@@ -82,6 +83,10 @@ export default {
 						this.$emit('update:files', files)
 						emit('updateTaskInfo')
 						this.$store.dispatch('setTask', res.data.task)
+					})
+					.catch(err => {
+						console.debug(err)
+						showError(t('mediadc', 'Some error occured while deleting file...'))
 					})
 			}
 		},

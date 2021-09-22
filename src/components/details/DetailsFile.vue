@@ -48,7 +48,8 @@
 		</div>
 		<div v-show="!loaded && file.filempart === 'image'"
 			class="placeholder"
-			:style="'min-height: ' + detailsGridSize + 'px'">
+			:style="'min-height: ' + detailsGridSize + 'px'"
+			:title="file.filepath">
 			<svg width="50%"
 				enable-background="new 0 0 512 512"
 				version="1.1"
@@ -112,7 +113,6 @@ export default {
 			})
 		},
 		onLoad() {
-			console.debug('[DetailsFile] loaded')
 			this.loaded = true
 		},
 	},

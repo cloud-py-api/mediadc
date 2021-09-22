@@ -167,7 +167,8 @@ class CollectorService {
 
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
-		$processesRunning = count($this->tasksMapper->findAllRunning());
+		$processesRunning = $this->tasksMapper->findAllRunning();
+		$taskIdsRunning = array_map(fn($task) => $task->getId(), $processesRunning);
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
@@ -187,14 +188,20 @@ class CollectorService {
 		$collectorTask->setErrors('');
 		$queuedTask = null;
 
-		if ($pyLimitSetting !== null && $processesRunning < (int)$pyLimitSetting->getValue()) {
+		if (!in_array($taskId, $taskIdsRunning)) {
+			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue()) {
+				$this->tasksMapper->update($collectorTask);
+				$this->deleteTaskDetails($taskId);
+				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+			} else {
+				// Add as Queued job
+				// $queuedTask = $this->createQueuedTask($params);
+				return ['success' => false, 'limit' => true];
+			}
+		} else {
 			$this->tasksMapper->update($collectorTask);
 			$this->deleteTaskDetails($taskId);
 			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
-		} else {
-			// Add as Queued job
-			// $queuedTask = $this->createQueuedTask($params);
-			return ['success' => false, 'limit' => true];
 		}
 
 		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null];
@@ -543,10 +550,13 @@ class CollectorService {
 
 		$groupFiles = json_decode($collectorTaskDetail->getGroupFilesIds());
 		$fileidIndex = array_search($fileid, $groupFiles);
-		array_splice($groupFiles, $fileidIndex, 1);
+		if ($fileidIndex !== false) {
+			array_splice($groupFiles, $fileidIndex, 1);
+		}
 
 		if (count($groupFiles) === 1) {
 			$this->tasksDetailsMapper->delete($collectorTaskDetail);
+			$updatedTaskDetail = null;
 		} else {
 			$collectorTaskDetail->setGroupFilesIds(json_encode($groupFiles));
 			$updatedTaskDetail = $this->tasksDetailsMapper->update($collectorTaskDetail);
