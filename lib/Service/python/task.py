@@ -103,7 +103,7 @@ def analyze_and_lock(task_info: dict, forced: bool) -> bool:
             print('Task already running.')
             return False
     elif not forced:
-        if len(task_info['errors']):
+        if task_info['errors']:
             print('Task was previously finished with errors.')
         else:
             if task_info['finished_time'] == 0:
@@ -157,7 +157,7 @@ def process(task_info: dict, forced: bool):
         reset_data_groups()
         update_storages_info()
         task_settings = init_task_settings(task_info)
-        if len(task_settings):
+        if task_settings:
             module_init_done = True
             task_type = TaskType(task_settings['type'])
             if task_type in (TaskType.IMAGE, TaskType.VIDEO, TaskType.IMAGE_VIDEO):

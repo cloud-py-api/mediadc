@@ -348,8 +348,7 @@ def check() -> dict:
            'installed_list': {
                'required': add_package_info(RequiredPackagesList),
                'optional': add_package_info(OptionalPackagesList),
-               'boost': add_package_info(get_all_boost_packages())
-                    }
+               'boost': add_package_info(get_all_boost_packages())}
            }
     if not ErrorsContainer:
         if not ret['required']:
@@ -367,7 +366,7 @@ def install(packages_list: dict) -> int:
             log_error('Cant run pip after local install.')
             return 1
     ret = 0
-    if len(packages_list):
+    if packages_list:
         if not check_local_dir(create_if_absent=True):
             log_error('Cant create local dir for packages.')
             return 1
