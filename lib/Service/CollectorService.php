@@ -554,14 +554,6 @@ class CollectorService {
 			array_splice($groupFiles, $fileidIndex, 1);
 		}
 
-		if (count($groupFiles) === 1) {
-			$this->tasksDetailsMapper->delete($collectorTaskDetail);
-			$updatedTaskDetail = null;
-		} else {
-			$collectorTaskDetail->setGroupFilesIds(json_encode($groupFiles));
-			$updatedTaskDetail = $this->tasksDetailsMapper->update($collectorTaskDetail);
-		}
-
 		$nodes = $this->userFolder->getById($fileid);
 
 		if (count($nodes) === 1) {
@@ -573,6 +565,13 @@ class CollectorService {
 				$collectorTask->setDeletedFilesCount($deletedFilesCount + 1);
 				$collectorTask->setDeletedFilesSize($deletedFilesSize + $filesize);
 				$this->tasksMapper->update($collectorTask);
+				if (count($groupFiles) === 1) {
+					$this->tasksDetailsMapper->delete($collectorTaskDetail);
+					$updatedTaskDetail = null;
+				} else {
+					$collectorTaskDetail->setGroupFilesIds(json_encode($groupFiles));
+					$updatedTaskDetail = $this->tasksDetailsMapper->update($collectorTaskDetail);
+				}
 				return [
 					'success' => true,
 					'task' => $collectorTask,
