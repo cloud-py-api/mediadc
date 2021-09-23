@@ -10,8 +10,8 @@ Nextcloud Media Duplicate Collector application
 
 ## Why is this so awesome?
 
-* **♻ Delete a huge amount of duplicate photos/videos with different resolutions, sizes and formats**
-* **💡 Easily save your cloud storage space and time for sorting**
+* **♻ Deletes a huge amount of duplicate photos/videos with different resolutions, sizes and formats**
+* **💡 Easily saves your cloud storage space and time for sorting**
 * **⚙ Flexible configuration**
 
 ## 🚀 Installation
