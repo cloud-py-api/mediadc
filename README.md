@@ -6,6 +6,7 @@
 **📸📹 Collect photo and video duplicates to save your cloud storage**
 
 ![Home page](/screenshots/screenshot.png)
+![Home page](/screenshots/screenshot2.png)
 Nextcloud Media Duplicate Collector application
 
 ## Why is this so awesome?
