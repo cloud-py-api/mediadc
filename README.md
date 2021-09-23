@@ -20,6 +20,7 @@ Nextcloud Media Duplicate Collector application
 In your Nextcloud, simply enable the MediaDC app through the Apps management
 and configure application dependencies on Configuration page (only for administrators).
 The Nextcloud MediaDC app is only included in nextcloud v21 and higher.
+#### Read more on [Wiki page](https://github.com/andrey18106/mediadc/wiki)
 
 ## Maintainers
 
