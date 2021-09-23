@@ -11,7 +11,7 @@ Nextcloud Media Duplicate Collector application
 
 ## Why is this so awesome?
 
-* **♻ Detects a huge amount of duplicate photos/videos with different resolutions, sizes and formats**
+* **♻ Detects similar and duplicate photos/videos with different resolutions, sizes and formats**
 * **💡 Easily saves your cloud storage space and time for sorting**
 * **⚙ Flexible configuration**
 
