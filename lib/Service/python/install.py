@@ -1,3 +1,7 @@
+"""
+MediaDC python dependencies install module.
+"""
+
 import os
 import sys
 import subprocess
@@ -5,46 +9,44 @@ import importlib.util
 import argparse
 import json
 import re
+from enum import Enum
 import db
 from ffmpeg_probe import get_version
-from enum import Enum
 PIP_DEBUG = 0
 EXTRA_PIP_ARGS = []
 
 
-"""
-/**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license GNU AGPL version 3 or any later version
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 class ExpandedState(Enum):
-    Disabled = 0
-    First = 1
-    Last = 2
+    """State of placement `local` dir in sys.path."""
+    DISABLED = 0
+    FIRST = 1
+    LAST = 2
 
 
 Interpreter = sys.executable
-PathExpandedState: ExpandedState = ExpandedState.Disabled
+PathExpandedState: ExpandedState = ExpandedState.DISABLED
 ExpandedSitePath = ''
 LocalDir = './local'
 ErrorsContainer = []
@@ -55,7 +57,7 @@ RequiredPackagesList = {'numpy': 'numpy',
                         }
 OptionalPackagesList = {'scipy': 'scipy',
                         'pywt': 'pywavelets',
-                        'pyheif': 'pyheif',
+                        'pillow_heif': 'pillow_heif',
                         **db.get_optional_packages()
                         }
 AlgorithmsRequirements = {'average': [],
@@ -65,24 +67,27 @@ AlgorithmsRequirements = {'average': [],
                           }
 
 
-def log_error(*s: str):
+def log_error(*errors: str):
+    """Adds error(s) to global ErrorsContainer variable."""
     global ErrorsContainer
-    for x in s:
-        ErrorsContainer.append(x)
+    for error in errors:
+        ErrorsContainer.append(error)
 
 
 def check_local_dir(create_if_absent: bool = False) -> bool:
-    r = os.path.isdir(LocalDir)
-    if not r and create_if_absent:
+    """Returns True if local dir exists or was created(if create_if_absent=True), False otherwise."""
+    dir_exists = os.path.isdir(LocalDir)
+    if not dir_exists and create_if_absent:
         try:
             os.mkdir(LocalDir, mode=0o774)
         except OSError:
             return False
         return os.path.isdir(LocalDir)
-    return r
+    return dir_exists
 
 
 def get_abs_local_dir() -> str:
+    """Returns absolute path to local directory."""
     return os.path.abspath(LocalDir)
 
 
@@ -116,9 +121,9 @@ def change_python_path(new_state: ExpandedState) -> bool:
         sys.path.pop(sys.path.index(ExpandedSitePath))
     except (ValueError, IndexError):
         pass
-    if new_state == ExpandedState.First:
+    if new_state == ExpandedState.FIRST:
         sys.path.insert(0, ExpandedSitePath)
-    elif new_state == ExpandedState.Last:
+    elif new_state == ExpandedState.LAST:
         sys.path.append(ExpandedSitePath)
     importlib.invalidate_caches()
     PathExpandedState = new_state
@@ -126,8 +131,8 @@ def change_python_path(new_state: ExpandedState) -> bool:
 
 
 def extend_module_path() -> bool:
-    change_python_path(ExpandedState.Last)
-    if PathExpandedState == ExpandedState.Last:
+    change_python_path(ExpandedState.LAST)
+    if PathExpandedState == ExpandedState.LAST:
         return True
     return False
 
@@ -159,30 +164,30 @@ def import_packages(packages_names: list, dest_sym_table=None) -> list:
 
 def check_video() -> list:
     video_apps = []
-    success, error, ffmpeg_version = get_version('ffmpeg')
-    if not success:
+    error, _ffmpeg_version = get_version('ffmpeg')
+    if error:
         video_apps.append('ffmpeg')
-    success, error, ffprobe_version = get_version('ffprobe')
-    if not success:
+    error, _ffprobe_version = get_version('ffprobe')
+    if error:
         video_apps.append('ffprobe')
     return video_apps
 
 
 def check_packages(packages_list: dict) -> dict:
     missing = {}
-    for import_name in packages_list.keys():
-        if not import_package(import_name, expand_state=ExpandedState.Last):
-            missing[import_name] = packages_list[import_name]
+    for import_name, install_name in packages_list.items():
+        if not import_package(import_name, expand_state=ExpandedState.LAST):
+            missing[import_name] = install_name
     return missing
 
 
 def get_installed_algorithms_list() -> list:
     available = []
-    if not len(check_packages(RequiredPackagesList)):
-        for algo_name in AlgorithmsRequirements.keys():
+    if not check_packages(RequiredPackagesList):
+        for algo_name, algo_requirements in AlgorithmsRequirements.items():
             algo_ok = True
-            for import_name in AlgorithmsRequirements[algo_name]:
-                if not import_package(import_name, expand_state=ExpandedState.Last):
+            for import_name in algo_requirements:
+                if not import_package(import_name, expand_state=ExpandedState.LAST):
                     algo_ok = False
                     break
             if algo_ok:
@@ -197,22 +202,22 @@ def get_all_boost_packages() -> dict:
 
 def add_package_info(packages_list: dict) -> dict:
     formatted_packages_list = {}
-    for import_name in packages_list.keys():
+    for import_name, install_name in packages_list.items():
         modules = {}
         if import_package(import_name, dest_sym_table=modules):
             version = 'unknown'
             if hasattr(modules[import_name], '__version__'):
                 version = modules[import_name].__version__
-            if str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
-                formatted_packages_list[import_name] = {'package': packages_list[import_name],
+            if ExpandedSitePath and str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
+                formatted_packages_list[import_name] = {'package': install_name,
                                                         'location': 'local',
                                                         'version': str(version)}
             else:
-                formatted_packages_list[import_name] = {'package': packages_list[import_name],
+                formatted_packages_list[import_name] = {'package': install_name,
                                                         'location': 'global',
                                                         'version': str(version)}
         else:
-            formatted_packages_list[import_name] = {'package': packages_list[import_name],
+            formatted_packages_list[import_name] = {'package': install_name,
                                                     'location': 'none',
                                                     'version': 'none'}
     return formatted_packages_list
@@ -236,12 +241,11 @@ def is_pip_present(only_global: bool = False) -> bool:
             if m_groups is None:
                 return False
             pip_version = tuple(map(int, str(m_groups.groups()[0]).split('.')))
-            if pip_version[0] <= 9:
-                if pip_version[1] == 0:
-                    return False
+            if pip_version[0] < 19:
+                return False
             return True
-    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as e:
-        log_error(f'pip_version raised {type(e).__name__}: {str(e)}')
+    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
+        log_error(f'pip_version raised {type(exception_info).__name__}: {str(exception_info)}')
     return False
 
 
@@ -250,7 +254,7 @@ def download_pip(url: str) -> bool:
     if not check_local_dir(create_if_absent=True):
         log_error('Cant create local dir.')
         return False
-    for tries in range(2):
+    for _ in range(2):
         try:
             subprocess.run(
                 ['curl', url, '-o', f'{LocalDir}/get-pip.py'],
@@ -264,7 +268,7 @@ def download_pip(url: str) -> bool:
             break
         except subprocess.TimeoutExpired:
             pass
-    for tries in range(2):
+    for _ in range(2):
         try:
             subprocess.run(
                 ['wget', url, '-O', f'{LocalDir}/get-pip.py'],
@@ -300,10 +304,9 @@ def install_pip() -> bool:
         reply = re.sub(r'^\s*WARNING:.*\n?', '', full_reply, flags=re.MULTILINE + re.IGNORECASE)
         if len(reply) == 0:
             return True
-        else:
-            log_error(f'get-pip returned:\n{full_reply}')
-    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as e:
-        log_error(f'install_pip raised {type(e).__name__}: {str(e)}')
+        log_error(f'get-pip returned:\n{full_reply}')
+    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
+        log_error(f'install_pip raised {type(exception_info).__name__}: {str(exception_info)}')
     finally:
         try:
             os.remove(f'{LocalDir}/get-pip.py')
@@ -329,10 +332,9 @@ def pip_call(parameters, user_cache: bool = True) -> [bool, str]:
         reply = re.sub(r'^\s*WARNING:.*\n?', '', full_reply, flags=re.MULTILINE + re.IGNORECASE)
         if len(reply) == 0:
             return True, result.stdout.decode('utf-8')
-        else:
-            return False, result.stderr.decode('utf-8')
-    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as e:
-        return False, f'pip_call raised {type(e).__name__}: {str(e)}'
+        return False, result.stderr.decode('utf-8')
+    except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
+        return False, f'pip_call raised {type(exception_info).__name__}: {str(exception_info)}'
 
 
 def check() -> dict:
@@ -343,11 +345,10 @@ def check() -> dict:
            'video_required': check_video(),
            'errors': ErrorsContainer,
            'warnings': db.get_warnings(),
-           'list': {
+           'installed_list': {
                'required': add_package_info(RequiredPackagesList),
                'optional': add_package_info(OptionalPackagesList),
-               'boost': add_package_info(get_all_boost_packages())
-                    }
+               'boost': add_package_info(get_all_boost_packages())}
            }
     if not ErrorsContainer:
         if not ret['required']:
@@ -365,14 +366,14 @@ def install(packages_list: dict) -> int:
             log_error('Cant run pip after local install.')
             return 1
     ret = 0
-    if len(packages_list):
+    if packages_list:
         if not check_local_dir(create_if_absent=True):
             log_error('Cant create local dir for packages.')
             return 1
-    for x in packages_list:
-        a, b = pip_call(['install', packages_list[x]])
-        if not a:
-            log_error(f'Error during install {x}({packages_list[x]}).\nError:\n{b}')
+    for package in packages_list:
+        call_result, message = pip_call(['install', packages_list[package]])
+        if not call_result:
+            log_error(f'Error during install {package}({packages_list[package]}).\nError:\n{message}')
             ret = 1
     if ret:
         return 1
@@ -387,14 +388,14 @@ def install(packages_list: dict) -> int:
 def update(packages: list) -> int:
     ret = 0
     if not is_pip_present(only_global=True):
-        a, b = pip_call(['install', '--upgrade', 'pip'])
-        if not a:
-            log_error(f'Error during upgrading pip.\nError:\n{b}')
+        call_result, message = pip_call(['install', '--upgrade', 'pip'])
+        if not call_result:
+            log_error(f'Error during upgrading pip.\nError:\n{message}')
             ret = 1
     for package in packages:
-        a, b = pip_call(['install', '--upgrade', package])
-        if not a:
-            log_error(f'Error during upgrading {package}.\nError:\n{b}')
+        call_result, message = pip_call(['install', '--upgrade', package])
+        if not call_result:
+            log_error(f'Error during upgrading {package}.\nError:\n{message}')
             ret = 1
     return ret
 
@@ -402,9 +403,9 @@ def update(packages: list) -> int:
 def delete(packages: list) -> int:
     ret = 0
     for package in packages:
-        a, b = pip_call(['uninstall', package, '-y'], user_cache=False)
-        if not a:
-            log_error(f'Error during uninstall {package}.\nError:\n{b}')
+        call_result, message = pip_call(['uninstall', package, '-y'], user_cache=False)
+        if not call_result:
+            log_error(f'Error during uninstall {package}.\nError:\n{message}')
             ret = 1
     return ret
 
@@ -447,4 +448,4 @@ if __name__ == '__main__':
     elif args.delete:
         exit_code = delete(args.delete)
         print(json.dumps(check()))
-    exit(exit_code)
+    sys.exit(exit_code)

@@ -11,13 +11,13 @@
 	<author mail="bigcat88@icloud.com">Alexander Piskun</author>
 	<namespace>MediaDC</namespace>
 	<documentation>
-		<admin>https://gitlab.com/andrey18106x/mediadc-dev/-/wikis/home</admin>
+		<admin>https://github.com/andrey18106/mediadc/wiki</admin>
 	</documentation>
 	<category>tools</category>
 	<website>https://github.com/andrey18106/mediadc</website>
 	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
 	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
-	<screenshot>https://gitlab.com/andrey18106x/mediadc-dev/-/raw/959f81f563a239c8ca6046fe4689ae4b47db9d39/screenshots/screenshot.png</screenshot>
+	<screenshot>https://github.com/andrey18106/mediadc/blob/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="21" max-version="22" />
 		<python min-version="3.6.8" />
@@ -29,13 +29,19 @@
 		<install>
 			<step>OCA\MediaDC\Migration\AppDataInitializationStep</step>
 		</install>
+		<!-- <uninstall>
+			<step>OCA\MediaDC\Migration\AppDataCleanupStep</step>
+		</uninstall> -->
+		<pre-migration>
+			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
+		</pre-migration>
 	</repair-steps>
 	<commands>
 		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>
 		<command>OCA\MediaDC\Command\CollectorCleanupCommand</command>
 	</commands>
 	<background-jobs>
-		<job>OCA\Mediadc\BackgroundJob\CollectorCleanupJob</job>
+		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
 	</background-jobs>
 	<navigations>
 		<navigation>

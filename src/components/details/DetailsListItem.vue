@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -24,19 +25,19 @@
 <template>
 	<div class="details-list-item">
 		<div class="details-list-item-title">
-			<span class="icon-projects" style="margin: 0 5px 0 0;" />
+			<span class="icon-projects" style="margin: 0 10px 0 0;" />
 			<span class="group-info" @click="openDetailFiles(detail)">
-				{{ t('mediadc', 'Duplicate group') }} #{{ detail.id }} ({{ JSON.parse(detail.group_file_ids).length }}
+				{{ t('mediadc', 'Duplicate group') }} #{{ detail.id }} ({{ JSON.parse(detail.group_files_ids).length }}
 				{{ t('mediadc', 'file(s)') }}{{ files.length > 0 ? ' - ' + formatBytes(getGroupFilesSize(files)) : '' }})
 			</span>
 			<span :class="!opened ? 'icon-triangle-s open-details-btn' : 'icon-triangle-n open-details-btn'" />
 			<span class="icon-delete delete-group-btn" @click="deleteTaskDetail(detail)" />
 		</div>
-		<div v-if="opened && JSON.parse(detail.group_file_ids).length > itemsPerPage" class="pagination">
+		<div v-if="opened && JSON.parse(detail.group_files_ids).length > itemsPerPage" class="pagination">
 			<span class="icon-view-previous pagination-button"
 				@click="openPrevDetailFiles(detail)" />
 			<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
-			<span>{{ page + 1 }}/{{ Math.ceil(JSON.parse(detail.group_file_ids).length / itemsPerPage) }}</span>
+			<span>{{ page + 1 }}/{{ Math.ceil(JSON.parse(detail.group_files_ids).length / itemsPerPage) }}</span>
 			<span class="icon-view-next pagination-button"
 				@click="openNextDetailFiles(detail)" />
 		</div>
@@ -51,6 +52,7 @@ import DetailsGroupList from './DetailsGroupList'
 import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
+import { emit } from '@nextcloud/event-bus'
 
 export default {
 	name: 'DetailsListItem',
@@ -101,7 +103,7 @@ export default {
 			}
 		},
 		openNextDetailFiles(detail) {
-			if (this.page < Math.ceil(JSON.parse(detail.group_file_ids).length / this.itemsPerPage) - 1) {
+			if (this.page < Math.ceil(JSON.parse(detail.group_files_ids).length / this.itemsPerPage) - 1) {
 				this.page += 1
 				const taskId = detail.task_id
 				const detailId = detail.id
@@ -151,6 +153,7 @@ export default {
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${detail.task_id}/detail/${detail.id}`)).then(res => {
 					if (res.data.success) {
 						this.$store.dispatch('deleteDetail', detail)
+						emit('updateTaskInfo')
 						showSuccess(t('mediadc', 'Duplicate group succesffully removed'))
 					} else {
 						showError(t('mediadc', 'Some error occured while deleting duplicate group'))
@@ -221,12 +224,19 @@ body.theme--dark .pagination-button:active {
 	display: inline-flex;
 	width: 16px;
 	height: 16px;
+	margin: 0 10px;
 }
 
 .delete-group-btn {
 	visibility: hidden;
 	cursor: pointer;
 	margin: 0 10px;
+}
+
+@media (max-width: 540px) {
+	.delete-group-btn {
+		visibility: visible;
+	}
 }
 
 .details-list-item:hover .delete-group-btn {

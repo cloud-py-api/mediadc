@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -23,12 +24,14 @@
 
 <template>
 	<div class="file-thumb" @click="openFile(file)">
-		<img v-show="loaded"
-			:key="file.filepath"
-			:src="imageUrl"
-			:alt="file.filename"
-			:title="file.filepath"
-			@load="onLoad">
+		<div v-if="file.filempart === 'image'" style="display: flex;">
+			<img v-show="loaded"
+				:key="file.filepath"
+				:src="imageUrl"
+				:alt="file.filename"
+				:title="file.filepath"
+				@load="onLoad">
+		</div>
 		<div v-show="!loaded && file.filempart === 'video'"
 			class="placeholder"
 			:style="'min-height: ' + detailsGridSize + 'px'"
@@ -45,7 +48,8 @@
 		</div>
 		<div v-show="!loaded && file.filempart === 'image'"
 			class="placeholder"
-			:style="'min-height: ' + detailsGridSize + 'px'">
+			:style="'min-height: ' + detailsGridSize + 'px'"
+			:title="file.filepath">
 			<svg width="50%"
 				enable-background="new 0 0 512 512"
 				version="1.1"
@@ -109,7 +113,6 @@ export default {
 			})
 		},
 		onLoad() {
-			console.debug('[DetailsFile] loaded')
 			this.loaded = true
 		},
 	},

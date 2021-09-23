@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -86,7 +87,7 @@
 				<p>{{ t('mediadc', 'Not installed video_required packages:') }} {{ video_required }}</p>
 				<p>{{ t('mediadc', 'video_required packages can\'t be installed automatically, this should be done by administrator manually and then recheck installation on this page.') }}</p>
 			</div>
-			<div v-if="Object.keys(packages_list).length > 0" class="dependencies-table">
+			<div v-if="Object.keys(installed_list).length > 0" class="dependencies-table">
 				<table>
 					<div v-show="updating" class="action-blackout">
 						<span class="icon-loading" />
@@ -101,18 +102,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="listName in Object.keys(packages_list).sort((first, second) => first > second)" :key="listName">
+						<tr v-for="listName in Object.keys(installed_list).sort((first, second) => first > second)" :key="listName">
 							<td>{{ listName }}</td>
 							<td>
-								<span v-for="(packageName, index) in Object.keys(packages_list[listName])" :key="packageName" class="package">
+								<span v-for="(packageName, index) in Object.keys(installed_list[listName])" :key="packageName" class="package">
 									<span class="package-title">
-										{{ packages_list[listName][packageName].package }}{{ (index !== Object.keys(packages_list[listName]).length - 1) ? ', ' : '' }}
+										{{ installed_list[listName][packageName].package }}{{ (index !== Object.keys(installed_list[listName]).length - 1) ? ', ' : '' }}
 									</span>
 									<div class="package-tooltip">
-										<span v-if="packages_list[listName][packageName].version !== 'none'"
+										<span v-if="installed_list[listName][packageName].version !== 'none'"
 											class="tooltip-content">
-											{{ packages_list[listName][packageName].location }}:
-											{{ packages_list[listName][packageName].version }}
+											{{ installed_list[listName][packageName].location }}:
+											{{ installed_list[listName][packageName].version }}
 										</span>
 										<span v-else class="tooltip-content">
 											{{ t('mediadc', 'Not installed') }}
@@ -120,17 +121,17 @@
 									</div>
 								</span>
 							</td>
-							<td>{{ installed_packages_list[listName].length === 0 }}</td>
+							<td>{{ not_installed_list[listName].length === 0 }}</td>
 							<td>
-								<button :disabled="installed_packages_list[listName].length === 0"
+								<button :disabled="not_installed_list[listName].length === 0"
 									@click="installDepsList(listName)">
 									{{ t('mediadc', 'Install') }}
 								</button>
-								<button :disabled="installed_packages_list[listName].length !== 0"
+								<button :disabled="not_installed_list[listName].length > 0"
 									@click="updateDepsList(listName)">
 									{{ t('mediadc', 'Update') }}
 								</button>
-								<button :disabled="installed_packages_list[listName].length !== 0"
+								<button :disabled="not_installed_list[listName].length > 0"
 									@click="deleteDepsList(listName)">
 									{{ t('mediadc', 'Delete') }}
 								</button>
@@ -244,7 +245,7 @@ a {
 
 .package-tooltip {
 	display: none;
-	padding: 0 3px;
+	padding: 0 5px;
 	border-radius: 5px;
 	background-color: #000;
 	color: #fff;

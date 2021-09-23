@@ -1,31 +1,30 @@
-import os
-import fnmatch
+"""
+Helper functions related to get files content or storages info.
+"""
+
 import db
 
 
-"""
-/**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @author 2021 Alexander Piskun <bigcat88@icloud.com>
- *
- * @license GNU AGPL version 3 or any later version
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-"""
+# @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+#
+# @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @author 2021 Alexander Piskun <bigcat88@icloud.com>
+#
+# @license AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 StoragesInfo = []
@@ -37,18 +36,13 @@ def get_file_data(file_info: dict, data_dir: str, remote_filesize_limit: int) ->
         full_path = get_file_full_path(data_dir, file_info['storage'], file_info['path'])
         if not full_path:
             break
-        h_file = None
-        data = bytes(b'')
         try:
-            h_file = open(full_path, "rb")
-            data = h_file.read()
-        except OSError:                     # if we can open file, and exception during read of file - ignore file.
-            if h_file is None:              # we want only require file from php if we cant open it.
-                break
-        finally:
-            if h_file is not None:
-                h_file.close()
-        return data
+            with open(full_path, "rb") as h_file:
+                data = h_file.read()
+                return data
+        except Exception as exception_info:
+            print(f"Exception during reading: {full_path}\n {str(exception_info)}")
+            break
     if file_info['size'] > remote_filesize_limit:
         return b''
     return request_file_from_php(file_info)
@@ -56,7 +50,7 @@ def get_file_data(file_info: dict, data_dir: str, remote_filesize_limit: int) ->
 
 def request_file_from_php(file_info: dict) -> bytes:
     user_id = get_storage_user_id(file_info['storage'])
-    if not len(user_id):
+    if not user_id:
         return bytes(b'')
     success, err_or_data = db.occ_call('mediadc:tasks:filecontents', str(file_info['fileid']), user_id, decode=False)
     if not success:
@@ -94,29 +88,21 @@ def update_storages_info():
 
 
 def get_storage_info(storage_id: int):
-    for x in StoragesInfo:
-        if x['numeric_id'] == storage_id:
-            return x
+    for storage_info in StoragesInfo:
+        if storage_info['numeric_id'] == storage_id:
+            return storage_info
     return {}
 
 
 def get_storage_mount_point(storage_id: int) -> str:
-    for x in StoragesInfo:
-        if x['numeric_id'] == storage_id:
-            return x['mount_point']
+    for storage_info in StoragesInfo:
+        if storage_info['numeric_id'] == storage_id:
+            return storage_info['mount_point']
     return ''
 
 
 def get_storage_user_id(storage_id: int) -> str:
-    for x in StoragesInfo:
-        if x['numeric_id'] == storage_id:
-            return x['user_id']
+    for storage_info in StoragesInfo:
+        if storage_info['numeric_id'] == storage_id:
+            return storage_info['user_id']
     return ''
-
-
-def is_path_in_exclude(path: str, exclude: list) -> bool:
-    name = os.path.basename(path)
-    for e in exclude:
-        if fnmatch.fnmatch(name, e):
-            return True
-    return False

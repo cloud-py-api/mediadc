@@ -11,11 +11,14 @@
 		"cs:fix": "php-cs-fixer fix",
 		"cs:check": "php-cs-fixer fix --dry-run --diff",
 		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
-		"psalm": "psalm.phar"
+		"psalm": "psalm.phar",
+		"test:unit": "phpunit -c tests/phpunit.unit.xml --fail-on-warning"
 	},
 	"require-dev": {
-		"nextcloud/coding-standard": "^0.5.0",
-		"christophwurst/nextcloud": "v21.0.0",
-		"psalm/phar": "^4.6"
+		"christophwurst/nextcloud": "v20.0.7",
+		"roave/security-advisories": "dev-master",
+		"psalm/phar": "^4.6",
+		"phpunit/phpunit": "^9.5",
+		"christophwurst/nextcloud_testing": "^0.12.4"
 	}
 }

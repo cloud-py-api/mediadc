@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -27,7 +28,7 @@
 			<div v-for="file in files"
 				:key="file.fileid"
 				class="file"
-				:style="'width: ' + detailsGridSize + 'px; min-height: ' + detailsGridSize + 'px;'">
+				:style="'width: ' + detailsGridSize + 'px;'">
 				<DetailsFile :file="file" :files="files" />
 				<div class="file-info">
 					<span class="filename">{{ file.filename }}</span>
@@ -49,6 +50,8 @@ import { generateUrl } from '@nextcloud/router'
 import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import DetailsFile from './DetailsFile'
+import { emit } from '@nextcloud/event-bus'
+import { showError, showWarning } from '@nextcloud/dialogs'
 
 export default {
 	name: 'DetailsGroupList',
@@ -74,11 +77,22 @@ export default {
 			if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${file.taskId}/files/${file.detailId}/${file.fileid}`))
 					.then(res => {
-						const files = this.files
-						const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
-						files.splice(fileidIndex, 1)
-						this.$emit('update:files', files)
-						this.$store.dispatch('setTask', res.data.task)
+						if (res.data.success) {
+							const files = this.files
+							const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
+							files.splice(fileidIndex, 1)
+							this.$emit('update:files', files)
+							emit('updateTaskInfo')
+							this.$store.dispatch('setTask', res.data.task)
+						} else if ('locked' in res.data && res.data.locked) {
+							showWarning(t('mediadc', 'Wait until file loaded before deleting'))
+						} else {
+							showError(t('mediadc', 'Some error occured while deleting file'))
+						}
+					})
+					.catch(err => {
+						console.debug(err)
+						showError(t('mediadc', 'Some error occured while deleting file'))
 					})
 			}
 		},
@@ -101,7 +115,7 @@ body.theme--dark .details-group {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	max-height: 70vh;
+	max-height: 90vh;
 	overflow-y: scroll;
 }
 

@@ -1,13 +1,15 @@
 <?php
 
 declare(strict_types=1);
+
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -31,7 +33,7 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
-use OCA\MediaDC\Dashboard\ActiveTasksWidget;
+use OCA\MediaDC\Dashboard\RecentTasksWidget;
 
 
 class Application extends App implements IBootstrap {
@@ -42,7 +44,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
-		$context->registerDashboardWidget(ActiveTasksWidget::class);
+		$context->registerDashboardWidget(RecentTasksWidget::class);
 	}
 
 	public function boot(IBootContext $context): void {

@@ -1,10 +1,11 @@
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  *
  * @author Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -57,7 +58,7 @@ const getContentType = (xml) => {
 	}
 }
 
-const requestFileInfo = async(path) => {
+const requestFileInfo = async (path) => {
 	const davPath = `${generateRemoteUrl('dav')}/files/${getCurrentUser().uid}${path}`
 	return await axios({
 		method: 'PROPFIND',

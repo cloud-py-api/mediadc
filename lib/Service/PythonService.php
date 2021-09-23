@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *!
  */
 
 namespace OCA\MediaDC\Service;
@@ -30,22 +32,18 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Exception\PythonNotValidException;
-use Psr\Log\LoggerInterface;
+
 
 class PythonService {
 
 	/** @var string */
 	private $cwd;
 
-	/** @var LoggerInterface */
-	private $logger;
-
 	/** @var string */
 	private $pythonCommand;
 
-	public function __construct(SettingMapper $settingMapper, LoggerInterface $logger)
+	public function __construct(SettingMapper $settingMapper)
 	{
-		$this->logger = $logger;
 		/** @var Setting */
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
@@ -60,7 +58,7 @@ class PythonService {
 	 * 
 	 * @param string $scriptName relative path to the Python script
 	 * @param array $scriptParams params to script in array (`['-param1' => value1, '--param2' => value2]`)
-	 * @param Boolean $nonBlocking flag that determines how to run Python script.
+	 * @param boolean $nonBlocking flag that determines how to run Python script.
 	 * @param array $env env variables for python script
 	 * 
 	 * @return array|void
@@ -94,9 +92,11 @@ class PythonService {
 	}
 
 	/**
+	 * @param string @listName
+	 * 
 	 * @return array installation results list
 	 */
-	public function installDependencies(string $listName = ''): array {
+	public function installDependencies($listName = '') {
 		try {
 			$pythonResult = $this->run('/install.py', [
 				'--install' => $listName === '' ? 'required optional' : $listName,
@@ -113,7 +113,7 @@ class PythonService {
 	/**
 	 * @return array list of uninstalled Python packages
 	 */
-	public function checkInstallation(): array {
+	public function checkInstallation() {
 		try {
 			$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
 			return $this->parsePythonOutput($pythonResult);
@@ -126,9 +126,11 @@ class PythonService {
 	}
 
 	/**
+	 * @param array $packagesList
+	 * 
 	 * @return array installed packages list after deleting
 	 */
-	public function deleteDependencies(array $packagesList = []): array {
+	public function deleteDependencies($packagesList = []) {
 		try {
 			$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
 			return $this->parsePythonOutput($pythonResult);
@@ -141,9 +143,11 @@ class PythonService {
 	}
 
 	/**
+	 * @param array $packagesList
+	 * 
 	 * @return array installed packages list after deleting
 	 */
-	public function updateDependencies(array $packagesList = []): array {
+	public function updateDependencies($packagesList = []) {
 		try {
 			$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
 			return $this->parsePythonOutput($pythonResult);
@@ -172,7 +176,7 @@ class PythonService {
 	 * 
 	 * @return bool $isCompatible
 	 */
-	public function isPythonCompatible(): bool {
+	public function isPythonCompatible() {
 		$pythonVersion = $this->getPythonVersion();
 		if ($pythonVersion === null) {
 			return false;
@@ -202,7 +206,7 @@ class PythonService {
 	 *
 	 * @return string
 	 */
-	public function getPhpInterpreter(): string {
+	public function getPhpInterpreter() {
 		static $cachedExecutable = null;
 
 		if ($cachedExecutable !== null) {
@@ -247,7 +251,12 @@ class PythonService {
 		return $cachedExecutable;
 	}
 
-	private function parsePythonOutput(array $pythonResult): array {
+	/**
+	 * @param array $pythonResult
+	 * 
+	 * @return array
+	 */
+	private function parsePythonOutput($pythonResult) {
 		$output = $pythonResult['output'];
 		$result_code = $pythonResult['result_code'];
 		if (count($output) > 0) {
@@ -270,8 +279,8 @@ class PythonService {
 			if (isset($result['available_algorithms'])) {
 				$available_algorithms = $result['available_algorithms'];
 			}
-			if (isset($result['list'])) {
-				$list = $result['list'];
+			if (isset($result['installed_list'])) {
+				$installed_list = $result['installed_list'];
 			}
 			if (isset($result['errors'])) {
 				$errors = $result['errors'];
@@ -288,7 +297,7 @@ class PythonService {
 			'optional' => $optional,
 			'boost' => $boost,
 			'available_algorithms' => $available_algorithms,
-			'list' => $list,
+			'installed_list' => $installed_list,
 			'errors' => $errors,
 			'warnings' => $warnings,
 		];

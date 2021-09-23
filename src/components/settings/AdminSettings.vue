@@ -1,10 +1,11 @@
 <!--
- - @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- - @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ -
+ - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @license GNU AGPL version 3 or any later version
+ - @license AGPL-3.0-or-later
  -
  - This program is free software: you can redistribute it and/or modify
  - it under the terms of the GNU Affero General Public License as
@@ -157,7 +158,7 @@
 					v-model="remote_filesize_limit"
 					type="number"
 					name="remote_filesize_limit"
-					min="3"
+					min="0"
 					step="0.1"
 					@input="updateRemoteFilesizeLimit">
 				<p class="setting-description">

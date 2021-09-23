@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
- *
+ * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * 
+ * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * 
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -22,6 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 namespace OCA\MediaDC\Db;
@@ -34,17 +36,12 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
 use OCP\DB\IResult;
-use Psr\Log\LoggerInterface;
+
 
 class PhotoMapper extends QBMapper {
 
-	/** @var LoggerInterface */
-	private $logger;
-
-	public function __construct(IDBConnection $db, LoggerInterface $logger) {
+	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_photos');
-
-		$this->logger = $logger;
 	}
 
 	/**
@@ -61,17 +58,6 @@ class PhotoMapper extends QBMapper {
 			);
 
 		return $this->findEntity($qb);
-	}
-
-	public function findAll($limit=null, $offset=null): array {
-		$qb = $this->db->getQueryBuilder();
-
-		$qb->select('*')
-			->from($this->tableName)
-			->setMaxResults($limit)
-			->setFirstResult($offset);
-
-		return $this->findEntities($qb);
 	}
 
 	public function findAllFileids($limit=null, $offset=null): array {
