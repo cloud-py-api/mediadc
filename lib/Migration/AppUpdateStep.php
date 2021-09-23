@@ -45,13 +45,18 @@ class AppUpdateStep implements IRepairStep {
 	/** @var SettingsService */
 	private $settingsService;
 
-	public function __construct(PythonService $pythonService, SettingsService $settingsService) {
+	/** @var LoggerInterface */
+	private $logger;
+
+	public function __construct(PythonService $pythonService, SettingsService $settingsService,
+								LoggerInterface $logger) {
 		$this->pythonService = $pythonService;
 		$this->settingsService = $settingsService;
+		$this->logger = $logger;
 	}
 
 	public function getName(): string {
-		return "Cleanup MediaDC static tables data";
+		return "Python dependencies update along with MediaDC app update";
 	}
 
 	public function run(IOutput $output) {
@@ -66,7 +71,7 @@ class AppUpdateStep implements IRepairStep {
 				} else {
 					$installResult = $this->pythonService->installDependencies('required optional boost');
 				}
-				if ($installResult['success'] && count($installResult['errors']) === 0) {
+				if ($installResult['installed']) {
 					$installed['not_installed_list'] = [
 						'required' => $installResult['required'],
 						'optional' => $installResult['optional'],
@@ -78,6 +83,8 @@ class AppUpdateStep implements IRepairStep {
 					$installed['available_algorithms'] = $installResult['available_algorithms'];
 					$installedSetting->setValue(json_encode($installed));
 					$this->settingsService->updateSetting($installedSetting);
+				} else {
+					$this->logger->error('[AppUpdateStep] Python dependencies update error: ' . json_encode($installResult));
 				}
 			}
 		}

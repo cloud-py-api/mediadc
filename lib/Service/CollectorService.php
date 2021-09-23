@@ -47,7 +47,7 @@ use OCA\MediaDC\Db\CollectorTaskDetail;
 use OCA\MediaDC\Db\CollectorTaskDetailMapper;
 use OCA\MediaDC\Service\PythonService;
 use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
-
+use OCP\Lock\LockedException;
 
 class CollectorService {
 
@@ -540,7 +540,7 @@ class CollectorService {
 	 * 
 	 * @return array $result
 	 */
-	public function deteleTaskDetailFile($taskId, $taskDetailId, $fileid) {
+	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid) {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$deletedFilesCount = $collectorTask->getDeletedFilesCount();
@@ -579,6 +579,11 @@ class CollectorService {
 					'taskDetail' => $updatedTaskDetail,
 					'fileid' => $fileid,
 					'filesize' => $filesize,
+				];
+			} catch (LockedException $e) {
+				return [
+					'success' => false,
+					'locked' => true
 				];
 			} catch (NotPermittedException | NotFoundException $e) {
 				return [

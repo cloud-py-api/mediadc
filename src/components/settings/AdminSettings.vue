@@ -158,7 +158,7 @@
 					v-model="remote_filesize_limit"
 					type="number"
 					name="remote_filesize_limit"
-					min="3"
+					min="0"
 					step="0.1"
 					@input="updateRemoteFilesizeLimit">
 				<p class="setting-description">

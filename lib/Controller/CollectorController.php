@@ -239,7 +239,7 @@ class CollectorController extends Controller {
 	 */
 	public function deleteTaskDetailFile(int $taskId, int $taskDetailId, int $fileId): JSONResponse {
 		if ($taskDetailId && $fileId) {
-			return new JSONResponse($this->service->deteleTaskDetailFile($taskId, $taskDetailId, $fileId), Http::STATUS_OK);
+			return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $taskDetailId, $fileId), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
