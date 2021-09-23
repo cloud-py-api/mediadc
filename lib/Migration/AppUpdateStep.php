@@ -83,8 +83,11 @@ class AppUpdateStep implements IRepairStep {
 					$installed['available_algorithms'] = $installResult['available_algorithms'];
 					$installedSetting->setValue(json_encode($installed));
 					$this->settingsService->updateSetting($installedSetting);
+					if (count($installResult['errors']) > 0) {
+						$this->logger->warning('[AppUpdateStep] Python dependencies updated with some errors: ' . json_encode($installResult));
+					}
 				} else {
-					$this->logger->error('[AppUpdateStep] Python dependencies update error: ' . json_encode($installResult));
+					$this->logger->error('[AppUpdateStep] Python dependencies updating error: ' . json_encode($installResult));
 				}
 			}
 		}
