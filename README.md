@@ -3,7 +3,7 @@
 ![build](https://github.com/andrey18106/mediadc/actions/workflows/build.yml/badge.svg)
 ![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg)
 
-**📸📹 Collect photo and video duplicates to save your cloud storage**
+**📸📹 Collect photo and video duplicates to save your cloud storage space**
 
 ![Home page](/screenshots/screenshot.png)
 ![Home page](/screenshots/screenshot2.png)
@@ -11,7 +11,7 @@ Nextcloud Media Duplicate Collector application
 
 ## Why is this so awesome?
 
-* **♻ Deletes a huge amount of duplicate photos/videos with different resolutions, sizes and formats**
+* **♻ Detects a huge amount of duplicate photos/videos with different resolutions, sizes and formats**
 * **💡 Easily saves your cloud storage space and time for sorting**
 * **⚙ Flexible configuration**
 
