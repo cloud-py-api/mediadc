@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: make
 
-      - name: Get release name
+      - name: Get names
         id: get_version
         run: |
           APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
@@ -52,7 +52,7 @@ jobs:
           path: build/artifacts/${{ env.APP_NAME }}.tar.gz
           if-no-files-found: error
 
-      - name: Upload app to release
+      - name: Create release draft
         uses: ncipollo/release-action@v1.8.8
         with:
           name: ${{ steps.get_version.outputs.version }}
