@@ -19,7 +19,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'tar'
-          filename: 'Source code.tar.gz'
+          filename: 'Sources.tar.gz'
           exclusions: '*.git*'
 
       - name: Setup Node
@@ -59,6 +59,6 @@ jobs:
           tag: ${{ steps.get_version.outputs.tag }}
           commit: ${{ github.ref }}
           draft: true
-          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz,Source code.tar.gz"
+          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz,Sources.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true
