@@ -8,16 +8,17 @@
 	<version>0.1.0</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
-	<author mail="bigcat88@icloud.com">Alexander Piskun</author>
+	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
 	<namespace>MediaDC</namespace>
 	<documentation>
 		<admin>https://github.com/andrey18106/mediadc/wiki</admin>
 	</documentation>
 	<category>tools</category>
+	<category>multimedia</category>
 	<website>https://github.com/andrey18106/mediadc</website>
 	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
 	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
-	<screenshot>https://github.com/andrey18106/mediadc/blob/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="21" max-version="22" />
 		<python min-version="3.6.8" />
