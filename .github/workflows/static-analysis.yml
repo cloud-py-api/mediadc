@@ -149,3 +149,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checks passed
+        run: echo "Checks passed"
