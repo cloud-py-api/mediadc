@@ -1,9 +1,7 @@
 name: Testing
 
 on:
-  pull_request:
-  push:
-    branches: [test, main]
+  workflow_dispatch:
 
 
 jobs:
