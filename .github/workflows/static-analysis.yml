@@ -59,13 +59,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-# https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
-# do we need this step? this is already installed in github's ubuntu...
-      # - name: Setup Node
-      #   uses: actions/setup-node@v2.4.0
-      #   with:
-      #     node-version: 14.x
-
       - name: Install dependencies
         run: npm ci
 
@@ -146,12 +139,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-# https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#installed-software
-# do we need this step? this is already installed in github's ubuntu...
-      # - name: Setup Node
-      #   uses: actions/setup-node@v2.4.0
-      #   with:
-      #     node-version: 14.x
-
       - name: Audit
         run: npm audit
+
+  checks_status:
+    needs: [changes, linters-php, linters-js, linters-python, security-analysis, psalm-analysis, npm-audit]
+    if: ${{ always() && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
+    name: checks-status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checks passed
