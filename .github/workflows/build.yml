@@ -1,7 +1,7 @@
-name: Build, Release
+name: Create Release
 
 on:
-  create:
+  workflow_dispatch:
 
 env:
   APP_NAME: mediadc
@@ -9,7 +9,6 @@ env:
 jobs:
   build_app:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     name: Build and package app
 
     steps:
@@ -40,7 +39,6 @@ jobs:
 
   create_release:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     name: Create release draft
     needs: [build_app]
 
@@ -54,12 +52,18 @@ jobs:
       - name: Get release name
         id: get_version
         run: |
-          echo "::set-output name=version::${GITHUB_REF##refs/tags/v}"
+          ls -la pub_release
+          APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" pub_release/appinfo/info.xml)
+          echo $APP_VERSION
+          echo "::set-output name=version::${APP_VERSION}"
+          echo "::set-output tag=v${APP_VERSION}"
 
       - name: Upload app to release
         uses: ncipollo/release-action@v1.8.8
         with:
           name: ${{ steps.get_version.outputs.version }}
+          tag: ${{ steps.get_version.outputs.tag }}
+          commit: ${{ github.ref }}
           draft: true
           artifacts: pub_release/*
           token: ${{ secrets.GITHUB_TOKEN }}
