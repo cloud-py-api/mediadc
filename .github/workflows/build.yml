@@ -15,6 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Archive Source
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'tar'
+          filename: 'Source code.tar.gz'
+          exclusions: '*.git*'
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -28,8 +35,8 @@ jobs:
         run: |
           APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
           echo $APP_VERSION
-          echo "::set-output name=version::${APP_VERSION}"
-          echo "::set-output name=tag::t${APP_VERSION}"
+          echo "::set-output name=version::v${APP_VERSION}"
+          echo "::set-output name=tag::v${APP_VERSION}"
 
       - name: Install Krankerl
         run: |
@@ -52,5 +59,6 @@ jobs:
           tag: ${{ steps.get_version.outputs.tag }}
           commit: ${{ github.ref }}
           draft: true
-          artifacts: build/artifacts/${{ env.APP_NAME }}.tar.gz
+          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz,Source code.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
+          artifactErrorsFailBuild: true
