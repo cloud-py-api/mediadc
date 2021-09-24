@@ -36,7 +36,7 @@ jobs:
           APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
           echo $APP_VERSION
           echo "::set-output name=version::v${APP_VERSION}"
-          echo "::set-output name=tag::v${APP_VERSION}"
+          echo "::set-output name=tag::t${APP_VERSION}"
 
       - name: Install Krankerl
         run: |
