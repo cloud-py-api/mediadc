@@ -1,6 +1,6 @@
 # Nextcloud MediaDC
 
-![build](https://github.com/andrey18106/mediadc/actions/workflows/build.yml/badge.svg)
+![build](https://github.com/andrey18106/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
 ![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg)
 
 **📸📹 Collect photo and video duplicates to save your cloud storage space**

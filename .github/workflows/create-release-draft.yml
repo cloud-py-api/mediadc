@@ -1,11 +1,7 @@
-name: Build, Release
+name: Create Release
 
 on:
-  pull_request:
-    branches: [main]
-    types: [closed]
-    tags:
-      - v*
+  workflow_dispatch:
 
 env:
   APP_NAME: mediadc
@@ -13,12 +9,18 @@ env:
 jobs:
   build_app:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v') && github.event.pull_request.merged == true
-    name: Build and package app
+    name: Build and create release
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Archive Source
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: 'Sources.zip'
+          exclusions: '*.git*'
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -27,6 +29,14 @@ jobs:
 
       - name: Build
         run: make
+
+      - name: Get names
+        id: get_version
+        run: |
+          APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
+          echo $APP_VERSION
+          echo "::set-output name=version::v${APP_VERSION}"
+          echo "::set-output name=tag::v${APP_VERSION}"
 
       - name: Install Krankerl
         run: |
@@ -42,27 +52,13 @@ jobs:
           path: build/artifacts/${{ env.APP_NAME }}.tar.gz
           if-no-files-found: error
 
-  create_release:
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v') && github.event.pull_request.merged == true
-    name: Build and package app
-    needs: [build_app]
-
-    steps:
-      - name: Collect app build
-        uses: actions/download-artifact@v2
-        with:
-          name: tarball
-
-      - name: Get release name
-        id: get_version
-        run: |
-          echo "::set-output name=version::${GITHUB_REF##refs/tags/v}"
-
-      - name: Upload app to release
+      - name: Create release draft
         uses: ncipollo/release-action@v1.8.8
         with:
           name: ${{ steps.get_version.outputs.version }}
+          tag: ${{ steps.get_version.outputs.tag }}
+          commit: ${{ github.ref }}
           draft: true
-          artifacts: tarball
+          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz,Sources.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          artifactErrorsFailBuild: true
