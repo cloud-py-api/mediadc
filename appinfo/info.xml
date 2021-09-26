@@ -4,8 +4,17 @@
 	<id>mediadc</id>
 	<name>MediaDC</name>
 	<summary>Nextcloud Media Duplicate Collector application</summary>
-	<description>**📸📹 Collect photo and video duplicates to save your cloud storage**</description>
-	<version>0.1.0</version>
+	<description><![CDATA[This app allows to find duplicate or similar 📸📹 photos and videos
+
+* **Large amount of supporting image formats** Jpeg, png, tiff, bmp, gif, heic/hif and others…
+* **Large amount of supported video  formats** All that is supported by ffmpeg...
+* **Flexible task config** Set your precision level for comparing, choose algo that suits for you most.
+* **Quick rescan** Once file was scanned, hash from it will be saved, and no need to load file data for other scans.
+* **Works with External Storages** [in progress] Easy find duplicates between different Nextcloud instances.
+* **Save your time and cloud space** The title says all...
+Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
+    ]]></description>
+	<version>0.1.1</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
@@ -18,6 +27,9 @@
 	<website>https://github.com/andrey18106/mediadc</website>
 	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
 	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="21" max-version="22" />
