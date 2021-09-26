@@ -108,7 +108,7 @@ export default {
 	width: 100%;
 	margin: 10px;
 	max-width: 600px;
-	max-height: 480px;
+	max-height: 482px;
 	min-height: 410px;
 	overflow-y: scroll;
 }

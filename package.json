@@ -1,11 +1,11 @@
 {
 	"name": "mediadc",
 	"description": "Collect photo and video duplicates to save your cloud storage",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": "Andrey Borysenko <andrey18106x@gmail.com>",
 	"contributors": [
 		"Andrey Borysenko <andrey18106x@gmail.com>",
-		"Alexander Piskin <bigcat88@icloud.com>"
+		"Alexander Piskun <bigcat88@icloud.com>"
 	],
 	"keywords": [
 		"nextcloud",
