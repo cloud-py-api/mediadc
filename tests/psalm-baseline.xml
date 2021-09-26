@@ -11,7 +11,8 @@
     </UndefinedClass>
   </file>
   <file src="lib/Controller/PageController.php">
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="2">
+      <code>LoadSidebar</code>
       <code>LoadViewer</code>
     </UndefinedClass>
   </file>
@@ -39,6 +40,16 @@
       <code>IResult</code>
       <code>IResult</code>
     </UndefinedClass>
+  </file>
+  <file src="lib/Migration/AppUpdateStep.php">
+    <UndefinedClass occurrences="1">
+      <code>LoggerInterface</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$this-&gt;logger</code>
+      <code>$this-&gt;logger</code>
+      <code>LoggerInterface</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
     <ImplementedParamTypeMismatch occurrences="1">
