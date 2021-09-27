@@ -123,15 +123,15 @@
 							</td>
 							<td>{{ not_installed_list[listName].length === 0 }}</td>
 							<td>
-								<button :disabled="not_installed_list[listName].length === 0"
+								<button :disabled="Object.keys(not_installed_list[listName]).length === 0"
 									@click="installDepsList(listName)">
 									{{ t('mediadc', 'Install') }}
 								</button>
-								<button :disabled="not_installed_list[listName].length > 0"
+								<button :disabled="Object.keys(not_installed_list[listName]).length > 0"
 									@click="updateDepsList(listName)">
 									{{ t('mediadc', 'Update') }}
 								</button>
-								<button :disabled="not_installed_list[listName].length > 0"
+								<button :disabled="Object.keys(not_installed_list[listName]).length > 0"
 									@click="deleteDepsList(listName)">
 									{{ t('mediadc', 'Delete') }}
 								</button>
