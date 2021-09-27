@@ -55,3 +55,5 @@ jobs:
           artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true
+          body: grep -oPz '(?s)\n##.*0\.1\.1.*?\n##\s' CHANGELOG.md | sed /^$/d | sed '1d;$d' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
+          
