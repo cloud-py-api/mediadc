@@ -3,7 +3,7 @@ name: Static analysis
 on:
   pull_request:
     branches: [main, test, dev]
-    types: [open]
+    types: [opened]
   push:
     branches: [dev]
   workflow_dispatch:
