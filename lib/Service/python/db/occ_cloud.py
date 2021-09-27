@@ -83,7 +83,7 @@ def php_call(*params, decode: bool = True) -> [bool, Union[str, bytes]]:
 
 def occ_call(occ_task, *params, decode: bool = True) -> [bool, Union[str, bytes]]:
     """Wrapper for occ calls. If decode=False then raw stdout data will be returned from occ."""
-    return php_call(OCC, occ_task, *params, decode=decode)
+    return php_call(OCC, '--no-warnings', occ_task, *params, decode=decode)
 
 
 def get_cloud_config_value(value_name: str) -> [bool, str]:
