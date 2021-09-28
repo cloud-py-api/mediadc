@@ -38,7 +38,7 @@ jobs:
           echo $CHANGELOG
           CHANGELOG=$(echo $CHANGELOG | sed /^$/d | sed '1d;$d')
           echo $CHANGELOG
-          CHANGELOG=$(echo $CHANGELOG | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
+          CHANGELOG=$(echo $CHANGELOG | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
           echo $CHANGELOG
           echo "::set-output name=changes::${CHANGELOG}"
 
