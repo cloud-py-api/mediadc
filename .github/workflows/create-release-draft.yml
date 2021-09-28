@@ -24,7 +24,8 @@ jobs:
           CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d')
           CHANGELOG=$(echo "$CHANGELOG" | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
           if [ "$CHANGELOG" == "" ]; then
-            changelog is empty!
+            echo "changelog is empty!"
+            exit 1
           fi
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG" >> $GITHUB_ENV
