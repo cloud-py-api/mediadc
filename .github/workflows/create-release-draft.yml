@@ -34,7 +34,7 @@ jobs:
       - name: Get changelog
         id: get_changelog
         run: |
-          CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md)
+          CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0')
           echo $CHANGELOG
           CHANGELOG=$(echo $CHANGELOG | sed /^$/d | sed '1d;$d')
           echo $CHANGELOG
