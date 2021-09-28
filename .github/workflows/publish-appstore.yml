@@ -23,8 +23,8 @@ jobs:
         echo "::set-output name=url::${RELEASE_URL}"
         curl -f --output app.tar.gz -L $RELEASE_URL
         
-     - name: DEBUG
-       run: |
+    - name: DEBUG
+      run: |
         echo ${{ steps.release_url.outputs.url }}
 
 #    - name: Prepare signature data
