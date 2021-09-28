@@ -34,11 +34,11 @@ jobs:
       - name: Get changelog
         id: get_changelog
         run: |
-          CHANGELOG=$(grep -oPz '(?s)\n##.*0\.1\.1.*?\n##\s' ./CHANGELOG.md)
+          CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md)
           echo $CHANGELOG
-          CHANGELOG=$(sed /^$/d $CHANGELOG | sed '1d;$d')
+          CHANGELOG=$(echo $CHANGELOG | sed /^$/d | sed '1d;$d')
           echo $CHANGELOG
-          CHANGELOG=$(sed '$!N;s/^###.*\n#/#/;P;D' $CHANGELOG | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
+          CHANGELOG=$(echo $CHANGELOG | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
           echo $CHANGELOG
           echo "::set-output name=changes::${CHANGELOG}"
 
