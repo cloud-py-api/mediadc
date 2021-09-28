@@ -30,6 +30,17 @@ jobs:
           echo $APP_VERSION
           echo "::set-output name=version::v${APP_VERSION}"
           echo "::set-output name=tag::v${APP_VERSION}"
+          
+      - name: Get changelog
+        id: get_changelog
+        run: |
+          CHANGELOG=$(grep -oPz '(?s)\n##.*0\.1\.1.*?\n##\s' ./CHANGELOG.md)
+          echo $CHANGELOG
+          CHANGELOG=$(sed /^$/d $CHANGELOG | sed '1d;$d')
+          echo $CHANGELOG
+          CHANGELOG=$(sed '$!N;s/^###.*\n#/#/;P;D' $CHANGELOG | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
+          echo $CHANGELOG
+          echo "::set-output name=changes::${CHANGELOG}"
 
       - name: Install Krankerl
         run: |
@@ -55,5 +66,5 @@ jobs:
           artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true
-          body: grep -oPz '(?s)\n##.*0\.1\.1.*?\n##\s' CHANGELOG.md | sed /^$/d | sed '1d;$d' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
+          body: ${{ steps.get_changelog.outputs.changes }}
           
