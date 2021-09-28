@@ -35,11 +35,13 @@ jobs:
         run: |
           CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d')
           CHANGELOG=$(echo "$CHANGELOG" | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
-          echo $CHANGELOG
-          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: DEBUG
-        run: echo $CHANGELOG
+        run: |
+          echo "The string is: ${{ env.CHANGELOG }}"
         
       - name: DEBUG2
         run: echo grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
