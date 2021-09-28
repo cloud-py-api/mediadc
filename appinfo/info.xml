@@ -7,7 +7,7 @@
 	<description>
 	<![CDATA[
 This app allows to find duplicate or similar 📸📹 photos and videos
-* **Large amount of supporting image formats** Jpeg, png, tiff, bmp, gif, heic/hif and others…
+* **Large amount of supporting image formats** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others…
 * **Large amount of supported video  formats** All that is supported by ffmpeg...
 * **Flexible task config** Set your precision level for comparing, choose algo that suits for you most.
 * **Quick rescan** Once file was scanned, hash from it will be saved, and no need to load file data for other scans.
