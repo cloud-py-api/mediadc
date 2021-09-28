@@ -15,19 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-
-    # - name: Build
-    #    run: make
-
       - name: Get names
         id: get_version
         run: |
           APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
-          echo $APP_VERSION
           echo "::set-output name=version::v${APP_VERSION}"
           echo "::set-output name=tag::v${APP_VERSION}"
           
@@ -35,16 +26,25 @@ jobs:
         run: |
           CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d')
           CHANGELOG=$(echo "$CHANGELOG" | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
+          if [ "$CHANGELOG" == "" ]; then
+            changelog is empty!
+          fi
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          echo $CHANGELOG
 
       - name: DEBUG
         run: |
           echo "The string is: ${{ env.CHANGELOG }}"
-        
-      - name: DEBUG2
-        run: echo grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+    # - name: Build
+    #    run: make      
           
       - name: Install Krankerl
         run: |
