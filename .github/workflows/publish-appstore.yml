@@ -17,7 +17,8 @@ jobs:
       id: release_url
       run: |
         APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
-        RELEASE_URL=https://github.com/$github.repository_owner/$APP_NAME/releases/download/$APP_VERSION/$APP_NAME.tar.gz
+        REP_NAME=${{github.repository_owner}}
+        RELEASE_URL=https://github.com/$REP_NAME/$APP_NAME/releases/download/$APP_VERSION/$APP_NAME.tar.gz
         echo $APP_VERSION
         echo $RELEASE_URL
         echo "::set-output name=url::${RELEASE_URL}"
