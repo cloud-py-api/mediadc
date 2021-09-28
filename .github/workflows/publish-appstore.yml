@@ -1,0 +1,41 @@
+name: Publish to Nextcloud app store
+
+on:
+  workflow_dispatch:
+
+env:
+  APP_NAME: mediadc
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Get release url
+      id: release_url
+      run: |
+        APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
+        RELEASE_URL=https://github.com/$github.repository_owner/$APP_NAME/releases/download/$APP_VERSION/$APP_NAME.tar.gz
+        echo $APP_VERSION
+        echo $RELEASE_URL
+        echo "::set-output name=url::${RELEASE_URL}"
+        curl -f --output app.tar.gz -L $RELEASE_URL
+        
+     - name: DEBUG
+       run: |
+        echo ${{ steps.release_url.outputs.url }}
+
+#    - name: Prepare signature data
+#      env:
+#        NEXTCLOUD_APPSTORE_SIGNING_PRIVATE_KEY: ${{secrets.NEXTCLOUD_APPSTORE_SIGNING_PRIVATE_KEY}}
+#      run: 'echo "$NEXTCLOUD_APPSTORE_SIGNING_PRIVATE_KEY" > app.key'
+#    - name: Sign release package
+#      run: |
+#        RELEASE_SIGNATURE="$(openssl dgst -sha512 -sign app.key app.tar.gz | openssl base64 -A)"
+#        echo "RELEASE_SIGNATURE=$RELEASE_SIGNATURE" >> $GITHUB_ENV
+#    - name: Publish release in app store
+#      env:
+#        NEXTCLOUD_APPSTORE_API_TOKEN: ${{secrets.NEXTCLOUD_APPSTORE_API_TOKEN}}
+#      run: 'curl -f -X POST https://apps.nextcloud.com/api/v1/apps/releases -H "Authorization: Token $NEXTCLOUD_APPSTORE_API_TOKEN" -H "Content-Type: application/json" -d ''{"download":"''$RELEASE_URL''", "signature": "''$RELEASE_SIGNATURE''"}'''
