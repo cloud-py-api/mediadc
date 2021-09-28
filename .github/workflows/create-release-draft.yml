@@ -14,7 +14,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+        
+      - name: Get release info
+        id: get_release_info
+        run: |
+          APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
+          echo $APP_VERSION
+          echo "::set-output name=version::v${APP_VERSION}"
+          echo "::set-output name=tag::v${APP_VERSION}"
+          CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d')
+          CHANGELOG=$(echo "$CHANGELOG" | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
+          if [ "$CHANGELOG" == "" ]; then
+            echo "changelog is empty!"
+            exit 1
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo $CHANGELOG
+          
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -22,14 +40,6 @@ jobs:
 
       - name: Build
         run: make
-
-      - name: Get names
-        id: get_version
-        run: |
-          APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
-          echo $APP_VERSION
-          echo "::set-output name=version::v${APP_VERSION}"
-          echo "::set-output name=tag::v${APP_VERSION}"
 
       - name: Install Krankerl
         run: |
@@ -48,10 +58,11 @@ jobs:
       - name: Create release draft
         uses: ncipollo/release-action@v1.8.8
         with:
-          name: ${{ steps.get_version.outputs.version }}
-          tag: ${{ steps.get_version.outputs.tag }}
+          name: ${{ steps.get_release_info.outputs.version }}
+          tag: ${{ steps.get_release_info.outputs.tag }}
           commit: ${{ github.ref }}
           draft: true
+          body: ${{ env.CHANGELOG }}
           artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true
