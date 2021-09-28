@@ -32,22 +32,17 @@ jobs:
           echo "::set-output name=tag::v${APP_VERSION}"
           
       - name: Get changelog
-        id: get_changelog
         run: |
           CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d')
           CHANGELOG=$(echo "$CHANGELOG" | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
           echo $CHANGELOG
-          echo "::set-output name=changes::${CHANGELOG}"
-          
+          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
+
       - name: DEBUG
-        run: echo ${{ steps.get_changelog.outputs.changes }}
+        run: echo $CHANGELOG
         
       - name: DEBUG2
-        id: get_changelog2
-        run: |
-          CHANGELOG=$(grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
-          echo $CHANGELOG
-          echo "::set-output name=changes::${CHANGELOG}"
+        run: echo grep -oPz "(?s)\n##.*$APP_VERSION.*?\n##\s" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d;$d' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}'
           
       - name: Install Krankerl
         run: |
@@ -70,7 +65,7 @@ jobs:
           tag: ${{ steps.get_version.outputs.tag }}
           commit: ${{ github.ref }}
           draft: true
-          body: ${{ steps.get_changelog2.outputs.changes }}
+          body: ${{ env.CHANGELOG }}
           artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true
