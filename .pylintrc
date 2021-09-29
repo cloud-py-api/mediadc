@@ -7,7 +7,7 @@ extension-pkg-whitelist=
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=pg8000,pymysql,tests,imagehash.py
+ignore=pg8000,pymysql,tests,imagehash.py,requirements.txt
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
