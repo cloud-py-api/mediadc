@@ -55,7 +55,7 @@
             "name": "remote_filesize_limit",
             "value": 536870912,
             "displayName": "Remote/Encrypted file size limit to process",
-            "description": "Maximum file size for requisting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size."
+            "description": "Maximum file size for requesting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size."
         }
     ]
 }
