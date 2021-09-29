@@ -1,6 +1,7 @@
-| Name              | About                                        |
-| ----------------- | -------------------------------------------- |
-| Support Question  | Do NOT ask here - Use the forum              |
+---
+name: Support Question
+about: Do NOT ask here - Use the forum or Telegram chat
+---
 
 Thanks for reporting issues back to MediaDC!
 

@@ -1,6 +1,7 @@
-| Name            | About                                   |
-| --------------- | --------------------------------------- |
-| Feature Request | Ideas for new features and improvements |
+---
+name: Feature Request
+about: Ideas for new features and improvements
+---
 
 **Description**
 A clear and concise description of the new feature.

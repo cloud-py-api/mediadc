@@ -1,6 +1,7 @@
-| Name | About                                              |
-| ---- | -------------------------------------------------- |
-| Bug  | Have you encountered a bug or unexpected behaviour |
+---
+name: Bug report
+about: Have you encountered a bug or unexpected behaviour
+---
 
 **Describe the bug**
 A clear and concise description of what the bug is.

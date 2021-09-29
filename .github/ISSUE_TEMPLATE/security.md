@@ -1,6 +1,7 @@
-| Name            | About                                        |
-| --------------- | -------------------------------------------- |
-| Security Issue  | Important security issue or bug              |
+---
+name: Security Issue
+about: Important security issue or bug
+---
 
 ⚠ PLEASE DON'T DISCLOSE SECURITY-RELATED ISSUES PUBLICLY, SEE BELOW.
 
