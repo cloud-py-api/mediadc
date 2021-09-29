@@ -38,6 +38,7 @@ use Psr\Log\LoggerInterface;
 use OCP\BackgroundJob\IJobList;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\IPreview;
 
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
@@ -48,6 +49,7 @@ use OCA\MediaDC\Db\CollectorTaskDetailMapper;
 use OCA\MediaDC\Service\PythonService;
 use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
 use OCP\Lock\LockedException;
+
 
 class CollectorService {
 
@@ -81,6 +83,9 @@ class CollectorService {
 	/** @var IJobList */
 	private $jobList;
 
+	/** @var IPreview */
+	private $previewManager;
+
 	const TARGET_MIME_TYPE = [
 		0 => ['image'],
 		1 => ['video'],
@@ -97,7 +102,7 @@ class CollectorService {
 								CollectorTaskDetailMapper $tasksDetailsMapper,
 								PythonService $pythonService, LoggerInterface $logger,
 								PhotosService $photosService, VideosService $videosService,
-								IJobList $jobList) {
+								IJobList $jobList, IPreview $previewManager) {
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
@@ -110,6 +115,7 @@ class CollectorService {
 		$this->photosService = $photosService;
 		$this->videosService = $videosService;
 		$this->jobList = $jobList;
+		$this->previewManager = $previewManager;
 	}
 
 	/**
@@ -492,6 +498,7 @@ class CollectorService {
 							'relfilepath' => $node->getInternalPath(),
 							'filepath' => $node->getPath(),
 							'filesize' => $node->getSize(),
+							'has_preview' => $this->previewManager->isAvailable($node),
 						]);
 					}
 				}

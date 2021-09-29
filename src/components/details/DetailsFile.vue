@@ -24,7 +24,8 @@
 
 <template>
 	<div class="file-thumb" @click="openFile(file)">
-		<div v-if="file.filempart === 'image'" style="display: flex;">
+		<div v-if="file.filempart === 'image' || (file.filempart === 'video' && file.has_preview)"
+			style="display: flex;">
 			<img v-show="loaded"
 				:key="file.filepath"
 				:src="imageUrl"
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-import { generateRemoteUrl } from '@nextcloud/router'
+import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 import { mapGetters } from 'vuex'
 import { getCurrentUser } from '@nextcloud/auth'
 
@@ -86,12 +87,16 @@ export default {
 		}
 	},
 	computed: {
-		imageUrl() {
-			return generateRemoteUrl(`dav/files${this.file.filepath.replace('files/', '')}`)
-		},
 		...mapGetters([
 			'detailsGridSize',
 		]),
+		imageUrl() {
+			if (this.file.has_preview) {
+				return generateUrl(`/core/preview?fileId=${this.file.fileid}&x=${this.detailsGridSize}&y=${this.detailsGridSize}$forceIcon=0`)
+			} else {
+				return generateRemoteUrl(`dav/files${this.file.filepath.replace('files/', '')}`)
+			}
+		},
 	},
 	methods: {
 		openFile(file) {
