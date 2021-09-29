@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2 - 2021-09-30]
+
+### Added
+
+- Added image and video previews support (if [previews generator](https://github.com/nextcloud/previewgenerator) installed otherwise original files used)
+
+### Fixed
+
+- Fixed not disabled buttons for impossible actions on Configuration page (update/delete on not installed packages)
+
 ## [0.1.1 - 2021-09-26]
 
 ### Added
