@@ -107,7 +107,11 @@ export default {
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
-					showSuccess(t('mediadc', 'Package list successfully installed'))
+					if (res.data.success) {
+						showSuccess(t('mediadc', 'Package list successfully installed'))
+					} else {
+						showError(t('mediadc', 'Package list installation failed'))
+					}
 				}).catch(() => {
 					this.updating = false
 					showError(t('mediadc', 'Package list installation failed'))
@@ -118,19 +122,34 @@ export default {
 			this.updating = true
 			axios.post(generateUrl('/apps/mediadc/api/v1/python/delete'),
 				{ packagesList: Object.values(this.installed_list[listName]).filter(item => item.location !== 'global').map(item => item.package) }).then(res => {
-				this.updating = false
 				this.parsePythonResponseData(res)
-				this.updateInstalledSetting()
+				this.updateInstalledSetting().then(() => {
+					this.updating = false
+					if (res.data.success) {
+						showSuccess(t('mediadc', 'Package list successfully deleted'))
+					} else {
+						showError(t('mediadc', 'Some error occured while deleting package list'))
+					}
+				})
+			}).catch(err => {
+				console.debug(err)
+				this.updating = false
+				showError(t('mediadc', 'Some error occured while deleting packages'))
 			})
 		},
 		async updateDepsList(listName) {
 			this.updating = true
 			axios.post(generateUrl('/apps/mediadc/api/v1/python/update'),
 				{ packagesList: Object.values(this.installed_list[listName]).filter(item => item.location !== 'global').map(item => item.package) }).then(res => {
-				this.updating = false
 				this.parsePythonResponseData(res)
-				this.updateInstalledSetting()
-				showSuccess(t('mediadc', 'Packages successfully updated'))
+				this.updateInstalledSetting().then(() => {
+					this.updating = false
+					if (res.data.success) {
+						showSuccess(t('mediadc', 'Packages successfully updated'))
+					} else {
+						showError(t('mediadc', 'Packages update failed. Try again.'))
+					}
+				})
 			}).catch(err => {
 				console.debug(err)
 				showError(t('mediadc', 'Packages update failed'))
@@ -139,9 +158,15 @@ export default {
 		async check() {
 			this.checking = true
 			axios.get(generateUrl('/apps/mediadc/api/v1/python/check')).then(res => {
-				this.checking = false
 				this.parsePythonResponseData(res)
-				this.updateInstalledSetting()
+				this.updateInstalledSetting().then(() => {
+					this.checking = false
+					showSuccess(t('mediadc', 'All required dependencies installed'))
+				}).catch(err => {
+					this.checking = false
+					console.debug(err)
+					showError(t('mediadc', 'Dependencies checking failed. Try again.'))
+				})
 			}).catch(err => {
 				console.debug(err)
 				showError(t('mediadc', 'Dependencies checking failed. Try again.'))
