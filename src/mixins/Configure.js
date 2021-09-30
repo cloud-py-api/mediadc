@@ -24,7 +24,7 @@
 
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { showError, showSuccess } from '@nextcloud/dialogs'
+import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 
 export default {
 	created() {
@@ -84,18 +84,19 @@ export default {
 			this.installing = true
 			axios.get(generateUrl('/apps/mediadc/api/v1/python/install')).then(res => {
 				this.parsePythonResponseData(res)
-				if (res.data.success) {
-					this.updateInstalledSetting().then(() => {
-						this.installing = false
-						showSuccess(t('mediadc', 'Installation successfully finished!'))
-					}).catch(() => {
-						this.installing = false
+				this.updateInstalledSetting().then(() => {
+					this.installing = false
+					if (res.data.success) {
+						showSuccess(t('mediadc', 'Installation successfully finished'))
+					} else if (!res.data.success && res.data.installed) {
+						showWarning(t('mediadc', 'Installation finished. Not all packages installed'))
+					} else {
 						showError(t('mediadc', 'Installation failed. Try again.'))
-					})
-				} else {
+					}
+				}).catch(() => {
 					this.installing = false
 					showError(t('mediadc', 'Installation failed. Try again.'))
-				}
+				})
 			})
 		},
 		async updateInstalledSetting() {
@@ -103,7 +104,7 @@ export default {
 		},
 		async installDepsList(listName) {
 			this.updating = true
-			axios.post(generateUrl(`/apps/mediadc/api/v1/python/install/${listName}`)).then(res => {
+			axios.post(generateUrl('/apps/mediadc/api/v1/python/install'), { listName }).then(res => {
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
@@ -161,7 +162,11 @@ export default {
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting().then(() => {
 					this.checking = false
-					showSuccess(t('mediadc', 'All required dependencies installed'))
+					if (res.data.installed) {
+						showSuccess(t('mediadc', 'All required dependencies installed'))
+					} else {
+						showError(t('mediadc', 'Not all required packages installed'))
+					}
 				}).catch(err => {
 					this.checking = false
 					console.debug(err)

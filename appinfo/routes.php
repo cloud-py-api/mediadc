@@ -39,7 +39,7 @@ return [
 		// Python API
 		['name' => 'python#check', 'url' => '/api/v1/python/check', 'verb' => 'GET'],
 		['name' => 'python#install', 'url' => '/api/v1/python/install', 'verb' => 'GET'],
-		['name' => 'python#installDepsList', 'url' => '/api/v1/python/install/{listName}', 'verb' => 'POST'],
+		['name' => 'python#installDepsList', 'url' => '/api/v1/python/install', 'verb' => 'POST'],
 		['name' => 'python#updateDepsList', 'url' => '/api/v1/python/update', 'verb' => 'POST'],
 		['name' => 'python#deleteDepsList', 'url' => '/api/v1/python/delete', 'verb' => 'POST'],
 
