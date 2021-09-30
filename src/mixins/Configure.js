@@ -83,9 +83,8 @@ export default {
 		async install() {
 			this.installing = true
 			axios.get(generateUrl('/apps/mediadc/api/v1/python/install')).then(res => {
+				this.parsePythonResponseData(res)
 				if (res.data.success) {
-					this.installed = true
-					this.parsePythonResponseData(res)
 					this.updateInstalledSetting().then(() => {
 						this.installing = false
 						showSuccess(t('mediadc', 'Installation successfully finished!'))
@@ -95,6 +94,7 @@ export default {
 					})
 				} else {
 					this.installing = false
+					showError(t('mediadc', 'Installation failed. Try again.'))
 				}
 			})
 		},

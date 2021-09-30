@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Added image and video previews support (if [previews generator](https://github.com/nextcloud/previewgenerator) installed otherwise original files used)
+- Added image and video previews support
 
 ### Fixed
 
