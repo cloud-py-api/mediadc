@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fixed not disabled buttons for impossible actions on Configuration page (update/delete on not installed packages)
+- Now properly display installation errors
 
 ## [0.1.1 - 2021-09-26]
 
