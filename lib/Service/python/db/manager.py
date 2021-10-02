@@ -69,7 +69,7 @@ def msql_postprocess_config(config: dict, _php_info: str) -> None:
         if os.path.exists(host_port_socket[1]):
             config['usock'] = host_port_socket[1]
             return
-        elif host_port_socket[1].isdigit():
+        if host_port_socket[1].isdigit():
             config['dbport'] = host_port_socket[1]
             return
         Warnings.append("Unknown socket or port value.")
