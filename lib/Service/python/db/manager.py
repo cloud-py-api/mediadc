@@ -61,12 +61,18 @@ def init_cloud_config(map_schema: dict) -> bool:
     return result
 
 
-def detect_msql_socket(config: dict, _php_info: str) -> None:
+def msql_postprocess_config(config: dict, _php_info: str) -> None:
     global Warnings
-    socket_path = config['dbhost'].split(":")[-1]
-    if os.path.exists(socket_path):
-        config['usock'] = socket_path
-        return
+    host_port_socket = config['dbhost'].split(":", maxsplit=1)
+    if len(host_port_socket) > 1:
+        config['dbhost'] = host_port_socket[0]
+        if os.path.exists(host_port_socket[1]):
+            config['usock'] = host_port_socket[1]
+            return
+        elif host_port_socket[1].isdigit():
+            config['dbport'] = host_port_socket[1]
+            return
+        Warnings.append("Unknown socket or port value.")
     if not config['dbport'] and _php_info:
         m_groups = re.search(r'pdo_mysql\.default_socket\s*=>\s*(.*)\s*=>\s*(.*)',
                              _php_info, flags=re.MULTILINE + re.IGNORECASE)
@@ -78,10 +84,17 @@ def detect_msql_socket(config: dict, _php_info: str) -> None:
             config['usock'] = socket_path
 
 
-def detect_pgsql_socket(config: dict, _php_info: str) -> None:
-    socket_path = config['dbhost'].split(":")[-1]
-    if os.path.exists(socket_path):
-        config['usock'] = socket_path
+def pgsql_postprocess_config(config: dict, _php_info: str) -> None:
+    global Warnings
+    host_port_socket = config['dbhost'].split(":", maxsplit=1)
+    if len(host_port_socket) > 1:
+        config['dbhost'] = host_port_socket[0]
+        if os.path.exists(host_port_socket[1]):
+            config['usock'] = host_port_socket[1]
+        elif host_port_socket[1].isdigit():
+            config['dbport'] = host_port_socket[1]
+        else:
+            Warnings.append("Unknown socket or port value.")
 
 
 def init():
@@ -102,11 +115,11 @@ def init():
         php_info = ''
         Warnings.append("Cant get php info.")
     if Config['dbtype'] == 'mysql':
-        detect_msql_socket(Config, php_info)
+        msql_postprocess_config(Config, php_info)
         DatabaseProvider = 'pymysql'
         return DbType.MYSQL
     if Config['dbtype'] == 'pgsql':
-        detect_pgsql_socket(Config, php_info)
+        pgsql_postprocess_config(Config, php_info)
         DatabaseProvider = 'pg8000'
         return DbType.PGSQL
     if Config['dbtype'] == 'oci':
