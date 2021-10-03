@@ -23,6 +23,8 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
  - Nextcloud version [e.g. 22]
+ - Database configuration (without sensitive information)
+ - Python version [e.g. 3.9.1]
  - MediaDC version [e.g. 0.1.0]
 
 **Smartphone (please complete the following information):**
