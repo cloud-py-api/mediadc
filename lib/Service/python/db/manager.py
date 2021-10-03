@@ -8,7 +8,7 @@ import time
 import os
 import re
 from . import occ_cloud
-from .connectors import create_connection, internal_handle_db_connect_exception
+from .connectors import create_connection, internal_handle_db_connect_exception, test_connection
 
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
@@ -61,33 +61,33 @@ def init_cloud_config(map_schema: dict) -> bool:
     return result
 
 
-def msql_postprocess_config(config: dict, _php_info: str) -> None:
+def get_basic_db_provider(dbtype: str) -> str:
+    if dbtype == 'mysql':
+        return 'pymysql'
+    if dbtype == 'pgsql':
+        return 'pg8000'
+    return ''
+
+
+def check_db_config(config: dict) -> None:
+    """Finding way to connect to database."""
+    if test_connection(config, get_basic_db_provider(config['dbtype'])):
+        return
+    # lets try without socket.
+    if config['usock']:
+        usock = config['usock']
+        config['usock'] = ''
+        if test_connection(config, get_basic_db_provider(config['dbtype'])):
+            return
+        config['usock'] = usock
+
+
+def postprocess_config(config: dict) -> None:
+    """Parses 'dbhost' value. Possible values: host:port, host:socket, host, socket, nil"""
     global Warnings
     host_port_socket = config['dbhost'].split(":", maxsplit=1)
     if len(host_port_socket) > 1:
-        config['dbhost'] = host_port_socket[0]
-        if os.path.exists(host_port_socket[1]):
-            config['usock'] = host_port_socket[1]
-            return
-        if host_port_socket[1].isdigit():
-            config['dbport'] = host_port_socket[1]
-            return
-        Warnings.append("Unknown socket or port value.")
-    if not config['dbport'] and _php_info:
-        m_groups = re.search(r'pdo_mysql\.default_socket\s*=>\s*(.*)\s*=>\s*(.*)',
-                             _php_info, flags=re.MULTILINE + re.IGNORECASE)
-        if m_groups is None:
-            Warnings.append("Cant parse php info.")
-            return
-        socket_path = m_groups.groups()[-1].strip()
-        if os.path.exists(socket_path):
-            config['usock'] = socket_path
-
-
-def pgsql_postprocess_config(config: dict, _php_info: str) -> None:
-    global Warnings
-    host_port_socket = config['dbhost'].split(":", maxsplit=1)
-    if len(host_port_socket) > 1:
+        # when dbhost = host:port or host:socket
         config['dbhost'] = host_port_socket[0]
         if os.path.exists(host_port_socket[1]):
             config['usock'] = host_port_socket[1]
@@ -95,31 +95,77 @@ def pgsql_postprocess_config(config: dict, _php_info: str) -> None:
             config['dbport'] = host_port_socket[1]
         else:
             Warnings.append("Unknown socket or port value.")
+    elif os.path.exists(config['dbhost']):
+        # when dbhost = socket
+        config['usock'] = config['dbhost']
+        config['dbhost'] = ''
+    if config['dbtype'] == 'pgsql':
+        # Don't know currently how to handle this situation properly. Using default port value for socket name.
+        if config['usock']:
+            config['usock'] += '.s.PGSQL.5432'
+
+
+def find_db_configuration() -> bool:
+    """Finding working way to connect to database, if will found global `Config` will be changed according to it."""
+    global Warnings, Config
+    # Trying what we parsed from cloud config.
+    if test_connection(Config, get_basic_db_provider(Config['dbtype'])):
+        return True
+    # Trying without socket.
+    if Config['usock']:
+        usock = Config['usock']
+        Config['usock'] = ''
+        if test_connection(Config, get_basic_db_provider(Config['dbtype'])):
+            return True
+        Config['usock'] = usock
+    if Config['dbtype'] == 'mysql':
+        # when no dbport or usock found in cloud config, trying php socket configuration.
+        php_ok, php_info = occ_cloud.php_call('-r', "phpinfo();")
+        if not php_ok:
+            Warnings.append("Cant get php info.")
+        else:
+            m_groups = re.search(r'pdo_mysql\.default_socket\s*=>\s*(.*)\s*=>\s*(.*)',
+                                 php_info, flags=re.MULTILINE + re.IGNORECASE)
+            if m_groups is None:
+                Warnings.append("Cant parse php info.")
+            else:
+                socket_path = m_groups.groups()[-1].strip()
+                if os.path.exists(socket_path):
+                    usock = Config['usock']
+                    Config['usock'] = socket_path
+                    if test_connection(Config, get_basic_db_provider(Config['dbtype'])):
+                        return True
+                    Config['usock'] = usock
+    # If we got here then all is not so good, as it can be. Last try with default host and port.
+    host = Config['dbhost']
+    port = Config['dbport']
+    Config['dbhost'] = ''
+    Config['dbport'] = ''
+    if test_connection(Config, get_basic_db_provider(Config['dbtype'])):
+        return True
+    Config['dbhost'] = host
+    Config['dbport'] = port
+    return False
 
 
 def init():
-    global Config, DatabaseProvider, Warnings
+    global Config, DatabaseProvider
     map_schema = {'datadir': 'datadirectory',
                   'dbname': 'dbname',
                   'dbtprefix': 'dbtableprefix',
                   'dbuser': 'dbuser',
                   'dbpassword': 'dbpassword',
                   'dbhost': 'dbhost',
-                  'dbport': 'dbport',
                   'dbtype': 'dbtype'}
     Config['usock'] = ''
+    Config['dbport'] = ''
     if not init_cloud_config(map_schema):
         return DbType.UNKNOWN
-    php_ok, php_info = occ_cloud.php_call('-r', "phpinfo();")
-    if not php_ok:
-        php_info = ''
-        Warnings.append("Cant get php info.")
+    postprocess_config(Config)
     if Config['dbtype'] == 'mysql':
-        msql_postprocess_config(Config, php_info)
         DatabaseProvider = 'pymysql'
         return DbType.MYSQL
     if Config['dbtype'] == 'pgsql':
-        pgsql_postprocess_config(Config, php_info)
         DatabaseProvider = 'pg8000'
         return DbType.PGSQL
     if Config['dbtype'] == 'oci':
@@ -251,6 +297,7 @@ def check_db() -> list:
         return Errors
     if not DatabaseProvider:
         return [f"Unsupported DB type:`{Config['dbtype']}`"]
+    find_db_configuration()
     ret = []
     success = False
     try:
