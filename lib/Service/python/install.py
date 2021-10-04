@@ -354,6 +354,7 @@ def check() -> dict:
         if not ret['required']:
             log_error(*db.check_db())
             ret['errors'] = ErrorsContainer
+            ret['warnings'] = db.get_warnings()
     return ret
 
 
