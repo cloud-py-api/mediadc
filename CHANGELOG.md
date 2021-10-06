@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4 - 2021-10-07]
+
+### Fixed
+
+- Proper work with non ascii characters in files names. Thanks to kovge.
+
 ## [0.1.3 - 2021-10-04]
 
 ### Fixed
