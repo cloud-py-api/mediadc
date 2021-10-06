@@ -42,6 +42,14 @@ sync(store, router)
 
 Vue.mixin(Nextcloudl10n)
 
+window.addEventListener('DOMContentLoaded', () => {
+	if (!window.OCA.Files) {
+		window.OCA.Files = {}
+	}
+	// For sidebar functionality
+	Object.assign(window.OCA.Files, { App: { fileList: { filesClient: OC.Files.getClient() } } }, window.OCA.Files)
+})
+
 export default new Vue({
 	el: '#content',
 	router,

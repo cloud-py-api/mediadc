@@ -38,6 +38,7 @@ use Psr\Log\LoggerInterface;
 use OCP\BackgroundJob\IJobList;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\IPreview;
 
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
@@ -47,6 +48,7 @@ use OCA\MediaDC\Db\CollectorTaskDetail;
 use OCA\MediaDC\Db\CollectorTaskDetailMapper;
 use OCA\MediaDC\Service\PythonService;
 use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
+use OCP\Lock\LockedException;
 
 
 class CollectorService {
@@ -81,6 +83,9 @@ class CollectorService {
 	/** @var IJobList */
 	private $jobList;
 
+	/** @var IPreview */
+	private $previewManager;
+
 	const TARGET_MIME_TYPE = [
 		0 => ['image'],
 		1 => ['video'],
@@ -89,6 +94,7 @@ class CollectorService {
 
 	const TASK_TYPE_MANUAL = 'manual';
 	const TASK_TYPE_AUTO = 'auto';
+	const TASK_TYPE_QUEUED = 'queued';
 
 
 	public function __construct(?string $userId, IRootFolder $rootFolder,
@@ -96,9 +102,9 @@ class CollectorService {
 								CollectorTaskDetailMapper $tasksDetailsMapper,
 								PythonService $pythonService, LoggerInterface $logger,
 								PhotosService $photosService, VideosService $videosService,
-								IJobList $jobList) {
-		$this->userId = $userId;
+								IJobList $jobList, IPreview $previewManager) {
 		if ($userId !== null) {
+			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
 		}
 		$this->settingsMapper = $settingsMapper;
@@ -109,6 +115,7 @@ class CollectorService {
 		$this->photosService = $photosService;
 		$this->videosService = $videosService;
 		$this->jobList = $jobList;
+		$this->previewManager = $previewManager;
 	}
 
 	/**
@@ -122,7 +129,7 @@ class CollectorService {
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
 		$processesRunning = count($this->tasksMapper->findAllRunning());
-		$queuedTask = null;
+		// $queuedTask = null;
 
 		if ($pyLimitSetting !== null && $processesRunning < (int)$pyLimitSetting->getValue()) {
 			$createdTask = $this->createCollectorTask($params);
@@ -133,11 +140,14 @@ class CollectorService {
 				$this->logger->warning("Can't create Collector Task with excluding all target files");
 			}
 		} else {
+			return ['success' => false, 'limit' => true];
 			// Add as Queued job
-			$queuedTask = $this->createQueuedTask($params);
+			// TODO: Add queued mechanism
+			// $queuedTask = $this->createQueuedTask($params);
 		}
 
-		return ['success' => $createdTask !== null, 'queued' => $queuedTask !== null];
+		// return ['success' => $createdTask !== null, 'queued' => $queuedTask !== null];
+		return ['success' => $createdTask !== null, 'limit' => false];
 	}
 
 	/**
@@ -163,7 +173,8 @@ class CollectorService {
 
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
-		$processesRunning = count($this->tasksMapper->findAllRunning());
+		$processesRunning = $this->tasksMapper->findAllRunning();
+		$taskIdsRunning = array_map(fn($task) => $task->getId(), $processesRunning);
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
@@ -183,13 +194,20 @@ class CollectorService {
 		$collectorTask->setErrors('');
 		$queuedTask = null;
 
-		if ($pyLimitSetting !== null && $processesRunning < (int)$pyLimitSetting->getValue()) {
+		if (!in_array($taskId, $taskIdsRunning)) {
+			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue()) {
+				$this->tasksMapper->update($collectorTask);
+				$this->deleteTaskDetails($taskId);
+				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+			} else {
+				// Add as Queued job
+				// $queuedTask = $this->createQueuedTask($params);
+				return ['success' => false, 'limit' => true];
+			}
+		} else {
 			$this->tasksMapper->update($collectorTask);
 			$this->deleteTaskDetails($taskId);
 			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
-		} else {
-			// Add as Queued job
-			$queuedTask = $this->createQueuedTask($params);
 		}
 
 		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null];
@@ -219,10 +237,11 @@ class CollectorService {
 
 	/**
 	 * @param array $params task params
+	 * @param boolean $queued queued task flag (task type)
 	 * 
 	 * @return CollectorTask|null created Collector Task
 	 */
-	public function createCollectorTask($params = []) {
+	public function createCollectorTask($params = [], $queued = false) {
 		if (count($params) === 0) {
 			/** @var Setting */
 			$pyAlgorithmSetting = $this->settingsMapper->findByName('hashing_algorithm');
@@ -251,7 +270,7 @@ class CollectorService {
 
 		$task = new CollectorTask([
 			'owner' => $this->userId,
-			'type' => self::TASK_TYPE_MANUAL,
+			'type' => $queued ? self::TASK_TYPE_QUEUED : self::TASK_TYPE_MANUAL,
 			'targetDirectoryIds' => count($params) === 0 ? json_encode([$this->userFolder->getId()]) : json_encode($params['targetDirectoryIds']),
 			'excludeList' => json_encode($excludeList),
 			'collectorSettings' => json_encode([
@@ -290,7 +309,7 @@ class CollectorService {
 	 * @return CollectorTask|null created queued Collector task
 	 */
 	public function createQueuedTask($params = []) {
-		$createdTask = $this->createCollectorTask($params);
+		$createdTask = $this->createCollectorTask($params, true);
 		if ($createdTask !== null) {
 			$this->jobList->add(QueuedTaskJob::class, [
 				'taskId' => $createdTask->getId(),
@@ -479,6 +498,7 @@ class CollectorService {
 							'relfilepath' => $node->getInternalPath(),
 							'filepath' => $node->getPath(),
 							'filesize' => $node->getSize(),
+							'has_preview' => $this->previewManager->isAvailable($node),
 						]);
 					}
 				}
@@ -527,7 +547,7 @@ class CollectorService {
 	 * 
 	 * @return array $result
 	 */
-	public function deteleTaskDetailFile($taskId, $taskDetailId, $fileid) {
+	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid) {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$deletedFilesCount = $collectorTask->getDeletedFilesCount();
@@ -537,13 +557,8 @@ class CollectorService {
 
 		$groupFiles = json_decode($collectorTaskDetail->getGroupFilesIds());
 		$fileidIndex = array_search($fileid, $groupFiles);
-		array_splice($groupFiles, $fileidIndex, 1);
-
-		if (count($groupFiles) === 1) {
-			$this->tasksDetailsMapper->delete($collectorTaskDetail);
-		} else {
-			$collectorTaskDetail->setGroupFilesIds(json_encode($groupFiles));
-			$updatedTaskDetail = $this->tasksDetailsMapper->update($collectorTaskDetail);
+		if ($fileidIndex !== false) {
+			array_splice($groupFiles, $fileidIndex, 1);
 		}
 
 		$nodes = $this->userFolder->getById($fileid);
@@ -557,12 +572,24 @@ class CollectorService {
 				$collectorTask->setDeletedFilesCount($deletedFilesCount + 1);
 				$collectorTask->setDeletedFilesSize($deletedFilesSize + $filesize);
 				$this->tasksMapper->update($collectorTask);
+				if (count($groupFiles) === 1) {
+					$this->tasksDetailsMapper->delete($collectorTaskDetail);
+					$updatedTaskDetail = null;
+				} else {
+					$collectorTaskDetail->setGroupFilesIds(json_encode($groupFiles));
+					$updatedTaskDetail = $this->tasksDetailsMapper->update($collectorTaskDetail);
+				}
 				return [
 					'success' => true,
 					'task' => $collectorTask,
 					'taskDetail' => $updatedTaskDetail,
 					'fileid' => $fileid,
 					'filesize' => $filesize,
+				];
+			} catch (LockedException $e) {
+				return [
+					'success' => false,
+					'locked' => true
 				];
 			} catch (NotPermittedException | NotFoundException $e) {
 				return [

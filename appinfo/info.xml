@@ -4,22 +4,39 @@
 	<id>mediadc</id>
 	<name>MediaDC</name>
 	<summary>Nextcloud Media Duplicate Collector application</summary>
-	<description>**📸📹 Collect photo and video duplicates to save your cloud storage**</description>
-	<version>0.1.0</version>
+	<description>
+	<![CDATA[
+This app allows to find duplicate or similar 📸📹 photos and videos
+* **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.
+* **Large amount of supported video  formats** All that is supported by ffmpeg.
+* **Flexible config** Set your precision level for comparing, choose algo that suits for you most.
+* **Quick rescan** Once file was scanned, hash will be saved, and used for other scans.
+* **External Storages support** [in progress] Search everywhere among all files available to the user.
+* **Save your time and cloud space** The title says all...
+
+Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
+	]]>
+	</description>
+	<version>0.1.4</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
-	<author mail="bigcat88@icloud.com">Alexander Piskun</author>
+	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
 	<namespace>MediaDC</namespace>
 	<documentation>
 		<admin>https://github.com/andrey18106/mediadc/wiki</admin>
 	</documentation>
 	<category>tools</category>
+	<category>multimedia</category>
 	<website>https://github.com/andrey18106/mediadc</website>
 	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
 	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
-	<screenshot>https://github.com/andrey18106/mediadc/blob/6e1a0590936da4c988ccf10101c13bfa6d1f0866/screenshots/screenshot.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/task-managment.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/task-results.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/install-view.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/admin-config.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="21" max-version="22" />
+		<php min-version="7.4" />
 		<python min-version="3.6.8" />
 	</dependencies>
 	<settings>
@@ -29,13 +46,16 @@
 		<install>
 			<step>OCA\MediaDC\Migration\AppDataInitializationStep</step>
 		</install>
+		<pre-migration>
+			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
+		</pre-migration>
 	</repair-steps>
 	<commands>
 		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>
 		<command>OCA\MediaDC\Command\CollectorCleanupCommand</command>
 	</commands>
 	<background-jobs>
-		<job>OCA\Mediadc\BackgroundJob\CollectorCleanupJob</job>
+		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
 	</background-jobs>
 	<navigations>
 		<navigation>

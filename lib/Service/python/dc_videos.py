@@ -128,6 +128,8 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
             return
         if file_info['size'] > remote_filesize_limit:
             return
+        if file_info['path'].lower().endswith(('.mkv',)):
+            return
         data = request_file_from_php(file_info)
         if len(data) == 0:
             return

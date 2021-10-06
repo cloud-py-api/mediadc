@@ -86,12 +86,19 @@ class SettingsService {
 	}
 
 	/**
-	 * @param array $setting
+	 * @param array|Setting $setting
 	 * 
 	 * @return array
 	 */
 	public function updateSetting($setting) {
 		try {
+			if ($setting instanceof Setting) {
+				$updatedSetting = $this->mapper->update($setting);
+				return [
+					'success' => true,
+					'updated_setting' => $updatedSetting,
+				];
+			}
 			$updatedSetting = $this->mapper->update(new Setting([
 				'id' => $setting['id'],
 				'name' => $setting['name'],

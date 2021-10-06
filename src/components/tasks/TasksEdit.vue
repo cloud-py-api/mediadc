@@ -289,7 +289,7 @@ export default {
 					collectorSettings: {
 						hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'dhash',
 						similarity_threshold: Number(this.similarity_threshold),
-						hash_size: Number(this.settingByName('hash_size').value) || 64,
+						hash_size: Number(this.settingByName('hash_size').value) || 16,
 						target_mtype: this.targetMimeType,
 					},
 				}).then(res => {
@@ -299,8 +299,10 @@ export default {
 						this.closeEditTaskDialog()
 						emit('restartTask')
 						showSuccess(t('mediadc', 'Task successfully restarted!'))
+					} else if (res.data.limit) {
+						showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
 					} else {
-						showWarning('Some error occured while running Collector Task. Try again.')
+						showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 					}
 				})
 			})

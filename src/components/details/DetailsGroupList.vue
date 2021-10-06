@@ -51,6 +51,7 @@ import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import DetailsFile from './DetailsFile'
 import { emit } from '@nextcloud/event-bus'
+import { showError, showWarning } from '@nextcloud/dialogs'
 
 export default {
 	name: 'DetailsGroupList',
@@ -76,12 +77,22 @@ export default {
 			if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${file.taskId}/files/${file.detailId}/${file.fileid}`))
 					.then(res => {
-						const files = this.files
-						const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
-						files.splice(fileidIndex, 1)
-						this.$emit('update:files', files)
-						emit('updateTaskInfo')
-						this.$store.dispatch('setTask', res.data.task)
+						if (res.data.success) {
+							const files = this.files
+							const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
+							files.splice(fileidIndex, 1)
+							this.$emit('update:files', files)
+							emit('updateTaskInfo')
+							this.$store.dispatch('setTask', res.data.task)
+						} else if ('locked' in res.data && res.data.locked) {
+							showWarning(t('mediadc', 'Wait until file loaded before deleting'))
+						} else {
+							showError(t('mediadc', 'Some error occured while deleting file'))
+						}
+					})
+					.catch(err => {
+						console.debug(err)
+						showError(t('mediadc', 'Some error occured while deleting file'))
 					})
 			}
 		},

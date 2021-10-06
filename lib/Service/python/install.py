@@ -175,9 +175,9 @@ def check_video() -> list:
 
 def check_packages(packages_list: dict) -> dict:
     missing = {}
-    for import_name in packages_list.keys():
+    for import_name, install_name in packages_list.items():
         if not import_package(import_name, expand_state=ExpandedState.LAST):
-            missing[import_name] = packages_list[import_name]
+            missing[import_name] = install_name
     return missing
 
 
@@ -202,22 +202,22 @@ def get_all_boost_packages() -> dict:
 
 def add_package_info(packages_list: dict) -> dict:
     formatted_packages_list = {}
-    for import_name in packages_list.keys():
+    for import_name, install_name in packages_list.items():
         modules = {}
         if import_package(import_name, dest_sym_table=modules):
             version = 'unknown'
             if hasattr(modules[import_name], '__version__'):
                 version = modules[import_name].__version__
-            if str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
-                formatted_packages_list[import_name] = {'package': packages_list[import_name],
+            if ExpandedSitePath and str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
+                formatted_packages_list[import_name] = {'package': install_name,
                                                         'location': 'local',
                                                         'version': str(version)}
             else:
-                formatted_packages_list[import_name] = {'package': packages_list[import_name],
+                formatted_packages_list[import_name] = {'package': install_name,
                                                         'location': 'global',
                                                         'version': str(version)}
         else:
-            formatted_packages_list[import_name] = {'package': packages_list[import_name],
+            formatted_packages_list[import_name] = {'package': install_name,
                                                     'location': 'none',
                                                     'version': 'none'}
     return formatted_packages_list
@@ -241,9 +241,8 @@ def is_pip_present(only_global: bool = False) -> bool:
             if m_groups is None:
                 return False
             pip_version = tuple(map(int, str(m_groups.groups()[0]).split('.')))
-            if pip_version[0] <= 9:
-                if pip_version[1] == 0:
-                    return False
+            if pip_version[0] < 19:
+                return False
             return True
     except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
         log_error(f'pip_version raised {type(exception_info).__name__}: {str(exception_info)}')
@@ -346,16 +345,16 @@ def check() -> dict:
            'video_required': check_video(),
            'errors': ErrorsContainer,
            'warnings': db.get_warnings(),
-           'list': {
+           'installed_list': {
                'required': add_package_info(RequiredPackagesList),
                'optional': add_package_info(OptionalPackagesList),
-               'boost': add_package_info(get_all_boost_packages())
-                    }
+               'boost': add_package_info(get_all_boost_packages())}
            }
     if not ErrorsContainer:
         if not ret['required']:
             log_error(*db.check_db())
             ret['errors'] = ErrorsContainer
+            ret['warnings'] = db.get_warnings()
     return ret
 
 
@@ -368,7 +367,7 @@ def install(packages_list: dict) -> int:
             log_error('Cant run pip after local install.')
             return 1
     ret = 0
-    if len(packages_list):
+    if packages_list:
         if not check_local_dir(create_if_absent=True):
             log_error('Cant create local dir for packages.')
             return 1

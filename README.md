@@ -1,19 +1,18 @@
 # Nextcloud MediaDC
 
-![build](https://github.com/andrey18106/mediadc/actions/workflows/build.yml/badge.svg)
-![lint](https://github.com/andrey18106/mediadc/actions/workflows/lint.yml/badge.svg)
+![build](https://github.com/andrey18106/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
 ![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg)
-![security-analysis](https://github.com/andrey18106/mediadc/actions/workflows/security-analysis.yml/badge.svg)
 
-**📸📹 Collect photo and video duplicates to save your cloud storage**
+**📸📹 Collect photo and video duplicates to save your cloud storage space**
 
-![Home page](/screenshots/screenshot.png)
+![Home page](/screenshots/task-managment.png)
+![Home page](/screenshots/task-results.png)
 Nextcloud Media Duplicate Collector application
 
 ## Why is this so awesome?
 
-* **♻ Delete a huge amount of duplicate photos/videos with different resolutions, sizes and formats**
-* **💡 Easily save your cloud storage space and time for sorting**
+* **♻ Detects similar and duplicate photos/videos with different resolutions, sizes and formats**
+* **💡 Easily saves your cloud storage space and time for sorting**
 * **⚙ Flexible configuration**
 
 ## 🚀 Installation
@@ -21,6 +20,7 @@ Nextcloud Media Duplicate Collector application
 In your Nextcloud, simply enable the MediaDC app through the Apps management
 and configure application dependencies on Configuration page (only for administrators).
 The Nextcloud MediaDC app is only included in nextcloud v21 and higher.
+#### Read more on [Wiki page](https://github.com/andrey18106/mediadc/wiki)
 
 ## Maintainers
 

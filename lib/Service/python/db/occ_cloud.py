@@ -4,6 +4,7 @@ File with helper class to work with `occ` command.
 
 import subprocess
 import os
+import re
 from typing import Union
 from pathlib import Path
 
@@ -83,7 +84,13 @@ def php_call(*params, decode: bool = True) -> [bool, Union[str, bytes]]:
 
 def occ_call(occ_task, *params, decode: bool = True) -> [bool, Union[str, bytes]]:
     """Wrapper for occ calls. If decode=False then raw stdout data will be returned from occ."""
-    return php_call(OCC, occ_task, *params, decode=decode)
+    success, result = php_call(OCC, '--no-warnings', occ_task, *params, decode=decode)
+    if not success:
+        return False, result
+    clear_result = re.sub(r'.*app.*require.*upgrade.*\n?', '', result, flags=re.IGNORECASE)
+    clear_result = re.sub(r'.*occ.*upgrade.*command.*\n?', '', clear_result, flags=re.IGNORECASE)
+    clear_result = clear_result.strip('\n')
+    return True, clear_result
 
 
 def get_cloud_config_value(value_name: str) -> [bool, str]:

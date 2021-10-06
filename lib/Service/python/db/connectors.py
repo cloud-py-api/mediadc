@@ -28,7 +28,7 @@ import traceback
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-def create_connection(config: dict, provider: str, error_out: list):
+def create_connection(config: dict, provider: str, error_out: list = None):
     connection = None
     try:
         if provider == 'pymysql':
@@ -41,7 +41,8 @@ def create_connection(config: dict, provider: str, error_out: list):
                                              charset='utf8mb4')
             else:
                 port = int(config['dbport']) if len(config['dbport']) else 3306
-                connection = pymysql.connect(host=config['dbhost'],
+                host = config['dbhost'] if len(config['dbhost']) else "localhost"
+                connection = pymysql.connect(host=host,
                                              port=port,
                                              user=config['dbuser'],
                                              password=config['dbpassword'],
@@ -56,7 +57,8 @@ def create_connection(config: dict, provider: str, error_out: list):
                                            database=config['dbname'])
             else:
                 port = int(config['dbport']) if len(config['dbport']) else 5432
-                connection = dbapi.connect(host=config['dbhost'],
+                host = config['dbhost'] if len(config['dbhost']) else "localhost"
+                connection = dbapi.connect(host=host,
                                            port=port,
                                            user=config['dbuser'],
                                            password=config['dbpassword'],
@@ -81,3 +83,18 @@ def internal_handle_db_connect_exception(exception_info, error_out: list = None)
         time.sleep(0.5)
     else:
         raise exception_info from None
+
+
+def test_connection(config: dict, provider: str, print_errors: bool = False) -> bool:
+    errors_list = []
+    try:
+        connection = create_connection(config, provider, errors_list)
+        if connection is not None:
+            connection.close()
+            return True
+    except Exception as exception_info:
+        if print_errors:
+            print(exception_info)
+    if print_errors:
+        print(errors_list)
+    return False

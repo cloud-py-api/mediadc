@@ -253,9 +253,9 @@ export default {
 					admin: JSON.parse(this.settingByName('exclude_list').value) || { mask: [], fileid: [] },
 				},
 				collectorSettings: {
-					hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'phash',
+					hashing_algorithm: JSON.parse(this.settingByName('hashing_algorithm').value) || 'dhash',
 					similarity_threshold: this.similarity_threshold,
-					hash_size: this.settingByName('hash_size').value || 64,
+					hash_size: this.settingByName('hash_size').value || 16,
 					target_mtype: this.targetMimeType,
 				},
 			}).then(res => {
@@ -265,8 +265,10 @@ export default {
 					this.getTasks()
 					this.resetForm()
 					showSuccess(t('mediadc', 'New task successfully created!'))
+				} else if (res.data.limit) {
+					showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
 				} else {
-					showWarning('Some error occured while running Collector Task. Try again.')
+					showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 				}
 			})
 		},

@@ -11,11 +11,6 @@ import task
 from install import extend_module_path
 
 
-# import pydevd_pycharm
-# pydevd_pycharm.settrace('192.168.3.4', port=6020, stdoutToServer=True, stderrToServer=True)
-# pip install pydevd-pycharm~=203.7717.81
-
-
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #
 # @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>

@@ -23,7 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
+ *!
  */
 
 namespace OCA\MediaDC\Service;
@@ -279,8 +279,8 @@ class PythonService {
 			if (isset($result['available_algorithms'])) {
 				$available_algorithms = $result['available_algorithms'];
 			}
-			if (isset($result['list'])) {
-				$list = $result['list'];
+			if (isset($result['installed_list'])) {
+				$installed_list = $result['installed_list'];
 			}
 			if (isset($result['errors'])) {
 				$errors = $result['errors'];
@@ -297,7 +297,7 @@ class PythonService {
 			'optional' => $optional,
 			'boost' => $boost,
 			'available_algorithms' => $available_algorithms,
-			'list' => $list,
+			'installed_list' => $installed_list,
 			'errors' => $errors,
 			'warnings' => $warnings,
 		];
