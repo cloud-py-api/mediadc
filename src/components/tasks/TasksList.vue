@@ -152,19 +152,6 @@ export default {
 	color: #585858;
 }
 
-@media (max-width: 540px) {
-	.task-row, .task-row a {
-		flex-direction: column;
-	}
-	.delete-task-button {
-		visibility: visible;
-	}
-	.badge {
-		margin-right: 0;
-		margin-bottom: 10px;
-	}
-}
-
 .badge {
 	display: inline-flex;
 	padding: 0 10px;
@@ -191,6 +178,20 @@ export default {
 .badge.terminated {
 	background-color: #f17b1b;
 	color: #fff;
+}
+
+@media (max-width: 540px) {
+	.task-row, .task-row a {
+		flex-direction: column;
+		padding: 5px;
+	}
+	.delete-task-button {
+		visibility: visible;
+	}
+	.badge {
+		margin-right: 0;
+		margin-bottom: 10px;
+	}
 }
 
 .empty-tasks-list {
