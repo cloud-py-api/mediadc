@@ -24,8 +24,9 @@
 
 <template>
 	<div class="file-thumb" @click="openFile(file)">
-		<div v-if="file.filempart === 'image' || (file.filempart === 'video' && file.has_preview)"
-			style="display: flex;">
+		<div v-show="loaded"
+			v-if="file.filempart === 'image' || (file.filempart === 'video' && file.has_preview)"
+			class="file-thumb-loaded">
 			<img v-show="loaded"
 				:key="file.filepath"
 				:src="imageUrl"
@@ -129,6 +130,11 @@ export default {
 	display: flex;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+}
+
+.file-thumb-loaded {
+	display: flex;
+	width: 100%;
 }
 
 img {

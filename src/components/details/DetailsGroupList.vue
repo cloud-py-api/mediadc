@@ -102,6 +102,7 @@ export default {
 
 <style scoped>
 .details-group {
+	width: 100%;
 	border-top: 1px solid #dadada;
 	border-bottom: 1px solid #dadada;
 	margin: 10px 0;
