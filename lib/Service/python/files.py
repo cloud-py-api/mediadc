@@ -63,7 +63,7 @@ def get_file_full_path(data_dir: str, storage_id: int, relative_path: str) -> st
     mount_point = get_storage_mount_point(storage_id)
     if not mount_point:
         return ''
-    return data_dir.encode('utf-8') + mount_point + relative_path.encode('utf-8')
+    return data_dir.encode('utf-8').decode('utf-8') + mount_point + relative_path.encode('utf-8').decode('utf-8')
 
 
 def can_directly_access_file(file_info: dict) -> bool:
@@ -97,12 +97,12 @@ def get_storage_info(storage_id: int):
 def get_storage_mount_point(storage_id: int) -> str:
     for storage_info in StoragesInfo:
         if storage_info['numeric_id'] == storage_id:
-            return storage_info['mount_point'].encode('utf-8')
+            return storage_info['mount_point'].encode('utf-8').decode('utf-8')
     return ''
 
 
 def get_storage_user_id(storage_id: int) -> str:
     for storage_info in StoragesInfo:
         if storage_info['numeric_id'] == storage_id:
-            return storage_info['user_id'].encode('utf-8')
+            return storage_info['user_id'].encode('utf-8').decode('utf-8')
     return ''
