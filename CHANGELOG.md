@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5 - 2021-10-12]
+
+### Added
+
+- Added some action loaders on Details page
+- Added links to the list of target directories
+
+### Fixed
+
+- Fixed video processing broken by previous update.
+- Fixed pip version parsing, install now works with last pip.
+- Fixed processing files from other NC instances and remote shares.
+
 ## [0.1.4 - 2021-10-09]
 
 ### Fixed
