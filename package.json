@@ -1,7 +1,7 @@
 {
 	"name": "mediadc",
 	"description": "Collect photo and video duplicates to save your cloud storage",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"author": "Andrey Borysenko <andrey18106x@gmail.com>",
 	"contributors": [
 		"Andrey Borysenko <andrey18106x@gmail.com>",

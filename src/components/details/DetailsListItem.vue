@@ -24,6 +24,9 @@
 
 <template>
 	<div class="details-list-item">
+		<div v-show="updating" class="action-blackout">
+			<span class="icon-loading" />
+		</div>
 		<div class="details-list-item-title">
 			<span class="icon-projects" style="margin: 0 10px 0 0;" />
 			<span class="group-info" @click="openDetailFiles(detail)">
@@ -41,7 +44,10 @@
 			<span class="icon-view-next pagination-button"
 				@click="openNextDetailFiles(detail)" />
 		</div>
-		<DetailsGroupList v-show="opened" :files="files" :loading-files="loadingFiles" />
+		<DetailsGroupList v-show="opened"
+			:files="files"
+			:loading-files="loadingFiles"
+			:updating.sync="updating" />
 	</div>
 </template>
 
@@ -73,6 +79,7 @@ export default {
 			loadingFiles: false,
 			files: [],
 			paginatedFiles: {},
+			updating: false,
 		}
 	},
 	computed: {
@@ -150,14 +157,22 @@ export default {
 		},
 		deleteTaskDetail(detail) {
 			if (confirm(t('mediadc', 'Are you sure, you want remove this group without deleting files?'))) {
+				this.updating = true
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${detail.task_id}/detail/${detail.id}`)).then(res => {
 					if (res.data.success) {
-						this.$store.dispatch('deleteDetail', detail)
-						emit('updateTaskInfo')
-						showSuccess(t('mediadc', 'Duplicate group succesffully removed'))
+						this.$store.dispatch('deleteDetail', detail).then(() => {
+							emit('updateTaskInfo')
+							showSuccess(t('mediadc', 'Duplicate group succesffully removed'))
+							this.updating = false
+						})
 					} else {
 						showError(t('mediadc', 'Some error occured while deleting duplicate group'))
+						this.updating = false
 					}
+				}).catch(err => {
+					console.debug(err)
+					showError(t('mediadc', 'Some error occured while deleting duplicate group'))
+					this.updating = false
 				})
 			}
 		},
@@ -173,6 +188,7 @@ export default {
 	align-items: center;
 	justify-content: space-between;
 	flex-direction: column;
+	position: relative;
 }
 
 .details-list-item-title {
@@ -241,5 +257,19 @@ body.theme--dark .pagination-button:active {
 
 .details-list-item:hover .delete-group-btn {
 	visibility: visible;
+}
+
+.action-blackout {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
 }
 </style>
