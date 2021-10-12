@@ -236,7 +236,7 @@ def is_pip_present(only_global: bool = False) -> bool:
             full_reply = result.stdout.decode('utf-8')
             if PIP_DEBUG == 1:
                 print('Pip version:', full_reply)
-            m_groups = re.search(r'pip\s*(\d+\.\d+\.\d*)',
+            m_groups = re.search(r'pip\s*(\d+(\.\d+){0,2})',
                                  full_reply, flags=re.MULTILINE + re.IGNORECASE)
             if m_groups is None:
                 return False
