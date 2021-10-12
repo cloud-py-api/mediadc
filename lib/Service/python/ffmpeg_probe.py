@@ -87,21 +87,23 @@ def is_moov_at_start(std_log) -> bool:
     return False
 
 
-def ffprobe_get_video_info(path_or_data) -> dict:
-    """Accepts bytes/path. Returns {} or {duration:X ms}. If input is bytes also returns `fast_start` flag."""
-    if isinstance(path_or_data, str):
+def ffprobe_get_video_info(path, data) -> dict:
+    """Accepts path(bytes/str) or data. Returns {} or {duration:X ms}. For data input also returns `fast_start` flag."""
+    if path is not None:
         result, err = stub_call_ff('ffprobe', '-hide_banner', '-loglevel', 'fatal', '-print_format', 'json',
                                    '-show_entries', 'format=duration',
-                                   path_or_data)
-    else:
+                                   path)
+    elif data is not None:
         result, err = stub_call_ff('ffprobe', '-hide_banner', '-loglevel', 'trace', '-print_format', 'json',
                                    '-show_entries', 'format=duration', '-i', 'pipe:0',
-                                   stdin_data=path_or_data, ignore_errors=True)
+                                   stdin_data=data, ignore_errors=True)
+    else:
+        raise ValueError("`path` or `data` argument must be specified.")
     if err:
         print(err)
         return {}
     ret = ffprobe_parse_results(result)
-    if isinstance(path_or_data, bytes):
+    if path is None:
         if ret['duration'] != 0:
             ret['fast_start'] = is_moov_at_start(result.stderr)
     return ret

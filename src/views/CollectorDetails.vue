@@ -100,8 +100,16 @@
 									{{ t('mediadc', 'onwer:') }} {{ dir.fileowner }}
 								</div>
 								<div class="tooltip-content">
-									<b>{{ dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '') }}</b>
-									({{ formatBytes(dir.filesize) }})
+									<a :href="filesDirLink(dir)" target="_blank">
+										<b>
+											{{
+												dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '') !== ''
+													? dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '')
+													: '/'
+											}}
+										</b>
+										({{ formatBytes(dir.filesize) }})
+									</a>
 								</div>
 							</div>
 						</div>
@@ -310,6 +318,15 @@ export default {
 		},
 		openEditTaskDialog() {
 			this.editingTask = true
+		},
+		filesDirLink(dir) {
+			if (dir) {
+				const path = dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${this.currentUser}/files`, '') !== ''
+					? dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${this.currentUser}/files`, '')
+					: '/'
+				return generateUrl(`/apps/files?dir=${path}`)
+			}
+			return '#'
 		},
 	},
 }

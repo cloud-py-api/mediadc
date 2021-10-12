@@ -189,7 +189,7 @@ export default {
 			if (this.taskInfo !== null && 'target_directories' in this.taskInfo) {
 				this.taskInfo.target_directories.forEach(dir => {
 					this.targetDirectoriesIds.push(dir.fileid.toString())
-					this.targetDirectoriesPaths[dir.fileid.toString()] = dir.filepath.replace(`/${getCurrentUser().uid}/files`, '')
+					this.targetDirectoriesPaths[dir.fileid.toString()] = dir.filepath.replace(`/${getCurrentUser().uid}/files`, '') !== '' ? dir.filepath.replace(`/${getCurrentUser().uid}/files`, '') : '/'
 				})
 			}
 			if (this.taskInfo !== null && 'exclude_directories' in this.taskInfo) {

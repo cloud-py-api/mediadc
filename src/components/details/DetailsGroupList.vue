@@ -66,6 +66,10 @@ export default {
 			type: Boolean,
 			required: true,
 		},
+		updating: {
+			type: Boolean,
+			required: true,
+		},
 	},
 	computed: {
 		...mapGetters([
@@ -75,6 +79,7 @@ export default {
 	methods: {
 		deleteGroupFile(file) {
 			if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
+				this.$emit('update:updating', true)
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${file.taskId}/files/${file.detailId}/${file.fileid}`))
 					.then(res => {
 						if (res.data.success) {
@@ -83,16 +88,21 @@ export default {
 							files.splice(fileidIndex, 1)
 							this.$emit('update:files', files)
 							emit('updateTaskInfo')
-							this.$store.dispatch('setTask', res.data.task)
+							this.$store.dispatch('setTask', res.data.task).then(() => {
+								this.$emit('update:updating', false)
+							})
 						} else if ('locked' in res.data && res.data.locked) {
 							showWarning(t('mediadc', 'Wait until file loaded before deleting'))
+							this.$emit('update:updating', false)
 						} else {
 							showError(t('mediadc', 'Some error occured while deleting file'))
+							this.$emit('update:updating', false)
 						}
 					})
 					.catch(err => {
 						console.debug(err)
 						showError(t('mediadc', 'Some error occured while deleting file'))
+						this.$emit('update:updating', false)
 					})
 			}
 		},
@@ -102,6 +112,7 @@ export default {
 
 <style scoped>
 .details-group {
+	width: 100%;
 	border-top: 1px solid #dadada;
 	border-bottom: 1px solid #dadada;
 	margin: 10px 0;
