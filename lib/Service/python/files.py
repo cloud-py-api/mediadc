@@ -41,7 +41,8 @@ def get_file_data(file_info: dict, data_dir: str, remote_filesize_limit: int) ->
                 data = h_file.read()
                 return data
         except Exception as exception_info:
-            print(f"Exception during reading: {full_path}\n {str(exception_info)}")
+            print(f"Error during reading: {file_info['storage']}-{data_dir + file_info['path']}:\n"
+                  f" {str(exception_info)}")
             break
     if file_info['size'] > remote_filesize_limit:
         return b''
@@ -59,11 +60,11 @@ def request_file_from_php(file_info: dict) -> bytes:
     return err_or_data
 
 
-def get_file_full_path(data_dir: str, storage_id: int, relative_path: str) -> str:
+def get_file_full_path(data_dir: str, storage_id: int, relative_path: str) -> bytes:
     mount_point = get_storage_mount_point(storage_id)
     if not mount_point:
-        return ''
-    return data_dir.encode('utf-8').decode('utf-8') + mount_point + relative_path.encode('utf-8').decode('utf-8')
+        return b''
+    return data_dir.encode('utf-8') + mount_point + relative_path.encode('utf-8')
 
 
 def can_directly_access_file(file_info: dict) -> bool:
@@ -94,15 +95,15 @@ def get_storage_info(storage_id: int):
     return {}
 
 
-def get_storage_mount_point(storage_id: int) -> str:
+def get_storage_mount_point(storage_id: int) -> bytes:
     for storage_info in StoragesInfo:
         if storage_info['numeric_id'] == storage_id:
-            return storage_info['mount_point'].encode('utf-8').decode('utf-8')
-    return ''
+            return storage_info['mount_point'].encode('utf-8')
+    return b''
 
 
-def get_storage_user_id(storage_id: int) -> str:
+def get_storage_user_id(storage_id: int) -> bytes:
     for storage_info in StoragesInfo:
         if storage_info['numeric_id'] == storage_id:
-            return storage_info['user_id'].encode('utf-8').decode('utf-8')
-    return ''
+            return storage_info['user_id'].encode('utf-8')
+    return b''

@@ -87,10 +87,12 @@ def occ_call(occ_task, *params, decode: bool = True) -> [bool, Union[str, bytes]
     success, result = php_call(OCC, '--no-warnings', occ_task, *params, decode=decode)
     if not success:
         return False, result
-    clear_result = re.sub(r'.*app.*require.*upgrade.*\n?', '', result, flags=re.IGNORECASE)
-    clear_result = re.sub(r'.*occ.*upgrade.*command.*\n?', '', clear_result, flags=re.IGNORECASE)
-    clear_result = clear_result.strip('\n')
-    return True, clear_result
+    if decode:
+        clear_result = re.sub(r'.*app.*require.*upgrade.*\n?', '', result, flags=re.IGNORECASE)
+        clear_result = re.sub(r'.*occ.*upgrade.*command.*\n?', '', clear_result, flags=re.IGNORECASE)
+        clear_result = clear_result.strip('\n')
+        return True, clear_result
+    return True, result
 
 
 def get_cloud_config_value(value_name: str) -> [bool, str]:

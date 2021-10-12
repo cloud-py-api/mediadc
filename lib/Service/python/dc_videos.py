@@ -120,10 +120,10 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
             full_path = get_file_full_path(data_dir, file_info['storage'], file_info['path'])
             if not full_path:
                 break
-            video_info = ffprobe_get_video_info(full_path)
+            video_info = ffprobe_get_video_info(full_path, None)
             if not video_info:
                 break
-            if not do_hash_video(algo, hash_size, video_info, file_info, full_path):
+            if not do_hash_video(algo, hash_size, video_info, file_info, full_path, None):
                 raise InvalidVideo
             return
         if file_info['size'] > remote_filesize_limit:
@@ -133,10 +133,10 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
         data = request_file_from_php(file_info)
         if len(data) == 0:
             return
-        video_info = ffprobe_get_video_info(data)
+        video_info = ffprobe_get_video_info(None, data)
         if not video_info.get('fast_start', False):
             raise InvalidVideo
-        if not do_hash_video(algo, hash_size, video_info, file_info, data):
+        if not do_hash_video(algo, hash_size, video_info, file_info, None, data):
             raise InvalidVideo
     except Exception as exception_info:
         store_err_video_hash(file_info['fileid'], video_info.get('duration', 0),
@@ -146,15 +146,16 @@ def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str
             print(f"Exception({exception_name}): `{file_info['path']}`:\n`{str(traceback.format_exc())}`")
 
 
-def do_hash_video(algo: str, hash_size: int, video_info: dict, file_info: dict, path_or_data) -> bool:
+def do_hash_video(algo: str, hash_size: int, video_info: dict, file_info: dict, path, data) -> bool:
+    """Accepts path(bytes/str) or data for processing in memory."""
     if video_info['duration'] < MinVideoDuration_ms:
         return False
-    first_timestamp = get_first_timestamp(video_info, path_or_data)
+    first_timestamp = get_first_timestamp(video_info, path, data)
     if first_timestamp == -1:
         return False
     frames_timestamps = build_times_for_hashes(video_info['duration'], first_timestamp)
     ex = ()
-    res = get_frames(frames_timestamps, path_or_data, *ex)
+    res = get_frames(frames_timestamps, path, data, *ex)
     if not res[0]:
         return False
     if any(len(x) == 0 for x in res[1:]):
@@ -192,19 +193,22 @@ def get_max_first_frame_time(duration_ms) -> int:
     return max_timestamp
 
 
-def get_first_timestamp(video_info: dict, data_or_filepath) -> int:
+def get_first_timestamp(video_info: dict, path, data) -> int:
+    """Accepts path(bytes/str) or data for processing in memory."""
     max_timestamp = get_max_first_frame_time(video_info['duration'])
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn', '-to', f'{max_timestamp}ms']
-    if isinstance(data_or_filepath, str):
-        result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params, '-i', data_or_filepath,
+    if path is not None:
+        result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params, '-i', path,
                                    '-f', 'rawvideo', '-s', f'{FirstFrameResolution}x{FirstFrameResolution}',
                                    '-pix_fmt', 'rgb24', 'pipe:'
                                    )
-    else:
+    elif data is not None:
         result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params, '-i', 'pipe:0',
                                    '-f', 'rawvideo', '-s', f'{FirstFrameResolution}x{FirstFrameResolution}',
                                    '-pix_fmt', 'rgb24', 'pipe:1',
-                                   stdin_data=data_or_filepath)
+                                   stdin_data=data)
+    else:
+        raise ValueError("`path` or `data` argument must be specified.")
     if err:
         print('DEBUG:', err)
         return -1
@@ -223,22 +227,25 @@ def get_first_timestamp(video_info: dict, data_or_filepath) -> int:
     return 0
 
 
-def get_frames(timestamps: list, data_or_filepath, *ffmpeg_out_params) -> list:
+def get_frames(timestamps: list, path, data, *ffmpeg_out_params) -> list:
+    """Accepts path(bytes/str) or data for processing in memory."""
     ret = [False]
     for _ in range(len(timestamps)):
         ret.append(b'')
+    if path is None and data is None:
+        raise ValueError("`path` or `data` argument must be specified.")
     ffmpeg_input_params = ['-hide_banner', '-loglevel', 'fatal', '-an', '-sn', '-dn']
     for index, timestamp in enumerate(timestamps):
-        if isinstance(data_or_filepath, str):
+        if path is not None:
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
-                                       '-ss', f'{timestamp}ms', '-i', data_or_filepath,
+                                       '-ss', f'{timestamp}ms', '-i', path,
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:'
                                        )
         else:
             result, err = stub_call_ff('ffmpeg', *ffmpeg_input_params,
                                        '-ss', f'{timestamp}ms', '-i', 'pipe:0',
                                        '-f', 'image2', '-c:v', 'bmp', '-frames', '1', *ffmpeg_out_params, 'pipe:1',
-                                       stdin_data=data_or_filepath)
+                                       stdin_data=data)
         if err:
             print('DEBUG:', err)
             return ret
