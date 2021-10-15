@@ -6,4 +6,3 @@ pillow_heif
 asn1crypto
 cryptography
 pynacl
-hexhamming
