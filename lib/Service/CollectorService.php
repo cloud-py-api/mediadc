@@ -174,7 +174,7 @@ class CollectorService {
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
 		$processesRunning = $this->tasksMapper->findAllRunning();
-		$taskIdsRunning = array_map(fn($task) => $task->getId(), $processesRunning);
+		$taskIdsRunning = array_map('\OCA\MediaDC\Service\CollectorService::taskIdCallback', $processesRunning);
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
@@ -211,6 +211,17 @@ class CollectorService {
 		}
 
 		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null];
+	}
+
+	/**
+	 * Callback to extract ColectorTask id
+	 * 
+	 * @param CollectorTask $task
+	 * 
+	 * @return int
+	 */
+	static function taskIdCallback($task) {
+		return $task->getId();
 	}
 
 	/**

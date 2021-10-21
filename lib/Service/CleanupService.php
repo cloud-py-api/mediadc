@@ -23,7 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *!
+ *
  */
 
 namespace OCA\MediaDC\Service;
@@ -50,13 +50,22 @@ class CleanupService {
 	}
 
 	public function dropAppTables() {
-		$tables = array_filter($this->schema->getTableNames(),
-			fn($tableName): bool => strpos($tableName, Application::APP_ID) !== false
-		);
+		$tables = array_filter($this->schema->getTableNames(), '\OCA\MediaDC\Service\CleanupService::tablesCallback');
 		foreach ($tables as $table) {
 			$this->db->dropTable($table);
 		}
 		$this->removeAppMigrations();
+	}
+
+	/**
+	 * Callback for tables filter
+	 * 
+	 * @param string $tableName
+	 * 
+	 * @return bool
+	 */
+	static function tablesCallback($tableName) {
+		return strpos($tableName, Application::APP_ID) !== false;
 	}
 
 	private function removeAppMigrations() {

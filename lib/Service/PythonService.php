@@ -74,14 +74,13 @@ class PythonService {
 	 */
 	public function run($scriptName, $scriptParams, $nonBlocking = false, $env = []) {
 		if (count($scriptParams) > 0) {
-			$callback = fn(string $k, string $v): string => $v !== '' ? "$k $v " : "$k";
-			$params = array_map($callback, array_keys($scriptParams), array_values($scriptParams));
+			$params = array_map('\OCA\MediaDC\Service\PythonService::scriptParamsCallback', array_keys($scriptParams), array_values($scriptParams));
 			$cmd = $this->pythonCommand . ' ' . $this->cwd . $scriptName . ' ' . join(' ', $params);
 		} else {
 			$cmd = $this->pythonCommand . ' ' .  $this->cwd . $scriptName;
 		}
 		if (count($env) > 0) {
-			$envVariables = join(' ', array_map(fn(string $k, string $v): string => "$k=\"$v\" ", array_keys($env), array_values($env)));
+			$envVariables = join(' ', array_map('\OCA\MediaDC\Service\PythonService::scriptEnvsCallback', array_keys($env), array_values($env)));
 		} else {
 			$envVariables = '';
 		}
@@ -94,6 +93,30 @@ class PythonService {
 				'result_code' => $result_code,
 			];
 		}
+	}
+
+	/**
+	 * Callback for concatinating Python script params
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * 
+	 * @return string
+	 */
+	static function scriptParamsCallback($key, $value) {
+		return $value !== '' ? "$key $value " : "$key";
+	}
+
+	/**
+	 * Callback for concatinating Python environment variables
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * 
+	 * @return string
+	 */
+	static function scriptEnvsCallback($key, $value) {
+		return "$key=\"$value\" ";
 	}
 
 	/**
