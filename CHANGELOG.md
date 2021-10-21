@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6 - 2021-10-21]
+
+### Fixed
+
+- Fixed MediaDC not working if specified another apps directory in Nextcloud config (apps_paths)
+- Fixed MediaDC install fails on Configuration page on some server configs
+- Changed function callbacks syntax to support PHP 7.3
+
 ## [0.1.5 - 2021-10-12]
 
 ### Added
