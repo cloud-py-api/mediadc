@@ -23,7 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *!
+ *
  */
 
 namespace OCA\MediaDC\Service;
@@ -32,6 +32,7 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Exception\PythonNotValidException;
+use OCP\IConfig;
 
 
 class PythonService {
@@ -42,12 +43,16 @@ class PythonService {
 	/** @var string */
 	private $pythonCommand;
 
-	public function __construct(SettingMapper $settingMapper)
+	/** @var IConfig */
+	private $config;
+
+	public function __construct(SettingMapper $settingMapper, IConfig $config)
 	{
+		$this->config = $config;
 		/** @var Setting */
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
-		$this->cwd = getcwd() . '/apps/' . Application::APP_ID . '/lib/Service/python';
+		$this->cwd = $this->getCustomAppsDirectory() . Application::APP_ID . '/lib/Service/python';
 		if (!$this->isPythonCompatible()) {
 			throw new PythonNotValidException("Python version is lower then 3.6.8 or not available");
 		}
@@ -301,6 +306,20 @@ class PythonService {
 			'errors' => $errors,
 			'warnings' => $warnings,
 		];
+	}
+
+	private function getCustomAppsDirectory() {
+		$apps_directory = $this->config->getSystemValue('apps_paths');
+		if ($apps_directory !== "" && is_array($apps_directory) && count($apps_directory) > 0) {
+			foreach ($apps_directory as $custom_apps_dir) {
+				$mediadcDir = $custom_apps_dir['path'] . '/' . Application::APP_ID;
+				if (file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable'] 
+					&& file_exists($mediadcDir) && is_dir($mediadcDir)) {
+					return $custom_apps_dir['path'] . '/';
+				}
+			}
+		}
+		return getcwd() . '/apps/';
 	}
 
 }
