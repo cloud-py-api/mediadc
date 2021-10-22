@@ -27,6 +27,7 @@ import Vue from 'vue'
 const state = {
 	settings: [],
 	detailsGridSize: 192,
+	deleteFileConfirmation: true,
 }
 
 const mutations = {
@@ -52,12 +53,16 @@ const mutations = {
 			Vue.set(state, 'detailsGridSize', size)
 		}
 	},
+	setDeleteFileConfirmation(state, value) {
+		Vue.set(state, 'deleteFileConfirmation', value)
+	},
 }
 
 const getters = {
 	settings: state => state.settings,
 	settingByName: state => name => state.settings.find(setting => setting.name === name),
 	detailsGridSize: state => state.detailsGridSize,
+	deleteFileConfirmation: state => state.deleteFileConfirmation,
 }
 
 const actions = {
@@ -72,6 +77,9 @@ const actions = {
 	},
 	setDetailsGridSize(context, size) {
 		context.commit('setDetailsGridSize', size)
+	},
+	setDeleteFileConfirmation(context, value) {
+		context.commit('setDeleteFileConfirmation', value)
 	},
 }
 

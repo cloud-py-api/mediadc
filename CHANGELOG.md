@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.6 - 2021-10-21]
+## [0.1.6 - 2021-10-22]
+
+### Added
+
+- Added Delete file confirmation setting (sidebar settings)
 
 ### Fixed
 
