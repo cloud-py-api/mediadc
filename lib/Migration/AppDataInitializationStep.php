@@ -31,6 +31,7 @@ namespace OCA\MediaDC\Migration;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
+use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -40,8 +41,12 @@ class AppDataInitializationStep implements IRepairStep {
 	/** @var SettingMapper */
 	private $settingMapper;
 
-	public function __construct(SettingMapper $settingMapper) {
+	/** @var IConfig */
+	private $config;
+
+	public function __construct(SettingMapper $settingMapper, IConfig $config) {
 		$this->settingMapper = $settingMapper;
+		$this->config = $config;
 	}
 
 	public function getName(): string {
@@ -50,7 +55,7 @@ class AppDataInitializationStep implements IRepairStep {
 
 	public function run(IOutput $output) {
 		$output->startProgress(1);
-		$data_file = getcwd() . '/apps//' . Application::APP_ID . "/lib/Migration/data/app_data_Version0001Date20210627153636.json";
+		$data_file = $this->getCustomAppsDirectory() . Application::APP_ID . "/lib/Migration/data/app_data_Version0001Date20210627153636.json";
 		$app_data = json_decode(file_get_contents($data_file), true);
 
 		if (count($this->settingMapper->findAll()) === 0) {
@@ -68,6 +73,20 @@ class AppDataInitializationStep implements IRepairStep {
 
 		$output->advance(1);
 		$output->finishProgress();
+	}
+
+	private function getCustomAppsDirectory() {
+		$apps_directory = $this->config->getSystemValue('apps_paths');
+		if ($apps_directory !== "" && is_array($apps_directory) && count($apps_directory) > 0) {
+			foreach ($apps_directory as $custom_apps_dir) {
+				$mediadcDir = $custom_apps_dir['path'] . '/' . Application::APP_ID;
+				if (file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable'] 
+					&& file_exists($mediadcDir) && is_dir($mediadcDir)) {
+					return $custom_apps_dir['path'] . '/';
+				}
+			}
+		}
+		return getcwd() . '/apps/';
 	}
 
 }

@@ -74,37 +74,45 @@ export default {
 	computed: {
 		...mapGetters([
 			'detailsGridSize',
+			'deleteFileConfirmation',
 		]),
 	},
 	methods: {
 		deleteGroupFile(file) {
-			if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
-				this.$emit('update:updating', true)
-				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${file.taskId}/files/${file.detailId}/${file.fileid}`))
-					.then(res => {
-						if (res.data.success) {
-							const files = this.files
-							const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
-							files.splice(fileidIndex, 1)
-							this.$emit('update:files', files)
-							emit('updateTaskInfo')
-							this.$store.dispatch('setTask', res.data.task).then(() => {
-								this.$emit('update:updating', false)
-							})
-						} else if ('locked' in res.data && res.data.locked) {
-							showWarning(t('mediadc', 'Wait until file loaded before deleting'))
+			if (this.deleteFileConfirmation) {
+				if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
+					this._deleteGroupFile(file)
+				}
+			} else {
+				this._deleteGroupFile(file)
+			}
+		},
+		_deleteGroupFile(file) {
+			this.$emit('update:updating', true)
+			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${file.taskId}/files/${file.detailId}/${file.fileid}`))
+				.then(res => {
+					if (res.data.success) {
+						const files = this.files
+						const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
+						files.splice(fileidIndex, 1)
+						this.$emit('update:files', files)
+						emit('updateTaskInfo')
+						this.$store.dispatch('setTask', res.data.task).then(() => {
 							this.$emit('update:updating', false)
-						} else {
-							showError(t('mediadc', 'Some error occured while deleting file'))
-							this.$emit('update:updating', false)
-						}
-					})
-					.catch(err => {
-						console.debug(err)
+						})
+					} else if ('locked' in res.data && res.data.locked) {
+						showWarning(t('mediadc', 'Wait until file loaded before deleting'))
+						this.$emit('update:updating', false)
+					} else {
 						showError(t('mediadc', 'Some error occured while deleting file'))
 						this.$emit('update:updating', false)
-					})
-			}
+					}
+				})
+				.catch(err => {
+					console.debug(err)
+					showError(t('mediadc', 'Some error occured while deleting file'))
+					this.$emit('update:updating', false)
+				})
 		},
 	},
 }

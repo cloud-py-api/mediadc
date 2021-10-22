@@ -23,7 +23,7 @@ declare(strict_types=1);
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *!
+ *
  */
 
 namespace OCA\MediaDC\Service;
@@ -32,6 +32,7 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Exception\PythonNotValidException;
+use OCP\IConfig;
 
 
 class PythonService {
@@ -42,12 +43,16 @@ class PythonService {
 	/** @var string */
 	private $pythonCommand;
 
-	public function __construct(SettingMapper $settingMapper)
+	/** @var IConfig */
+	private $config;
+
+	public function __construct(SettingMapper $settingMapper, IConfig $config)
 	{
+		$this->config = $config;
 		/** @var Setting */
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
-		$this->cwd = getcwd() . '/apps/' . Application::APP_ID . '/lib/Service/python';
+		$this->cwd = $this->getCustomAppsDirectory() . Application::APP_ID . '/lib/Service/python';
 		if (!$this->isPythonCompatible()) {
 			throw new PythonNotValidException("Python version is lower then 3.6.8 or not available");
 		}
@@ -69,14 +74,13 @@ class PythonService {
 	 */
 	public function run($scriptName, $scriptParams, $nonBlocking = false, $env = []) {
 		if (count($scriptParams) > 0) {
-			$callback = fn(string $k, string $v): string => $v !== '' ? "$k $v " : "$k";
-			$params = array_map($callback, array_keys($scriptParams), array_values($scriptParams));
+			$params = array_map('\OCA\MediaDC\Service\PythonService::scriptParamsCallback', array_keys($scriptParams), array_values($scriptParams));
 			$cmd = $this->pythonCommand . ' ' . $this->cwd . $scriptName . ' ' . join(' ', $params);
 		} else {
 			$cmd = $this->pythonCommand . ' ' .  $this->cwd . $scriptName;
 		}
 		if (count($env) > 0) {
-			$envVariables = join(' ', array_map(fn(string $k, string $v): string => "$k=\"$v\" ", array_keys($env), array_values($env)));
+			$envVariables = join(' ', array_map('\OCA\MediaDC\Service\PythonService::scriptEnvsCallback', array_keys($env), array_values($env)));
 		} else {
 			$envVariables = '';
 		}
@@ -89,6 +93,30 @@ class PythonService {
 				'result_code' => $result_code,
 			];
 		}
+	}
+
+	/**
+	 * Callback for concatinating Python script params
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * 
+	 * @return string
+	 */
+	static function scriptParamsCallback($key, $value) {
+		return $value !== '' ? "$key $value " : "$key";
+	}
+
+	/**
+	 * Callback for concatinating Python environment variables
+	 * 
+	 * @param string $key
+	 * @param string $value
+	 * 
+	 * @return string
+	 */
+	static function scriptEnvsCallback($key, $value) {
+		return "$key=\"$value\" ";
 	}
 
 	/**
@@ -301,6 +329,20 @@ class PythonService {
 			'errors' => $errors,
 			'warnings' => $warnings,
 		];
+	}
+
+	private function getCustomAppsDirectory() {
+		$apps_directory = $this->config->getSystemValue('apps_paths');
+		if ($apps_directory !== "" && is_array($apps_directory) && count($apps_directory) > 0) {
+			foreach ($apps_directory as $custom_apps_dir) {
+				$mediadcDir = $custom_apps_dir['path'] . '/' . Application::APP_ID;
+				if (file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable'] 
+					&& file_exists($mediadcDir) && is_dir($mediadcDir)) {
+					return $custom_apps_dir['path'] . '/';
+				}
+			}
+		}
+		return getcwd() . '/apps/';
 	}
 
 }
