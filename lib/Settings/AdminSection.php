@@ -28,30 +28,41 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Settings;
 
+use OC\URLGenerator;
 use OCA\MediaDC\AppInfo\Application;
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Settings\ISettings;
+use OCP\IL10N;
+use OCP\Settings\IIconSection;
 
 
-class AdminSettings implements ISettings {
+class AdminSection implements IIconSection {
 
-	public function __construct() {
+	/** @var IL10N */
+	private $l;
+
+	/** @var UrlGenerator */
+	private $urlGenerator;
+
+	public function __construct(IL10N $l, URLGenerator $urlGenerator)
+	{
+		$this->l = $l;
+		$this->urlGenerator = $urlGenerator;
 	}
 
-	/**
-	 * @return TemplateResponse
-	 */
-	public function getForm() {
-		return new TemplateResponse(Application::APP_ID, 'admin');
-	}
-
-	public function getSection() {
+	public function getId() {
 		return Application::APP_ID;
+	}
+
+	public function getName() {
+		return $this->l->t('MediaDC');
 	}
 
 	public function getPriority()
 	{
 		return 50;
+	}
+
+	public function getIcon() {
+		return $this->urlGenerator->imagePath(Application::APP_ID, 'settings.svg');
 	}
 
 }

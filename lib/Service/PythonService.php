@@ -31,8 +31,12 @@ namespace OCA\MediaDC\Service;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
+use OCA\MediaDC\Exception\FunctionNotAvailable;
 use OCA\MediaDC\Exception\PythonNotValidException;
+
 use OCP\IConfig;
+use Psr\Log\LoggerInterface;
+use bantu\IniGetWrapper\IniGetWrapper;
 
 
 class PythonService {
@@ -46,15 +50,22 @@ class PythonService {
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(SettingMapper $settingMapper, IConfig $config)
+	/** @var LoggerInterface */
+	private $logger;
+
+	public function __construct(SettingMapper $settingMapper, IConfig $config, LoggerInterface $logger)
 	{
 		$this->config = $config;
+		$this->logger = $logger;
 		/** @var Setting */
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
 		$this->cwd = $this->getCustomAppsDirectory() . Application::APP_ID . '/lib/Service/python';
-		if (!$this->isPythonCompatible()) {
-			throw new PythonNotValidException("Python version is lower then 3.6.8 or not available");
+		if (!$this->isFunctionEnabled('exec')) {
+			throw new FunctionNotAvailable('`exec` PHP function is not available.');
+		}
+		if ($this->isPythonCompatible()) {
+			throw new PythonNotValidException('Python version is lower then 3.6.8 or not available');
 		}
 	}
 
@@ -191,12 +202,12 @@ class PythonService {
 	 * @return string|null
 	 */
 	public function getPythonVersion() {
-		exec($this->pythonCommand . ' --version', $output);
-		if (preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
+		exec($this->pythonCommand . ' --version', $output, $result_code);
+		if ($result_code === 0 && count($output) > 0 && preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
 			return $matches[0][0];
-		} else {
-			return null;
 		}
+		$this->logger->error('[' . self::class . '] Command executed with error result_code: ' . $result_code);
+		return null;
 	}
 
 	/**
@@ -343,6 +354,32 @@ class PythonService {
 			}
 		}
 		return getcwd() . '/apps/';
+	}
+
+	/**
+	 * Check if a php function available
+	 * 
+	 * @param string $function_name
+	 * 
+	 * @return bool
+	 */
+	private function isFunctionEnabled($function_name) {
+		if (!function_exists($function_name)) {
+			return false;
+		}
+		/** @var IniGetWrapper $ini */
+		$ini = \OC::$server->get(IniGetWrapper::class);
+		$disabled = explode(',', $ini->get('disable_functions') ?: '');
+		$disabled = array_map('trim', $disabled);
+		if (in_array($function_name, $disabled)) {
+			return false;
+		}
+		$disabled = explode(',', $ini->get('suhosin.executor.func.blacklist') ?: '');
+		$disabled = array_map('trim', $disabled);
+		if (in_array($function_name, $disabled)) {
+			return false;
+		}
+		return true;
 	}
 
 }

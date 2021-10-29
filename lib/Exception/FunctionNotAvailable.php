@@ -26,32 +26,10 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\MediaDC\Settings;
+namespace OCA\MediaDC\Exception;
 
-use OCA\MediaDC\AppInfo\Application;
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Settings\ISettings;
+use Exception;
 
 
-class AdminSettings implements ISettings {
-
-	public function __construct() {
-	}
-
-	/**
-	 * @return TemplateResponse
-	 */
-	public function getForm() {
-		return new TemplateResponse(Application::APP_ID, 'admin');
-	}
-
-	public function getSection() {
-		return Application::APP_ID;
-	}
-
-	public function getPriority()
-	{
-		return 50;
-	}
-
+class FunctionNotAvailable extends Exception {
 }
