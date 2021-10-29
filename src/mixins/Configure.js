@@ -91,11 +91,12 @@ export default {
 					} else if (!res.data.success && res.data.installed) {
 						showWarning(t('mediadc', 'Installation finished. Not all packages installed'))
 					} else {
-						showError(t('mediadc', 'Installation failed. Try again.'))
+						showError(t('mediadc', 'Installation failed. Some server error occured'))
 					}
-				}).catch(() => {
+				}).catch(err => {
+					console.debug(err)
 					this.installing = false
-					showError(t('mediadc', 'Installation failed. Try again.'))
+					showError(t('mediadc', 'Installation failed. Some server error occured'))
 				})
 			})
 		},
@@ -113,9 +114,10 @@ export default {
 					} else {
 						showError(t('mediadc', 'Package list installation failed'))
 					}
-				}).catch(() => {
+				}).catch(err => {
+					console.debug(err)
 					this.updating = false
-					showError(t('mediadc', 'Package list installation failed'))
+					showError(t('mediadc', 'Package list installation failed. Some server error occured'))
 				})
 			})
 		},
@@ -135,7 +137,7 @@ export default {
 			}).catch(err => {
 				console.debug(err)
 				this.updating = false
-				showError(t('mediadc', 'Some error occured while deleting packages'))
+				showError(t('mediadc', 'Package list deleting failed. Some server error occured'))
 			})
 		},
 		async updateDepsList(listName) {
@@ -153,7 +155,8 @@ export default {
 				})
 			}).catch(err => {
 				console.debug(err)
-				showError(t('mediadc', 'Packages update failed'))
+				this.updating = false
+				showError(t('mediadc', 'Packages update failed. Some server error occured'))
 			})
 		},
 		async check() {
@@ -162,44 +165,46 @@ export default {
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting().then(() => {
 					this.checking = false
-					if (res.data.installed) {
+					if (res.data.success) {
 						showSuccess(t('mediadc', 'All required dependencies installed'))
+					} else if (!res.data.success && 'installed' in res.data && res.data.installed) {
+						showWarning(t('mediadc', 'Not all required packages installed'))
 					} else {
-						showError(t('mediadc', 'Not all required packages installed'))
+						showError(t('mediadc', 'Some errors occured while checking installation'))
 					}
 				}).catch(err => {
 					this.checking = false
 					console.debug(err)
-					showError(t('mediadc', 'Dependencies checking failed. Try again.'))
+					showError(t('mediadc', 'Dependencies checking failed. Some server error occured'))
 				})
 			}).catch(err => {
 				console.debug(err)
-				showError(t('mediadc', 'Dependencies checking failed. Try again.'))
 				this.checking = false
+				showError(t('mediadc', 'Dependencies checking failed. Some server error occured'))
 			})
 		},
 		parsePythonResponseData(res) {
-			this.installed = res.data.installed
-			this.installed_setting.value.status = res.data.installed
-			this.installed_setting.value.installed_list = res.data.installed_list
+			this.installed = 'installed' in res.data ? res.data.installed : false
+			this.installed_setting.value.status = 'installed' in res.data ? res.data.installed : false
+			this.installed_setting.value.installed_list = 'installed_list' in res.data ? res.data.installed_list : []
 			this.installed_setting.value.not_installed_list = {
-				required: res.data.required,
-				optional: res.data.optional,
-				boost: res.data.boost,
+				required: 'required' in res.data ? res.data.required : {},
+				optional: 'optional' in res.data ? res.data.optional : {},
+				boost: 'boost' in res.data ? res.data.boost : {},
 			}
-			this.installed_setting.value.available_algorithms = res.data.available_algorithms
-			this.installed_setting.value.video_required = res.data.video_required
+			this.installed_setting.value.available_algorithms = 'available_algorithms' in res.data ? res.data.available_algorithms : []
+			this.installed_setting.value.video_required = 'video_required' in res.data ? res.data.video_required : []
 			this.$store.dispatch('setSetting', this.installed_setting)
-			this.installed_list = res.data.installed_list
+			this.installed_list = 'installed_list' in res.data ? res.data.installed_list : []
 			this.not_installed_list = {
-				required: res.data.required,
-				optional: res.data.optional,
-				boost: res.data.boost,
+				required: 'required' in res.data ? res.data.required : {},
+				optional: 'optional' in res.data ? res.data.optional : {},
+				boost: 'boost' in res.data ? res.data.boost : {},
 			}
-			this.available_algorithms = res.data.available_algorithms
-			this.video_required = res.data.video_required
-			this.errors = res.data.errors
-			this.warnings = res.data.warnings
+			this.available_algorithms = 'available_algorithms' in res.data ? res.data.available_algorithms : []
+			this.video_required = 'video_required' in res.data ? res.data.video_required : []
+			this.errors = 'errors' in res.data ? res.data.errors : []
+			this.warnings = 'warnings' in res.data ? res.data.warnings : []
 		},
 		finishConfiguration() {
 			this.$emit('update:loading', true)

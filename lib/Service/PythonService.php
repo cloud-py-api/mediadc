@@ -61,12 +61,6 @@ class PythonService {
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
 		$this->cwd = $this->getCustomAppsDirectory() . Application::APP_ID . '/lib/Service/python';
-		if (!$this->isFunctionEnabled('exec')) {
-			throw new FunctionNotAvailable('`exec` PHP function is not available.');
-		}
-		if (!$this->isPythonCompatible()) {
-			throw new PythonNotValidException('Python version is lower then 3.6.8 or not available');
-		}
 	}
 
 	/**
@@ -131,37 +125,61 @@ class PythonService {
 	}
 
 	/**
+	 * Check server requirements
+	 * 
+	 * @return array check results with errors list
+	 */
+	private function checkDepsRequirements() {
+		$errors = [];
+		if (!$this->isFunctionEnabled('exec')) {
+			array_push($errors, '`exec` PHP function is not available.');
+		}
+		if (!$this->isPythonCompatible()) {
+			array_push($errors, 'Python version is lower then 3.6.8 or not available');
+		}
+		return ['success' => count($errors) === 0, 'errors' => $errors];
+	}
+
+	/**
 	 * @param string @listName
 	 * 
 	 * @return array installation results list
 	 */
 	public function installDependencies($listName = '') {
-		try {
-			$pythonResult = $this->run('/install.py', [
-				'--install' => $listName === '' ? 'required optional' : $listName,
-			], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
-			return $this->parsePythonOutput($pythonResult);
-		} catch (\Exception $e) {
-			return [
-				'success' => false,
-				'message' => 'Some error while running the Python script',
-			];
+		$depsCheck = $this->checkDepsRequirements();
+		if ($depsCheck['success']) {
+			try {
+				$pythonResult = $this->run('/install.py', [
+					'--install' => $listName === '' ? 'required optional' : $listName,
+				], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
+				return $this->parsePythonOutput($pythonResult);
+			} catch (\Exception $e) {
+				return [
+					'success' => false,
+					'message' => 'Some error while running the Python script',
+				];
+			}
 		}
+		return $depsCheck;
 	}
 
 	/**
 	 * @return array list of uninstalled Python packages
 	 */
 	public function checkInstallation() {
-		try {
-			$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
-			return $this->parsePythonOutput($pythonResult);
-		} catch (\Exception $e) {
-			return [
-				'success' => false,
-				'message' => 'Some error while running the Python script',
-			];
+		$depsCheck = $this->checkDepsRequirements();
+		if ($depsCheck['success']) {
+			try {
+				$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
+				return $this->parsePythonOutput($pythonResult);
+			} catch (\Exception $e) {
+				return [
+					'success' => false,
+					'message' => 'Some error while running the Python script',
+				];
+			}
 		}
+		return $depsCheck;
 	}
 
 	/**
@@ -170,15 +188,19 @@ class PythonService {
 	 * @return array installed packages list after deleting
 	 */
 	public function deleteDependencies($packagesList = []) {
-		try {
-			$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
-			return $this->parsePythonOutput($pythonResult);
-		} catch (\Exception $e) {
-			return [
-				'success' => false,
-				'message' => 'Some error while running the Python script',
-			];
+		$depsCheck = $this->checkDepsRequirements();
+		if ($depsCheck['success']) {
+			try {
+				$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
+				return $this->parsePythonOutput($pythonResult);
+			} catch (\Exception $e) {
+				return [
+					'success' => false,
+					'message' => 'Some error while running the Python script',
+				];
+			}
 		}
+		return $depsCheck;
 	}
 
 	/**
@@ -187,15 +209,19 @@ class PythonService {
 	 * @return array installed packages list after deleting
 	 */
 	public function updateDependencies($packagesList = []) {
-		try {
-			$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
-			return $this->parsePythonOutput($pythonResult);
-		} catch (\Exception $e) {
-			return [
-				'success' => false,
-				'message' => 'Some error while running the Python script',
-			];
+		$depsCheck = $this->checkDepsRequirements();
+		if ($depsCheck['success']) {
+			try {
+				$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->getPhpInterpreter()]);
+				return $this->parsePythonOutput($pythonResult);
+			} catch (\Exception $e) {
+				return [
+					'success' => false,
+					'message' => 'Some error while running the Python script',
+				];
+			}
 		}
+		return $depsCheck;
 	}
 
 	/**
@@ -206,7 +232,7 @@ class PythonService {
 		if ($result_code === 0 && isset($output[0]) && preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
 			return isset($matches[0][0]) ? $matches[0][0] : null;
 		}
-		$this->logger->warning('[' . self::class . '] Command executed with error result_code: ' . $result_code);
+		$this->logger->error('[' . self::class . '] Command executed with error result_code: ' . $result_code);
 		return null;
 	}
 
