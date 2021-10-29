@@ -64,7 +64,7 @@ class PythonService {
 		if (!$this->isFunctionEnabled('exec')) {
 			throw new FunctionNotAvailable('`exec` PHP function is not available.');
 		}
-		if ($this->isPythonCompatible()) {
+		if (!$this->isPythonCompatible()) {
 			throw new PythonNotValidException('Python version is lower then 3.6.8 or not available');
 		}
 	}
@@ -203,10 +203,10 @@ class PythonService {
 	 */
 	public function getPythonVersion() {
 		exec($this->pythonCommand . ' --version', $output, $result_code);
-		if ($result_code === 0 && count($output) > 0 && preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
-			return $matches[0][0];
+		if ($result_code === 0 && isset($output[0]) && preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
+			return isset($matches[0][0]) ? $matches[0][0] : null;
 		}
-		$this->logger->error('[' . self::class . '] Command executed with error result_code: ' . $result_code);
+		$this->logger->warning('[' . self::class . '] Command executed with error result_code: ' . $result_code);
 		return null;
 	}
 
