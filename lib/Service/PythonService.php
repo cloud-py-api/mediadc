@@ -31,8 +31,6 @@ namespace OCA\MediaDC\Service;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
-use OCA\MediaDC\Exception\FunctionNotAvailable;
-use OCA\MediaDC\Exception\PythonNotValidException;
 
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
