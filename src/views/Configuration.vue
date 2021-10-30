@@ -87,7 +87,7 @@
 				<p>{{ t('mediadc', 'Not installed video_required packages:') }} {{ video_required }}</p>
 				<p>{{ t('mediadc', 'video_required packages can\'t be installed automatically, this should be done by administrator manually and then recheck installation on this page.') }}</p>
 			</div>
-			<div v-if="Object.keys(installed_list).length > 0" class="dependencies-table">
+			<div v-if="installed_list && Object.keys(installed_list).length > 0" class="dependencies-table">
 				<table>
 					<div v-show="updating" class="action-blackout">
 						<span class="icon-loading" />
@@ -141,7 +141,7 @@
 				</table>
 			</div>
 		</div>
-		<div v-if="errors.length > 0" class="install-errors">
+		<div v-if="errors && errors.length > 0" class="install-errors">
 			<h3>
 				<span class="icon-error" />
 				{{ t('mediadc', 'Configuration errors') }}
@@ -152,7 +152,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="warnings.length > 0" class="install-warnings">
+		<div v-if="warnings && warnings.length > 0" class="install-warnings">
 			<h3>
 				<span class="icon-alert-outline" />
 				{{ t('mediadc', 'Configuration warnings') }}

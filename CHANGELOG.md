@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7 - 2021-10-30]
+
+### Added
+
+- Added php `exec` function availability check
+
+### Changed
+
+- Changed missed PHP version requirement from 7.4 to 7.3
+- Moved MediaDC admin settings from Groupware tab to separate Administrator menu item
+- Changed server errors messages and moved them to the Congiguration page
+
+### Fixed
+
+- Fixed Python version validation fails
+
 ## [0.1.6 - 2021-10-22]
 
 ### Added

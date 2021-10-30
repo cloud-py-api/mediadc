@@ -86,4 +86,23 @@
       <code>LoggerInterface</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Service/PythonService.php">
+    <UndefinedClass occurrences="1">
+      <code>LoggerInterface</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$ini</code>
+      <code>$this-&gt;logger</code>
+      <code>LoggerInterface</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Settings/AdminSection.php">
+    <UndefinedClass occurrences="1">
+      <code>URLGenerator</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="2">
+      <code>$this-&gt;urlGenerator</code>
+      <code>UrlGenerator</code>
+    </UndefinedDocblockClass>
+  </file>
 </files>

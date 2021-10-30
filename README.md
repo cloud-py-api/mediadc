@@ -3,6 +3,9 @@
 ![build](https://github.com/andrey18106/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
 ![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg)
 
+[![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/andrey18106/mediadc/releases)
+
+
 **📸📹 Collect photo and video duplicates to save your cloud storage space**
 
 ![Home page](/screenshots/task-managment.png)

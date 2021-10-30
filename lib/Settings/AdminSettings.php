@@ -46,12 +46,12 @@ class AdminSettings implements ISettings {
 	}
 
 	public function getSection() {
-		return "groupware";
+		return Application::APP_ID;
 	}
 
 	public function getPriority()
 	{
-		return 90;
+		return 50;
 	}
 
 }
