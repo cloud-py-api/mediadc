@@ -2,7 +2,7 @@ name: Static analysis
 
 on:
   pull_request:
-    branches: [main, test, dev]
+    branches: [main, dev]
     types: [opened, reopened, edited]
   push:
     branches: [dev]
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [7.4, 8.0]
+        php-versions: [7.3, 7.4, 8.0]
     steps:
     - uses: actions/checkout@v2
 
