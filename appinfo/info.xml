@@ -6,6 +6,9 @@
 	<summary>Nextcloud Media Duplicate Collector application</summary>
 	<description>
 	<![CDATA[
+
+**Python 3.6.8 or higher required**
+
 This app allows to find duplicate or similar 📸📹 photos and videos
 * **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.
 * **Large amount of supported video  formats** All that is supported by ffmpeg.
