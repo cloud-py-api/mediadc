@@ -41,3 +41,9 @@ To start working on frontend follow this steps:
 1. 🏗 Then to build the frontend application run `make build-js` (builds Vue application in production mode), or watch changes with: `make watch-js` (in development mode).
 1. ✅ Enable the app through the app management of your Nextcloud.
 1. 💻 Fix easily linting issues with `npm run lint:fix`.
+
+## Support us
+
+You can support us with any donate amount.
+
+PayPal: https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ
