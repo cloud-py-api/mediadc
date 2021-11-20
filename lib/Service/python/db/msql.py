@@ -111,35 +111,41 @@ def set_task_keepalive(task_id: int, connection_id: int = 1) -> None:
 
 def get_paths_by_ids(file_ids: list) -> list:
     """Look for description in `empty_impl.py` file."""
-    query = f"SELECT path, fileid " \
+    query = f"SELECT path, fileid, storage " \
             f"FROM {get_fs_table_name()} " \
             f"WHERE fileid IN ({','.join(str(x) for x in file_ids)}) " \
             f"ORDER BY fileid ASC;"
     return execute_fetchall(query)
 
 
-def get_directory_data_image(dir_id: int, dir_mimetype: int, img_mimetype: int) -> list:
+def get_directory_data_image(dir_id: int, dir_mimetype: int, img_mimetype: int, spike_fileid: list) -> list:
     """Look for description in `empty_impl.py` file."""
+    mp_query = ''
+    if spike_fileid:
+        mp_query = f" OR fcache.fileid IN ({','.join(str(x) for x in spike_fileid)})"
     query = f"SELECT fcache.fileid, fcache.path, fcache.storage, fcache.mimetype, fcache.size, fcache.mtime, " \
             f"fcache.encrypted, " \
             f"imgcache.hash, imgcache.skipped " \
             f"FROM {get_fs_table_name()} AS fcache " \
             f"LEFT JOIN {get_image_table_name()} AS imgcache " \
             f"ON fcache.fileid = imgcache.fileid AND fcache.mtime = imgcache.mtime " \
-            f"WHERE fcache.parent = {dir_id} " \
+            f"WHERE (fcache.parent = {dir_id}{mp_query}) " \
             f"AND (fcache.mimetype = {dir_mimetype} OR fcache.mimepart = {img_mimetype});"
     return execute_fetchall(query)
 
 
-def get_directory_data_video(dir_id: int, dir_mimetype: int, video_mimetype: int) -> list:
+def get_directory_data_video(dir_id: int, dir_mimetype: int, video_mimetype: int, spike_fileid: list) -> list:
     """Look for description in `empty_impl.py` file."""
+    mp_query = ''
+    if spike_fileid:
+        mp_query = f" OR fcache.fileid IN ({','.join(str(x) for x in spike_fileid)})"
     query = f"SELECT fcache.fileid, fcache.path, fcache.storage, fcache.mimetype, fcache.size, fcache.mtime, " \
             f"fcache.encrypted, " \
             f"vcache.duration, vcache.timestamps, vcache.hash, vcache.skipped " \
             f"FROM {get_fs_table_name()} AS fcache " \
             f"LEFT JOIN {get_video_table_name()} AS vcache " \
             f"ON fcache.fileid = vcache.fileid AND fcache.mtime = vcache.mtime " \
-            f"WHERE fcache.parent = {dir_id} " \
+            f"WHERE (fcache.parent = {dir_id}{mp_query}) " \
             f"AND (fcache.mimetype = {dir_mimetype} OR fcache.mimepart = {video_mimetype});"
     dirs_list = execute_fetchall(query)
     for each_dir in dirs_list:
@@ -159,23 +165,23 @@ def get_mimetype_id(mimetype: str) -> int:
     return result[0]['id']
 
 
-def get_all_storage_info(num_id: int = None) -> list:
+def get_storage_info(num_id: int = None) -> list:
     """Look for description in `empty_impl.py` file."""
     if execute_fetchall(f"SHOW TABLES LIKE \"{get_ext_mounts_table_name()}\";"):
         query = f"SELECT storage.numeric_id, storage.id, storage.available, " \
-                f"mounts.mount_point, mounts.user_id, ext_mounts.storage_backend " \
+                f"mounts.mount_point, mounts.user_id, mounts.root_id, ext_mounts.storage_backend " \
                 f"FROM {get_storage_table_name()} AS storage " \
                 f"LEFT JOIN {get_mounts_table_name()}  AS mounts " \
                 f"ON storage.numeric_id = mounts.storage_id " \
                 f"LEFT JOIN {get_ext_mounts_table_name()} AS ext_mounts " \
-                f"ON mounts.id = ext_mounts.mount_id "
+                f"ON mounts.mount_id = ext_mounts.mount_id "
         if num_id is None:
             query += "WHERE 1;"
         else:
             query += f"WHERE storage.numeric_id = {num_id};"
     else:
         query = f"SELECT storage.numeric_id, storage.id, storage.available, " \
-                f"mounts.mount_point, mounts.user_id " \
+                f"mounts.mount_point, mounts.user_id, mounts.root_id " \
                 f"FROM {get_storage_table_name()} AS storage " \
                 f"LEFT JOIN {get_mounts_table_name()}  AS mounts " \
                 f"ON storage.numeric_id = mounts.storage_id "

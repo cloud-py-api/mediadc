@@ -9,7 +9,7 @@ import os
 import fnmatch
 from enum import Enum
 import db
-from files import update_storages_info
+from files import update_storages_info, get_mounts_to
 from dc_images import dc_images_init, dc_process_images, reset_images, save_image_results
 from dc_videos import dc_videos_init, dc_process_videos, reset_videos, save_video_results
 from install import get_installed_algorithms_list
@@ -217,7 +217,11 @@ def process_video_task_dirs(directories_ids: list, task_settings: dict):
 
 def process_directory_images(dir_id: int, task_settings: dict) -> list:
     """Process all files in `dir_id` with mimetype==mime_image and return list of sub dirs for this `dir_id`."""
-    fs_records = db.get_directory_data_image(dir_id, task_settings['mime_dir'], task_settings['mime_image'])
+    dir_info = db.get_paths_by_ids([dir_id])
+    file_mounts = []
+    if dir_info:
+        file_mounts = get_mounts_to(dir_info[0]['storage'], dir_info[0]['path'])
+    fs_records = db.get_directory_data_image(dir_id, task_settings['mime_dir'], task_settings['mime_image'], file_mounts)
     if not fs_records:
         return []
     apply_exclude_list(fs_records, task_settings)
@@ -230,7 +234,11 @@ def process_directory_images(dir_id: int, task_settings: dict) -> list:
 
 def process_directory_videos(dir_id: int, task_settings: dict) -> list:
     """Process all files in `dir_id` with mimetype==mime_video and return list of sub dirs for this `dir_id`."""
-    fs_records = db.get_directory_data_video(dir_id, task_settings['mime_dir'], task_settings['mime_video'])
+    dir_info = db.get_paths_by_ids([dir_id])
+    file_mounts = []
+    if dir_info:
+        file_mounts = get_mounts_to(dir_info[0]['storage'], dir_info[0]['path'])
+    fs_records = db.get_directory_data_video(dir_id, task_settings['mime_dir'], task_settings['mime_video'], file_mounts)
     if not fs_records:
         return []
     apply_exclude_list(fs_records, task_settings)
