@@ -73,7 +73,6 @@ def get_file_full_path(data_dir: str, storage_id: int, relative_path: str) -> by
         print('get_file_full_path: cant parse:', storage_info['id'])
         return b''
     if path_data[0] not in ['local', 'home']:
-        print(f'DEBUG(TODO,REMOVE asap): WE must not see it!')
         return b''
     if path_data[1].startswith('/'):
         return path_data[1].encode('utf-8') + relative_path.encode('utf-8')

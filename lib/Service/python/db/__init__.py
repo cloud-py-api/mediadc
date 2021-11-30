@@ -2,6 +2,8 @@
 Importing common and database specific functions depending of which database Nextcloud use.
 """
 
+# pylint: disable=unused-import
+
 from .manager import DbType, Config, get_time, get_required_packages, get_optional_packages, get_boost_packages
 from .manager import execute_fetchall, execute_commit, close_connection, check_db, get_warnings
 from .occ_cloud import occ_call
@@ -28,7 +30,7 @@ from .occ_cloud import occ_call
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-dbtype = manager.init()
+dbtype = manager.init()  # pylint: disable=undefined-variable
 if dbtype == DbType.MYSQL:
     from .msql import (
         get_tasks, clear_task_files_scanned_groups, increase_processed_files_count,

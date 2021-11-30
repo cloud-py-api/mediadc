@@ -32,7 +32,7 @@ def create_connection(config: dict, provider: str, error_out: list = None):
     connection = None
     try:
         if provider == 'pymysql':
-            from . import pymysql
+            from . import pymysql  # pylint: disable=import-outside-toplevel
             if len(config['usock']):
                 connection = pymysql.connect(unix_socket=config['usock'],
                                              user=config['dbuser'],
@@ -49,7 +49,7 @@ def create_connection(config: dict, provider: str, error_out: list = None):
                                              database=config['dbname'],
                                              charset='utf8mb4')
         elif provider == 'pg8000':
-            from .pg8000 import dbapi
+            from .pg8000 import dbapi  # pylint: disable=import-outside-toplevel
             if len(config['usock']):
                 connection = dbapi.connect(unix_sock=config['usock'],
                                            user=config['dbuser'],

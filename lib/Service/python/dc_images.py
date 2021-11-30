@@ -2,6 +2,8 @@
 Images processing functions.
 """
 
+# pylint: disable=undefined-variable
+
 import io
 import json
 from files import get_file_data
