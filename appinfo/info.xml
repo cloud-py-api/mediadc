@@ -38,7 +38,7 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/install-view.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/admin-config.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="21" max-version="22" />
+		<nextcloud min-version="21" max-version="24" />
 		<php min-version="7.3" min-int-size="64" />
 	</dependencies>
 	<settings>
