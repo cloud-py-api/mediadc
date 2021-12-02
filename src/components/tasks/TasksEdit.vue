@@ -218,7 +218,7 @@ export default {
 				.build()
 		},
 		openDirectoriesExplorer() {
-			this.getDirectoriesPicker(t('mediadc', 'Choose target directory')).pick().then(dir => {
+			this.getDirectoriesPicker(this.t('mediadc', 'Choose target directory')).pick().then(dir => {
 				if (dir.startsWith('/')) {
 					requestFileInfo(dir).then(res => {
 						const fileid = getFileId(res.data)
@@ -227,7 +227,7 @@ export default {
 								this.targetDirectoriesIds.push(fileid)
 								this.targetDirectoriesPaths[fileid.toString()] = dir
 							} else {
-								showWarning(t('mediadc', 'This directory already selected'))
+								showWarning(this.t('mediadc', 'This directory already selected'))
 							}
 						}
 					})
@@ -239,7 +239,7 @@ export default {
 								this.targetDirectoriesIds.push(fileid)
 								this.targetDirectoriesPaths[fileid.toString()] = '/'
 							} else {
-								showWarning(t('mediadc', 'This directory already selected'))
+								showWarning(this.t('mediadc', 'This directory already selected'))
 							}
 						}
 					})
@@ -248,7 +248,7 @@ export default {
 			})
 		},
 		openExcludeExplorer() {
-			this.getDirectoriesPicker(t('mediadc', 'Choose directory to exclude')).pick().then(dir => {
+			this.getDirectoriesPicker(this.t('mediadc', 'Choose directory to exclude')).pick().then(dir => {
 				if (Object.values(this.excludeFileIds).findIndex(targetDir => targetDir === dir) === -1) {
 					if (dir.startsWith('/')) {
 						requestFileInfo(dir).then(res => {
@@ -268,7 +268,7 @@ export default {
 						})
 					}
 				} else {
-					showWarning(t('mediadc', 'This directory already excluded'))
+					showWarning(this.t('mediadc', 'This directory already excluded'))
 				}
 			})
 		},
@@ -298,9 +298,9 @@ export default {
 						this.runningTask = false
 						this.closeEditTaskDialog()
 						emit('restartTask')
-						showSuccess(t('mediadc', 'Task successfully restarted!'))
+						showSuccess(this.t('mediadc', 'Task successfully restarted!'))
 					} else if (res.data.limit) {
-						showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
+						showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 					} else {
 						showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 					}
@@ -335,10 +335,10 @@ export default {
 					this.customExcludeMask = ''
 					this.addingCustomMask = false
 				} else {
-					showWarning(t('mediadc', 'This mask already exists!'))
+					showWarning(this.t('mediadc', 'This mask already exists!'))
 				}
 			} else {
-				showWarning(t('mediadc', 'Enter custom mask!'))
+				showWarning(this.t('mediadc', 'Enter custom mask!'))
 			}
 		},
 		cancelAddingCustomMask() {

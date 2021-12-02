@@ -96,7 +96,7 @@
 					<div v-if="customExcludeList.length > 0" class="custom-mask-list">
 						<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
 							<span>{{ mask }}</span>
-							<span class="icon-delete" style="margin: 0 10px; cursor: pointer;" @click="deleteCustomMask(mask)" />
+							<span class="icon-delete delete-custom-mask-btn" @click="deleteCustomMask(mask)" />
 						</div>
 					</div>
 					<div v-else>
@@ -224,11 +224,11 @@ export default {
 					fileid: [],
 				})
 				this.updating = false
-				showSuccess(t('mediadc', 'Settings successfully updated'))
+				showSuccess(this.t('mediadc', 'Settings successfully updated'))
 			}).catch(err => {
 				console.debug(err)
 				this.updating = false
-				showError(t('mediadc', 'Some error occured while updating settings'))
+				showError(this.t('mediadc', 'Some error occured while updating settings'))
 			})
 		},
 		async truncatePhotosAndVideos() {
@@ -247,22 +247,22 @@ export default {
 			this.mappedSettings.remote_filesize_limit.value = this.fromGBytesToBytes(Number(this.remote_filesize_limit))
 		},
 		updateHashingAlgorithm() {
-			if (confirm(t('mediadc', 'The photo and video hashes would be cleaned before changing hashing_algorithm.\nContinue?'))) {
+			if (confirm(this.t('mediadc', 'The photo and video hashes would be cleaned before changing hashing_algorithm.\nContinue?'))) {
 				this.truncatePhotosAndVideos().then(() => {
 					this.mappedSettings.hashing_algorithm.value = JSON.stringify(this.hashing_algorithm)
 					this.updateSetting(this.mappedSettings.hashing_algorithm.name, this.mappedSettings.hashing_algorithm).then(res => {
 						if (res.data.success) {
-							showSuccess(t('mediadc', 'Hashing algorithm successfully updated'))
+							showSuccess(this.t('mediadc', 'Hashing algorithm successfully updated'))
 						} else {
 							showError(res.data.message)
 						}
 					}).catch(err => {
 						console.debug(err)
-						showError(t('mediadc', 'Some error occured while updateing setting. Try again'))
+						showError(this.t('mediadc', 'Some error occured while updateing setting. Try again'))
 					})
 				}).catch(err => {
 					console.debug(err)
-					showError(t('mediadc', 'Some error occured while changing hashing algorithm'))
+					showError(this.t('mediadc', 'Some error occured while changing hashing algorithm'))
 					this.hashing_algorithm = JSON.parse(this.mappedSettings.hashing_algorithm.value)
 				})
 			} else {
@@ -270,18 +270,18 @@ export default {
 			}
 		},
 		updateHashSize() {
-			if (confirm(t('mediadc', 'The photo and video hashes would be cleaned before changing hash size.\nContinue?'))) {
+			if (confirm(this.t('mediadc', 'The photo and video hashes would be cleaned before changing hash size.\nContinue?'))) {
 				this.truncatePhotosAndVideos().then(() => {
 					this.mappedSettings.hash_size.value = JSON.stringify(this.hash_size)
 					this.updateSetting(this.mappedSettings.hash_size.name, this.mappedSettings.hash_size).then(res => {
 						if (res.data.success) {
-							showSuccess(t('mediadc', 'Hash size successfully updated'))
+							showSuccess(this.t('mediadc', 'Hash size successfully updated'))
 						} else {
 							showError(res.data.message)
 						}
 					}).catch(err => {
 						console.debug(err)
-						showError(t('mediadc', 'Some error occured while updateing setting. Try again'))
+						showError(this.t('mediadc', 'Some error occured while updateing setting. Try again'))
 					})
 				})
 			} else {
@@ -294,10 +294,10 @@ export default {
 				fileid: [],
 			})
 			this.updateSetting(this.mappedSettings.exclude_list.name, this.mappedSettings.exclude_list).then(() => {
-				showSuccess(t('mediadc', 'Setting successfully updated'))
+				showSuccess(this.t('mediadc', 'Setting successfully updated'))
 			}).catch(err => {
 				console.debug(err)
-				showError(t('mediadc', 'Some error occured while updating setting. Try again'))
+				showError(this.t('mediadc', 'Some error occured while updating setting. Try again'))
 			})
 		},
 		getConfigurationPageLink() {
@@ -316,10 +316,10 @@ export default {
 					this.customExcludeMask = ''
 					this.addingCustomMask = false
 				} else {
-					showWarning(t('mediadc', 'This mask already exists!'))
+					showWarning(this.t('mediadc', 'This mask already exists!'))
 				}
 			} else {
-				showWarning(t('mediadc', 'Enter custom mask!'))
+				showWarning(this.t('mediadc', 'Enter custom mask!'))
 			}
 		},
 		cancelAddingCustomMask() {
@@ -383,5 +383,28 @@ body.theme--dark .custom-mask {
 .custom-mask-list {
 	display: inline-flex;
 	flex-direction: column;
+}
+
+.delete-custom-mask-btn {
+	margin: 0 10px;
+	cursor: pointer;
+	padding: 20px;
+	border-radius: 50%;
+}
+
+.delete-custom-mask-btn:hover {
+	background-color: #eee;
+}
+
+.delete-custom-mask-btn:active {
+	background-color: #ddd;
+}
+
+body.theme--dark .delete-custom-mask-btn:hover {
+	background-color: #727272;
+}
+
+body.theme--dark .delete-custom-mask-btn:active {
+	background-color: #5b5b5b;
 }
 </style>

@@ -28,8 +28,10 @@ const state = {
 	task: {},
 	taskInfo: [],
 	details: [],
+	detailsFiltered: [],
 	paginatedDetails: [],
 	itemsPerPage: 5,
+	groupItemsPerPage: 10,
 	sorted: false,
 }
 
@@ -59,14 +61,19 @@ const mutations = {
 		Vue.set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage))
 	},
 	deleteDetail(state, detail) {
-		const detailIndex = state.details.findIndex(d => d.id === detail.id)
-		const newDetails = state.details
-		state.details.splice(detailIndex, 1)
-		Vue.set(state, 'details', paginate(newDetails, state.itemsPerPage))
+		const newDetails = [...state.details]
+		const detailIndex = newDetails.findIndex(d => d.id === detail.id)
+		newDetails.splice(detailIndex, 1)
+		const sortedDetails = newDetails.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
+		Vue.set(state, 'details', sortedDetails)
+		Vue.set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage))
 	},
 	setDetailsListItemsPerPage(state, itemsPerPage) {
 		Vue.set(state, 'itemsPerPage', Number(itemsPerPage))
 		Vue.set(state, 'paginatedDetails', paginate(state.details, Number(itemsPerPage)))
+	},
+	setGroupItemsPerPage(state, itemsPerPage) {
+		Vue.set(state, 'groupItemsPerPage', Number(itemsPerPage))
 	},
 	setSorted(state, sorted) {
 		const sortedDetails = state.details.sort((a, b) => sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
@@ -74,14 +81,19 @@ const mutations = {
 		Vue.set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage))
 		Vue.set(state, 'sorted', sorted)
 	},
+	setDetailsFiltered(state, detailFiltered) {
+		Vue.set(state, 'detailsFiltered', detailFiltered)
+	},
 }
 
 const getters = {
 	task: state => state.task,
 	taskInfo: state => state.taskInfo,
 	details: state => state.details,
+	detailsFiltered: state => state.detailsFiltered,
 	paginatedDetails: state => state.paginatedDetails,
 	itemsPerPage: state => state.itemsPerPage,
+	groupItemsPerPage: state => state.groupItemsPerPage,
 	sorted: state => state.sorted,
 }
 
@@ -101,8 +113,14 @@ const actions = {
 	setDetailsListItemsPerPage(context, itemsPerPage) {
 		context.commit('setDetailsListItemsPerPage', itemsPerPage)
 	},
+	setGroupItemsPerPage(context, itemsPerPage) {
+		context.commit('setGroupItemsPerPage', itemsPerPage)
+	},
 	setSorted(context, sorted) {
 		context.commit('setSorted', sorted)
+	},
+	setDetailsFiltered(context, detailFiltered) {
+		context.commit('setDetailsFiltered', detailFiltered)
 	},
 }
 

@@ -87,16 +87,16 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.installing = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Installation successfully finished'))
+						showSuccess(this.t('mediadc', 'Installation successfully finished'))
 					} else if (!res.data.success && res.data.installed) {
-						showWarning(t('mediadc', 'Installation finished. Not all packages installed'))
+						showWarning(this.t('mediadc', 'Installation finished. Not all packages installed'))
 					} else {
-						showError(t('mediadc', 'Installation failed. Some server error occured'))
+						showError(this.t('mediadc', 'Installation failed. Some server error occured'))
 					}
 				}).catch(err => {
 					console.debug(err)
 					this.installing = false
-					showError(t('mediadc', 'Installation failed. Some server error occured'))
+					showError(this.t('mediadc', 'Installation failed. Some server error occured'))
 				})
 			})
 		},
@@ -110,14 +110,14 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Package list successfully installed'))
+						showSuccess(this.t('mediadc', 'Package list successfully installed'))
 					} else {
-						showError(t('mediadc', 'Package list installation failed'))
+						showError(this.t('mediadc', 'Package list installation failed'))
 					}
 				}).catch(err => {
 					console.debug(err)
 					this.updating = false
-					showError(t('mediadc', 'Package list installation failed. Some server error occured'))
+					showError(this.t('mediadc', 'Package list installation failed. Some server error occured'))
 				})
 			})
 		},
@@ -129,15 +129,15 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Package list successfully deleted'))
+						showSuccess(this.t('mediadc', 'Package list successfully deleted'))
 					} else {
-						showError(t('mediadc', 'Some error occured while deleting package list'))
+						showError(this.t('mediadc', 'Some error occured while deleting package list'))
 					}
 				})
 			}).catch(err => {
 				console.debug(err)
 				this.updating = false
-				showError(t('mediadc', 'Package list deleting failed. Some server error occured'))
+				showError(this.t('mediadc', 'Package list deleting failed. Some server error occured'))
 			})
 		},
 		async updateDepsList(listName) {
@@ -148,15 +148,15 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Packages successfully updated'))
+						showSuccess(this.t('mediadc', 'Packages successfully updated'))
 					} else {
-						showError(t('mediadc', 'Packages update failed. Try again.'))
+						showError(this.t('mediadc', 'Packages update failed. Try again.'))
 					}
 				})
 			}).catch(err => {
 				console.debug(err)
 				this.updating = false
-				showError(t('mediadc', 'Packages update failed. Some server error occured'))
+				showError(this.t('mediadc', 'Packages update failed. Some server error occured'))
 			})
 		},
 		async check() {
@@ -166,21 +166,21 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.checking = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'All required dependencies installed'))
+						showSuccess(this.t('mediadc', 'All required dependencies installed'))
 					} else if (!res.data.success && 'installed' in res.data && res.data.installed) {
-						showWarning(t('mediadc', 'Not all required packages installed'))
+						showWarning(this.t('mediadc', 'Not all required packages installed'))
 					} else {
-						showError(t('mediadc', 'Some errors occured while checking installation'))
+						showError(this.t('mediadc', 'Some errors occured while checking installation'))
 					}
 				}).catch(err => {
 					this.checking = false
 					console.debug(err)
-					showError(t('mediadc', 'Dependencies checking failed. Some server error occured'))
+					showError(this.t('mediadc', 'Dependencies checking failed. Some server error occured'))
 				})
 			}).catch(err => {
 				console.debug(err)
 				this.checking = false
-				showError(t('mediadc', 'Dependencies checking failed. Some server error occured'))
+				showError(this.t('mediadc', 'Dependencies checking failed. Some server error occured'))
 			})
 		},
 		parsePythonResponseData(res) {

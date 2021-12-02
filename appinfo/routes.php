@@ -49,12 +49,17 @@ return [
 		['name' => 'collector#details', 'url' => '/api/v1/tasks/{taskId}', 'verb' => 'GET'],
 		['name' => 'collector#getTaskInfo', 'url' => '/api/v1/tasks/{taskId}/info', 'verb' => 'GET'],
 		['name' => 'collector#deleteTaskDetail', 'url' => '/api/v1/tasks/{taskId}/detail/{taskDetailId}', 'verb' => 'DELETE'],
-		['name' => 'collector#getGroupFilesInfo', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}', 'verb' => 'GET'],
+		['name' => 'collector#getDetailGroupFilesInfo', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/all', 'verb' => 'GET'],
 		['name' => 'collector#getDetailFilesTotalSize', 'url' => '/api/v1/tasks/{taskId}/filestotal', 'verb' => 'GET'],
 		['name' => 'collector#deleteTaskDetailFile', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/{fileId}', 'verb' => 'DELETE'],
 		['name' => 'collector#deleteTask', 'url' => '/api/v1/tasks/{taskId}', 'verb' => 'DELETE'],
 		['name' => 'collector#terminateTask', 'url' => '/api/v1/tasks/{taskId}/terminate', 'verb' => 'POST'],
 		['name' => 'collector#collect', 'url' => '/api/v1/tasks/run', 'verb' => 'POST'],
 		['name' => 'collector#restart', 'url' => '/api/v1/tasks/restart', 'verb' => 'POST'],
+
+		// BATCH ACTIONS API
+		['name' => 'collector#removeTaskDetailGroups', 'url' => '/api/v1/tasks/{taskId}/details/remove', 'verb' => 'POST'],
+		['name' => 'collector#removeTaskDetailFiles', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/remove', 'verb' => 'POST'],
+		['name' => 'collector#deleteTaskDetailFiles', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/delete', 'verb' => 'POST'],
 	]
 ];

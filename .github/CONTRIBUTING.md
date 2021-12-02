@@ -19,7 +19,7 @@ Help us to maximize the effort we can spend fixing issues and adding new feature
 
 ## Contributing to Source Code
 
-Thanks for wanting to contribute source code to the Mail app. That's great!
+Thanks for wanting to contribute source code to the MediaDC app. That's great!
 
 ## Translations
 

@@ -483,19 +483,18 @@ class CollectorService {
 
 	/**
 	 * @param int $taskDetailId
-	 * @param int $limit
-	 * @param int $page
+	 * @param bool $filesizeAscending
 	 * 
-	 * @return array
+	 * @return array $filesInfo
 	 */
-	public function getFilesInfo($taskDetailId, $limit, $page) {
+	public function getDetailGroupFilesInfo($taskDetailId, $filesizeAscending) {
 		try {
 			/** @var CollectorTaskDetail */
 			$collectorTaskDetail = $this->tasksDetailsMapper->find($taskDetailId);
 			$filesInfo = [];
+			$filesTotalSize = 0;
 			$groupFilesIds = json_decode($collectorTaskDetail->getGroupFilesIds());
-			$paginatedGroupFilesIds = array_chunk($groupFilesIds, $limit);
-			foreach($paginatedGroupFilesIds[$page] as $groupFileId) {
+			foreach($groupFilesIds as $groupFileId) {
 				/** @var File $node */
 				foreach ($this->userFolder->getById($groupFileId) as $node) {
 					if ($node instanceof File) {
@@ -511,10 +510,19 @@ class CollectorService {
 							'filesize' => $node->getSize(),
 							'has_preview' => $this->previewManager->isAvailable($node),
 						]);
+						$filesTotalSize += $node->getSize();
 					}
 				}
+				// Sort page files by filesize (ascending/descending)
+				usort($filesInfo,
+					($filesizeAscending) ?
+					'\OCA\MediaDC\Service\CollectorService::filesInfoSortAscCallback'
+					: '\OCA\MediaDC\Service\CollectorService::filesInfoSortDescCallback');
 			}
-			return $filesInfo;
+			return [
+				'files' => $filesInfo,
+				'filessize' => $filesTotalSize,
+			];
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 			$this->logger->error("Can't find file(s) of CollectorTaskDetail (\$id = " . $taskDetailId .  ")\n");
 			return [
@@ -522,6 +530,14 @@ class CollectorService {
 				'message' => 'Not found files info'
 			];
 		}
+	}
+
+	public static function filesInfoSortAscCallback(array $file_x, array $file_y) {
+		return $file_x['filesize'] - $file_y['filesize'];
+	}
+
+	public static function filesInfoSortDescCallback(array $file_x, array $file_y) {
+		return $file_y['filesize'] - $file_x['filesize'];
 	}
 
 	/**
@@ -555,10 +571,11 @@ class CollectorService {
 	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param int $fileid
+	 * @param bool $removeIfOneLeft
 	 * 
 	 * @return array $result
 	 */
-	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid) {
+	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid, $removeIfOneLeft = true) {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$deletedFilesCount = $collectorTask->getDeletedFilesCount();
@@ -583,7 +600,7 @@ class CollectorService {
 				$collectorTask->setDeletedFilesCount($deletedFilesCount + 1);
 				$collectorTask->setDeletedFilesSize($deletedFilesSize + $filesize);
 				$this->tasksMapper->update($collectorTask);
-				if (count($groupFiles) === 1) {
+				if (count($groupFiles) === 1 && $removeIfOneLeft) {
 					$this->tasksDetailsMapper->delete($collectorTaskDetail);
 					$updatedTaskDetail = null;
 				} else {
@@ -613,6 +630,84 @@ class CollectorService {
 				'success' => false,
 			];
 		}
+	}
+
+	/**
+	 * Remove ColectorTaskDetail groups with deleting coresponding files
+	 * 
+	 * @param array $taskDetailIds
+	 * 
+	 * @return array $result
+	 */
+	public function removeTaskDetailGroups($taskDetailIds) {
+		$result = [];
+		foreach ($taskDetailIds as $taskDetailId) {
+			array_push($result, $this->deleteTaskDetail($taskDetailId));
+		}
+		return [
+			'success' => count($result) === count($taskDetailIds), 
+			'removedTaskDetails' => $result
+		];
+	}
+
+	/**
+	 * Delete ColectorTaskDetail groups with deleting coresponding files
+	 * 
+	 * @param int $taskId
+	 * @param int $taskDetailId
+	 * @param array $fileIds
+	 * 
+	 * @return array $result
+	 */
+	public function deleteTaskDetailFiles($taskDetailId, $fileIds) {
+		$result = [];
+		/** @var CollectorTaskDetail $taskDetail */
+		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
+		$taskDetailGroupFileIds = json_decode($taskDetail->getGroupFilesIds());
+		foreach ($fileIds as $fileId) {
+			$deleteFileResult = $this->deleteTaskDetailFile((int)$taskDetail->getTaskId(), $taskDetailId, $fileId, false);
+			if ($deleteFileResult['success']) {
+				$fileIdIndex = array_search($fileId, $taskDetailGroupFileIds);
+				if ($fileIdIndex !== false) {
+					array_push($result, array_splice($taskDetailGroupFileIds, $fileIdIndex, 1)[0]);
+				}
+			}
+		}
+		if (count($taskDetailGroupFileIds) <= 1) {
+			$this->tasksDetailsMapper->delete($taskDetail);
+		} else {
+			$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
+			$this->tasksDetailsMapper->update($taskDetail);
+		}
+		return ['success' => count($result) == count($fileIds), 'removedFileIds' => $result];
+	}
+
+	/**
+	 * Remove ColectorTaskDetail groups with deleting coresponding files
+	 * 
+	 * @param int $taskId
+	 * @param int $taskDetailId
+	 * @param array $fileIds
+	 * 
+	 * @return array $result
+	 */
+	public function removeTaskDetailFiles($taskDetailId, $fileIds) {
+		$result = [];
+		/** @var CollectorTaskDetail $taskDetail */
+		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
+		$taskDetailGroupFileIds = json_decode($taskDetail->getGroupFilesIds());
+		foreach ($fileIds as $fileId) {
+			$fileIdIndex = array_search($fileId, $taskDetailGroupFileIds);
+			if ($fileIdIndex !== false) {
+				array_push($result, array_splice($taskDetailGroupFileIds, $fileIdIndex, 1)[0]);
+			}
+		}
+		$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
+		$this->tasksDetailsMapper->update($taskDetail);
+		if (count($taskDetailGroupFileIds) <= 1) {
+			$this->tasksDetailsMapper->delete($taskDetail);
+		}
+		return ['success' => count($result) == count($fileIds), 'removedFileIds' => $result];
 	}
 
 	/**

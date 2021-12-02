@@ -24,19 +24,76 @@
 
 <template>
 	<div v-if="!loadingFiles" class="details-group">
-		<div class="details-group-files">
-			<div v-for="file in files"
-				:key="file.fileid"
-				class="file"
-				:style="'width: ' + detailsGridSize + 'px;'">
-				<DetailsFile :file="file" :files="files" />
-				<div class="file-info">
-					<span class="filename">{{ file.filename }}</span>
-					<span class="owner">{{ file.fileowner }}</span>
-					<span class="size">{{ formatBytes(Number(file.filesize)) }}</span>
-					<span class="delete-file-btn icon-delete-white" @click="deleteGroupFile(file)" />
+		<div class="filters">
+			<div class="sorting">
+				{{ t('mediadc', 'Files size sorting') }}
+				<span :class="filesAscending ? 'icon-triangle-s sorting-group-files-btn' : 'icon-triangle-n sorting-group-files-btn'" @click="updateFileSorting" />
+			</div>
+			<div class="search">
+				<label for="filename-filter">
+					{{ t('mediadc', 'Filter by filename: ') }}
+					<input id="filename-filter"
+						v-model="filterFileName"
+						type="search"
+						name="filename-filter"
+						:placeholder="t('mediadc', 'Filename or part')"
+						@input="filterByFileName">
+				</label>
+			</div>
+			<div v-if="checkedFiles.length > 0" class="batch-editing">
+				{{ translatePlural('mediadc', 'Batch actions for %n file', 'Batch actions for %n files', checkedFiles.length) }}
+				<div class="app-content-list-menu" style="margin: 0 0 0 10px; position: relative;">
+					<div class="icon-more batch-actions-menu-button" @click="openBatchActionsPopup" />
+					<div :class="batchActionsOpened ? 'popovermenu open' : 'popovermenu'"
+						style="right: -1px;">
+						<ul>
+							<li>
+								<a class="icon-checkmark" @click="selectAllFiles">
+									<span>{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}</span>
+								</a>
+							</li>
+							<li v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage">
+								<a class="icon-checkmark" @click="selectAllFilesOnPage">
+									<span>{{ checkedFilesIntersect.size === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
+								</a>
+							</li>
+							<li>
+								<a class="icon-close" :title="t('mediadc', 'Remove without deleting')" @click="removeCheckedFiles">
+									<span>{{ translatePlural('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}</span>
+								</a>
+							</li>
+							<li>
+								<a class="icon-delete" @click="deleteCheckedFiles">
+									<span>{{ translatePlural('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
+		</div>
+		<div v-if="!filesFiltered" class="details-group-files">
+			<DetailsFile
+				v-for="file in files"
+				:key="file.fileid"
+				:file="file"
+				:files="files"
+				:checked-files.sync="checkedFiles"
+				:detail="detail" />
+		</div>
+		<div v-else-if="filteredFiles.length > 0" class="details-group-files">
+			<DetailsFile
+				v-for="file in filteredFiles"
+				:key="file.fileid"
+				:file="file"
+				:files="files"
+				:checked-files.sync="checkedFiles"
+				:detail="detail" />
+		</div>
+		<div v-else class="details-group-files">
+			<p style="margin: 0 0 10px;">
+				{{ t('mediadc', 'No matches on this page') }}
+			</p>
 		</div>
 	</div>
 	<div v-else>
@@ -45,13 +102,13 @@
 </template>
 
 <script>
-import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
 import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import DetailsFile from './DetailsFile'
+import { showError, showMessage, showSuccess } from '@nextcloud/dialogs'
+import { generateUrl } from '@nextcloud/router'
+import axios from '@nextcloud/axios'
 import { emit } from '@nextcloud/event-bus'
-import { showError, showWarning } from '@nextcloud/dialogs'
 
 export default {
 	name: 'DetailsGroupList',
@@ -60,6 +117,15 @@ export default {
 	props: {
 		files: {
 			type: Array,
+			required: true,
+			default: () => [],
+		},
+		allFiles: {
+			type: Array,
+			required: true,
+		},
+		detail: {
+			type: Object,
 			required: true,
 		},
 		loadingFiles: {
@@ -70,49 +136,169 @@ export default {
 			type: Boolean,
 			required: true,
 		},
+		filesAscending: {
+			type: Boolean,
+			required: true,
+		},
+	},
+	data() {
+		return {
+			checkedFiles: [],
+			batchActionsOpened: false,
+			filesFiltered: false,
+			filterFileName: '',
+			filteredFiles: [],
+		}
 	},
 	computed: {
 		...mapGetters([
 			'detailsGridSize',
 			'deleteFileConfirmation',
+			'groupItemsPerPage',
+			'details',
 		]),
+		checkedFilesIntersect() {
+			const a = new Set(this.files)
+			const b = new Set(this.checkedFiles)
+			const intersect = new Set([...a].filter(i => b.has(i)))
+			return intersect
+		},
+	},
+	watch: {
+		files() {
+			this.filterByFileName()
+		},
 	},
 	methods: {
-		deleteGroupFile(file) {
-			if (this.deleteFileConfirmation) {
-				if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
-					this._deleteGroupFile(file)
+		openBatchActionsPopup() {
+			document.addEventListener('click', this.toggleBatchActionsPopup)
+		},
+		toggleBatchActionsPopup() {
+			if (this.batchActionsOpened) {
+				document.removeEventListener('click', this.toggleBatchActionsPopup)
+			}
+			this.batchActionsOpened = !this.batchActionsOpened
+		},
+		selectAllFiles() {
+			if (this.checkedFiles.length === this.allFiles.length) { // Deselect files
+				this.$emit('update:loadingFiles', true)
+				for (const file of this.allFiles) {
+					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
+					if (fileIndex !== -1) {
+						this.checkedFiles.splice(fileIndex, 1)
+					}
 				}
+				setTimeout(() => { this.$emit('update:loadingFiles', false) }, 200)
 			} else {
-				this._deleteGroupFile(file)
+				for (const file of this.allFiles) {
+					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
+					if (fileIndex === -1) {
+						this.checkedFiles.push(file)
+					}
+				}
 			}
 		},
-		_deleteGroupFile(file) {
-			this.$emit('update:updating', true)
-			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${file.taskId}/files/${file.detailId}/${file.fileid}`))
-				.then(res => {
-					if (res.data.success) {
-						const files = this.files
-						const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
-						files.splice(fileidIndex, 1)
-						this.$emit('update:files', files)
-						emit('updateTaskInfo')
-						this.$store.dispatch('setTask', res.data.task).then(() => {
-							this.$emit('update:updating', false)
-						})
-					} else if ('locked' in res.data && res.data.locked) {
-						showWarning(t('mediadc', 'Wait until file loaded before deleting'))
-						this.$emit('update:updating', false)
-					} else {
-						showError(t('mediadc', 'Some error occured while deleting file'))
-						this.$emit('update:updating', false)
+		selectAllFilesOnPage() {
+			if (this.checkedFilesIntersect.size === this.files.length) {
+				this.$emit('update:loadingFiles', true)
+				for (const file of this.files) {
+					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
+					if (fileIndex !== -1) {
+						this.checkedFiles.splice(fileIndex, 1)
 					}
-				})
-				.catch(err => {
-					console.debug(err)
-					showError(t('mediadc', 'Some error occured while deleting file'))
+				}
+				setTimeout(() => { this.$emit('update:loadingFiles', false) }, 200)
+			} else {
+				for (const file of this.files) {
+					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
+					if (fileIndex === -1) {
+						this.checkedFiles.push(file)
+					}
+				}
+			}
+		},
+		removeCheckedFiles() {
+			this.$emit('update:updating', true)
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/remove`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
+				if (res.data.success) {
+					const allFiles = this.allFiles
+					if ((this.allFiles.length - this.checkedFiles.length) <= 1) {
+						// Remove detail
+						this.$store.dispatch('deleteDetail', this.detail)
+						showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+					}
+					for (const fileid of res.data.removedFileIds) {
+						const fileidIndex = allFiles.findIndex(f => f.fileid === fileid)
+						allFiles.splice(fileidIndex, 1)
+						const checkedFileIdIndex = this.checkedFiles.findIndex(f => f.fileid === fileid)
+						if (checkedFileIdIndex !== -1) {
+							this.checkedFiles.splice(checkedFileIdIndex, 1)
+						}
+					}
+					emit('updateTaskInfo')
+					this.$emit('update:allFiles', allFiles)
+					emit('updateGroupFilesPagination')
 					this.$emit('update:updating', false)
-				})
+					showSuccess(this.t('mediadc', 'Checked files successfully removed'))
+				}
+			}).catch(err => {
+				console.debug(err)
+				showError(this.t('mediadc', 'Some server error occured'))
+				this.$emit('update:updating', false)
+			})
+		},
+		deleteCheckedFiles() {
+			if (this.allFiles.length === this.checkedFiles.length) {
+				if (confirm(this.t('mediadc', 'Are you sure, you want delete all files'))) {
+					this._deleteCheckedFiles()
+				}
+			} else {
+				this._deleteCheckedFiles()
+			}
+		},
+		_deleteCheckedFiles() {
+			this.$emit('update:updating', true)
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/delete`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
+				if (res.data.success) {
+					const allFiles = this.allFiles
+					if ((this.allFiles.length - this.checkedFiles.length) <= 1) {
+						// Remove detail
+						this.$store.dispatch('deleteDetail', this.detail)
+						showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+					}
+
+					for (const fileid of res.data.removedFileIds) {
+						const fileidIndex = allFiles.findIndex(f => f.fileid === fileid)
+						allFiles.splice(fileidIndex, 1)
+						const checkedFileIdIndex = this.checkedFiles.findIndex(f => f.fileid === fileid)
+						if (checkedFileIdIndex !== -1) {
+							this.checkedFiles.splice(checkedFileIdIndex, 1)
+						}
+					}
+
+					emit('updateTaskInfo')
+					this.$emit('update:allFiles', allFiles)
+					emit('updateGroupFilesPagination')
+					this.$emit('update:updating', false)
+					showSuccess(this.t('mediadc', 'Checked files successfully deleted'))
+				}
+			}).catch(err => {
+				console.debug(err)
+				showError(this.t('mediadc', 'Some server error occured'))
+				this.$emit('update:updating', false)
+			})
+		},
+		filterByFileName() {
+			if (this.filterFileName !== '') {
+				this.filesFiltered = true
+				this.filteredFiles = this.files.filter(f => f.filename.toLowerCase().includes(this.filterFileName.toLowerCase()))
+			} else {
+				this.filesFiltered = false
+				this.filteredFiles = []
+			}
+		},
+		updateFileSorting() {
+			this.$emit('update:filesAscending', !this.filesAscending)
 		},
 	},
 }
@@ -134,7 +320,7 @@ body.theme--dark .details-group {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	max-height: 90vh;
+	max-height: 100vh;
 	overflow-y: scroll;
 }
 
@@ -159,8 +345,8 @@ body.theme--dark .file {
 		max-width: 192px;
 	}
 
-	.pagination {
-		text-align: center;
+	.filters {
+		flex-direction: column;
 	}
 }
 
@@ -168,48 +354,78 @@ body.theme--dark .file {
 	box-shadow: 0 0 10px 0 rgba(0, 0, 0, .25);
 }
 
-.file-info {
-	width: 100%;
-	padding: 5px 10px;
+.filters {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	background-color: #000;
-	text-align: center;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	color: #fff;
+	justify-content: space-between;
+	padding: 5px 10px;
+	margin: 10px 0;
+	border: 1px solid #dadada;
+	border-radius: 5px;
 }
 
-.filename {
-	width: 100%;
-	overflow-x: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+.search {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.delete-file-btn {
+.sorting {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sorting-group-files-btn {
 	padding: 20px;
 	border-radius: 50%;
-	width: 16px;
-	height: 16px;
+	margin: 0 5px;
 	cursor: pointer;
-	background-image: var(--icon-delete-fff);
 }
 
-.delete-file-btn:hover {
+.sorting-group-files-btn:hover {
 	background-color: #eee;
 }
 
-.delete-file-btn:active {
+.sorting-group-files-btn:active {
 	background-color: #ddd;
 }
 
-body.theme--dark .delete-file-btn {
-	background-image: var(--icon-delete-000);
+body.theme--dark .sorting-group-files-btn:hover {
+	background-color: #727272;
 }
 
-.delete-file-btn:hover, body.theme--dark .delete-file-btn:hover {
-	background-image: var(--icon-delete-e9322d);
+body.theme--dark .sorting-group-files-btn:active {
+	background-color: #5b5b5b;
+}
+
+.batch-editing {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.batch-actions-menu-button {
+	padding: 20px;
+	border-radius: 50%;
+	cursor: pointer;
+	user-select: none;
+}
+
+.batch-actions-menu-button:hover {
+	background-color: #eee;
+}
+
+.batch-actions-menu-button:active {
+	background-color: #ddd;
+}
+
+body.theme--dark .batch-actions-menu-button:hover {
+	background-color: #727272;
+}
+
+body.theme--dark .batch-actions-menu-button:active {
+	background-color: #5b5b5b;
 }
 </style>

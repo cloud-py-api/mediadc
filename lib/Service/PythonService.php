@@ -322,6 +322,16 @@ class PythonService {
 	private function parsePythonOutput($pythonResult) {
 		$output = $pythonResult['output'];
 		$result_code = $pythonResult['result_code'];
+
+		$required = null;
+		$video_required = null;
+		$video_required = null;
+		$optional = null;
+		$boost = null;
+		$available_algorithms = null;
+		$installed_list = null;
+		$errors = null;	
+
 		if (count($output) > 0) {
 			$result = [];
 			foreach(json_decode($output[0]) as $result_key => $result_value) {
@@ -352,6 +362,7 @@ class PythonService {
 				$warnings = $result['warnings'];
 			}
 		}
+
 		return [
 			'success' => $result_code === 0,
 			'installed' => count($required) === 0,

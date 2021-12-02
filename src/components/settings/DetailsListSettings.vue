@@ -35,6 +35,15 @@
 				style="width: 60px;">
 		</div>
 		<div class="setting">
+			<label for="group-items-per-page">{{ t('mediadc', 'Items per group') }}</label>
+			<input id="group-items-per-page"
+				v-model="groupItemsPerPage"
+				type="number"
+				min="1"
+				max="20"
+				style="width: 60px;">
+		</div>
+		<div class="setting">
 			<label for="details-grid-setting">{{ t('mediadc', 'Group file size') }}</label>
 			<select id="details-grid-setting"
 				v-model="selectedSize"
@@ -66,6 +75,7 @@ export default {
 			gridSizes: [128, 192, 256, 512, 768],
 			selectedSize: 192,
 			detailsListItemPerPage: 10,
+			groupItemsPerPage: 10,
 			deleteFileConfirmation: true,
 		}
 	},
@@ -77,6 +87,10 @@ export default {
 		detailsListItemPerPage() {
 			window.localStorage.setItem('mediadc_details_list_items_per_page', this.detailsListItemPerPage)
 			this.$store.dispatch('setDetailsListItemsPerPage', this.detailsListItemPerPage)
+		},
+		groupItemsPerPage() {
+			window.localStorage.setItem('mediadc_group_items_per_page', this.groupItemsPerPage)
+			this.$store.dispatch('setGroupItemsPerPage', this.groupItemsPerPage)
 		},
 		deleteFileConfirmation() {
 			window.localStorage.setItem('mediadc_delete_file_confirmation', this.deleteFileConfirmation)
@@ -90,9 +104,11 @@ export default {
 		loadLocalSetting() {
 			const localSelectedSize = window.localStorage.getItem('mediadc_details_files_grid_size')
 			const localDetailsListItemsPerPage = window.localStorage.getItem('mediadc_details_list_items_per_page')
+			const localGroupItemsPerPage = window.localStorage.getItem('mediadc_group_items_per_page')
 			const localDeleteFileConfirmation = window.localStorage.getItem('mediadc_delete_file_confirmation')
 			this.selectedSize = localSelectedSize !== null ? localSelectedSize : 192
 			this.detailsListItemPerPage = localDetailsListItemsPerPage !== null ? localDetailsListItemsPerPage : 10
+			this.groupItemsPerPage = localGroupItemsPerPage !== null ? localGroupItemsPerPage : 10
 			this.deleteFileConfirmation = localDeleteFileConfirmation !== null ? JSON.parse(localDeleteFileConfirmation) === true : true
 		},
 	},
