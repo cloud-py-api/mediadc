@@ -44,15 +44,6 @@
 				<CheckboxRadioSwitch :checked.sync="installed" disabled>
 					{{ t('mediadc', 'Installed:') }} {{ installed }}
 				</CheckboxRadioSwitch>
-				<!-- <input id="installed"
-					type="checkbox"
-					name="installed"
-					:v-model="installed"
-					:checked="installed"
-					disabled>
-				<label for="installed">
-					{{ t('mediadc', 'Installed:') }} {{ installed }}
-				</label> -->
 			</div>
 			<button v-if="!installing" @click="install">
 				{{ !installed ? t('mediadc', 'Install') : t('mediadc', 'Reinstall') }}

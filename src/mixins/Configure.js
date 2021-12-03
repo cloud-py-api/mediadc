@@ -24,7 +24,7 @@
 
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
+import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dialogs'
 
 export default {
 	created() {
@@ -165,12 +165,16 @@ export default {
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting().then(() => {
 					this.checking = false
-					if (res.data.success) {
-						showSuccess(this.t('mediadc', 'All required dependencies installed'))
-					} else if (!res.data.success && 'installed' in res.data && res.data.installed) {
-						showWarning(this.t('mediadc', 'Not all required packages installed'))
+					if (res.data.installed) {
+						if (res.data.success) {
+							showSuccess(this.t('mediadc', 'All required dependencies installed'))
+						} else if (!res.data.success && 'installed' in res.data && res.data.installed) {
+							showWarning(this.t('mediadc', 'Not all required packages installed'))
+						} else {
+							showError(this.t('mediadc', 'Some errors occured while checking installation'))
+						}
 					} else {
-						showError(this.t('mediadc', 'Some errors occured while checking installation'))
+						showMessage(this.t('mediadc', 'Packages not installed'))
 					}
 				}).catch(err => {
 					this.checking = false
