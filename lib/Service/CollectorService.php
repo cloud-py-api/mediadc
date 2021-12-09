@@ -679,7 +679,7 @@ class CollectorService {
 			$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
 			$this->tasksDetailsMapper->update($taskDetail);
 		}
-		return ['success' => count($result) == count($fileIds), 'removedFileIds' => $result];
+		return ['success' => count($result) == count($fileIds), 'deletedFileIds' => $result];
 	}
 
 	/**

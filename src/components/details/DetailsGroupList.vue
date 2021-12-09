@@ -105,7 +105,7 @@
 import Formats from '../../mixins/Formats'
 import { mapGetters } from 'vuex'
 import DetailsFile from './DetailsFile'
-import { showError, showMessage, showSuccess } from '@nextcloud/dialogs'
+import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { emit } from '@nextcloud/event-bus'
@@ -260,33 +260,41 @@ export default {
 			this.$emit('update:updating', true)
 			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/delete`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
 				if (res.data.success) {
-					const allFiles = this.allFiles
-					if ((this.allFiles.length - this.checkedFiles.length) <= 1) {
-						// Remove detail
-						this.$store.dispatch('deleteDetail', this.detail)
-						showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
-					}
-
-					for (const fileid of res.data.removedFileIds) {
-						const fileidIndex = allFiles.findIndex(f => f.fileid === fileid)
-						allFiles.splice(fileidIndex, 1)
-						const checkedFileIdIndex = this.checkedFiles.findIndex(f => f.fileid === fileid)
-						if (checkedFileIdIndex !== -1) {
-							this.checkedFiles.splice(checkedFileIdIndex, 1)
-						}
-					}
-
-					emit('updateTaskInfo')
-					this.$emit('update:allFiles', allFiles)
-					emit('updateGroupFilesPagination')
-					this.$emit('update:updating', false)
-					showSuccess(this.t('mediadc', 'Checked files successfully deleted'))
+					this._updateDeletedFiles(res)
+				} else if (!res.data.success && res.data.deletedFileIds.length > 0) {
+					showWarning(this.t('mediadc', 'Not all files deleted'))
+					this._updateDeletedFiles(res)
+				} else {
+					showError(this.t('mediadc', 'Some server error occured. Files not deleted'))
 				}
 			}).catch(err => {
 				console.debug(err)
 				showError(this.t('mediadc', 'Some server error occured'))
 				this.$emit('update:updating', false)
 			})
+		},
+		_updateDeletedFiles(res) {
+			const allFiles = this.allFiles
+			if ((this.allFiles.length - this.checkedFiles.length) <= 1 && res.data.deletedFileIds.length === this.checkedFiles.length) {
+				// Remove detail
+				this.$store.dispatch('deleteDetail', this.detail)
+				showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+			}
+
+			for (const fileid of res.data.deletedFileIds) {
+				const fileidIndex = allFiles.findIndex(f => f.fileid === fileid)
+				allFiles.splice(fileidIndex, 1)
+				const checkedFileIdIndex = this.checkedFiles.findIndex(f => f.fileid === fileid)
+				if (checkedFileIdIndex !== -1) {
+					this.checkedFiles.splice(checkedFileIdIndex, 1)
+				}
+			}
+
+			emit('updateTaskInfo')
+			this.$emit('update:allFiles', allFiles)
+			emit('updateGroupFilesPagination')
+			this.$emit('update:updating', false)
+			showSuccess(this.t('mediadc', 'Checked files successfully deleted'))
 		},
 		filterByFileName() {
 			if (this.filterFileName !== '') {

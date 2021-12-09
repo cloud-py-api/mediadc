@@ -23,7 +23,7 @@
  -->
 
 <template>
-	<div class="section">
+	<div class="section" style="padding: 20px;">
 		<h3>{{ t('mediadc', 'Duplicates list settings') }}</h3>
 		<div class="setting">
 			<label for="details-list-items-per-page">{{ t('mediadc', 'Groups per page') }}</label>
