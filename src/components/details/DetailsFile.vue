@@ -86,7 +86,7 @@ import axios from '@nextcloud/axios'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 import { mapGetters } from 'vuex'
 import { getCurrentUser } from '@nextcloud/auth'
-import { emit } from '@nextcloud/event-bus'
+import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
 import Formats from '../../mixins/Formats'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
@@ -142,7 +142,7 @@ export default {
 				if (fileIndex === -1) {
 					newCheckedFiles.push(this.file)
 				}
-			} else {
+			} else if (fileIndex !== -1) {
 				newCheckedFiles.splice(fileIndex, 1)
 			}
 			this.$emit('update:checkedFiles', newCheckedFiles)
@@ -157,6 +157,10 @@ export default {
 	beforeMount() {
 		const fileIndexChecked = this.checkedFiles.findIndex(f => f.fileid === this.file.fileid)
 		this.checked = fileIndexChecked !== -1
+		subscribe('deselectFiles', this.deselect)
+	},
+	beforeDestroy() {
+		unsubscribe('deselectFiles', this.deselect)
 	},
 	methods: {
 		openFile(file) {
@@ -210,22 +214,29 @@ export default {
 						this.$emit('update:files', files)
 						emit('updateTaskInfo')
 						this.$store.dispatch('setTask', res.data.task).then(() => {
-							this.updating = false
 							emit('updateGroupFilesPagination', this.file)
 						})
 					} else if ('locked' in res.data && res.data.locked) {
-						showWarning(t('mediadc', 'Wait until file loaded before deleting'))
-						this.updating = false
+						showWarning(this.t('mediadc', 'Wait until file loaded before deleting'))
+					} else if ('not_permited' in res.data && res.data.not_permited) {
+						showError(this.t('mediadc', 'Not enough permitions to delete file'))
+					} else if ('not_found' in res.data && res.data.not_found) {
+						showError(this.t('mediadc', 'File not found. Probably it\'s already deleted'))
 					} else {
-						showError(t('mediadc', 'Some error occured while deleting file'))
-						this.updating = false
+						showError(this.t('mediadc', 'Some error occured while deleting file'))
 					}
+					this.updating = false
 				})
 				.catch(err => {
 					console.debug(err)
-					showError(t('mediadc', 'Some error occured while deleting file'))
+					showError(this.t('mediadc', 'Some error occured while deleting file'))
 					this.updating = false
 				})
+		},
+		deselect(filesToDeselect) {
+			if (this.checked && filesToDeselect.map(f => f.fileid).includes(this.file.fileid)) {
+				this.checked = false
+			}
 		},
 	},
 }

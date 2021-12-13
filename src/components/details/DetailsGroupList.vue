@@ -54,7 +54,7 @@
 							</li>
 							<li v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage">
 								<a class="icon-checkmark" @click="selectAllFilesOnPage">
-									<span>{{ checkedFilesIntersect.size === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
+									<span>{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
 								</a>
 							</li>
 							<li>
@@ -123,6 +123,7 @@ export default {
 		allFiles: {
 			type: Array,
 			required: true,
+			default: () => [],
 		},
 		detail: {
 			type: Object,
@@ -161,7 +162,7 @@ export default {
 			const a = new Set(this.files)
 			const b = new Set(this.checkedFiles)
 			const intersect = new Set([...a].filter(i => b.has(i)))
-			return intersect
+			return Array.from(intersect)
 		},
 	},
 	watch: {
@@ -181,14 +182,13 @@ export default {
 		},
 		selectAllFiles() {
 			if (this.checkedFiles.length === this.allFiles.length) { // Deselect files
-				this.$emit('update:loadingFiles', true)
+				emit('deselectFiles', this.checkedFiles)
 				for (const file of this.allFiles) {
 					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
 					if (fileIndex !== -1) {
 						this.checkedFiles.splice(fileIndex, 1)
 					}
 				}
-				setTimeout(() => { this.$emit('update:loadingFiles', false) }, 200)
 			} else {
 				for (const file of this.allFiles) {
 					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
@@ -199,15 +199,16 @@ export default {
 			}
 		},
 		selectAllFilesOnPage() {
-			if (this.checkedFilesIntersect.size === this.files.length) {
-				this.$emit('update:loadingFiles', true)
-				for (const file of this.files) {
-					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
+			if (this.files.length === this.checkedFilesIntersect.length) {
+				const filesToDeselect = this.checkedFilesIntersect
+				emit('deselectFiles', filesToDeselect)
+				for (const fileid of filesToDeselect.map(f => f.fileid)) {
+					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === fileid)
+					console.debug(fileid, fileIndex, this.checkedFiles[fileIndex], filesToDeselect.map(f => f.fileid))
 					if (fileIndex !== -1) {
 						this.checkedFiles.splice(fileIndex, 1)
 					}
 				}
-				setTimeout(() => { this.$emit('update:loadingFiles', false) }, 200)
 			} else {
 				for (const file of this.files) {
 					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
@@ -265,7 +266,9 @@ export default {
 					showWarning(this.t('mediadc', 'Not all files deleted'))
 					this._updateDeletedFiles(res)
 				} else {
+					console.debug(res.data.errors)
 					showError(this.t('mediadc', 'Some server error occured. Files not deleted'))
+					this.$emit('update:updating', false)
 				}
 			}).catch(err => {
 				console.debug(err)

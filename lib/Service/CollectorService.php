@@ -622,7 +622,8 @@ class CollectorService {
 			} catch (NotPermittedException | NotFoundException $e) {
 				return [
 					'success' => false,
-					'error' => $e->getMessage(),
+					'not_permited' => $e instanceof NotPermittedException,
+					'not_found' => $e instanceof NotFoundException,
 				];
 			}
 		} else {
@@ -661,6 +662,11 @@ class CollectorService {
 	 */
 	public function deleteTaskDetailFiles($taskDetailId, $fileIds) {
 		$result = [];
+		$errors = [
+			'locked' => [],
+			'not_permited' => [],
+			'not_found' => [],
+		];
 		/** @var CollectorTaskDetail $taskDetail */
 		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
 		$taskDetailGroupFileIds = json_decode($taskDetail->getGroupFilesIds());
@@ -671,6 +677,16 @@ class CollectorService {
 				if ($fileIdIndex !== false) {
 					array_push($result, array_splice($taskDetailGroupFileIds, $fileIdIndex, 1)[0]);
 				}
+			} else {
+				if (isset($deleteFileResult['locked']) && $deleteFileResult['locked']) {
+					array_push($errors['locked'], $fileId);
+				}
+				if (isset($deleteFileResult['not_permited']) && $deleteFileResult['not_permited']) {
+					array_push($errors['not_permited'], $fileId);
+				}
+				if (isset($deleteFileResult['not_found']) && $deleteFileResult['not_found']) {
+					array_push($errors['not_found'], $fileId);
+				}
 			}
 		}
 		if (count($taskDetailGroupFileIds) <= 1) {
@@ -679,7 +695,11 @@ class CollectorService {
 			$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
 			$this->tasksDetailsMapper->update($taskDetail);
 		}
-		return ['success' => count($result) == count($fileIds), 'deletedFileIds' => $result];
+		return [
+			'success' => count($result) == count($fileIds),
+			'deletedFileIds' => $result,
+			'errors' => $errors,
+		];
 	}
 
 	/**

@@ -44,7 +44,7 @@
 				style="width: 60px;">
 		</div>
 		<div class="setting">
-			<label for="details-grid-setting">{{ t('mediadc', 'Group file size') }}</label>
+			<label for="details-grid-setting">{{ t('mediadc', 'Group image size') }}</label>
 			<select id="details-grid-setting"
 				v-model="selectedSize"
 				name="details-grid-setting">
