@@ -204,7 +204,6 @@ export default {
 				emit('deselectFiles', filesToDeselect)
 				for (const fileid of filesToDeselect.map(f => f.fileid)) {
 					const fileIndex = this.checkedFiles.findIndex(f => f.fileid === fileid)
-					console.debug(fileid, fileIndex, this.checkedFiles[fileIndex], filesToDeselect.map(f => f.fileid))
 					if (fileIndex !== -1) {
 						this.checkedFiles.splice(fileIndex, 1)
 					}

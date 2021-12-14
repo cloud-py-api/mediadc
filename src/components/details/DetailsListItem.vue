@@ -113,7 +113,7 @@ export default {
 				if (detailIndex === -1) {
 					newCheckedDetailGroups.push(this.detail)
 				}
-			} else {
+			} else if (detailIndex !== -1) {
 				newCheckedDetailGroups.splice(detailIndex, 1)
 			}
 			this.$emit('update:checkedDetailGroups', newCheckedDetailGroups)
@@ -141,9 +141,11 @@ export default {
 		const detailCheckedIndex = this.checkedDetailGroups.findIndex(d => d.id === this.detail.id)
 		this.checked = detailCheckedIndex !== -1
 		subscribe('updateGroupFilesPagination', this.updateFilesPagination)
+		subscribe('deselectGroups', this.deselect)
 	},
 	beforeDestroy() {
 		unsubscribe('updateGroupFilesPagination', this.updateFilesPagination)
+		unsubscribe('deselectGroups', this.deselect)
 	},
 	methods: {
 		openDetailFiles(detail) {
@@ -251,6 +253,11 @@ export default {
 			}
 			this.paginatedFiles = this.paginateFiles(this.allFiles)
 			this.files = this.paginatedFiles[this.page]
+		},
+		deselect(groupsToDeselect) {
+			if (this.checked && groupsToDeselect.includes(this.detail.id)) {
+				this.checked = false
+			}
 		},
 	},
 }

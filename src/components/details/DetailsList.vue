@@ -69,7 +69,7 @@
 								</li>
 								<li>
 									<a class="icon-checkmark" @click="selectAllGroupsOnPage">
-										<span>{{ checkedDetailGroupsIntersect.size === paginatedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
+										<span>{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
 									</a>
 								</li>
 								<li>
@@ -159,7 +159,7 @@ export default {
 			const a = new Set(this.paginatedDetails[this.page].map(d => d.id))
 			const b = new Set(this.checkedDetailGroups.map(d => d.id))
 			const intersect = new Set([...a].filter(i => b.has(i)))
-			return intersect
+			return Array.from(intersect)
 		},
 	},
 	watch: {
@@ -232,7 +232,7 @@ export default {
 		},
 		selectAllGroups() {
 			if (this.checkedDetailGroups.length === this.details.length) {
-				this.batchUpdating = true
+				emit('deselectGroups', this.checkedDetailGroups.map(d => d.id))
 				for (const detail of this.details) {
 					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
 					if (detailIndex !== -1) {
@@ -250,15 +250,15 @@ export default {
 			}
 		},
 		selectAllGroupsOnPage() {
-			if (this.checkedDetailGroupsIntersect.size === this.paginatedDetails[this.page].length) {
-				this.batchUpdating = true
-				for (const detail of this.paginatedDetails[this.page]) {
+			if (this.paginatedDetails[this.page].length === this.checkedDetailGroupsIntersect.length) {
+				const groupsToDeselect = this.checkedDetailGroupsIntersect
+				emit('deselectGroups', groupsToDeselect)
+				for (const detail of groupsToDeselect) {
 					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
 					if (detailIndex !== -1) {
 						this.checkedDetailGroups.splice(detailIndex, 1)
 					}
 				}
-				setTimeout(() => { this.batchUpdating = false }, 300)
 			} else {
 				for (const detail of this.paginatedDetails[this.page]) {
 					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
