@@ -117,10 +117,23 @@
 							</td>
 							<td>{{ not_installed_list[listName].length === 0 }}</td>
 							<td>
-								<button :disabled="Object.keys(not_installed_list[listName]).length === 0"
+								<button v-if="listName !== 'boost'"
+									:disabled="Object.keys(not_installed_list[listName]).length === 0"
 									@click="installDepsList(listName)">
 									{{ t('mediadc', 'Install') }}
 								</button>
+								<div v-else class="package" style="display: inline-flex;">
+									<span class="package-title">
+										<button disabled @click="installDepsList(listName)">
+											{{ t('mediadc', 'Install') }}
+										</button>
+									</span>
+									<div class="package-tooltip">
+										<span class="tooltip-content">
+											{{ t('mediadc', 'Temporary unavailbale for MediaDC 0.1.8') }}
+										</span>
+									</div>
+								</div>
 								<button :disabled="Object.keys(not_installed_list[listName]).length > 0"
 									@click="updateDepsList(listName)">
 									{{ t('mediadc', 'Update') }}

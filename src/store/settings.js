@@ -28,6 +28,7 @@ const state = {
 	settings: [],
 	detailsGridSize: 192,
 	deleteFileConfirmation: true,
+	autoOpenNextGroup: true,
 }
 
 const mutations = {
@@ -56,6 +57,9 @@ const mutations = {
 	setDeleteFileConfirmation(state, value) {
 		Vue.set(state, 'deleteFileConfirmation', value)
 	},
+	setAutoOpenNextGroup(state, value) {
+		Vue.set(state, 'autoOpenNextGroup', value)
+	},
 }
 
 const getters = {
@@ -63,6 +67,7 @@ const getters = {
 	settingByName: state => name => state.settings.find(setting => setting.name === name),
 	detailsGridSize: state => state.detailsGridSize,
 	deleteFileConfirmation: state => state.deleteFileConfirmation,
+	autoOpenNextGroup: state => state.autoOpenNextGroup,
 }
 
 const actions = {
@@ -80,6 +85,9 @@ const actions = {
 	},
 	setDeleteFileConfirmation(context, value) {
 		context.commit('setDeleteFileConfirmation', value)
+	},
+	setAutoOpenNextGroup(context, value) {
+		context.commit('setAutoOpenNextGroup', value)
 	},
 }
 

@@ -28,11 +28,14 @@ const state = {
 	task: {},
 	taskInfo: [],
 	details: [],
+	sortedDetails: [],
 	detailsFiltered: [],
 	paginatedDetails: [],
+	paginatedSortedDetails: [],
 	itemsPerPage: 5,
 	groupItemsPerPage: 10,
 	sorted: false,
+	sortGroups: true,
 }
 
 const paginate = (details, itemsPerPage) => {
@@ -56,17 +59,21 @@ const mutations = {
 		Vue.set(state, 'taskInfo', taskInfo)
 	},
 	setDetails(state, details) {
+		Vue.set(state, 'details', details)
+		Vue.set(state, 'paginatedDetails', paginate(details, state.itemsPerPage))
 		const sortedDetails = details.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
-		Vue.set(state, 'details', sortedDetails)
-		Vue.set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage))
+		Vue.set(state, 'sortedDetails', sortedDetails)
+		Vue.set(state, 'paginatedSortedDetails', paginate(sortedDetails, state.itemsPerPage))
 	},
 	deleteDetail(state, detail) {
 		const newDetails = [...state.details]
 		const detailIndex = newDetails.findIndex(d => d.id === detail.id)
 		newDetails.splice(detailIndex, 1)
+		Vue.set(state, 'details', newDetails)
+		Vue.set(state, 'paginatedDetails', paginate(newDetails, state.itemsPerPage))
 		const sortedDetails = newDetails.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
-		Vue.set(state, 'details', sortedDetails)
-		Vue.set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage))
+		Vue.set(state, 'sortedDetails', sortedDetails)
+		Vue.set(state, 'paginatedSortedDetails', paginate(sortedDetails, state.itemsPerPage))
 	},
 	setDetailsListItemsPerPage(state, itemsPerPage) {
 		Vue.set(state, 'itemsPerPage', Number(itemsPerPage))
@@ -77,9 +84,12 @@ const mutations = {
 	},
 	setSorted(state, sorted) {
 		const sortedDetails = state.details.sort((a, b) => sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
-		Vue.set(state, 'details', sortedDetails)
-		Vue.set(state, 'paginatedDetails', paginate(sortedDetails, state.itemsPerPage))
+		Vue.set(state, 'sortedDetails', sortedDetails)
+		Vue.set(state, 'paginatedSortedDetails', paginate(sortedDetails, state.itemsPerPage))
 		Vue.set(state, 'sorted', sorted)
+	},
+	setSortGroups(state, sortGroups) {
+		Vue.set(state, 'sortGroups', sortGroups)
 	},
 	setDetailsFiltered(state, detailFiltered) {
 		Vue.set(state, 'detailsFiltered', detailFiltered)
@@ -90,11 +100,14 @@ const getters = {
 	task: state => state.task,
 	taskInfo: state => state.taskInfo,
 	details: state => state.details,
+	sortedDetails: state => state.sortedDetails,
 	detailsFiltered: state => state.detailsFiltered,
 	paginatedDetails: state => state.paginatedDetails,
+	paginatedSortedDetails: state => state.paginatedSortedDetails,
 	itemsPerPage: state => state.itemsPerPage,
 	groupItemsPerPage: state => state.groupItemsPerPage,
 	sorted: state => state.sorted,
+	sortGroups: state => state.sortGroups,
 }
 
 const actions = {
@@ -121,6 +134,9 @@ const actions = {
 	},
 	setDetailsFiltered(context, detailFiltered) {
 		context.commit('setDetailsFiltered', detailFiltered)
+	},
+	setSortGroups(context, sortGroups) {
+		context.commit('setSortGroups', sortGroups)
 	},
 }
 

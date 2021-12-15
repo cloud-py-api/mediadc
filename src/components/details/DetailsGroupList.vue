@@ -78,6 +78,7 @@
 				:key="file.fileid"
 				:file="file"
 				:files="files"
+				:all-files="allFiles"
 				:checked-files.sync="checkedFiles"
 				:detail="detail" />
 		</div>
@@ -87,6 +88,7 @@
 				:key="file.fileid"
 				:file="file"
 				:files="files"
+				:all-files="allFiles"
 				:checked-files.sync="checkedFiles"
 				:detail="detail" />
 		</div>
@@ -223,6 +225,7 @@ export default {
 				if (res.data.success) {
 					const allFiles = this.allFiles
 					if ((this.allFiles.length - this.checkedFiles.length) <= 1) {
+						emit('openNextDetailGroup', this.detail)
 						// Remove detail
 						this.$store.dispatch('deleteDetail', this.detail)
 						showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
@@ -278,6 +281,7 @@ export default {
 		_updateDeletedFiles(res) {
 			const allFiles = this.allFiles
 			if ((this.allFiles.length - this.checkedFiles.length) <= 1 && res.data.deletedFileIds.length === this.checkedFiles.length) {
+				emit('openNextDetailGroup', this.detail)
 				// Remove detail
 				this.$store.dispatch('deleteDetail', this.detail)
 				showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))

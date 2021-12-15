@@ -104,6 +104,10 @@ export default {
 			type: Array,
 			required: true,
 		},
+		allFiles: {
+			type: Array,
+			required: true,
+		},
 		checkedFiles: {
 			type: Array,
 			required: true,
@@ -199,7 +203,8 @@ export default {
 				.then(res => {
 					if (res.data.success) {
 						const files = this.files
-						if (files.length === 2) { // Remove detail when 1 file left
+						if (this.allFiles.length === 2) { // Remove detail when 1 file left
+							emit('openNextDetailGroup', this.detail)
 							this.$store.dispatch('deleteDetail', this.detail)
 							showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
 						}

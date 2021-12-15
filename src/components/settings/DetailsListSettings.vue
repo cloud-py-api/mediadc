@@ -58,6 +58,11 @@
 				{{ t('mediadc', 'Delete file confirmation') }}
 			</CheckboxRadioSwitch>
 		</div>
+		<div class="setting">
+			<CheckboxRadioSwitch :checked.sync="autoOpenNextGroup">
+				{{ t('mediadc', 'Auto open next group') }}
+			</CheckboxRadioSwitch>
+		</div>
 	</div>
 </template>
 
@@ -77,6 +82,7 @@ export default {
 			detailsListItemPerPage: 10,
 			groupItemsPerPage: 10,
 			deleteFileConfirmation: true,
+			autoOpenNextGroup: true,
 		}
 	},
 	watch: {
@@ -96,6 +102,10 @@ export default {
 			window.localStorage.setItem('mediadc_delete_file_confirmation', this.deleteFileConfirmation)
 			this.$store.dispatch('setDeleteFileConfirmation', this.deleteFileConfirmation)
 		},
+		autoOpenNextGroup() {
+			window.localStorage.setItem('mediadc_auto_open_next_group', this.autoOpenNextGroup)
+			this.$store.dispatch('setAutoOpenNextGroup', this.autoOpenNextGroup)
+		},
 	},
 	beforeMount() {
 		this.loadLocalSetting()
@@ -106,10 +116,12 @@ export default {
 			const localDetailsListItemsPerPage = window.localStorage.getItem('mediadc_details_list_items_per_page')
 			const localGroupItemsPerPage = window.localStorage.getItem('mediadc_group_items_per_page')
 			const localDeleteFileConfirmation = window.localStorage.getItem('mediadc_delete_file_confirmation')
+			const localAutoOpenNextGroup = window.localStorage.getItem('mediadc_auto_open_next_group')
 			this.selectedSize = localSelectedSize !== null ? localSelectedSize : 192
 			this.detailsListItemPerPage = localDetailsListItemsPerPage !== null ? localDetailsListItemsPerPage : 10
 			this.groupItemsPerPage = localGroupItemsPerPage !== null ? localGroupItemsPerPage : 10
 			this.deleteFileConfirmation = localDeleteFileConfirmation !== null ? JSON.parse(localDeleteFileConfirmation) === true : true
+			this.autoOpenNextGroup = localAutoOpenNextGroup !== null ? JSON.parse(localAutoOpenNextGroup) === true : true
 		},
 	},
 }

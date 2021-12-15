@@ -37,7 +37,7 @@
 			</span>
 			<span class="icon-delete delete-group-btn"
 				:title="t('mediadc', 'Remove group without deleting files')"
-				@click="deleteTaskDetail(detail)" />
+				@click="removeTaskDetail(detail)" />
 		</div>
 		<div v-if="opened && JSON.parse(detail.group_files_ids).length > groupItemsPerPage" class="pagination">
 			<span class="icon-view-previous pagination-button"
@@ -136,16 +136,25 @@ export default {
 				this.files = this.paginatedFiles[this.page]
 			}
 		},
+		allFiles(newAllFiles) {
+			if (this.page >= Math.ceil(newAllFiles.length / this.groupItemsPerPage)) {
+				this.page = Math.ceil(newAllFiles.length / this.groupItemsPerPage) - 1
+				this.paginatedFiles = this.paginateFiles(this.allFiles)
+				this.files = this.paginatedFiles[this.page]
+			}
+		},
 	},
 	beforeMount() {
 		const detailCheckedIndex = this.checkedDetailGroups.findIndex(d => d.id === this.detail.id)
 		this.checked = detailCheckedIndex !== -1
 		subscribe('updateGroupFilesPagination', this.updateFilesPagination)
 		subscribe('deselectGroups', this.deselect)
+		subscribe('openGroup', this.openGroup)
 	},
 	beforeDestroy() {
 		unsubscribe('updateGroupFilesPagination', this.updateFilesPagination)
 		unsubscribe('deselectGroups', this.deselect)
+		unsubscribe('openGroup', this.openGroup)
 	},
 	methods: {
 		openDetailFiles(detail) {
@@ -204,11 +213,12 @@ export default {
 			}
 			return paginatedFiles
 		},
-		deleteTaskDetail(detail) {
+		removeTaskDetail(detail) {
 			if (confirm(this.t('mediadc', 'Are you sure, you want remove this group without deleting files?'))) {
 				this.updating = true
 				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${detail.task_id}/detail/${detail.id}`)).then(res => {
 					if (res.data.success) {
+						emit('openNextDetailGroup', this.detail)
 						const updatedDetails = [...this.details]
 						const removedDetailIndex = updatedDetails.findIndex(d => d.id === this.detail.id)
 						updatedDetails.splice(removedDetailIndex, 1)
@@ -257,6 +267,11 @@ export default {
 		deselect(groupsToDeselect) {
 			if (this.checked && groupsToDeselect.includes(this.detail.id)) {
 				this.checked = false
+			}
+		},
+		openGroup(detail) {
+			if (this.detail.id === detail.id && !this.opened) {
+				this.openDetailFiles(detail)
 			}
 		},
 	},

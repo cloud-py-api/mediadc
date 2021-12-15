@@ -33,6 +33,9 @@
 				</span>
 			</h3>
 			<div v-if="details.length > itemsPerPage" class="pagination">
+				<CheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
+					{{ t('mediadc', 'Sort groups') }}
+				</CheckboxRadioSwitch>
 				<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'"
 					:title="t('mediadc', 'Sorting details by files count')"
 					@click="toggleSorting" />
@@ -40,8 +43,7 @@
 					@click="prevGroupsPage()" />
 				<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
 				<span>{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
-				<span class="icon-view-next pagination-button"
-					@click="nextGroupsPage()" />
+				<span class="icon-view-next pagination-button" @click="nextGroupsPage()" />
 			</div>
 		</div>
 		<div v-if="details.length > 0">
@@ -67,7 +69,7 @@
 										<span>{{ checkedDetailGroups.length === details.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}</span>
 									</a>
 								</li>
-								<li>
+								<li v-if="details.length > itemsPerPage">
 									<a class="icon-checkmark" @click="selectAllGroupsOnPage">
 										<span>{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
 									</a>
@@ -86,12 +88,22 @@
 				<span class="icon-loading" />
 			</div>
 			<div v-else-if="detailsFiltered === undefined || (detailsFiltered.length === 0 && (filterId === '' || filterId === null))">
-				<div v-for="detail in paginatedDetails[page]"
-					v-show="JSON.parse(detail.group_files_ids).length > 1"
-					:key="detail.id"
-					class="task-details-row">
-					<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
-				</div>
+				<template v-if="sortGroups">
+					<div v-for="detail in paginatedSortedDetails[page]"
+						v-show="JSON.parse(detail.group_files_ids).length > 1"
+						:key="detail.id"
+						class="task-details-row">
+						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+					</div>
+				</template>
+				<template v-else>
+					<div v-for="detail in paginatedDetails[page]"
+						v-show="JSON.parse(detail.group_files_ids).length > 1"
+						:key="detail.id"
+						class="task-details-row">
+						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+					</div>
+				</template>
 			</div>
 			<div v-else-if="detailsFiltered.length > 0">
 				<div v-for="detail in detailsFiltered"
@@ -120,11 +132,12 @@ import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { mapGetters } from 'vuex'
 import Formats from '../../mixins/Formats'
 import DetailsListItem from './DetailsListItem'
-import { emit } from '@nextcloud/event-bus'
+import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'DetailsList',
-	components: { DetailsListItem },
+	components: { DetailsListItem, CheckboxRadioSwitch },
 	mixins: [Formats],
 	props: {
 		filessize: {
@@ -144,16 +157,20 @@ export default {
 			batchActionsOpened: false,
 			batchActionResult: null,
 			batchUpdating: false,
+			sortGroups: true,
 		}
 	},
 	computed: {
 		...mapGetters([
 			'task',
 			'details',
+			'sortedDetails',
 			'sorted',
 			'paginatedDetails',
+			'paginatedSortedDetails',
 			'itemsPerPage',
 			'detailsFiltered',
+			'autoOpenNextGroup',
 		]),
 		checkedDetailGroupsIntersect() {
 			const a = new Set(this.paginatedDetails[this.page].map(d => d.id))
@@ -173,9 +190,20 @@ export default {
 				this.page = Math.ceil(newDetails.length / this.itemsPerPage) - 1
 			}
 		},
+		sortGroups() {
+			window.localStorage.setItem('mediadc_details_sort_groups', this.sortGroups)
+			this.$store.dispatch('setSortGroups', this.sortGroups)
+		},
 	},
 	beforeMount() {
 		this.$emit('update:loading', false)
+		const sortGroups = window.localStorage.getItem('mediadc_details_sort_groups')
+		this.sortGroups = sortGroups !== null ? JSON.parse(sortGroups) === true : true
+		this.$store.dispatch('setSortGroups', sortGroups !== null ? JSON.parse(sortGroups) === true : true)
+		subscribe('openNextDetailGroup', this.openNextDetailGroup)
+	},
+	beforeDestroy() {
+		unsubscribe('openNextDetailGroup', this.openNextDetailGroup)
 	},
 	methods: {
 		prevGroupsPage() {
@@ -268,6 +296,18 @@ export default {
 				}
 			}
 		},
+		openNextDetailGroup(detail) {
+			if (this.autoOpenNextGroup) {
+				const detailIndex = this.details.findIndex(d => d.id === detail.id)
+				if (detailIndex !== -1) {
+					if (detailIndex !== this.details.length - 1) {
+						emit('openGroup', this.details[detailIndex + 1])
+					} else if (detailIndex === this.details.length - 1 && this.details.length >= 2) {
+						emit('openGroup', this.details[detailIndex - 1])
+					}
+				}
+			}
+		},
 	},
 }
 </script>
@@ -275,7 +315,7 @@ export default {
 <style scoped>
 .task-details {
 	width: 100%;
-	padding: 10px 10px 20px 20px;
+	padding: 20px 10px 20px 20px;
 	border: 1px solid #dadada;
 	border-radius: 5px;
 	overflow-y: scroll;
