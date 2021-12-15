@@ -28,7 +28,6 @@ import db
 
 
 StoragesInfo = []
-GlobalReqs = 0
 
 
 def get_file_data(file_info: dict, data_dir: str, remote_filesize_limit: int) -> bytes:
@@ -51,8 +50,6 @@ def get_file_data(file_info: dict, data_dir: str, remote_filesize_limit: int) ->
 
 
 def request_file_from_php(file_info: dict) -> bytes:
-    global GlobalReqs
-    GlobalReqs = GlobalReqs + 1
     user_id = get_storage_user_id(file_info['storage'])
     if not user_id:
         return bytes(b'')
@@ -60,7 +57,6 @@ def request_file_from_php(file_info: dict) -> bytes:
     if not success:
         print('get_file_data:', err_or_data)
         return bytes(b'')
-    print(f'DEBUG(TODO,REMOVE asap):GlobalReqs={GlobalReqs}')
     return err_or_data
 
 
