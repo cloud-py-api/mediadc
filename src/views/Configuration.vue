@@ -71,12 +71,12 @@
 			</button>
 		</div>
 		<div v-if="isAdmin" class="install-details">
-			<div v-if="available_algorithms && installed"
+			<div v-if="available_algorithms && available_algorithms.length > 0 && installed"
 				class="available_algorithms"
 				style="margin: 20px 0 10px;">
 				{{ t('mediadc', 'Available algorithms: ') }} {{ available_algorithms.join(', ') }}
 			</div>
-			<div v-if="installed && video_required.length > 0">
+			<div v-if="installed && video_required && video_required.length > 0">
 				<strong>{{ t('mediadc', 'Video processing won\'t work, video_required packages not installed.') }}</strong>
 				<p>{{ t('mediadc', 'Not installed video_required packages:') }} {{ video_required }}</p>
 				<p>{{ t('mediadc', 'video_required packages can\'t be installed automatically, this should be done by administrator manually and then recheck installation on this page.') }}</p>

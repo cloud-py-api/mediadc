@@ -188,27 +188,27 @@ export default {
 			})
 		},
 		parsePythonResponseData(res) {
-			this.installed = 'installed' in res.data ? res.data.installed : false
-			this.installed_setting.value.status = 'installed' in res.data ? res.data.installed : false
-			this.installed_setting.value.installed_list = 'installed_list' in res.data ? res.data.installed_list : []
+			this.installed = 'installed' in res.data && res.data.installed ? res.data.installed : false
+			this.installed_setting.value.status = 'installed' in res.data && res.data.installed ? res.data.installed : false
+			this.installed_setting.value.installed_list = 'installed_list' in res.data && res.data.installed_list ? res.data.installed_list : []
 			this.installed_setting.value.not_installed_list = {
-				required: 'required' in res.data ? res.data.required : {},
-				optional: 'optional' in res.data ? res.data.optional : {},
-				boost: 'boost' in res.data ? res.data.boost : {},
+				required: 'required' in res.data && res.data.required ? res.data.required : {},
+				optional: 'optional' in res.data && res.data.optional ? res.data.optional : {},
+				boost: 'boost' in res.data && res.data.boost ? res.data.boost : {},
 			}
-			this.installed_setting.value.available_algorithms = 'available_algorithms' in res.data ? res.data.available_algorithms : []
-			this.installed_setting.value.video_required = 'video_required' in res.data ? res.data.video_required : []
+			this.installed_setting.value.available_algorithms = 'available_algorithms' in res.data && res.data.available_algorithms ? res.data.available_algorithms : []
+			this.installed_setting.value.video_required = 'video_required' in res.data && res.data.video_required ? res.data.video_required : []
 			this.$store.dispatch('setSetting', this.installed_setting)
-			this.installed_list = 'installed_list' in res.data ? res.data.installed_list : []
+			this.installed_list = 'installed_list' in res.data && res.data.installed_list ? res.data.installed_list : []
 			this.not_installed_list = {
-				required: 'required' in res.data ? res.data.required : {},
-				optional: 'optional' in res.data ? res.data.optional : {},
-				boost: 'boost' in res.data ? res.data.boost : {},
+				required: 'required' in res.data && res.data.required ? res.data.required : {},
+				optional: 'optional' in res.data && res.data.optional ? res.data.optional : {},
+				boost: 'boost' in res.data && res.data.boost ? res.data.boost : {},
 			}
-			this.available_algorithms = 'available_algorithms' in res.data ? res.data.available_algorithms : []
-			this.video_required = 'video_required' in res.data ? res.data.video_required : []
-			this.errors = 'errors' in res.data ? res.data.errors : []
-			this.warnings = 'warnings' in res.data ? res.data.warnings : []
+			this.available_algorithms = 'available_algorithms' in res.data && res.data.available_algorithms ? res.data.available_algorithms : []
+			this.video_required = 'video_required' in res.data && res.data.video_required ? res.data.video_required : []
+			this.errors = 'errors' in res.data && res.data.errors ? res.data.errors : []
+			this.warnings = 'warnings' in res.data && res.data.warnings ? res.data.warnings : []
 		},
 		finishConfiguration() {
 			this.$emit('update:loading', true)

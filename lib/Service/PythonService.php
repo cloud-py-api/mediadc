@@ -91,9 +91,13 @@ class PythonService {
 			exec($envVariables . 'nohup ' . $cmd . ' > /dev/null 2>&1 &');
 		} else {
 			exec($envVariables . $cmd, $output, $result_code);
+			if ($result_code !== 0) {
+				exec($envVariables . $cmd . ' 2>&1 1>/dev/null', $errors, $result_code);
+			}
 			return [
 				'output' => $output,
 				'result_code' => $result_code,
+				'errors' => $errors,
 			];
 		}
 	}
@@ -316,10 +320,11 @@ class PythonService {
 
 	/**
 	 * @param array $pythonResult
-	 * 
+	 *
 	 * @return array
 	 */
 	private function parsePythonOutput($pythonResult) {
+		$this->logger->error('[' . self::class . '] $pythonResult: ' . json_encode($pythonResult));
 		$output = $pythonResult['output'];
 		$result_code = $pythonResult['result_code'];
 
@@ -330,42 +335,48 @@ class PythonService {
 		$boost = null;
 		$available_algorithms = null;
 		$installed_list = null;
-		$errors = null;	
+		$errors = null;
 
-		if (count($output) > 0) {
-			$result = [];
-			foreach(json_decode($output[0]) as $result_key => $result_value) {
-				$result[$result_key] = $result_value;
+		if ($result_code === 0) {
+			if (count($output) > 0) {
+				$result = [];
+				foreach(json_decode($output[0]) as $result_key => $result_value) {
+					$result[$result_key] = $result_value;
+				}
+				if (isset($result['required'])) {
+					$required = (array)$result['required'];
+				}
+				if (isset($result['video_required'])) {
+					$video_required = (array)$result['video_required'];
+				}
+				if (isset($result['optional'])) {
+					$optional = (array)$result['optional'];
+				}
+				if (isset($result['boost'])) {
+					$boost = (array)$result['boost'];
+				}
+				if (isset($result['available_algorithms'])) {
+					$available_algorithms = $result['available_algorithms'];
+				}
+				if (isset($result['installed_list'])) {
+					$installed_list = $result['installed_list'];
+				}
+				if (isset($result['errors'])) {
+					$errors = $result['errors'];
+				}
+				if (isset($result['warnings'])) {
+					$warnings = $result['warnings'];
+				}
 			}
-			if (isset($result['required'])) {
-				$required = (array)$result['required'];
-			}
-			if (isset($result['video_required'])) {
-				$video_required = (array)$result['video_required'];
-			}
-			if (isset($result['optional'])) {
-				$optional = (array)$result['optional'];
-			}
-			if (isset($result['boost'])) {
-				$boost = (array)$result['boost'];
-			}
-			if (isset($result['available_algorithms'])) {
-				$available_algorithms = $result['available_algorithms'];
-			}
-			if (isset($result['installed_list'])) {
-				$installed_list = $result['installed_list'];
-			}
-			if (isset($result['errors'])) {
-				$errors = $result['errors'];
-			}
-			if (isset($result['warnings'])) {
-				$warnings = $result['warnings'];
+		} else {
+			if (isset($pythonResult['errors'])) {
+				$errors = $pythonResult['errors'];
 			}
 		}
 
 		return [
 			'success' => $result_code === 0,
-			'installed' => count($required) === 0,
+			'installed' => $result_code === 0 && count($required) === 0,
 			'required' => $required,
 			'video_required' => $video_required,
 			'optional' => $optional,
