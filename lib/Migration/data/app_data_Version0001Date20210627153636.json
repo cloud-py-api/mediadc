@@ -47,7 +47,7 @@
         },
         {
             "name": "python_command",
-            "value": "python3",
+            "value": "/usr/bin/python3",
             "displayName": "Path or alias to python interpreter",
             "description": "Absolute path to the python runnable (e.g. /usr/bin/python3) or alias (python3) from system configurations"
         },

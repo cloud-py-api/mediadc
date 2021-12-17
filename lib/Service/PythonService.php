@@ -324,7 +324,6 @@ class PythonService {
 	 * @return array
 	 */
 	private function parsePythonOutput($pythonResult) {
-		$this->logger->error('[' . self::class . '] $pythonResult: ' . json_encode($pythonResult));
 		$output = $pythonResult['output'];
 		$result_code = $pythonResult['result_code'];
 
