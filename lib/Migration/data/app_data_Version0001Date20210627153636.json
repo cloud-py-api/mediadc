@@ -48,8 +48,8 @@
         {
             "name": "python_command",
             "value": "/usr/bin/python3",
-            "displayName": "Path or alias to python interpreter",
-            "description": "Absolute path to the python runnable (e.g. /usr/bin/python3) or alias (python3) from system configurations"
+            "displayName": "Full path to python interpreter",
+            "description": "Absolute path to the python runnable (e.g. /usr/bin/python3). Can be obtained by `which python3` command."
         },
         {
             "name": "remote_filesize_limit",
