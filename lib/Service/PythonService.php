@@ -93,7 +93,7 @@ class PythonService {
 			exec($envVariables . $cmd, $output, $result_code);
 			if ($result_code !== 0) {
 				exec($envVariables . $cmd . ' 2>&1 1>/dev/null', $errors, $result_code);
-				if (is_array($output) && count($output) > 0) {
+				if (count($output) > 0) {
 					$errors = array_merge($output, ['', ''], $errors);
 				}
 			}
