@@ -32,18 +32,19 @@
 					({{ filestotal }} {{ translatePlural('mediadc', 'file', 'files', filestotal) }} - {{ formatBytes(filessize) }})
 				</span>
 			</h3>
-			<div v-if="details.length > itemsPerPage" class="pagination">
+			<div class="pagination">
 				<CheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
 					{{ t('mediadc', 'Sort groups') }}
 				</CheckboxRadioSwitch>
 				<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'"
 					:title="t('mediadc', 'Sorting details by files count')"
 					@click="toggleSorting" />
-				<span class="icon-view-previous pagination-button"
+				<span v-if="details.length > itemsPerPage"
+					class="icon-view-previous pagination-button"
 					@click="prevGroupsPage()" />
-				<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
-				<span>{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
-				<span class="icon-view-next pagination-button" @click="nextGroupsPage()" />
+				<span v-if="details.length > itemsPerPage">{{ t('mediadc', 'Page:') }}&nbsp;</span>
+				<span v-if="details.length > itemsPerPage">{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
+				<span v-if="details.length > itemsPerPage" class="icon-view-next pagination-button" @click="nextGroupsPage()" />
 			</div>
 		</div>
 		<div v-if="details.length > 0">

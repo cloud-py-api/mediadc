@@ -228,7 +228,9 @@ export default {
 						emit('openNextDetailGroup', this.detail)
 						// Remove detail
 						this.$store.dispatch('deleteDetail', this.detail)
-						showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+						if ((this.allFiles.length - this.checkedFiles.length) === 1) {
+							showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+						}
 					}
 					for (const fileid of res.data.removedFileIds) {
 						const fileidIndex = allFiles.findIndex(f => f.fileid === fileid)
@@ -284,7 +286,9 @@ export default {
 				emit('openNextDetailGroup', this.detail)
 				// Remove detail
 				this.$store.dispatch('deleteDetail', this.detail)
-				showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+				if ((this.allFiles.length - this.checkedFiles.length) === 1) {
+					showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+				}
 			}
 
 			for (const fileid of res.data.deletedFileIds) {

@@ -63,7 +63,7 @@ class AppDataInitializationStep implements IRepairStep {
 				foreach ($app_data['settings'] as $setting) {
 					$this->settingMapper->insert(new Setting([
 						'name' => $setting['name'],
-						'value' => json_encode($setting['value']),
+						'value' => is_array($setting['value']) ? json_encode($setting['value']) : str_replace('\\', '', json_encode($setting['value'])),
 						'displayName' => $setting['displayName'],
 						'description' => $setting['description']
 					]));
