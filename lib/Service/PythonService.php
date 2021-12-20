@@ -94,12 +94,15 @@ class PythonService {
 			exec($envVariables . $cmd, $output, $result_code);
 			if ($result_code !== 0) {
 				if (count($output) > 0) {
-					if (isset($output[0]['errors'])) {
-						$errors = $output[0]['errors'];
+					if (isset(json_decode($output[0], true)['errors'])) {
+						$errors = json_decode($output[0], true)['errors'];
 					} else {
-						exec($envVariables . $cmd . ' 2>&1 1>/dev/null', $errors, $result_code);
-						$errors = array_merge($output, ['', ''], $errors);
+						exec($envVariables . $cmd . ' 2>&1 1>/dev/null', $o_errors, $result_code);
+						$errors = array_merge($output, ['', ''], $o_errors);
 					}
+				} else {
+					exec($envVariables . $cmd . ' 2>&1 1>/dev/null', $o_errors, $result_code);
+					$errors = $o_errors;
 				}
 			}
 			return [
