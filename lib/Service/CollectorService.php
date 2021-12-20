@@ -178,6 +178,7 @@ class CollectorService {
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
 		$empty = false;
+		$queuedTask = null;
 		$this->terminate($taskId);
 
 		if ($taskData['files_total'] > 0) {
@@ -193,7 +194,6 @@ class CollectorService {
 			$collectorTask->setDeletedFilesCount(0);
 			$collectorTask->setDeletedFilesSize(0);
 			$collectorTask->setErrors('');
-			$queuedTask = null;
 		} else {
 			$empty = true;
 		}

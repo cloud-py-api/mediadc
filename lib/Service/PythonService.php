@@ -90,6 +90,7 @@ class PythonService {
 		if ($nonBlocking) {
 			exec($envVariables . 'nohup ' . $cmd . ' > /dev/null 2>&1 &');
 		} else {
+			$errors = [];
 			exec($envVariables . $cmd, $output, $result_code);
 			if ($result_code !== 0) {
 				if (count($output) > 0) {
