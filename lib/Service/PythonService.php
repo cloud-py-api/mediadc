@@ -101,7 +101,6 @@ class PythonService {
 					}
 				}
 			}
-			$this->logger->warning('[' . self::class . '] python: ' . strval($result_code !== 0) . ', ' . strval(count($output) > 0) . ', errors in output: ' . strval(array_key_exists('errors', $output)) . ', errors: ' . $errors);
 			return [
 				'output' => $output,
 				'result_code' => $result_code,
