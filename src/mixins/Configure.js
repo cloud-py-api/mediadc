@@ -24,7 +24,7 @@
 
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
+import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dialogs'
 
 export default {
 	created() {
@@ -87,16 +87,16 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.installing = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Installation successfully finished'))
+						showSuccess(this.t('mediadc', 'Installation successfully finished'))
 					} else if (!res.data.success && res.data.installed) {
-						showWarning(t('mediadc', 'Installation finished. Not all packages installed'))
+						showWarning(this.t('mediadc', 'Installation finished. Not all packages installed'))
 					} else {
-						showError(t('mediadc', 'Installation failed. Some server error occured'))
+						showError(this.t('mediadc', 'Installation failed. Some server error occured'))
 					}
 				}).catch(err => {
 					console.debug(err)
 					this.installing = false
-					showError(t('mediadc', 'Installation failed. Some server error occured'))
+					showError(this.t('mediadc', 'Installation failed. Some server error occured'))
 				})
 			})
 		},
@@ -110,14 +110,14 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Package list successfully installed'))
+						showSuccess(this.t('mediadc', 'Package list successfully installed'))
 					} else {
-						showError(t('mediadc', 'Package list installation failed'))
+						showError(this.t('mediadc', 'Package list installation failed'))
 					}
 				}).catch(err => {
 					console.debug(err)
 					this.updating = false
-					showError(t('mediadc', 'Package list installation failed. Some server error occured'))
+					showError(this.t('mediadc', 'Package list installation failed. Some server error occured'))
 				})
 			})
 		},
@@ -129,15 +129,15 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Package list successfully deleted'))
+						showSuccess(this.t('mediadc', 'Package list successfully deleted'))
 					} else {
-						showError(t('mediadc', 'Some error occured while deleting package list'))
+						showError(this.t('mediadc', 'Some error occured while deleting package list'))
 					}
 				})
 			}).catch(err => {
 				console.debug(err)
 				this.updating = false
-				showError(t('mediadc', 'Package list deleting failed. Some server error occured'))
+				showError(this.t('mediadc', 'Package list deleting failed. Some server error occured'))
 			})
 		},
 		async updateDepsList(listName) {
@@ -148,15 +148,15 @@ export default {
 				this.updateInstalledSetting().then(() => {
 					this.updating = false
 					if (res.data.success) {
-						showSuccess(t('mediadc', 'Packages successfully updated'))
+						showSuccess(this.t('mediadc', 'Packages successfully updated'))
 					} else {
-						showError(t('mediadc', 'Packages update failed. Try again.'))
+						showError(this.t('mediadc', 'Packages update failed. Try again.'))
 					}
 				})
 			}).catch(err => {
 				console.debug(err)
 				this.updating = false
-				showError(t('mediadc', 'Packages update failed. Some server error occured'))
+				showError(this.t('mediadc', 'Packages update failed. Some server error occured'))
 			})
 		},
 		async check() {
@@ -165,46 +165,50 @@ export default {
 				this.parsePythonResponseData(res)
 				this.updateInstalledSetting().then(() => {
 					this.checking = false
-					if (res.data.success) {
-						showSuccess(t('mediadc', 'All required dependencies installed'))
-					} else if (!res.data.success && 'installed' in res.data && res.data.installed) {
-						showWarning(t('mediadc', 'Not all required packages installed'))
+					if (res.data.installed) {
+						if (res.data.success) {
+							showSuccess(this.t('mediadc', 'All required dependencies installed'))
+						} else if (!res.data.success && 'installed' in res.data && res.data.installed) {
+							showWarning(this.t('mediadc', 'Not all required packages installed'))
+						} else {
+							showError(this.t('mediadc', 'Some errors occured while checking installation'))
+						}
 					} else {
-						showError(t('mediadc', 'Some errors occured while checking installation'))
+						showMessage(this.t('mediadc', 'Packages not installed'))
 					}
 				}).catch(err => {
 					this.checking = false
 					console.debug(err)
-					showError(t('mediadc', 'Dependencies checking failed. Some server error occured'))
+					showError(this.t('mediadc', 'Dependencies checking failed. Some server error occured'))
 				})
 			}).catch(err => {
 				console.debug(err)
 				this.checking = false
-				showError(t('mediadc', 'Dependencies checking failed. Some server error occured'))
+				showError(this.t('mediadc', 'Dependencies checking failed. Some server error occured'))
 			})
 		},
 		parsePythonResponseData(res) {
-			this.installed = 'installed' in res.data ? res.data.installed : false
-			this.installed_setting.value.status = 'installed' in res.data ? res.data.installed : false
-			this.installed_setting.value.installed_list = 'installed_list' in res.data ? res.data.installed_list : []
+			this.installed = 'installed' in res.data && res.data.installed ? res.data.installed : false
+			this.installed_setting.value.status = 'installed' in res.data && res.data.installed ? res.data.installed : false
+			this.installed_setting.value.installed_list = 'installed_list' in res.data && res.data.installed_list ? res.data.installed_list : []
 			this.installed_setting.value.not_installed_list = {
-				required: 'required' in res.data ? res.data.required : {},
-				optional: 'optional' in res.data ? res.data.optional : {},
-				boost: 'boost' in res.data ? res.data.boost : {},
+				required: 'required' in res.data && res.data.required ? res.data.required : {},
+				optional: 'optional' in res.data && res.data.optional ? res.data.optional : {},
+				boost: 'boost' in res.data && res.data.boost ? res.data.boost : {},
 			}
-			this.installed_setting.value.available_algorithms = 'available_algorithms' in res.data ? res.data.available_algorithms : []
-			this.installed_setting.value.video_required = 'video_required' in res.data ? res.data.video_required : []
+			this.installed_setting.value.available_algorithms = 'available_algorithms' in res.data && res.data.available_algorithms ? res.data.available_algorithms : []
+			this.installed_setting.value.video_required = 'video_required' in res.data && res.data.video_required ? res.data.video_required : []
 			this.$store.dispatch('setSetting', this.installed_setting)
-			this.installed_list = 'installed_list' in res.data ? res.data.installed_list : []
+			this.installed_list = 'installed_list' in res.data && res.data.installed_list ? res.data.installed_list : []
 			this.not_installed_list = {
-				required: 'required' in res.data ? res.data.required : {},
-				optional: 'optional' in res.data ? res.data.optional : {},
-				boost: 'boost' in res.data ? res.data.boost : {},
+				required: 'required' in res.data && res.data.required ? res.data.required : {},
+				optional: 'optional' in res.data && res.data.optional ? res.data.optional : {},
+				boost: 'boost' in res.data && res.data.boost ? res.data.boost : {},
 			}
-			this.available_algorithms = 'available_algorithms' in res.data ? res.data.available_algorithms : []
-			this.video_required = 'video_required' in res.data ? res.data.video_required : []
-			this.errors = 'errors' in res.data ? res.data.errors : []
-			this.warnings = 'warnings' in res.data ? res.data.warnings : []
+			this.available_algorithms = 'available_algorithms' in res.data && res.data.available_algorithms ? res.data.available_algorithms : []
+			this.video_required = 'video_required' in res.data && res.data.video_required ? res.data.video_required : []
+			this.errors = 'errors' in res.data && res.data.errors ? res.data.errors : []
+			this.warnings = 'warnings' in res.data && res.data.warnings ? res.data.warnings : []
 		},
 		finishConfiguration() {
 			this.$emit('update:loading', true)

@@ -34,7 +34,7 @@
 					<div style="display: flex; flex-wrap: wrap;">
 						<span style="width: 100%;">
 							<b>{{ parseTargetMtype(task) }}</b>
-							{{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
+							{{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ translatePlural('mediadc', 'file', 'files', task.files_total) }}
 							({{ formatBytes(Number(task.files_total_size)) }})
 						</span>
 						<span class="task-time" style="width: 100%;">
@@ -146,6 +146,24 @@ export default {
 	height: 16px;
 	margin: 10px 20px;
 	cursor: pointer;
+	padding: 20px;
+	border-radius: 50%;
+}
+
+.delete-task-button:hover {
+	background-color: #eee;
+}
+
+.delete-task-button:active {
+	background-color: #ddd;
+}
+
+body.theme--dark .delete-task-button:hover {
+	background-color: #727272;
+}
+
+body.theme--dark .delete-task-button:active {
+	background-color: #5b5b5b;
 }
 
 .task-time {

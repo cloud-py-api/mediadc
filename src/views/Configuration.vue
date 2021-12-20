@@ -41,15 +41,9 @@
 				{{ t('mediadc', 'If you have any additional questions contact us in') }} <a href="https://t.me/mediadc_support">{{ t('mediadc', 'Telegram chat') }}</a>.
 			</p>
 			<div class="installed">
-				<input id="installed"
-					type="checkbox"
-					name="installed"
-					:v-model="installed"
-					:checked="installed"
-					disabled>
-				<label for="installed">
+				<CheckboxRadioSwitch :checked.sync="installed" disabled>
 					{{ t('mediadc', 'Installed:') }} {{ installed }}
-				</label>
+				</CheckboxRadioSwitch>
 			</div>
 			<button v-if="!installing" @click="install">
 				{{ !installed ? t('mediadc', 'Install') : t('mediadc', 'Reinstall') }}
@@ -73,16 +67,16 @@
 		</div>
 		<div v-else>
 			<button v-if="installed" @click="finishConfiguration">
-				{{ t('mediadc', 'Go to Collector') }}
+				{{ t('mediadc', 'Go to MediaDC') }}
 			</button>
 		</div>
-		<div class="install-details">
-			<div v-if="available_algorithms && installed"
+		<div v-if="isAdmin" class="install-details">
+			<div v-if="available_algorithms && available_algorithms.length > 0 && installed"
 				class="available_algorithms"
 				style="margin: 20px 0 10px;">
 				{{ t('mediadc', 'Available algorithms: ') }} {{ available_algorithms.join(', ') }}
 			</div>
-			<div v-if="installed && video_required.length > 0">
+			<div v-if="installed && video_required && video_required.length > 0">
 				<strong>{{ t('mediadc', 'Video processing won\'t work, video_required packages not installed.') }}</strong>
 				<p>{{ t('mediadc', 'Not installed video_required packages:') }} {{ video_required }}</p>
 				<p>{{ t('mediadc', 'video_required packages can\'t be installed automatically, this should be done by administrator manually and then recheck installation on this page.') }}</p>
@@ -169,9 +163,11 @@
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
 import Configure from '../mixins/Configure'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'Configuration',
+	components: { CheckboxRadioSwitch },
 	mixins: [
 		Configure,
 	],

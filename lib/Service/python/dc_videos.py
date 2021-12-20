@@ -2,6 +2,8 @@
 Videos processing functions.
 """
 
+# pylint: disable=undefined-variable
+
 import json
 import traceback
 from files import can_directly_access_file, get_file_full_path, request_file_from_php

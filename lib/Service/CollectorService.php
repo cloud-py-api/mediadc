@@ -135,9 +135,8 @@ class CollectorService {
 			$createdTask = $this->createCollectorTask($params);
 			if ($createdTask !== null) {
 				$this->pythonService->run('/main.py', ['-t' => $createdTask->getId()], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
-				$this->logger->info("CollectorTask started.\n" . json_encode($createdTask->jsonSerialize()));
 			} else {
-				$this->logger->warning("Can't create Collector Task with excluding all target files");
+				return ['success' => $createdTask !== null, 'empty' => true];
 			}
 		} else {
 			return ['success' => false, 'limit' => true];
@@ -178,31 +177,38 @@ class CollectorService {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
+		$empty = false;
+		$queuedTask = null;
 		$this->terminate($taskId);
 
-		$collectorTask->setTargetDirectoryIds(json_encode($targetDirectoryIds));
-		$collectorTask->setExcludeList(json_encode($excludeList));
-		$collectorTask->setCollectorSettings(json_encode($collectorSettings));
-		$collectorTask->setFilesScanned(0);
-		$collectorTask->setFilesTotal($taskData['files_total']);
-		$collectorTask->setFilesTotalSize($taskData['files_total_size']);
-		$collectorTask->setCreatedTime(time());
-		$collectorTask->setUpdatedTime(0);
-		$collectorTask->setFinishedTime(0);
-		$collectorTask->setDeletedFilesCount(0);
-		$collectorTask->setDeletedFilesSize(0);
-		$collectorTask->setErrors('');
-		$queuedTask = null;
+		if ($taskData['files_total'] > 0) {
+			$collectorTask->setTargetDirectoryIds(json_encode($targetDirectoryIds));
+			$collectorTask->setExcludeList(json_encode($excludeList));
+			$collectorTask->setCollectorSettings(json_encode($collectorSettings));
+			$collectorTask->setFilesScanned(0);
+			$collectorTask->setFilesTotal($taskData['files_total']);
+			$collectorTask->setFilesTotalSize($taskData['files_total_size']);
+			$collectorTask->setCreatedTime(time());
+			$collectorTask->setUpdatedTime(0);
+			$collectorTask->setFinishedTime(0);
+			$collectorTask->setDeletedFilesCount(0);
+			$collectorTask->setDeletedFilesSize(0);
+			$collectorTask->setErrors('');
+		} else {
+			$empty = true;
+		}
 
 		if (!in_array($taskId, $taskIdsRunning)) {
-			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue()) {
+			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue() && !$empty) {
 				$this->tasksMapper->update($collectorTask);
 				$this->deleteTaskDetails($taskId);
 				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+			} else if ($empty) {
+				return ['success' => false, 'empty' => $empty];
 			} else {
 				// Add as Queued job
 				// $queuedTask = $this->createQueuedTask($params);
-				return ['success' => false, 'limit' => true];
+				return ['success' => false, 'limit' => true, 'empty' => $empty];
 			}
 		} else {
 			$this->tasksMapper->update($collectorTask);
@@ -210,7 +216,7 @@ class CollectorService {
 			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
 		}
 
-		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null];
+		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null, 'empty' => $empty];
 	}
 
 	/**
@@ -483,19 +489,18 @@ class CollectorService {
 
 	/**
 	 * @param int $taskDetailId
-	 * @param int $limit
-	 * @param int $page
+	 * @param bool $filesizeAscending
 	 * 
-	 * @return array
+	 * @return array $filesInfo
 	 */
-	public function getFilesInfo($taskDetailId, $limit, $page) {
+	public function getDetailGroupFilesInfo($taskDetailId, $filesizeAscending) {
 		try {
 			/** @var CollectorTaskDetail */
 			$collectorTaskDetail = $this->tasksDetailsMapper->find($taskDetailId);
 			$filesInfo = [];
+			$filesTotalSize = 0;
 			$groupFilesIds = json_decode($collectorTaskDetail->getGroupFilesIds());
-			$paginatedGroupFilesIds = array_chunk($groupFilesIds, $limit);
-			foreach($paginatedGroupFilesIds[$page] as $groupFileId) {
+			foreach($groupFilesIds as $groupFileId) {
 				/** @var File $node */
 				foreach ($this->userFolder->getById($groupFileId) as $node) {
 					if ($node instanceof File) {
@@ -511,10 +516,19 @@ class CollectorService {
 							'filesize' => $node->getSize(),
 							'has_preview' => $this->previewManager->isAvailable($node),
 						]);
+						$filesTotalSize += $node->getSize();
 					}
 				}
+				// Sort page files by filesize (ascending/descending)
+				usort($filesInfo,
+					($filesizeAscending) ?
+					'\OCA\MediaDC\Service\CollectorService::filesInfoSortAscCallback'
+					: '\OCA\MediaDC\Service\CollectorService::filesInfoSortDescCallback');
 			}
-			return $filesInfo;
+			return [
+				'files' => $filesInfo,
+				'filessize' => $filesTotalSize,
+			];
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
 			$this->logger->error("Can't find file(s) of CollectorTaskDetail (\$id = " . $taskDetailId .  ")\n");
 			return [
@@ -522,6 +536,14 @@ class CollectorService {
 				'message' => 'Not found files info'
 			];
 		}
+	}
+
+	public static function filesInfoSortAscCallback(array $file_x, array $file_y) {
+		return $file_x['filesize'] - $file_y['filesize'];
+	}
+
+	public static function filesInfoSortDescCallback(array $file_x, array $file_y) {
+		return $file_y['filesize'] - $file_x['filesize'];
 	}
 
 	/**
@@ -555,10 +577,11 @@ class CollectorService {
 	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param int $fileid
+	 * @param bool $removeIfOneLeft
 	 * 
 	 * @return array $result
 	 */
-	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid) {
+	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid, $removeIfOneLeft = true) {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$deletedFilesCount = $collectorTask->getDeletedFilesCount();
@@ -583,7 +606,7 @@ class CollectorService {
 				$collectorTask->setDeletedFilesCount($deletedFilesCount + 1);
 				$collectorTask->setDeletedFilesSize($deletedFilesSize + $filesize);
 				$this->tasksMapper->update($collectorTask);
-				if (count($groupFiles) === 1) {
+				if (count($groupFiles) === 1 && $removeIfOneLeft) {
 					$this->tasksDetailsMapper->delete($collectorTaskDetail);
 					$updatedTaskDetail = null;
 				} else {
@@ -605,7 +628,8 @@ class CollectorService {
 			} catch (NotPermittedException | NotFoundException $e) {
 				return [
 					'success' => false,
-					'error' => $e->getMessage(),
+					'not_permited' => $e instanceof NotPermittedException,
+					'not_found' => $e instanceof NotFoundException,
 				];
 			}
 		} else {
@@ -613,6 +637,103 @@ class CollectorService {
 				'success' => false,
 			];
 		}
+	}
+
+	/**
+	 * Remove ColectorTaskDetail groups with deleting coresponding files
+	 * 
+	 * @param array $taskDetailIds
+	 * 
+	 * @return array $result
+	 */
+	public function removeTaskDetailGroups($taskDetailIds) {
+		$result = [];
+		foreach ($taskDetailIds as $taskDetailId) {
+			array_push($result, $this->deleteTaskDetail($taskDetailId));
+		}
+		return [
+			'success' => count($result) === count($taskDetailIds), 
+			'removedTaskDetails' => $result
+		];
+	}
+
+	/**
+	 * Delete ColectorTaskDetail groups with deleting coresponding files
+	 * 
+	 * @param int $taskId
+	 * @param int $taskDetailId
+	 * @param array $fileIds
+	 * 
+	 * @return array $result
+	 */
+	public function deleteTaskDetailFiles($taskDetailId, $fileIds) {
+		$result = [];
+		$errors = [
+			'locked' => [],
+			'not_permited' => [],
+			'not_found' => [],
+		];
+		/** @var CollectorTaskDetail $taskDetail */
+		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
+		$taskDetailGroupFileIds = json_decode($taskDetail->getGroupFilesIds());
+		foreach ($fileIds as $fileId) {
+			$deleteFileResult = $this->deleteTaskDetailFile((int)$taskDetail->getTaskId(), $taskDetailId, $fileId, false);
+			if ($deleteFileResult['success']) {
+				$fileIdIndex = array_search($fileId, $taskDetailGroupFileIds);
+				if ($fileIdIndex !== false) {
+					array_push($result, array_splice($taskDetailGroupFileIds, $fileIdIndex, 1)[0]);
+				}
+			} else {
+				if (isset($deleteFileResult['locked']) && $deleteFileResult['locked']) {
+					array_push($errors['locked'], $fileId);
+				}
+				if (isset($deleteFileResult['not_permited']) && $deleteFileResult['not_permited']) {
+					array_push($errors['not_permited'], $fileId);
+				}
+				if (isset($deleteFileResult['not_found']) && $deleteFileResult['not_found']) {
+					array_push($errors['not_found'], $fileId);
+				}
+			}
+		}
+		if (count($taskDetailGroupFileIds) <= 1) {
+			$this->tasksDetailsMapper->delete($taskDetail);
+		} else {
+			$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
+			$this->tasksDetailsMapper->update($taskDetail);
+		}
+		return [
+			'success' => count($result) == count($fileIds),
+			'deletedFileIds' => $result,
+			'errors' => $errors,
+		];
+	}
+
+	/**
+	 * Remove ColectorTaskDetail groups with deleting coresponding files
+	 * 
+	 * @param int $taskId
+	 * @param int $taskDetailId
+	 * @param array $fileIds
+	 * 
+	 * @return array $result
+	 */
+	public function removeTaskDetailFiles($taskDetailId, $fileIds) {
+		$result = [];
+		/** @var CollectorTaskDetail $taskDetail */
+		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
+		$taskDetailGroupFileIds = json_decode($taskDetail->getGroupFilesIds());
+		foreach ($fileIds as $fileId) {
+			$fileIdIndex = array_search($fileId, $taskDetailGroupFileIds);
+			if ($fileIdIndex !== false) {
+				array_push($result, array_splice($taskDetailGroupFileIds, $fileIdIndex, 1)[0]);
+			}
+		}
+		$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
+		$this->tasksDetailsMapper->update($taskDetail);
+		if (count($taskDetailGroupFileIds) <= 1) {
+			$this->tasksDetailsMapper->delete($taskDetail);
+		}
+		return ['success' => count($result) == count($fileIds), 'removedFileIds' => $result];
 	}
 
 	/**

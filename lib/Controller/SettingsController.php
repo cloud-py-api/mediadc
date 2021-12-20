@@ -70,7 +70,6 @@ class SettingsController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @param array $settings
@@ -82,7 +81,6 @@ class SettingsController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @param array $setting

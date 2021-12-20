@@ -213,9 +213,9 @@ class CollectorController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function getGroupFilesInfo(int $taskDetailId, int $limit = 10, int $page = 0): JSONResponse {
+	public function getDetailGroupFilesInfo(int $taskDetailId, bool $filesizeAscending = false): JSONResponse {
 		if ($taskDetailId) {
-			return new JSONResponse($this->service->getFilesInfo($taskDetailId, $limit, $page), Http::STATUS_OK);
+			return new JSONResponse($this->service->getDetailGroupFilesInfo($taskDetailId, $filesizeAscending), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
@@ -240,6 +240,44 @@ class CollectorController extends Controller {
 	public function deleteTaskDetailFile(int $taskId, int $taskDetailId, int $fileId): JSONResponse {
 		if ($taskDetailId && $fileId) {
 			return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $taskDetailId, $fileId), Http::STATUS_OK);
+		} else {
+			return new JSONResponse(['success' => false], Http::STATUS_OK);
+		}
+	}
+
+	// Batch editing actions
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function removeTaskDetailGroups(array $taskDetailIds): JSONResponse {
+		if ($taskDetailIds) {
+			return new JSONResponse($this->service->removeTaskDetailGroups($taskDetailIds), Http::STATUS_OK);
+		} else {
+			return new JSONResponse(['success' => false], Http::STATUS_OK);
+		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function deleteTaskDetailFiles(int $taskDetailId, array $fileIds): JSONResponse {
+		if ($taskDetailId && $fileIds) {
+			return new JSONResponse($this->service->deleteTaskDetailFiles($taskDetailId, $fileIds), Http::STATUS_OK);
+		} else {
+			return new JSONResponse(['success' => false], Http::STATUS_OK);
+		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function removeTaskDetailFiles(int $taskDetailId, array $fileIds): JSONResponse {
+		if ($taskDetailId && $fileIds) {
+			return new JSONResponse($this->service->removeTaskDetailFiles($taskDetailId, $fileIds), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}

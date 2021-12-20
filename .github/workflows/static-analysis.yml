@@ -143,7 +143,7 @@ jobs:
         run: npm audit
 
   checks_status:
-    needs: [changes, linters-php, linters-js, linters-python, security-analysis, psalm-analysis, npm-audit]
+    needs: [changes, linters-php, linters-js, linters-python, security-analysis, psalm-analysis]
     if: ${{ always() && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
     name: checks-status
     runs-on: ubuntu-latest

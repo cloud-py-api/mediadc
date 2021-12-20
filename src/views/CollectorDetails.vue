@@ -29,32 +29,34 @@
 			<div class="task-details-heading">
 				<h2>
 					{{ rootTitle }}
-					<span :class="!collapsedStatus
+					<span v-if="isValidUser"
+						:class="!collapsedStatus
 							? 'icon-triangle-n collapse-task-status-btn'
 							: 'icon-triangle-s collapse-task-status-btn'"
+						:title="t('mediadc', 'Collapse task status')"
 						@click="collapseTaskStatus" />
 				</h2>
-				<div v-show="!collapsedStatus" class="task-details-description">
+				<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
 					<p>
 						{{ t('mediadc', 'Here you can view task details, manage task (stop or restart), ' +
 							'delete found duplicated photos and videos.') }}
 					</p>
 					<p>
-						{{ t('mediadc', 'Deleted files are placed in the trash, so that they can be restored in case of need.') }}
+						{{ t('mediadc', 'Deleted files are placed in the trashbin, so that they can be restored in case of need.') }}
 					</p>
 				</div>
 			</div>
-			<div v-show="!collapsedStatus" class="task-status-row">
+			<div v-if="isValidUser" v-show="!collapsedStatus" class="task-status-row">
 				<div class="task-status">
 					<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 					<div style="display: flex; flex-direction: column;">
 						<span>
-							<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} file(s)
+							<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ translatePlural('mediadc', 'file', 'files', task.files_total) }}
 							({{ formatBytes(Number(task.files_total_size)) }})
 							({{ task !== null && 'collector_settings' in task ? t('mediadc', 'precision: ') + JSON.parse(task.collector_settings).similarity_threshold + '%' : '' }})
 							<br>
 							<b>{{ t('mediadc', 'Deleted: ') }} </b>
-							{{ task.deleted_files_count }} {{ t('mediadc', 'file(s)') }}
+							{{ task.deleted_files_count }} {{ translatePlural('mediadc', 'file', 'files', task.deleted_files_count) }}
 							({{ formatBytes(Number(task.deleted_files_size)) }})
 						</span>
 						<span>
@@ -197,19 +199,14 @@ export default {
 		this.$emit('update:loading', true)
 		this.getTaskDetails()
 		this.getTaskInfo()
-		subscribe('restartTask', () => {
-			this.getTaskInfo()
-			this.getTaskDetails()
-			this.filessize = 0
-			this.filestotal = 0
-		})
+		subscribe('restartTask', this.onRestartTaskEvent)
 		subscribe('updateTaskInfo', this.getDetailFilesTotalSize)
 		this.updater = setInterval(this.getTaskDetails, 5000)
 	},
 	beforeDestroy() {
 		clearInterval(this.updater)
 		unsubscribe('updateTaskInfo', this.getTaskInfo)
-		unsubscribe('restartTask')
+		unsubscribe('restartTask', this.onRestartTaskEvent)
 	},
 	methods: {
 		terminateTask(task) {
@@ -217,12 +214,12 @@ export default {
 			if (this.isValidUser) {
 				this.terminating = true
 				axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}/terminate`)).then(res => {
-					showSuccess(t('mediadc', 'Task terminated'))
+					showSuccess(this.t('mediadc', 'Task terminated'))
 					this.terminating = false
 					this.getTaskDetails()
 				})
 			} else {
-				showWarning(t('mediadc', 'You are not allowed to terminate this task'))
+				showWarning(this.t('mediadc', 'You are not allowed to terminate this task'))
 			}
 		},
 		restartTask(task) {
@@ -246,14 +243,14 @@ export default {
 					}).then(res => {
 						this.restarting = false
 						if (res.data.success) {
-							showSuccess(t('mediadc', 'Task successfully restarted with previous settings!'))
+							showSuccess(this.t('mediadc', 'Task successfully restarted with previous settings!'))
 							this.getTaskDetails()
 							this.filessize = 0
 							this.filestotal = 0
 						} else if (res.data.limit) {
-							showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
+							showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 						} else {
-							showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
+							showWarning(this.t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 						}
 					}).catch(err => {
 						this.restarting = false
@@ -262,22 +259,22 @@ export default {
 					})
 				})
 			} else {
-				showWarning(t('mediadc', 'You are not allowed to restart this task'))
+				showWarning(this.t('mediadc', 'You are not allowed to restart this task'))
 			}
 		},
 		deleteTask(task) {
 			this.toggleActionsPopup()
 			if (this.isValidUser) {
-				if (confirm(t('mediadc', 'Are sure, you want delete this task?'))) {
+				if (confirm(this.t('mediadc', 'Are sure, you want delete this task?'))) {
 					this.deleting = true
 					axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}`)).then(res => {
 						this.$router.push({ name: 'collector' })
-						showSuccess(t('mediadc', 'Task successfully deleted'))
+						showSuccess(this.t('mediadc', 'Task successfully deleted'))
 						this.deleting = false
 					})
 				}
 			} else {
-				showWarning(t('mediadc', 'You are not allowed to delete this task'))
+				showWarning(this.t('mediadc', 'You are not allowed to delete this task'))
 			}
 		},
 		async getTaskDetails() {
@@ -328,6 +325,12 @@ export default {
 			}
 			return '#'
 		},
+		onRestartTaskEvent() {
+			this.getTaskInfo()
+			this.getTaskDetails()
+			this.filessize = 0
+			this.filestotal = 0
+		},
 	},
 }
 </script>
@@ -352,7 +355,7 @@ h2 {
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	margin: 20px auto;
+	margin: 20px auto 10px;
 	text-align: center;
 }
 
@@ -374,6 +377,7 @@ h2 {
 .details-row {
 	display: flex;
 	margin: 0 10px 20px;
+	position: relative;
 }
 
 @media (max-width: 767px) {
@@ -434,6 +438,7 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 	border-radius: 5px;
 	padding: 10px 20px;
 	height: 100%;
+	min-height: 94px;
 	max-height: 94px;
 	max-width: 50%;
 	overflow-y: scroll;

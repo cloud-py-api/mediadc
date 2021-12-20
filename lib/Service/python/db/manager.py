@@ -52,12 +52,12 @@ def init_cloud_config(map_schema: dict) -> bool:
     global Config, Errors
     result = True
     for our_key in map_schema.keys():
-        success, value_of_key = occ_cloud.get_cloud_config_value(map_schema[our_key])
-        if not success:
-            Errors.append(f"Cant find `{map_schema[our_key]}` value in cloud config.")
+        success, value_of_key = occ_cloud.get_cloud_config_value(map_schema[our_key][0])
+        if not success and map_schema[our_key][1] is None:
+            Errors.append(f"Cant find `{map_schema[our_key][0]}` value in cloud config.")
             result = False
         else:
-            Config[our_key] = value_of_key
+            Config[our_key] = value_of_key if success else map_schema[our_key][1]
     return result
 
 
@@ -150,13 +150,13 @@ def find_db_configuration() -> bool:
 
 def init():
     global Config, DatabaseProvider
-    map_schema = {'datadir': 'datadirectory',
-                  'dbname': 'dbname',
-                  'dbtprefix': 'dbtableprefix',
-                  'dbuser': 'dbuser',
-                  'dbpassword': 'dbpassword',
-                  'dbhost': 'dbhost',
-                  'dbtype': 'dbtype'}
+    map_schema = {'datadir': ['datadirectory', None],
+                  'dbname': ['dbname', None],
+                  'dbtprefix': ['dbtableprefix', 'oc_'],
+                  'dbuser': ['dbuser', None],
+                  'dbpassword': ['dbpassword', None],
+                  'dbhost': ['dbhost', None],
+                  'dbtype': ['dbtype', None]}
     Config['usock'] = ''
     Config['dbport'] = ''
     if not init_cloud_config(map_schema):

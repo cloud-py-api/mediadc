@@ -28,43 +28,117 @@
 			<h3>
 				{{ t('mediadc', 'Duplicates list') }}
 				<span v-if="getStatusBadge(task) === 'finished'">
-					- {{ details.length }} {{ t('mediadc', 'group(s)') }}
-					({{ filestotal }} {{ t('mediadc', 'file(s)') }} - {{ formatBytes(filessize) }})
+					- {{ details.length }} {{ translatePlural('mediadc', 'group, ', 'groups', details.length) }}
+					({{ filestotal }} {{ translatePlural('mediadc', 'file', 'files', filestotal) }} - {{ formatBytes(filessize) }})
 				</span>
 			</h3>
-			<div v-if="details.length > itemsPerPage" class="pagination">
-				<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'" @click="toggleSorting" />
-				<span class="icon-view-previous pagination-button"
+			<div class="pagination">
+				<CheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
+					{{ t('mediadc', 'Sort groups') }}
+				</CheckboxRadioSwitch>
+				<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'"
+					:title="t('mediadc', 'Sorting details by files count')"
+					@click="toggleSorting" />
+				<span v-if="details.length > itemsPerPage"
+					class="icon-view-previous pagination-button"
 					@click="prevGroupsPage()" />
-				<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
-				<span>{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
-				<span class="icon-view-next pagination-button"
-					@click="nextGroupsPage()" />
+				<span v-if="details.length > itemsPerPage">{{ t('mediadc', 'Page:') }}&nbsp;</span>
+				<span v-if="details.length > itemsPerPage">{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
+				<span v-if="details.length > itemsPerPage" class="icon-view-next pagination-button" @click="nextGroupsPage()" />
 			</div>
 		</div>
 		<div v-if="details.length > 0">
-			<div v-for="detail in paginatedDetails[page]"
-				v-show="JSON.parse(detail.group_files_ids).length > 1"
-				:key="detail.id"
-				class="task-details-row">
-				<DetailsListItem :detail="detail" />
+			<div class="filters">
+				<label for="group-id-filter">
+					{{ t('mediadc', 'Filter by duplicate group id: ') }}
+					<input id="group-id-filter"
+						v-model="filterId"
+						type="search"
+						name="group-id-filter"
+						placeholder="#id"
+						@input="filterByGroupId">
+				</label>
+				<div v-if="checkedDetailGroups.length > 0" class="batch-editing">
+					{{ translatePlural('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
+					<div class="app-content-list-menu" style="margin: 0 0 0 10px; position: relative;">
+						<div class="icon-more batch-actions-menu-button" @click="openBatchActionsPopup" />
+						<div :class="batchActionsOpened ? 'popovermenu open' : 'popovermenu'"
+							style="right: -1px;">
+							<ul>
+								<li>
+									<a class="icon-checkmark" @click="selectAllGroups">
+										<span>{{ checkedDetailGroups.length === details.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}</span>
+									</a>
+								</li>
+								<li v-if="details.length > itemsPerPage">
+									<a class="icon-checkmark" @click="selectAllGroupsOnPage">
+										<span>{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
+									</a>
+								</li>
+								<li>
+									<a class="icon-close" @click="removeCheckedGroups">
+										<span>{{ translatePlural('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div v-if="batchUpdating" class="action-blackout">
+				<span class="icon-loading" />
+			</div>
+			<div v-else-if="detailsFiltered === undefined || (detailsFiltered.length === 0 && (filterId === '' || filterId === null))">
+				<template v-if="sortGroups">
+					<div v-for="detail in paginatedSortedDetails[page]"
+						v-show="JSON.parse(detail.group_files_ids).length > 1"
+						:key="detail.id"
+						class="task-details-row">
+						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+					</div>
+				</template>
+				<template v-else>
+					<div v-for="detail in paginatedDetails[page]"
+						v-show="JSON.parse(detail.group_files_ids).length > 1"
+						:key="detail.id"
+						class="task-details-row">
+						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+					</div>
+				</template>
+			</div>
+			<div v-else-if="detailsFiltered.length > 0">
+				<div v-for="detail in detailsFiltered"
+					v-show="JSON.parse(detail.group_files_ids).length > 1"
+					:key="detail.id"
+					class="task-details-row">
+					<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+				</div>
+			</div>
+			<div v-else>
+				<p style="text-align: center; font-weight: bold;">
+					{{ t('mediadc', 'No matching found') }}
+				</p>
 			</div>
 		</div>
-		<div v-else>
+		<div v-else style="margin-top: 10px;">
 			<strong>{{ t('mediadc', 'No duplicates found.') }}</strong>
 		</div>
 	</div>
 </template>
 
 <script>
-import { showWarning } from '@nextcloud/dialogs'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { mapGetters } from 'vuex'
 import Formats from '../../mixins/Formats'
 import DetailsListItem from './DetailsListItem'
+import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'DetailsList',
-	components: { DetailsListItem },
+	components: { DetailsListItem, CheckboxRadioSwitch },
 	mixins: [Formats],
 	props: {
 		filessize: {
@@ -79,37 +153,161 @@ export default {
 	data() {
 		return {
 			page: 0,
+			filterId: null,
+			checkedDetailGroups: [],
+			batchActionsOpened: false,
+			batchActionResult: null,
+			batchUpdating: false,
+			sortGroups: true,
 		}
 	},
 	computed: {
 		...mapGetters([
 			'task',
 			'details',
+			'sortedDetails',
 			'sorted',
 			'paginatedDetails',
+			'paginatedSortedDetails',
 			'itemsPerPage',
+			'detailsFiltered',
+			'autoOpenNextGroup',
 		]),
+		checkedDetailGroupsIntersect() {
+			const a = new Set(this.paginatedDetails[this.page].map(d => d.id))
+			const b = new Set(this.checkedDetailGroups.map(d => d.id))
+			const intersect = new Set([...a].filter(i => b.has(i)))
+			return Array.from(intersect)
+		},
+	},
+	watch: {
+		itemsPerPage(newItemsPerPage) {
+			if (this.page >= Math.ceil(this.details.length / newItemsPerPage)) {
+				this.page = Math.ceil(this.details.length / newItemsPerPage) - 1
+			}
+		},
+		details(newDetails) {
+			if (this.page >= Math.ceil(newDetails.length / this.itemsPerPage)) {
+				this.page = Math.ceil(newDetails.length / this.itemsPerPage) - 1
+			}
+		},
+		sortGroups() {
+			window.localStorage.setItem('mediadc_details_sort_groups', this.sortGroups)
+			this.$store.dispatch('setSortGroups', this.sortGroups)
+		},
 	},
 	beforeMount() {
 		this.$emit('update:loading', false)
+		const sortGroups = window.localStorage.getItem('mediadc_details_sort_groups')
+		this.sortGroups = sortGroups !== null ? JSON.parse(sortGroups) === true : true
+		this.$store.dispatch('setSortGroups', sortGroups !== null ? JSON.parse(sortGroups) === true : true)
+		subscribe('openNextDetailGroup', this.openNextDetailGroup)
+	},
+	beforeDestroy() {
+		unsubscribe('openNextDetailGroup', this.openNextDetailGroup)
 	},
 	methods: {
 		prevGroupsPage() {
 			if (this.page > 0) {
 				this.page -= 1
 			} else {
-				showWarning(t('mediadc', 'First page reached!'))
+				showWarning(this.t('mediadc', 'First page reached!'))
 			}
 		},
 		nextGroupsPage() {
 			if (this.page < Math.ceil(this.details.length / this.itemsPerPage) - 1) {
 				this.page += 1
 			} else {
-				showWarning(t('mediadc', 'Last page reached!'))
+				showWarning(this.t('mediadc', 'Last page reached!'))
 			}
 		},
 		toggleSorting() {
 			this.$store.dispatch('setSorted', !this.sorted)
+		},
+		filterByGroupId() {
+			if (this.filterId !== null && this.filterId !== '') {
+				this.$store.dispatch('setDetailsFiltered', this.details.filter(d => d.id.toString().includes(this.filterId)))
+			} else {
+				this.$store.dispatch('setDetailsFiltered', [])
+			}
+		},
+		openBatchActionsPopup() {
+			document.addEventListener('click', this.toggleBatchActionsPopup)
+		},
+		toggleBatchActionsPopup() {
+			if (this.batchActionsOpened) {
+				document.removeEventListener('click', this.toggleBatchActionsPopup)
+			}
+			this.batchActionsOpened = !this.batchActionsOpened
+		},
+		removeCheckedGroups() {
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.task.id}/details/remove`), { taskDetailIds: this.checkedDetailGroups.map(d => d.id) }).then(res => {
+				if (res.data.success) {
+					emit('updateTaskInfo')
+					const updatedDetails = this.details
+					for (const taskDetail of res.data.removedTaskDetails) {
+						const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === taskDetail.id)
+						this.checkedDetailGroups.splice(detailIndex, 1)
+						const removedDetailIndex = updatedDetails.findIndex(d => d.id === taskDetail.id)
+						updatedDetails.splice(removedDetailIndex, 1)
+					}
+					this.$store.dispatch('setDetails', updatedDetails)
+					showSuccess(this.t('mediadc', 'Selected groups successfully removed'))
+				}
+			}).catch(err => {
+				showError(this.t('mediadc', 'Some server error occured'))
+				console.debug(err)
+			})
+		},
+		selectAllGroups() {
+			if (this.checkedDetailGroups.length === this.details.length) {
+				emit('deselectGroups', this.checkedDetailGroups.map(d => d.id))
+				for (const detail of this.details) {
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					if (detailIndex !== -1) {
+						this.checkedDetailGroups.splice(detailIndex, 1)
+					}
+				}
+				setTimeout(() => { this.batchUpdating = false }, 300)
+			} else {
+				for (const detail of this.details) {
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					if (detailIndex === -1) {
+						this.checkedDetailGroups.push(detail)
+					}
+				}
+			}
+		},
+		selectAllGroupsOnPage() {
+			if (this.paginatedDetails[this.page].length === this.checkedDetailGroupsIntersect.length) {
+				const groupsToDeselect = this.checkedDetailGroupsIntersect
+				emit('deselectGroups', groupsToDeselect)
+				for (const detail of groupsToDeselect) {
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					if (detailIndex !== -1) {
+						this.checkedDetailGroups.splice(detailIndex, 1)
+					}
+				}
+			} else {
+				for (const detail of this.paginatedDetails[this.page]) {
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					if (detailIndex === -1) {
+						this.checkedDetailGroups.push(detail)
+					}
+				}
+			}
+		},
+		openNextDetailGroup(detail) {
+			if (this.autoOpenNextGroup) {
+				const detailIndex = this.details.findIndex(d => d.id === detail.id)
+				if (detailIndex !== -1) {
+					if (detailIndex !== this.details.length - 1) {
+						emit('openGroup', this.details[detailIndex + 1])
+					} else if (detailIndex === this.details.length - 1 && this.details.length >= 2) {
+						emit('openGroup', this.details[detailIndex - 1])
+					}
+				}
+			}
 		},
 	},
 }
@@ -118,10 +316,9 @@ export default {
 <style scoped>
 .task-details {
 	width: 100%;
-	padding: 10px 20px 20px;
+	padding: 20px 10px 20px 20px;
 	border: 1px solid #dadada;
 	border-radius: 5px;
-	max-height: 100vh;
 	overflow-y: scroll;
 	margin: 0 auto;
 }
@@ -130,6 +327,24 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+}
+
+.action-blackout {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+}
+
+.task-details-heading h3 {
+	margin: 0;
 }
 
 @media (max-width: 540px) {
@@ -142,7 +357,7 @@ export default {
 .pagination {
 	display: flex;
 	align-items: center;
-	margin: 10px 0;
+	/* margin: 10px 0; */
 }
 
 .pagination-button {
@@ -196,7 +411,53 @@ body.theme--dark .task-details {
 	transition: height .3s;
 }
 
-body.theme--dark .task-details-row {
+.filters {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 5px 10px;
+	margin: 10px 0;
+	border: 1px solid #dadada;
+	border-radius: 5px;
+}
+
+body.theme--dark .task-details-row, body.theme--dark .filters {
 	border-color: #717171;
+}
+
+@media (max-width: 540px) {
+	.filters {
+		flex-direction: column;
+	}
+}
+
+.batch-editing {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.batch-actions-menu-button {
+	padding: 20px;
+	border-radius: 50%;
+	cursor: pointer;
+	user-select: none;
+}
+
+.batch-actions-menu-button:hover {
+	background-color: #eee;
+}
+
+.batch-actions-menu-button:active {
+	background-color: #ddd;
+}
+
+body.theme--dark .batch-actions-menu-button:hover {
+	background-color: #727272;
+}
+
+body.theme--dark .batch-actions-menu-button:active {
+	background-color: #5b5b5b;
 }
 </style>

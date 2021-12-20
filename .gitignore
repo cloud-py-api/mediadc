@@ -21,3 +21,4 @@ vendor
 
 __pycache__
 local
+.run/

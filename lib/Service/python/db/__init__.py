@@ -2,6 +2,8 @@
 Importing common and database specific functions depending of which database Nextcloud use.
 """
 
+# pylint: disable=unused-import
+
 from .manager import DbType, Config, get_time, get_required_packages, get_optional_packages, get_boost_packages
 from .manager import execute_fetchall, execute_commit, close_connection, check_db, get_warnings
 from .occ_cloud import occ_call
@@ -28,13 +30,13 @@ from .occ_cloud import occ_call
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-dbtype = manager.init()
+dbtype = manager.init()  # pylint: disable=undefined-variable
 if dbtype == DbType.MYSQL:
     from .msql import (
         get_tasks, clear_task_files_scanned_groups, increase_processed_files_count,
         lock_task, unlock_task, finalize_task, append_task_error, set_task_keepalive,
         get_paths_by_ids, get_directory_data_image, get_directory_data_video, get_mimetype_id,
-        get_all_storage_info, store_image_hash, store_err_image_hash, store_video_hash, store_err_video_hash,
+        get_storage_info, store_image_hash, store_err_image_hash, store_video_hash, store_err_video_hash,
         store_task_files_group, get_remote_filesize_limit,
     )
 elif dbtype == DbType.PGSQL:
@@ -42,7 +44,7 @@ elif dbtype == DbType.PGSQL:
         get_tasks, clear_task_files_scanned_groups, increase_processed_files_count,
         lock_task, unlock_task, finalize_task, append_task_error, set_task_keepalive,
         get_paths_by_ids, get_directory_data_image, get_directory_data_video, get_mimetype_id,
-        get_all_storage_info, store_image_hash, store_err_image_hash, store_video_hash, store_err_video_hash,
+        get_storage_info, store_image_hash, store_err_image_hash, store_video_hash, store_err_video_hash,
         store_task_files_group, get_remote_filesize_limit,
     )
 elif dbtype == DbType.OCI:
@@ -52,6 +54,6 @@ else:
         get_tasks, clear_task_files_scanned_groups, increase_processed_files_count,
         lock_task, unlock_task, finalize_task, append_task_error, set_task_keepalive,
         get_paths_by_ids, get_directory_data_image, get_directory_data_video, get_mimetype_id,
-        get_all_storage_info, store_image_hash, store_err_image_hash, store_video_hash, store_err_video_hash,
+        get_storage_info, store_image_hash, store_err_image_hash, store_video_hash, store_err_video_hash,
         store_task_files_group, get_remote_filesize_limit,
     )

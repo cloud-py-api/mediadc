@@ -65,22 +65,22 @@ def set_task_keepalive(task_id: int, connection_id: int = 1) -> None:
 
 
 def get_paths_by_ids(file_ids: list) -> list:
-    """For each element of list in file_ids return [path, fileid]. Order of file_ids is not preserved."""
+    """For each element of list in file_ids return [path, fileid, storage]. Order of file_ids is not preserved."""
     raise NotImplementedError(f"get_paths_by_ids:file_ids={file_ids}")
 
 
-def get_directory_data_image(dir_id: int, dir_mimetype: int, img_mimetype: int) -> list:
+def get_directory_data_image(dir_id: int, dir_mimetype: int, img_mimetype: int, spike_fileid: list) -> list:
     """For dir_id returns list of records with mimetype specified by dir_mimetype or img_mimetype.
         Record(dict) contains: fileid,path,storage,mimetype,size,mtime,encrypted,hash,skipped."""
-    raise NotImplementedError(f"get_directory_data_image:dir_id={dir_id},"
-                              f"dir_mimetype={dir_mimetype},img_mimetype={img_mimetype}")
+    raise NotImplementedError(f"get_directory_data_video:dir_id={dir_id},dir_mimetype={dir_mimetype},"
+                              f"img_mimetype={img_mimetype},spike_fileid={spike_fileid}")
 
 
-def get_directory_data_video(dir_id: int, dir_mimetype: int, video_mimetype: int) -> list:
+def get_directory_data_video(dir_id: int, dir_mimetype: int, video_mimetype: int, spike_fileid: list) -> list:
     """For dir_id returns list of records with mimetype specified by dir_mimetype or video_mimetype.
         Record(dict) contains: fileid,path,storage,mimetype,size,mtime,encrypted,duration,timestamps,hash,skipped."""
     raise NotImplementedError(f"get_directory_data_video:dir_id={dir_id},dir_mimetype={dir_mimetype},"
-                              f"video_mimetype={video_mimetype}")
+                              f"video_mimetype={video_mimetype},spike_fileid={spike_fileid}")
 
 
 def get_mimetype_id(mimetype: str) -> int:
@@ -88,7 +88,7 @@ def get_mimetype_id(mimetype: str) -> int:
     raise NotImplementedError(f"get_mimetype_id:mimetype={mimetype}")
 
 
-def get_all_storage_info(num_id: int = None) -> list:
+def get_storage_info(num_id: int = None) -> list:
     """If num_id is None, return info for all storages.
         Returns list of dicts with: numeric_id,id,available,mount_point,user_id,storage_backend fields."""
     raise NotImplementedError(f"get_all_storage_info:num_id={num_id}")
