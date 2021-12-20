@@ -50,7 +50,6 @@ class PythonController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @return JSONResponse
@@ -60,7 +59,6 @@ class PythonController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @return JSONResponse
@@ -70,7 +68,6 @@ class PythonController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @param string $listName python dependecies list name
@@ -82,7 +79,6 @@ class PythonController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @param array $packagesList python packages names list
@@ -94,7 +90,6 @@ class PythonController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * 
 	 * @param array $packagesList python packages names list
