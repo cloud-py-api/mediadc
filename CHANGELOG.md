@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [0.1.8 - 2021-12-20]
 
+Updated `python_command` setting from alias to full/absolute path to the Python. PHP-FPM users should check and update it on Administration settings page if install fails on Configuration page
+
 ### Added
 
 - Added Duplicates list batch editing and filtering
@@ -14,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Changed Default path to Python (if install fails silently or can't find Python, update `python_command` on Administration settings page)
 - Changed Some backend&frontend mechanisms of requesting and working with files
 - Changed Supported Nextcloud versions (21-23)
 
