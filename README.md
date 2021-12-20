@@ -46,4 +46,4 @@ To start working on frontend follow this steps:
 
 You can support us with any donate amount.
 
-PayPal: https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ
+[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ)
