@@ -135,9 +135,8 @@ class CollectorService {
 			$createdTask = $this->createCollectorTask($params);
 			if ($createdTask !== null) {
 				$this->pythonService->run('/main.py', ['-t' => $createdTask->getId()], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
-				$this->logger->info("CollectorTask started.\n" . json_encode($createdTask->jsonSerialize()));
 			} else {
-				$this->logger->warning("Can't create Collector Task with excluding all target files");
+				return ['success' => $createdTask !== null, 'empty' => true];
 			}
 		} else {
 			return ['success' => false, 'limit' => true];
@@ -178,31 +177,38 @@ class CollectorService {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
+		$empty = false;
 		$this->terminate($taskId);
 
-		$collectorTask->setTargetDirectoryIds(json_encode($targetDirectoryIds));
-		$collectorTask->setExcludeList(json_encode($excludeList));
-		$collectorTask->setCollectorSettings(json_encode($collectorSettings));
-		$collectorTask->setFilesScanned(0);
-		$collectorTask->setFilesTotal($taskData['files_total']);
-		$collectorTask->setFilesTotalSize($taskData['files_total_size']);
-		$collectorTask->setCreatedTime(time());
-		$collectorTask->setUpdatedTime(0);
-		$collectorTask->setFinishedTime(0);
-		$collectorTask->setDeletedFilesCount(0);
-		$collectorTask->setDeletedFilesSize(0);
-		$collectorTask->setErrors('');
-		$queuedTask = null;
+		if ($taskData['files_total'] > 0) {
+			$collectorTask->setTargetDirectoryIds(json_encode($targetDirectoryIds));
+			$collectorTask->setExcludeList(json_encode($excludeList));
+			$collectorTask->setCollectorSettings(json_encode($collectorSettings));
+			$collectorTask->setFilesScanned(0);
+			$collectorTask->setFilesTotal($taskData['files_total']);
+			$collectorTask->setFilesTotalSize($taskData['files_total_size']);
+			$collectorTask->setCreatedTime(time());
+			$collectorTask->setUpdatedTime(0);
+			$collectorTask->setFinishedTime(0);
+			$collectorTask->setDeletedFilesCount(0);
+			$collectorTask->setDeletedFilesSize(0);
+			$collectorTask->setErrors('');
+			$queuedTask = null;
+		} else {
+			$empty = true;
+		}
 
 		if (!in_array($taskId, $taskIdsRunning)) {
-			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue()) {
+			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue() && !$empty) {
 				$this->tasksMapper->update($collectorTask);
 				$this->deleteTaskDetails($taskId);
 				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+			} else if ($empty) {
+				return ['success' => false, 'empty' => $empty];
 			} else {
 				// Add as Queued job
 				// $queuedTask = $this->createQueuedTask($params);
-				return ['success' => false, 'limit' => true];
+				return ['success' => false, 'limit' => true, 'empty' => $empty];
 			}
 		} else {
 			$this->tasksMapper->update($collectorTask);
@@ -210,7 +216,7 @@ class CollectorService {
 			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
 		}
 
-		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null];
+		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null, 'empty' => $empty];
 	}
 
 	/**
