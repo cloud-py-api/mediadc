@@ -29,13 +29,14 @@
 			<div class="task-details-heading">
 				<h2>
 					{{ rootTitle }}
-					<span :class="!collapsedStatus
+					<span v-if="isValidUser"
+						:class="!collapsedStatus
 							? 'icon-triangle-n collapse-task-status-btn'
 							: 'icon-triangle-s collapse-task-status-btn'"
 						:title="t('mediadc', 'Collapse task status')"
 						@click="collapseTaskStatus" />
 				</h2>
-				<div v-show="!collapsedStatus" class="task-details-description">
+				<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
 					<p>
 						{{ t('mediadc', 'Here you can view task details, manage task (stop or restart), ' +
 							'delete found duplicated photos and videos.') }}
@@ -45,7 +46,7 @@
 					</p>
 				</div>
 			</div>
-			<div v-show="!collapsedStatus" class="task-status-row">
+			<div v-if="isValidUser" v-show="!collapsedStatus" class="task-status-row">
 				<div class="task-status">
 					<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 					<div style="display: flex; flex-direction: column;">
