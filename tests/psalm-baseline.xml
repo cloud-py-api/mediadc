@@ -67,16 +67,14 @@
       <code>IRootFolder</code>
     </MissingDependency>
     <RedundantCondition occurrences="1">
-      <code>$collectorTask !== null</code>
+      <code>$createdTask !== null</code>
     </RedundantCondition>
     <UndefinedClass occurrences="3">
       <code>LoggerInterface</code>
       <code>SharedStorage</code>
       <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="9">
-      <code>$this-&gt;logger</code>
-      <code>$this-&gt;logger</code>
+    <UndefinedDocblockClass occurrences="7">
       <code>$this-&gt;logger</code>
       <code>$this-&gt;logger</code>
       <code>$this-&gt;logger</code>
