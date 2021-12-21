@@ -66,12 +66,12 @@ class AppUpdateStep implements IRepairStep {
 			$installedSetting = $this->settingsService->getSettingByName('installed')['setting'];
 			$installed = json_decode($installedSetting->getValue(), true);
 			if (isset($installed['not_installed_list'])) {
-				if (count($installed['not_installed_list']['boost']) > 0) {
+				if (isset($installed['not_installed_list']['boost']) && count($installed['not_installed_list']['boost']) > 0) {
 					$installResult = $this->pythonService->installDependencies();
 				} else {
 					$installResult = $this->pythonService->installDependencies('required optional boost');
 				}
-				if ($installResult['installed']) {
+				if (isset($installResult['installed']) && $installResult['installed']) {
 					$installed['not_installed_list'] = [
 						'required' => $installResult['required'],
 						'optional' => $installResult['optional'],
