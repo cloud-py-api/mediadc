@@ -27,15 +27,15 @@
 		<h2>{{ rootTitle }}</h2>
 		<div v-if="isAdmin" class="configuration">
 			<p>
-				{{ t('mediadc', 'Welcome to MediaDC. You almost there! The last setup step - installation of Python dependencies.') }}
+				{{ t('mediadc', 'Welcome to MediaDC. You're almost there! The last setup step - installation of Python dependencies.') }}
 				<br>
 				{{ t('mediadc', 'Here you can run automatic installation of Python MediaDC dependencies.') }}
 				<br>
-				{{ t('mediadc', 'This may take a few minutes (regarding on your system config).') }}
+				{{ t('mediadc', 'This may take a few minutes (depending on your system config).') }}
 				<br>
 				{{ t('mediadc', 'After checking or installing you can see the results below in a detailed table (installed packages, errors, requirements overview).') }}
 				<br>
-				{{ t('mediadc', 'You can install all dependencies with hands, please refer documentation for your OS how to do this:') }}
+				{{ t('mediadc', 'You can install all dependencies manually, please refer documentation for your OS how to do this:') }}
 				<a href="https://github.com/andrey18106/mediadc/wiki">{{ t('mediadc', 'wikis') }}</a>.
 				<br>
 				{{ t('mediadc', 'If you have any additional questions contact us in') }} <a href="https://t.me/mediadc_support">{{ t('mediadc', 'Telegram chat') }}</a>.
