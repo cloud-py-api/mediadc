@@ -152,6 +152,8 @@ def do_hash_video(algo: str, hash_size: int, video_info: dict, file_info: dict, 
     """Accepts path(bytes/str) or data for processing in memory."""
     if video_info['duration'] < MinVideoDuration_ms:
         return False
+    if video_info['duration'] > 24 * 60 * 60 * 1000:   # let's only process videos with duration <= 24 hours.
+        return False
     first_timestamp = get_first_timestamp(video_info, path, data)
     if first_timestamp == -1:
         return False
