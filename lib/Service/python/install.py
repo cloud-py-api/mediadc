@@ -11,7 +11,7 @@ import json
 import re
 from enum import Enum
 import db
-from ffmpeg_probe import get_version
+from ffmpeg_probe import check_ff_app
 PIP_DEBUG = 0
 EXTRA_PIP_ARGS = []
 
@@ -164,11 +164,9 @@ def import_packages(packages_names: list, dest_sym_table=None) -> list:
 
 def check_video() -> list:
     video_apps = []
-    error, _ffmpeg_version = get_version('ffmpeg')
-    if error:
+    if not check_ff_app('ffmpeg'):
         video_apps.append('ffmpeg')
-    error, _ffprobe_version = get_version('ffprobe')
-    if error:
+    if not check_ff_app('ffprobe'):
         video_apps.append('ffprobe')
     return video_apps
 
