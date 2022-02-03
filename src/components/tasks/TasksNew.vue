@@ -121,15 +121,19 @@
 					style="margin: 0 0 10px;">
 			</div>
 		</div>
-		<button v-if="!runningTask"
-			style="margin: 10px 5px 0"
-			:disabled="Object.keys(targetDirectoriesPaths).length === 0"
-			@click="runCollectorTask">
-			{{ t('mediadc', 'Run new Task') }}
-		</button>
-		<button v-else disabled>
-			<span class="icon-loading" />
-		</button>
+		<div class="create-task-actions">
+			<button v-if="!runningTask"
+				:disabled="Object.keys(targetDirectoriesPaths).length === 0"
+				@click="runCollectorTask">
+				{{ t('mediadc', 'Run new Task') }}
+			</button>
+			<button v-else disabled>
+				<span class="icon-loading" />
+			</button>
+			<CheckboxRadioSwitch :checked.sync="finishNotification">
+				{{ t('mediadc', 'Finish notification') }}
+			</CheckboxRadioSwitch>
+		</div>
 	</div>
 </template>
 
@@ -139,9 +143,11 @@ import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialo
 import axios from '@nextcloud/axios'
 import { requestFileInfo, getFileId } from '../../utils/files'
 import { mapGetters } from 'vuex'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'TasksNew',
+	components: { CheckboxRadioSwitch },
 	data() {
 		return {
 			targetDirectoriesPaths: {},
@@ -154,6 +160,7 @@ export default {
 			customExcludeMask: '',
 			addingCustomMask: false,
 			runningTask: false,
+			finishNotification: true,
 		}
 	},
 	computed: {
@@ -257,6 +264,7 @@ export default {
 					similarity_threshold: this.similarity_threshold,
 					hash_size: this.settingByName('hash_size').value || 16,
 					target_mtype: this.targetMimeType,
+					finish_notification: this.finishNotification,
 				},
 			}).then(res => {
 				this.runningTask = false
@@ -343,7 +351,7 @@ export default {
 	border: 1px solid #dadada;
 	border-radius: 5px;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .05);
-	padding: 20px;
+	padding: 20px 20px 10px;
 	margin: 10px;
 	width: 100%;
 	max-width: 600px;
@@ -393,5 +401,13 @@ export default {
 
 body.theme--dark .new-task-block, body.theme--dark .block {
 	border-color: #717171;
+}
+
+.create-task-actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 5px;
+	padding: 0 10px;
 }
 </style>

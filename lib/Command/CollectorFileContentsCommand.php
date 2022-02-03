@@ -50,8 +50,7 @@ class CollectorFileContentsCommand extends Command {
 	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(IRootFolder $rootFolder, LoggerInterface $logger)
-	{
+	public function __construct(IRootFolder $rootFolder, LoggerInterface $logger) {
 		parent::__construct();
 
 		$this->rootFolder = $rootFolder;

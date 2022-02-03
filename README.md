@@ -8,6 +8,8 @@
 
 **📸📹 Collect photo and video duplicates to save your cloud storage space**
 
+| **Not working on FreeBSD systems for now**
+
 ![Home page](/screenshots/task-managment.png)
 ![Home page](/screenshots/task-results.png)
 Nextcloud Media Duplicate Collector application

@@ -175,6 +175,7 @@
 		<div v-else>
 			<strong>Settings list is empty</strong>
 		</div>
+		<BugReport />
 	</div>
 </template>
 
@@ -182,9 +183,11 @@
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
+import BugReport from './BugReport'
 
 export default {
 	name: 'AdminSettings',
+	components: { BugReport },
 	data() {
 		return {
 			settings: [],

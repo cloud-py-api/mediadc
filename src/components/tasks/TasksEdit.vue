@@ -123,15 +123,19 @@
 						style="margin: 0 0 10px;">
 				</div>
 			</div>
-			<button v-if="!runningTask"
-				style="margin: 10px 5px 0"
-				:disabled="Object.keys(targetDirectoriesPaths).length === 0"
-				@click="restartTask">
-				{{ t('mediadc', 'Restart task') }}
-			</button>
-			<button v-else disabled>
-				<span class="icon-loading" />
-			</button>
+			<div class="create-task-actions">
+				<button v-if="!runningTask"
+					:disabled="Object.keys(targetDirectoriesPaths).length === 0"
+					@click="restartTask">
+					{{ t('mediadc', 'Restart task') }}
+				</button>
+				<button v-else disabled>
+					<span class="icon-loading" />
+				</button>
+				<CheckboxRadioSwitch :checked.sync="finishNotification">
+					{{ t('mediadc', 'Finish notification') }}
+				</CheckboxRadioSwitch>
+			</div>
 		</div>
 	</div>
 </template>
@@ -144,9 +148,11 @@ import { requestFileInfo, getFileId } from '../../utils/files'
 import { mapGetters } from 'vuex'
 import { getCurrentUser } from '@nextcloud/auth'
 import { emit } from '@nextcloud/event-bus'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'TasksEdit',
+	components: { CheckboxRadioSwitch },
 	props: {
 		opened: {
 			type: Boolean,
@@ -165,6 +171,7 @@ export default {
 			customExcludeMask: '',
 			addingCustomMask: false,
 			runningTask: false,
+			finishNotification: true,
 		}
 	},
 	computed: {
@@ -182,6 +189,7 @@ export default {
 			: 90
 		this.targetMimeType = JSON.parse(this.task.collector_settings).target_mtype
 		this.similarity_threshold = JSON.parse(this.task.collector_settings).similarity_threshold
+		this.finishNotification = JSON.parse(this.task.collector_settings).finish_notification
 		this.parseTaskSettings()
 	},
 	methods: {
@@ -291,6 +299,7 @@ export default {
 						similarity_threshold: Number(this.similarity_threshold),
 						hash_size: Number(this.settingByName('hash_size').value) || 16,
 						target_mtype: this.targetMimeType,
+						finish_notification: this.finishNotification,
 					},
 				}).then(res => {
 					this.runningTask = false
@@ -368,6 +377,7 @@ export default {
 				: 90
 			this.customExcludeList = []
 			this.runningTask = false
+			this.finishNotification = true
 		},
 		closeEditTaskDialog() {
 			this.$emit('update:opened', false)
@@ -394,7 +404,7 @@ export default {
 	border: 1px solid #dadada;
 	border-radius: 5px;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .05);
-	padding: 20px;
+	padding: 20px 20px 10px;
 	width: 100%;
 	max-width: 600px;
 	position: absolute;
@@ -483,5 +493,13 @@ body.theme--dark .edit-task-block, body.theme--dark .block {
 
 body.theme--dark .edit-task-block {
 	background-color: #111;
+}
+
+.create-task-actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 5px;
+	padding: 0 10px;
 }
 </style>
