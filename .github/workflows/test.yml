@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [7.4, 8.0]
-        nextcloud-versions: ['stable21', 'stable22', 'master']
+        php-versions: [7.3, 7.4, 8.0]
+        nextcloud-versions: ['stable21', 'stable22', 'stable23', 'master']
 
     name: Nextcloud ${{ matrix.nextcloud-versions }} php ${{ matrix.php-versions }} unit tests
     steps:
@@ -62,8 +62,8 @@ jobs:
     strategy:
       matrix:
         python-versions: [3.7, 3.8, 3.9]
-        php-versions: [7.4, 8.0]
-        nextcloud-versions: ['stable21', 'stable22', 'master']
+        php-versions: [7.3, 7.4, 8.0]
+        nextcloud-versions: ['stable21', 'stable22', 'stable23', 'master']
 
     name: Nextcloud ${{ matrix.nextcloud-versions }} (php${{ matrix.php-versions }}) python ${{ matrix.python-versions }} unit tests
     steps:
