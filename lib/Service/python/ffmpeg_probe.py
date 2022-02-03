@@ -53,16 +53,16 @@ def stub_call_ff(app_name: str, *params, stdin_data: bytes = None, ignore_errors
         return None, f'{app_name} raised {type(exception_info).__name__}: {str(exception_info)}'
 
 
-def get_version(app: str) -> [str, tuple]:
+def check_ff_app(app: str) -> bool:
     """Returns non empty str if error, otherwise returns empty string and tuple with version of ffmpeg/probe."""
     result, err = stub_call_ff(app, '-version')
     if err:
-        return err, (0, 0)
+        return False
     full_reply = result.stdout.decode('utf-8')
-    ver_match = re.search(app + r'\sversion\s(\d{1,2})\.(\d{1,2})', full_reply, flags=re.MULTILINE + re.IGNORECASE)
-    if ver_match is not None:
-        return '', ver_match.groups()
-    return f'Cant parse {app} version: {full_reply}', (0, 0)
+    if re.search(app + r'\sversion\s', full_reply, flags=re.MULTILINE + re.IGNORECASE) is not None:
+        return True
+    print(f'Cant parse {app} version: {full_reply}')
+    return False
 
 
 def ffprobe_parse_results(proc_result) -> dict:
