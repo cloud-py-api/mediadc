@@ -153,6 +153,7 @@ def process(task_info: dict, forced: bool):
     print(f"Processing task: id={task_info['id']}, forced={forced}")
     if not analyze_and_lock(task_info, forced):
         return
+    _taskStatus = 'error'
     try:
         reset_data_groups()
         update_storages_info()
@@ -174,6 +175,7 @@ def process(task_info: dict, forced: bool):
                 elif task_type == TaskType.IMAGE_VIDEO:
                     process_image_task(task_settings)
                     process_video_task(task_settings)
+                _taskStatus = 'finished'
                 print(f"Task execution_time: {time.perf_counter() - time_start}")
                 db.finalize_task(task_info['id'])
     except Exception as exception_info:
@@ -185,6 +187,7 @@ def process(task_info: dict, forced: bool):
             task_info['b_thread'].join(timeout=2.0)
         print('Task unlocked.')
         db.unlock_task(task_info['id'])
+        db.occ_call('mediadc:collector:tasks:notify', task_info['id'], _taskStatus)
 
 
 def process_image_task(task_settings: dict):
