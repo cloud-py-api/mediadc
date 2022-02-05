@@ -239,6 +239,7 @@ export default {
 							similarity_threshold: Number(JSON.parse(this.task.collector_settings).similarity_threshold),
 							hash_size: Number(this.settingByName('hash_size').value) || 16,
 							target_mtype: Number(JSON.parse(this.task.collector_settings).target_mtype),
+							finish_notification: JSON.parse(this.task.collector_settings).finish_notification,
 						},
 					}).then(res => {
 						this.restarting = false
