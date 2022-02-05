@@ -199,7 +199,7 @@ class UtilsService {
 			'os' => php_uname('s'),
 			'os-release' => php_uname('r'),
 			'machine-type' => php_uname('m'),
-			'cloud_py_api-version' => $this->appManager->getAppVersion(Application::APP_ID),
+			Application::APP_ID . '-version' => $this->appManager->getAppVersion(Application::APP_ID),
 		];
 		return $result;
 	}
