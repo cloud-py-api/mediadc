@@ -187,7 +187,7 @@ def process(task_info: dict, forced: bool):
             task_info['b_thread'].join(timeout=2.0)
         print('Task unlocked.')
         db.unlock_task(task_info['id'])
-        if task_info['collector_settings']['finish_notification']:
+        if task_info.get('collector_settings', {}).get('finish_notification', False):
             db.occ_call('mediadc:collector:tasks:notify', task_info['id'], _taskStatus)
 
 
