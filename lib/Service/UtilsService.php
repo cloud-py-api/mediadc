@@ -31,6 +31,7 @@ namespace OCA\MediaDC\Service;
 use bantu\IniGetWrapper\IniGetWrapper;
 use OCP\IConfig;
 use OCP\App\IAppManager;
+use OCA\ServerInfo\DatabaseStatistics;
 
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
@@ -51,8 +52,11 @@ class UtilsService {
 	/** @var IAppManager */
 	private $appManager;
 
+	/** @var DatabaseStatistics */
+	private $databaseStatistics;
+
 	public function __construct(IConfig $config, SettingMapper $settingMapper,
-								IAppManager $appManager)
+								IAppManager $appManager, DatabaseStatistics $databaseStatistics)
 	{
 		$this->config = $config;
 		$this->settingMapper = $settingMapper;
@@ -60,6 +64,7 @@ class UtilsService {
 		/** @var Setting */
 		$pythonCommandSetting = $this->settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommandSetting->getValue();
+		$this->databaseStatistics = $databaseStatistics;
 	}
 
 	/**
@@ -192,6 +197,9 @@ class UtilsService {
 
 	public function getSystemInfo(): array {
 		$result = [
+			'nextcloud-version' => $this->config->getSystemValue('version'),
+			'webserver' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
+			'database' => $this->databaseStatistics->getDatabaseStatistics(),
 			'php-version' => phpversion(),
 			'php-interpreter' => $this->getPhpInterpreter(),
 			'python-version' => $this->getPythonVersion(),
@@ -200,6 +208,10 @@ class UtilsService {
 			'os-release' => php_uname('r'),
 			'machine-type' => php_uname('m'),
 			Application::APP_ID . '-version' => $this->appManager->getAppVersion(Application::APP_ID),
+			Application::APP_ID . '-settings' => [
+				'remote_filesize_limit' => $this->settingMapper->findByName('remote_filesize_limit')->getValue(),
+				'installed' => json_decode($this->settingMapper->findByName('installed')->getValue()),
+			],
 		];
 		return $result;
 	}
