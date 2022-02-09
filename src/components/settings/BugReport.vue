@@ -48,7 +48,7 @@
 
 <script>
 import axios from '@nextcloud/axios'
-import { generateOcsUrl, generateUrl } from '@nextcloud/router'
+import { generateUrl } from '@nextcloud/router'
 import { showSuccess } from '@nextcloud/dialogs'
 
 export default {
@@ -63,14 +63,8 @@ export default {
 		collectSystemInfo() {
 			this.loading = true
 			axios.get(generateUrl('/apps/mediadc/api/v1/system-info')).then(res => {
-				axios.get(generateOcsUrl('/apps/serverinfo/api/v1/info?format=json')).then(ocres => {
-					this.systemInfo = res.data
-					this.systemInfo.serverInfo = ocres.data
-					this.loading = false
-				}).catch(err => {
-					console.debug(err)
-					this.loading = false
-				})
+				this.systemInfo = res.data
+				this.loading = false
 			}).catch(err => {
 				console.debug(err)
 				this.loading = false
