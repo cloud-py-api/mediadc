@@ -78,6 +78,7 @@ const mutations = {
 	setDetailsListItemsPerPage(state, itemsPerPage) {
 		Vue.set(state, 'itemsPerPage', Number(itemsPerPage))
 		Vue.set(state, 'paginatedDetails', paginate(state.details, Number(itemsPerPage)))
+		Vue.set(state, 'paginatedSortedDetails', paginate(state.sortedDetails, Number(itemsPerPage)))
 	},
 	setGroupItemsPerPage(state, itemsPerPage) {
 		Vue.set(state, 'groupItemsPerPage', Number(itemsPerPage))

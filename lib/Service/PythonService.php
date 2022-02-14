@@ -118,8 +118,9 @@ class PythonService {
 		if (!$this->utils->isFunctionEnabled('exec')) {
 			array_push($errors, '`exec` PHP function is not available.');
 		}
-		if (!$this->utils->isPythonCompatible()) {
-			array_push($errors, 'Python version is lower then 3.6.8 or not available');
+		$pythonCompatible = $this->utils->isPythonCompatible();
+		if (!$pythonCompatible['success']) {
+			array_push($errors, 'Python version is lower then 3.6.8 or not available (result_code:' . $pythonCompatible['result_code'] . ')');
 		}
 		return ['success' => count($errors) === 0, 'errors' => $errors];
 	}

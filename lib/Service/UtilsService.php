@@ -36,6 +36,7 @@ use OCA\ServerInfo\DatabaseStatistics;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
+use Psr\Log\LoggerInterface;
 
 
 class UtilsService {
@@ -56,7 +57,8 @@ class UtilsService {
 	private $databaseStatistics;
 
 	public function __construct(IConfig $config, SettingMapper $settingMapper,
-								IAppManager $appManager, DatabaseStatistics $databaseStatistics)
+								IAppManager $appManager, DatabaseStatistics $databaseStatistics,
+								LoggerInterface $logger)
 	{
 		$this->config = $config;
 		$this->settingMapper = $settingMapper;
@@ -65,6 +67,7 @@ class UtilsService {
 		$pythonCommandSetting = $this->settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommandSetting->getValue();
 		$this->databaseStatistics = $databaseStatistics;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -146,12 +149,14 @@ class UtilsService {
 		return true;
 	}
 
-	public function getPythonVersion() {
+	public function getPythonVersion(): array {
 		exec($this->pythonCommand . ' --version', $output, $result_code);
 		if ($result_code === 0 && isset($output[0]) && preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
-			return isset($matches[0][0]) ? $matches[0][0] : null;
+			return isset($matches[0][0]) ? 
+				['success' => true, 'matches' => $matches[0][0], 'result_code' => $result_code] : 
+				['success' => false, 'result_code' => $result_code];
 		}
-		return null;
+		return ['success' => false, 'result_code' => $result_code];
 	}
 
 	/**
@@ -161,24 +166,11 @@ class UtilsService {
 	 */
 	public function isPythonCompatible() {
 		$pythonVersion = $this->getPythonVersion();
-		if ($pythonVersion === null) {
-			return false;
+		if (!$pythonVersion['success']) {
+			$this->logger->error('[' . self::class . '] getPythonVersion: ' . json_encode($pythonVersion));
+			return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 		}
-		$pythonVersionDigits = explode(".", $pythonVersion);
-		if ((int)$pythonVersionDigits[0] >= 3) {
-			if ((int)$pythonVersionDigits[1] < 6) {
-				return false;
-			}
-			if ((int)$pythonVersionDigits[1] > 6) {
-				return true;
-			} else if ((int)$pythonVersionDigits[1] === 6 && (int)$pythonVersionDigits[2] >= 8) {
-				return true;
-			}
-			if ((int)$pythonVersionDigits[2] >= 0) {
-				return true;
-			}
-		}
-		return false;
+		return ['success' => intval(join("", explode(".", $pythonVersion['matches']))) >= 3680];
 	}
 
 	public function getCustomAppsDirectory() {
@@ -196,14 +188,15 @@ class UtilsService {
 	}
 
 	public function getSystemInfo(): array {
+		$pythonVersion = $this->getPythonVersion();
 		$result = [
 			'nextcloud-version' => $this->config->getSystemValue('version'),
 			'webserver' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
 			'database' => $this->databaseStatistics->getDatabaseStatistics(),
 			'php-version' => phpversion(),
 			'php-interpreter' => $this->getPhpInterpreter(),
-			'python-version' => $this->getPythonVersion(),
-			'python-interpretter' => json_decode($this->pythonCommand),
+			'python-version' => $pythonVersion['success'] ? $pythonVersion['matches'] : 'Error: result_code=' . $pythonVersion['result_code'],
+			'python-interpretter-setting' => json_decode($this->pythonCommand),
 			'os' => php_uname('s'),
 			'os-release' => php_uname('r'),
 			'machine-type' => php_uname('m'),
