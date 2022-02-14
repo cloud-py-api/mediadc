@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.9 - 2022-02-14]
+
+### Added
+
+- Added Task finish notification option
+- Added Bug report section to Admin settings for quick system info collection
+
+### Changed
+
+- Boost package hexhamming was updated. Now available on arm8 cpu and on Alpine Linux too.
+
+### Fixed
+
+- Fixed Python error: Out of range value for column `duration` (https://github.com/andrey18106/mediadc/issues/47)
+- Fixed error "ffmpeg not found" when it was builded from source (thanks for issue to @sergeng)
+- Fixed connect error when using Nextcloud Docker with MariaDB (thanks for issue to @Bennneeeet)
+- Fixed connect error in some situations when using PGSQL with socket (thanks for issue to @pricly-yellow)
+
 ## [0.1.8 - 2021-12-20]
 
 Updated `python_command` setting from alias to full/absolute path to the Python. PHP-FPM users should check and update it on Administration settings page if install fails on Configuration page
