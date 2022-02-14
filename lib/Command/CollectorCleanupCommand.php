@@ -40,8 +40,7 @@ class CollectorCleanupCommand extends Command {
 	/** @var CollectorService */
 	private $collectorService;
 
-	public function __construct(CollectorService $collectorService)
-	{
+	public function __construct(CollectorService $collectorService) {
 		parent::__construct();
 
 		$this->collectorService = $collectorService;

@@ -27,7 +27,7 @@
 		<h2>{{ rootTitle }}</h2>
 		<div v-if="isAdmin" class="configuration">
 			<p>
-				{{ t('mediadc', 'Welcome to MediaDC. You're almost there! The last setup step - installation of Python dependencies.') }}
+				{{ t('mediadc', 'Welcome to MediaDC. You\'re almost there! The last setup step - installation of Python dependencies.') }}
 				<br>
 				{{ t('mediadc', 'Here you can run automatic installation of Python MediaDC dependencies.') }}
 				<br>

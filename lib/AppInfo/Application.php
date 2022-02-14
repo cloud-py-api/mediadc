@@ -32,19 +32,27 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\Notification\IManager;
 
 use OCA\MediaDC\Dashboard\RecentTasksWidget;
 
 
 class Application extends App implements IBootstrap {
+
 	public const APP_ID = 'mediadc';
+
+	/** @var IManager */
+	private $notificationManager;
 
 	public function __construct() {
 		parent::__construct(self::APP_ID);
+
+		$this->notificationManager = \OC::$server->get(\OCP\Notification\IManager::class);
 	}
 
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(RecentTasksWidget::class);
+		$this->notificationManager->registerNotifierService(\OCA\MediaDC\Notification\Notifier::class);
 	}
 
 	public function boot(IBootContext $context): void {

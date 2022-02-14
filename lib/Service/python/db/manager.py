@@ -4,6 +4,7 @@ Main file in db package. Provides interference between nextcloud database and py
 
 from enum import Enum
 from datetime import datetime
+from os import path
 import time
 import os
 import re
@@ -98,11 +99,11 @@ def postprocess_config(config: dict) -> None:
     elif os.path.exists(config['dbhost']):
         # when dbhost = socket
         config['usock'] = config['dbhost']
-        config['dbhost'] = ''
+        # config['dbhost'] = ''  # removed to fix this: https://github.com/andrey18106/mediadc/issues/45
     if config['dbtype'] == 'pgsql':
         # Don't know currently how to handle this situation properly. Using default port value for socket name.
         if config['usock']:
-            config['usock'] += '.s.PGSQL.5432'
+            config['usock'] = path.join(config['usock'], '.s.PGSQL.5432')
 
 
 def find_db_configuration() -> bool:

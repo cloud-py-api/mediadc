@@ -36,6 +36,7 @@ return [
 		['name' => 'settings#getSettingByName', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'GET'],
 		['name' => 'settings#updateSetting', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'PUT'],
 		['name' => 'settings#truncate', 'url' => '/api/v1/settings/truncate/{name}', 'verb' => 'POST'],
+		['name' => 'settings#systemInfo', 'url' => '/api/v1/system-info', 'verb' => 'GET'],
 
 		// Python API
 		['name' => 'python#check', 'url' => '/api/v1/python/check', 'verb' => 'GET'],

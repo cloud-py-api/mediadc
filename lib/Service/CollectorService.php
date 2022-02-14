@@ -71,6 +71,9 @@ class CollectorService {
 	/** @var PythonService */
 	private $pythonService;
 
+	/** @var UtilsService */
+	private $utils;
+
 	/** @var PhotosService */
 	private $photosService;
 
@@ -102,7 +105,8 @@ class CollectorService {
 								CollectorTaskDetailMapper $tasksDetailsMapper,
 								PythonService $pythonService, LoggerInterface $logger,
 								PhotosService $photosService, VideosService $videosService,
-								IJobList $jobList, IPreview $previewManager) {
+								IJobList $jobList, IPreview $previewManager,
+								UtilsService $utils) {
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
@@ -110,6 +114,7 @@ class CollectorService {
 		$this->settingsMapper = $settingsMapper;
 		$this->tasksMapper = $tasksMapper;
 		$this->tasksDetailsMapper = $tasksDetailsMapper;
+		$this->utils = $utils;
 		$this->pythonService = $pythonService;
 		$this->logger = $logger;
 		$this->photosService = $photosService;
@@ -134,7 +139,7 @@ class CollectorService {
 		if ($pyLimitSetting !== null && $processesRunning < (int)$pyLimitSetting->getValue()) {
 			$createdTask = $this->createCollectorTask($params);
 			if ($createdTask !== null) {
-				$this->pythonService->run('/main.py', ['-t' => $createdTask->getId()], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+				$this->pythonService->run('/main.py', ['-t' => $createdTask->getId()], true, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
 			} else {
 				return ['success' => $createdTask !== null, 'empty' => true];
 			}
@@ -202,7 +207,7 @@ class CollectorService {
 			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue() && !$empty) {
 				$this->tasksMapper->update($collectorTask);
 				$this->deleteTaskDetails($taskId);
-				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
 			} else if ($empty) {
 				return ['success' => false, 'empty' => $empty];
 			} else {
@@ -213,7 +218,7 @@ class CollectorService {
 		} else {
 			$this->tasksMapper->update($collectorTask);
 			$this->deleteTaskDetails($taskId);
-			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->pythonService->getPhpInterpreter()]);
+			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
 		}
 
 		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null, 'empty' => $empty];
@@ -295,6 +300,7 @@ class CollectorService {
 				'similarity_threshold' => count($params) === 0 ? $pyThresholdSetting->getValue() : intval($pyThresholdSetting),
 				'hash_size' => count($params) === 0 ? $pyHashSizeSetting->getValue() : intval($pyHashSizeSetting),
 				'target_mtype' => count($params) === 0 ? 0 : intval($params['collectorSettings']['target_mtype']),
+				'finish_notification' => count($params) === 0 ? true : $params['collectorSettings']['finish_notification'],
 			]),
 			'filesScanned' => 0,
 			'filesTotal' => count($params) === 0

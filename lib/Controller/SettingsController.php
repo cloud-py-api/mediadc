@@ -36,6 +36,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\PhotosService;
 use OCA\MediaDC\Service\SettingsService;
+use OCA\MediaDC\Service\UtilsService;
 use OCA\MediaDC\Service\VideosService;
 
 
@@ -50,13 +51,18 @@ class SettingsController extends Controller {
 	/** @var VideosService */
 	private $videosService;
 
+	/** @var UtilsService */
+	private $utils;
+
 	public function __construct(IRequest $request, SettingsService $service,
-								PhotosService $photosService, VideosService $videosService) {
+								PhotosService $photosService, VideosService $videosService,
+								UtilsService $utils) {
 		parent::__construct(Application::APP_ID, $request);
 
 		$this->service = $service;
 		$this->photosService = $photosService;
 		$this->videosService = $videosService;
+		$this->utils = $utils;
 	}
 
 	/**
@@ -129,6 +135,15 @@ class SettingsController extends Controller {
 				'videos' => $this->videosService->truncate()
 			], Http::STATUS_OK);
 		}
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function systemInfo(): JSONResponse {
+		return new JSONResponse($this->utils->getSystemInfo(), Http::STATUS_OK);
 	}
 
 }

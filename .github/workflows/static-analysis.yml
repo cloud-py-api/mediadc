@@ -132,7 +132,7 @@ jobs:
         run: composer run psalm
 
   npm-audit:
-    needs: [changes, linters-js]
+    # needs: [changes, linters-js]
     if: ${{ needs.changes.outputs.js_src == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     name: npm-audit
