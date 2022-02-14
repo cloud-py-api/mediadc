@@ -162,15 +162,29 @@ class UtilsService {
 	/**
 	 * Check if installed Python version compatible with MediaDC application
 	 * 
-	 * @return bool $isCompatible
+	 * @return array $result
 	 */
-	public function isPythonCompatible() {
+	public function isPythonCompatible(): array {
 		$pythonVersion = $this->getPythonVersion();
 		if (!$pythonVersion['success']) {
 			$this->logger->error('[' . self::class . '] getPythonVersion: ' . json_encode($pythonVersion));
 			return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 		}
-		return ['success' => intval(join("", explode(".", $pythonVersion['matches']))) >= 3680];
+		$pythonVersionDigits = explode(".", $pythonVersion['matches']);
+		if ((int)$pythonVersionDigits[0] >= 3) {
+			if ((int)$pythonVersionDigits[1] < 6) {
+				return ['success' => false, 'result_code' => $pythonVersion['result_code']];
+			}
+			if ((int)$pythonVersionDigits[1] > 6) {
+				return ['success' => true, 'result_code' => $pythonVersion['result_code']];
+			} else if ((int)$pythonVersionDigits[1] === 6 && (int)$pythonVersionDigits[2] >= 8) {
+				return ['success' => true, 'result_code' => $pythonVersion['result_code']];
+			}
+			if ((int)$pythonVersionDigits[2] >= 0) {
+				return ['success' => true, 'result_code' => $pythonVersion['result_code']];
+			}
+		}
+		return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 	}
 
 	public function getCustomAppsDirectory() {
