@@ -171,11 +171,11 @@ def hash_image_data(algo: str, hash_size: int, image_data: bytes, path: str):
         if path.lower().endswith(('.heic', '.heif', '.hif',)):
             if not Heif_AV1:
                 return None
-            if pillow_heif.check_heif(image_data) not in (pillow_heif.heif_filetype_yes_supported,
+            if pillow_heif.check(image_data) not in (pillow_heif.heif_filetype_yes_supported,
                                                      pillow_heif.heif_filetype_maybe):
                 print(f'{path}: Unsupported format.')
                 return None
-            heif_file = pillow_heif.read_heif(image_data)
+            heif_file = pillow_heif.read(image_data)
             pil_image = PIL.Image.frombytes(heif_file.mode, heif_file.size, heif_file.data,
                                             "raw", heif_file.mode, heif_file.stride,)
         else:
