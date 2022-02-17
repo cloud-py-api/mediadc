@@ -289,7 +289,10 @@ def download_pip(url: str) -> bool:
 
 
 def install_pip() -> bool:
-    if not download_pip('https://bootstrap.pypa.io/get-pip.py'):
+    get_pip_url = "https://bootstrap.pypa.io/get-pip.py"
+    if sys.version_info[1] == 6:
+        get_pip_url = "https://bootstrap.pypa.io/pip/3.6/get-pip.py"
+    if not download_pip(get_pip_url):
         log_error('Cant download pip installer.')
         return False
     try:
