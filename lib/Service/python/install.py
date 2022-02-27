@@ -258,7 +258,7 @@ def download_pip(url: str) -> bool:
     for _ in range(2):
         try:
             subprocess.run(
-                ['curl', url, '-o', f'{LocalDir}/get-pip.py'],
+                ['curl', "-L", url, '-o', f'{LocalDir}/get-pip.py'],
                 timeout=90, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, check=True
             )
             return True
