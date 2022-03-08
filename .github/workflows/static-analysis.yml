@@ -16,7 +16,7 @@ jobs:
       js_src: ${{ steps.filter.outputs.js_src }}
       py_src: ${{ steps.filter.outputs.py_src }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v2
       id: filter
       with:
@@ -39,7 +39,7 @@ jobs:
       matrix:
         php-versions: [7.3, 7.4, 8.0]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup php${{ matrix.php-versions }}
       uses: shivammathur/setup-php@master
@@ -57,8 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     name: ESLint
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: npm ci
 
@@ -71,16 +70,14 @@ jobs:
     runs-on: ubuntu-latest
     name: PyLint
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: pylint installation
         run: |
           python -m pip install --upgrade pip
           pip install pylint
 
       - name: pylint analysis
-        run: |
-           pylint --rcfile .pylintrc lib/Service/python/*
+        run: pylint --rcfile .pylintrc lib/Service/python/*
 
   security-analysis:
     needs: [changes, linters-php]
@@ -88,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Security analysis
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -113,8 +110,7 @@ jobs:
           ocp-version: [ 'dev-master', 'dev-stable21', 'dev-stable22' ]
     name: Psalm statis-analysis
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Set up php
         uses: shivammathur/setup-php@master
         with:
@@ -137,8 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     name: npm-audit
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Audit
         run: npm audit
 
