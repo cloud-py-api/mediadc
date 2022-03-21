@@ -71,6 +71,7 @@ def dc_process_images(settings: dict, image_records: list):
         else:
             image_record['skipped'] = 0
         if image_record['hash'] is None:
+            print(f"processing image: fileid = {image_record['fileid']}")
             image_record['hash'] = process_hash(settings['hash_algo'], settings['hash_size'], image_record,
                                                 settings['data_dir'], settings['remote_filesize_limit'])
         else:
@@ -79,7 +80,6 @@ def dc_process_images(settings: dict, image_records: list):
             else:
                 image_record['hash'] = arr_hash_from_bytes(image_record['hash'])
         if image_record['hash'] is not None:
-            print(f"processing image: fileid = {image_record['fileid']}")
             process_image_record(settings['precision_img'], image_record['hash'], image_record['fileid'])
 
 

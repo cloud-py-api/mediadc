@@ -78,6 +78,7 @@ def dc_process_videos(settings: dict, video_records: list):
         else:
             video_record['skipped'] = 0
         if video_record['hash'] is None:
+            print(f"processing video: fileid = {video_record['fileid']}")
             process_video_hash(settings['hash_algo'], settings['hash_size'], video_record, settings['data_dir'],
                                settings['remote_filesize_limit'])
         else:
@@ -86,7 +87,6 @@ def dc_process_videos(settings: dict, video_records: list):
             else:
                 video_record['hash'] = arr_hash_from_bytes(video_record['hash'])
         if video_record['hash'] is not None:
-            print(f"processing video: fileid = {video_record['fileid']}")
             process_video_record(settings['precision_vid'], video_record['hash'], video_record['fileid'])
 
 
