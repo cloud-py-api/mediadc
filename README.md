@@ -5,6 +5,7 @@
 
 [![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/andrey18106/mediadc/releases)
 
+| We're not quite active for now (because of war in Ukraine)
 
 **📸📹 Collect photo and video duplicates to save your cloud storage space**
 
