@@ -188,13 +188,21 @@ def hash_image_data(algo: str, hash_size: int, image_data: bytes, path: str):
         ):
             if not Heif_AV1:
                 return None
-            if pillow_heif.check(image_data) not in (
-                pillow_heif.heif_filetype_yes_supported,
-                pillow_heif.heif_filetype_maybe,
-            ):
-                print(f"{path}: Unsupported format.")
-                return None
-            heif_file = pillow_heif.read(image_data)
+            if getattr(pillow_heif, "is_supported", None):
+                if not pillow_heif.is_supported(image_data):
+                    print(f"{path}: Unsupported format.")
+                    return None
+            else:
+                if pillow_heif.check(image_data) not in (
+                    pillow_heif.heif_filetype_yes_supported,
+                    pillow_heif.heif_filetype_maybe,
+                ):
+                    print(f"{path}: Unsupported format.")
+                    return None
+            if getattr(pillow_heif, "read_heif", None):
+                heif_file = pillow_heif.read_heif(image_data)
+            else:
+                heif_file = pillow_heif.read(image_data)
             pil_image = PIL.Image.frombytes(
                 heif_file.mode,
                 heif_file.size,
