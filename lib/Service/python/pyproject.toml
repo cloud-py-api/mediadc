@@ -5,3 +5,39 @@ preview = true
 
 [tool.isort]
 profile = "black"
+
+[tool.pylint]
+master.py-version = "3.6"
+master.unsafe-load-any-extension = "yes"
+master.ignore = [
+    "pg8000",
+    "pymysql",
+    "tests",
+    "imagehash.py",
+    "requirements.txt",
+    "pyproject.toml",
+]
+design.max-attributes = 9
+basic.good-names = [
+    "a", "b", "c", "d", "e", "f", "i", "j", "k", "v",
+    "ex", "_", "fp"
+]
+classes.exclude-protected = [
+    "_refs",
+]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "line-too-long",
+    "broad-except",
+    "invalid-name",
+    "duplicate-code",
+    "cyclic-import",
+    "global-statement",
+    "global-variable-not-assigned",
+    "too-many-arguments",
+    "too-many-return-statements",
+    "too-many-branches",
+]
