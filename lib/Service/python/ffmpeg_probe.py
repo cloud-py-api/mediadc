@@ -3,8 +3,8 @@ FFMPEG/FFPROBE call helper functions.
 """
 
 import json
-import subprocess
 import re
+import subprocess
 
 FF_DEBUG = 0
 

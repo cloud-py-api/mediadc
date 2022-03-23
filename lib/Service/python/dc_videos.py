@@ -6,12 +6,17 @@ Videos processing functions.
 
 import json
 import traceback
-from files import can_directly_access_file, get_file_full_path, request_file_from_php
-from ffmpeg_probe import ffprobe_get_video_info, stub_call_ff
-from db import store_video_hash, store_err_video_hash, store_task_files_group, append_task_error
-from install import import_packages, check_video
-from dc_images import arr_hash_to_string, arr_hash_from_bytes, calc_hash
 
+from db import (
+    append_task_error,
+    store_err_video_hash,
+    store_task_files_group,
+    store_video_hash,
+)
+from dc_images import arr_hash_from_bytes, arr_hash_to_string, calc_hash
+from ffmpeg_probe import ffprobe_get_video_info, stub_call_ff
+from files import can_directly_access_file, get_file_full_path, request_file_from_php
+from install import check_video, import_packages
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #

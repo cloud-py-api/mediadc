@@ -2,14 +2,15 @@
 MediaDC python dependencies install module.
 """
 
-import os
-import sys
-import subprocess
-import importlib.util
 import argparse
+import importlib.util
 import json
+import os
 import re
+import subprocess
+import sys
 from enum import Enum
+
 import db
 from ffmpeg_probe import check_ff_app
 

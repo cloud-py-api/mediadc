@@ -2,15 +2,14 @@
 Currently it is a dev file for some features testing. Not included in releases, only for devs.
 """
 
-import sys
-import platform
 import os
+import platform
+import sys
 from pathlib import Path
 
 mdc_py_path = str(Path(os.path.dirname(os.path.abspath(__file__))).parent)
 sys.path.append(mdc_py_path)
 import install
-
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #

@@ -6,10 +6,15 @@ Images processing functions.
 
 import io
 import json
-from files import get_file_data
-from db import store_image_hash, store_err_image_hash, store_task_files_group, append_task_error
-from install import import_packages
 
+from db import (
+    append_task_error,
+    store_err_image_hash,
+    store_image_hash,
+    store_task_files_group,
+)
+from files import get_file_data
+from install import import_packages
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #

@@ -2,8 +2,8 @@
 Helper functions related to get files content or storages info.
 """
 from pathlib import Path
-import db
 
+import db
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #

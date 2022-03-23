@@ -2,14 +2,14 @@
 Entry point for MediaDC tasks python module.
 """
 
-import os
 import argparse
+import os
 import signal
 import sys
+
 import db
 import task
 from install import extend_module_path
-
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #

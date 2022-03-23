@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function
 
-from PIL import Image
 import numpy
+from PIL import Image
 
 __version__ = "4.2.1"
 

@@ -2,18 +2,28 @@
 Tasks process logic module.
 """
 
+import fnmatch
 import math
+import os
 import threading
 import time
-import os
-import fnmatch
 from enum import Enum
-import db
-from files import update_storages_info, get_mounts_to
-from dc_images import dc_images_init, dc_process_images, reset_images, save_image_results
-from dc_videos import dc_videos_init, dc_process_videos, reset_videos, save_video_results
-from install import get_installed_algorithms_list
 
+import db
+from dc_images import (
+    dc_images_init,
+    dc_process_images,
+    reset_images,
+    save_image_results,
+)
+from dc_videos import (
+    dc_process_videos,
+    dc_videos_init,
+    reset_videos,
+    save_video_results,
+)
+from files import get_mounts_to, update_storages_info
+from install import get_installed_algorithms_list
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #
