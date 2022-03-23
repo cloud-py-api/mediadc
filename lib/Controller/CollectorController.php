@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -91,7 +91,7 @@ class CollectorController extends Controller {
 	 * @param string $collectorSettings
 	 */
 	public function restart($taskId, $targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse {
-		if ($taskId !== null && $targetDirectoryIds !== null 
+		if ($taskId !== null && $targetDirectoryIds !== null
 			&& $excludeList !== null && $collectorSettings !== null) {
 			$params = [
 				'taskId' => $taskId,

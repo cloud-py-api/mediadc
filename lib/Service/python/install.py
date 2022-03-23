@@ -12,6 +12,7 @@ import re
 from enum import Enum
 import db
 from ffmpeg_probe import check_ff_app
+
 PIP_DEBUG = 0
 EXTRA_PIP_ARGS = []
 
@@ -40,6 +41,7 @@ EXTRA_PIP_ARGS = []
 
 class ExpandedState(Enum):
     """State of placement `local` dir in sys.path."""
+
     DISABLED = 0
     FIRST = 1
     LAST = 2
@@ -47,24 +49,18 @@ class ExpandedState(Enum):
 
 Interpreter = sys.executable
 PathExpandedState: ExpandedState = ExpandedState.DISABLED
-ExpandedSitePath = ''
-LocalDir = './local'
+ExpandedSitePath = ""
+LocalDir = "./local"
 ErrorsContainer = []
 
-RequiredPackagesList = {'numpy': 'numpy',
-                        'PIL': 'pillow',
-                        **db.get_required_packages()
-                        }
-OptionalPackagesList = {'scipy': 'scipy',
-                        'pywt': 'pywavelets',
-                        'pillow_heif': 'pillow_heif',
-                        **db.get_optional_packages()
-                        }
-AlgorithmsRequirements = {'average': [],
-                          'dhash': [],
-                          'phash': ['scipy'],
-                          'whash': ['pywt']
-                          }
+RequiredPackagesList = {"numpy": "numpy", "PIL": "pillow", **db.get_required_packages()}
+OptionalPackagesList = {
+    "scipy": "scipy",
+    "pywt": "pywavelets",
+    "pillow_heif": "pillow_heif",
+    **db.get_optional_packages(),
+}
+AlgorithmsRequirements = {"average": [], "dhash": [], "phash": ["scipy"], "whash": ["pywt"]}
 
 
 def log_error(*errors: str):
@@ -95,8 +91,8 @@ def get_modified_env():
     if not check_local_dir():
         return None
     modified_env = os.environ
-    modified_env['PYTHONUSERBASE'] = get_abs_local_dir()
-    modified_env['_PIP_LOCATIONS_NO_WARN_ON_MISMATCH'] = '1'
+    modified_env["PYTHONUSERBASE"] = get_abs_local_dir()
+    modified_env["_PIP_LOCATIONS_NO_WARN_ON_MISMATCH"] = "1"
     return modified_env
 
 
@@ -109,14 +105,17 @@ def change_python_path(new_state: ExpandedState) -> bool:
     if not ExpandedSitePath:
         try:
             result = subprocess.run(
-                [Interpreter, '-m', 'site', '--user-site'],
-                stderr=subprocess.PIPE, stdout=subprocess.PIPE, check=True, env=get_modified_env()
+                [Interpreter, "-m", "site", "--user-site"],
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                check=True,
+                env=get_modified_env(),
             )
             if len(result.stdout) == 0:
                 return False
         except subprocess.CalledProcessError:
             return False
-        ExpandedSitePath = result.stdout.decode('utf-8').rstrip('\n')
+        ExpandedSitePath = result.stdout.decode("utf-8").rstrip("\n")
     try:
         sys.path.pop(sys.path.index(ExpandedSitePath))
     except (ValueError, IndexError):
@@ -164,10 +163,10 @@ def import_packages(packages_names: list, dest_sym_table=None) -> list:
 
 def check_video() -> list:
     video_apps = []
-    if not check_ff_app('ffmpeg'):
-        video_apps.append('ffmpeg')
-    if not check_ff_app('ffprobe'):
-        video_apps.append('ffprobe')
+    if not check_ff_app("ffmpeg"):
+        video_apps.append("ffmpeg")
+    if not check_ff_app("ffprobe"):
+        video_apps.append("ffprobe")
     return video_apps
 
 
@@ -194,7 +193,7 @@ def get_installed_algorithms_list() -> list:
 
 
 def get_all_boost_packages() -> dict:
-    ret = {**db.get_boost_packages(), 'hexhamming': 'hexhamming'}
+    ret = {**db.get_boost_packages(), "hexhamming": "hexhamming"}
     return ret
 
 
@@ -203,21 +202,23 @@ def add_package_info(packages_list: dict) -> dict:
     for import_name, install_name in packages_list.items():
         modules = {}
         if import_package(import_name, dest_sym_table=modules):
-            version = 'unknown'
-            if hasattr(modules[import_name], '__version__'):
+            version = "unknown"
+            if hasattr(modules[import_name], "__version__"):
                 version = modules[import_name].__version__
             if ExpandedSitePath and str(modules[import_name].__file__).lower().startswith(ExpandedSitePath.lower()):
-                formatted_packages_list[import_name] = {'package': install_name,
-                                                        'location': 'local',
-                                                        'version': str(version)}
+                formatted_packages_list[import_name] = {
+                    "package": install_name,
+                    "location": "local",
+                    "version": str(version),
+                }
             else:
-                formatted_packages_list[import_name] = {'package': install_name,
-                                                        'location': 'global',
-                                                        'version': str(version)}
+                formatted_packages_list[import_name] = {
+                    "package": install_name,
+                    "location": "global",
+                    "version": str(version),
+                }
         else:
-            formatted_packages_list[import_name] = {'package': install_name,
-                                                    'location': 'none',
-                                                    'version': 'none'}
+            formatted_packages_list[import_name] = {"package": install_name, "location": "none", "version": "none"}
     return formatted_packages_list
 
 
@@ -227,18 +228,20 @@ def is_pip_present(only_global: bool = False) -> bool:
         mod_env = get_modified_env()
     try:
         result = subprocess.run(
-            [Interpreter, '-m', 'pip', '--version', '--disable-pip-version-check'],
-            stderr=subprocess.PIPE, stdout=subprocess.PIPE, check=False, env=mod_env
+            [Interpreter, "-m", "pip", "--version", "--disable-pip-version-check"],
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            check=False,
+            env=mod_env,
         )
         if len(result.stderr) == 0:
-            full_reply = result.stdout.decode('utf-8')
+            full_reply = result.stdout.decode("utf-8")
             if PIP_DEBUG == 1:
-                print('Pip version:', full_reply)
-            m_groups = re.search(r'pip\s*(\d+(\.\d+){0,2})',
-                                 full_reply, flags=re.MULTILINE + re.IGNORECASE)
+                print("Pip version:", full_reply)
+            m_groups = re.search(r"pip\s*(\d+(\.\d+){0,2})", full_reply, flags=re.MULTILINE + re.IGNORECASE)
             if m_groups is None:
                 return False
-            pip_version = tuple(map(int, str(m_groups.groups()[0]).split('.')))
+            pip_version = tuple(map(int, str(m_groups.groups()[0]).split(".")))
             if pip_version[0] > 19:
                 return True
             if len(pip_version) > 1:
@@ -246,20 +249,23 @@ def is_pip_present(only_global: bool = False) -> bool:
                     return True
             return False
     except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
-        log_error(f'pip_version raised {type(exception_info).__name__}: {str(exception_info)}')
+        log_error(f"pip_version raised {type(exception_info).__name__}: {str(exception_info)}")
     return False
 
 
 def download_pip(url: str) -> bool:
     n_download_clients = 2
     if not check_local_dir(create_if_absent=True):
-        log_error('Cant create local dir.')
+        log_error("Cant create local dir.")
         return False
     for _ in range(2):
         try:
             subprocess.run(
-                ['curl', "-L", url, '-o', f'{LocalDir}/get-pip.py'],
-                timeout=90, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, check=True
+                ["curl", "-L", url, "-o", f"{LocalDir}/get-pip.py"],
+                timeout=90,
+                stderr=subprocess.DEVNULL,
+                stdout=subprocess.DEVNULL,
+                check=True,
             )
             return True
         except subprocess.CalledProcessError:
@@ -272,8 +278,11 @@ def download_pip(url: str) -> bool:
     for _ in range(2):
         try:
             subprocess.run(
-                ['wget', url, '-O', f'{LocalDir}/get-pip.py'],
-                timeout=90, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, check=True
+                ["wget", url, "-O", f"{LocalDir}/get-pip.py"],
+                timeout=90,
+                stderr=subprocess.DEVNULL,
+                stdout=subprocess.DEVNULL,
+                check=True,
             )
             return True
         except subprocess.CalledProcessError:
@@ -284,7 +293,7 @@ def download_pip(url: str) -> bool:
         except subprocess.TimeoutExpired:
             pass
     if not n_download_clients:
-        log_error('Both curl and wget cannot be found.')
+        log_error("Both curl and wget cannot be found.")
     return False
 
 
@@ -293,99 +302,113 @@ def install_pip() -> bool:
     if sys.version_info[1] == 6:
         get_pip_url = "https://bootstrap.pypa.io/pip/3.6/get-pip.py"
     if not download_pip(get_pip_url):
-        log_error('Cant download pip installer.')
+        log_error("Cant download pip installer.")
         return False
     try:
         result = subprocess.run(
-            [Interpreter, f'{LocalDir}/get-pip.py',
-             '--user', '--cache-dir', get_abs_local_dir(), '--no-warn-script-location'],
-            stderr=subprocess.PIPE, stdout=subprocess.PIPE, check=False, env=get_modified_env()
+            [
+                Interpreter,
+                f"{LocalDir}/get-pip.py",
+                "--user",
+                "--cache-dir",
+                get_abs_local_dir(),
+                "--no-warn-script-location",
+            ],
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            check=False,
+            env=get_modified_env(),
         )
         if PIP_DEBUG == 1:
-            print('stderr:', result.stderr.decode('utf-8'))
-            print('stdout:', result.stdout.decode('utf-8'))
-        full_reply = result.stderr.decode('utf-8')
-        reply = re.sub(r'^\s*WARNING:.*\n?', '', full_reply, flags=re.MULTILINE + re.IGNORECASE)
+            print("stderr:", result.stderr.decode("utf-8"))
+            print("stdout:", result.stdout.decode("utf-8"))
+        full_reply = result.stderr.decode("utf-8")
+        reply = re.sub(r"^\s*WARNING:.*\n?", "", full_reply, flags=re.MULTILINE + re.IGNORECASE)
         if len(reply) == 0:
             return True
-        log_error(f'get-pip returned:\n{full_reply}')
+        log_error(f"get-pip returned:\n{full_reply}")
     except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
-        log_error(f'install_pip raised {type(exception_info).__name__}: {str(exception_info)}')
+        log_error(f"install_pip raised {type(exception_info).__name__}: {str(exception_info)}")
     finally:
         try:
-            os.remove(f'{LocalDir}/get-pip.py')
+            os.remove(f"{LocalDir}/get-pip.py")
         except OSError:
-            log_error('Cant remove `get-pip.py`.')
+            log_error("Cant remove `get-pip.py`.")
     return False
 
 
 def pip_call(parameters, user_cache: bool = True) -> [bool, str]:
     try:
-        etc = ['--disable-pip-version-check']
+        etc = ["--disable-pip-version-check"]
         etc += EXTRA_PIP_ARGS
         if user_cache:
-            etc += ['--user', '--cache-dir', get_abs_local_dir(), '--no-warn-script-location']
+            etc += ["--user", "--cache-dir", get_abs_local_dir(), "--no-warn-script-location"]
         result = subprocess.run(
-            [Interpreter, '-m', 'pip'] + parameters + etc,
-            stderr=subprocess.PIPE, stdout=subprocess.PIPE, check=False, env=get_modified_env()
+            [Interpreter, "-m", "pip"] + parameters + etc,
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            check=False,
+            env=get_modified_env(),
         )
         if PIP_DEBUG == 1:
-            print('stderr:', result.stderr.decode('utf-8'))
-            print('stdout:', result.stdout.decode('utf-8'))
-        full_reply = result.stderr.decode('utf-8')
-        reply = re.sub(r'^\s*WARNING:.*\n?', '', full_reply, flags=re.MULTILINE + re.IGNORECASE)
+            print("stderr:", result.stderr.decode("utf-8"))
+            print("stdout:", result.stdout.decode("utf-8"))
+        full_reply = result.stderr.decode("utf-8")
+        reply = re.sub(r"^\s*WARNING:.*\n?", "", full_reply, flags=re.MULTILINE + re.IGNORECASE)
         if len(reply) == 0:
-            return True, result.stdout.decode('utf-8')
-        return False, result.stderr.decode('utf-8')
+            return True, result.stdout.decode("utf-8")
+        return False, result.stderr.decode("utf-8")
     except (OSError, ValueError, TypeError, subprocess.TimeoutExpired) as exception_info:
-        return False, f'pip_call raised {type(exception_info).__name__}: {str(exception_info)}'
+        return False, f"pip_call raised {type(exception_info).__name__}: {str(exception_info)}"
 
 
 def check() -> dict:
-    ret = {'required': check_packages(RequiredPackagesList),
-           'optional': check_packages(OptionalPackagesList),
-           'boost': check_packages(get_all_boost_packages()),
-           'available_algorithms': get_installed_algorithms_list(),
-           'video_required': check_video(),
-           'errors': ErrorsContainer,
-           'warnings': db.get_warnings(),
-           'installed_list': {
-               'required': add_package_info(RequiredPackagesList),
-               'optional': add_package_info(OptionalPackagesList),
-               'boost': add_package_info(get_all_boost_packages())}
-           }
+    ret = {
+        "required": check_packages(RequiredPackagesList),
+        "optional": check_packages(OptionalPackagesList),
+        "boost": check_packages(get_all_boost_packages()),
+        "available_algorithms": get_installed_algorithms_list(),
+        "video_required": check_video(),
+        "errors": ErrorsContainer,
+        "warnings": db.get_warnings(),
+        "installed_list": {
+            "required": add_package_info(RequiredPackagesList),
+            "optional": add_package_info(OptionalPackagesList),
+            "boost": add_package_info(get_all_boost_packages()),
+        },
+    }
     if not ErrorsContainer:
-        if not ret['required']:
+        if not ret["required"]:
             log_error(*db.check_db())
-            ret['errors'] = ErrorsContainer
-            ret['warnings'] = db.get_warnings()
+            ret["errors"] = ErrorsContainer
+            ret["warnings"] = db.get_warnings()
     return ret
 
 
 def install(packages_list: dict) -> int:
     if not is_pip_present():
         if not install_pip():
-            log_error('Cant install local pip.')
+            log_error("Cant install local pip.")
             return 1
         if not is_pip_present():
-            log_error('Cant run pip after local install.')
+            log_error("Cant run pip after local install.")
             return 1
     ret = 0
     if packages_list:
         if not check_local_dir(create_if_absent=True):
-            log_error('Cant create local dir for packages.')
+            log_error("Cant create local dir for packages.")
             return 1
     for package in packages_list:
-        call_result, message = pip_call(['install', packages_list[package]])
+        call_result, message = pip_call(["install", packages_list[package]])
         if not call_result:
-            log_error(f'Error during install {package}({packages_list[package]}).\nError:\n{message}')
+            log_error(f"Error during install {package}({packages_list[package]}).\nError:\n{message}")
             ret = 1
     if ret:
         return 1
     importlib.invalidate_caches()
     missing_packages = check_packages(packages_list)
     if len(missing_packages) > 0:
-        log_error(f'After install, cant find these packages: {missing_packages}')
+        log_error(f"After install, cant find these packages: {missing_packages}")
         return 1
     return 0
 
@@ -393,14 +416,14 @@ def install(packages_list: dict) -> int:
 def update(packages: list) -> int:
     ret = 0
     if not is_pip_present(only_global=True):
-        call_result, message = pip_call(['install', '--upgrade', 'pip'])
+        call_result, message = pip_call(["install", "--upgrade", "pip"])
         if not call_result:
-            log_error(f'Error during upgrading pip.\nError:\n{message}')
+            log_error(f"Error during upgrading pip.\nError:\n{message}")
             ret = 1
     for package in packages:
-        call_result, message = pip_call(['install', '--upgrade', package])
+        call_result, message = pip_call(["install", "--upgrade", package])
         if not call_result:
-            log_error(f'Error during upgrading {package}.\nError:\n{message}')
+            log_error(f"Error during upgrading {package}.\nError:\n{message}")
             ret = 1
     return ret
 
@@ -408,38 +431,37 @@ def update(packages: list) -> int:
 def delete(packages: list) -> int:
     ret = 0
     for package in packages:
-        call_result, message = pip_call(['uninstall', package, '-y'], user_cache=False)
+        call_result, message = pip_call(["uninstall", package, "-y"], user_cache=False)
         if not call_result:
-            log_error(f'Error during uninstall {package}.\nError:\n{message}')
+            log_error(f"Error during uninstall {package}.\nError:\n{message}")
             ret = 1
     return ret
 
 
 def get_dict_by_args(arguments) -> dict:
     ret = {}
-    if 'required' in arguments:
+    if "required" in arguments:
         ret.update(RequiredPackagesList)
-    if 'optional' in arguments:
+    if "optional" in arguments:
         ret.update(OptionalPackagesList)
-    if 'boost' in arguments:
+    if "boost" in arguments:
         ret.update(get_all_boost_packages())
     return ret
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    parser = argparse.ArgumentParser(description='Module for checking/installing needed packages.',
-                                     add_help=True)
+    parser = argparse.ArgumentParser(description="Module for checking/installing needed packages.", add_help=True)
     group = parser.add_mutually_exclusive_group()
-    choices = ['required', 'optional', 'boost']
-    group.add_argument('--check', dest='check', action='store_true',
-                       help='Check and return list of missing/available packages.')
-    group.add_argument('--install', dest='install', nargs='+', choices=choices, type=str,
-                       help='Install specified packages lists.')
-    group.add_argument('--update', dest='update', nargs='+', type=str,
-                       help='Update packages with specified names.')
-    group.add_argument('--delete', dest='delete', nargs='+', type=str,
-                       help='Delete packages with specified names.')
+    choices = ["required", "optional", "boost"]
+    group.add_argument(
+        "--check", dest="check", action="store_true", help="Check and return list of missing/available packages."
+    )
+    group.add_argument(
+        "--install", dest="install", nargs="+", choices=choices, type=str, help="Install specified packages lists."
+    )
+    group.add_argument("--update", dest="update", nargs="+", type=str, help="Update packages with specified names.")
+    group.add_argument("--delete", dest="delete", nargs="+", type=str, help="Delete packages with specified names.")
     args = parser.parse_args()
     exit_code = 0
     if args.check:

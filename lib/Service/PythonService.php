@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -54,16 +54,16 @@ class PythonService {
 
 	/**
 	 * Runs Python script with given script relative path and script params
-	 * 
+	 *
 	 * @param string $scriptName relative path to the Python script
 	 * @param array $scriptParams params to script in array (`['-param1' => value1, '--param2' => value2]`)
 	 * @param boolean $nonBlocking flag that determines how to run Python script.
 	 * @param array $env env variables for python script
-	 * 
+	 *
 	 * @return array|void
-	 * 
+	 *
 	 * If `$nonBlocking = true` - function will not waiting for Python script output and return `void`.
-	 * If `$nonBlocking = false` - function will return array with the `result_code` 
+	 * If `$nonBlocking = false` - function will return array with the `result_code`
 	 * and `output` of the script after Python script finish executing.
 	 */
 	public function run($scriptName, $scriptParams = [], $nonBlocking = false, $env = []) {
@@ -110,7 +110,7 @@ class PythonService {
 
 	/**
 	 * Check server requirements
-	 * 
+	 *
 	 * @return array check results with errors list
 	 */
 	private function checkDepsRequirements() {
@@ -127,7 +127,7 @@ class PythonService {
 
 	/**
 	 * @param string @listName
-	 * 
+	 *
 	 * @return array installation results list
 	 */
 	public function installDependencies($listName = '') {
@@ -169,7 +169,7 @@ class PythonService {
 
 	/**
 	 * @param array $packagesList
-	 * 
+	 *
 	 * @return array installed packages list after deleting
 	 */
 	public function deleteDependencies($packagesList = []) {
@@ -190,7 +190,7 @@ class PythonService {
 
 	/**
 	 * @param array $packagesList
-	 * 
+	 *
 	 * @return array installed packages list after deleting
 	 */
 	public function updateDependencies($packagesList = []) {

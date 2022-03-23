@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -122,9 +122,9 @@ class UtilsService {
 
 	/**
 	 * Check if a php function available
-	 * 
+	 *
 	 * @param string $function_name
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isFunctionEnabled($function_name) {
@@ -152,8 +152,8 @@ class UtilsService {
 		$this->pythonCommand = $pythonCommandSetting->getValue();
 		exec($this->pythonCommand . ' --version', $output, $result_code);
 		if ($result_code === 0 && isset($output[0]) && preg_match_all("/\d{1}\.\d{1,2}(\.\d{1,2}){0,1}/s", $output[0], $matches)) {
-			return isset($matches[0][0]) ? 
-				['success' => true, 'matches' => $matches[0][0], 'result_code' => $result_code] : 
+			return isset($matches[0][0]) ?
+				['success' => true, 'matches' => $matches[0][0], 'result_code' => $result_code] :
 				['success' => false, 'result_code' => $result_code];
 		}
 		return ['success' => false, 'result_code' => $result_code];
@@ -161,7 +161,7 @@ class UtilsService {
 
 	/**
 	 * Check if installed Python version compatible with MediaDC application
-	 * 
+	 *
 	 * @return array $result
 	 */
 	public function isPythonCompatible(): array {
@@ -192,7 +192,7 @@ class UtilsService {
 		if ($apps_directory !== "" && is_array($apps_directory) && count($apps_directory) > 0) {
 			foreach ($apps_directory as $custom_apps_dir) {
 				$appDir = $custom_apps_dir['path'] . '/' . Application::APP_ID;
-				if (file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable'] 
+				if (file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable']
 					&& file_exists($appDir) && is_dir($appDir)) {
 					return $custom_apps_dir['path'] . '/';
 				}

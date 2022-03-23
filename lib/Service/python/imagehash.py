@@ -1,4 +1,4 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 from PIL import Image
 import numpy
@@ -51,6 +51,7 @@ def average_hash(image, hash_size=8, mean=numpy.mean):
 
 def phash(image, hash_size=8, highfreq_factor=4):
     import scipy.fftpack
+
     img_size = hash_size * highfreq_factor
     image = image.convert("L").resize((img_size, img_size), Image.ANTIALIAS)
     pixels = numpy.asarray(image)
@@ -63,11 +64,12 @@ def phash(image, hash_size=8, highfreq_factor=4):
 
 def phash_simple(image, hash_size=8, highfreq_factor=4):
     import scipy.fftpack
+
     img_size = hash_size * highfreq_factor
     image = image.convert("L").resize((img_size, img_size), Image.ANTIALIAS)
     pixels = numpy.asarray(image)
     dct = scipy.fftpack.dct(pixels)
-    dctlowfreq = dct[:hash_size, 1:hash_size + 1]
+    dctlowfreq = dct[:hash_size, 1 : hash_size + 1]
     avg = dctlowfreq.mean()
     diff = dctlowfreq > avg
     return diff
@@ -89,8 +91,9 @@ def dhash_vertical(image, hash_size=8):
     return diff
 
 
-def whash(image, hash_size=8, image_scale=None, mode='haar', remove_max_haar_ll=True):
+def whash(image, hash_size=8, image_scale=None, mode="haar", remove_max_haar_ll=True):
     import pywt
+
     if image_scale is not None:
         assert image_scale & (image_scale - 1) == 0, "image_scale is not power of 2"
     else:
@@ -105,14 +108,14 @@ def whash(image, hash_size=8, image_scale=None, mode='haar', remove_max_haar_ll=
     dwt_level = ll_max_level - level
 
     image = image.convert("L").resize((image_scale, image_scale), Image.ANTIALIAS)
-    pixels = numpy.asarray(image) / 255.
+    pixels = numpy.asarray(image) / 255.0
 
     # Remove low level frequency LL(max_ll) if @remove_max_haar_ll using haar filter
     if remove_max_haar_ll:
-        coeffs = pywt.wavedec2(pixels, 'haar', level=ll_max_level)
+        coeffs = pywt.wavedec2(pixels, "haar", level=ll_max_level)
         coeffs = list(coeffs)
         coeffs[0] *= 0
-        pixels = pywt.waverec2(coeffs, 'haar')
+        pixels = pywt.waverec2(coeffs, "haar")
 
     # Use LL(K) as freq, where K is log2(@hash_size)
     coeffs = pywt.wavedec2(pixels, mode, level=dwt_level)
@@ -153,10 +156,10 @@ def colorhash(image, binbits=3):
 
     # now we have fractions in each category (6*2 + 2 = 14 bins)
     # convert to hash and discretize:
-    maxvalue = 2 ** binbits
+    maxvalue = 2**binbits
     values = [min(maxvalue - 1, int(frac_black * maxvalue)), min(maxvalue - 1, int(frac_gray * maxvalue))]
     for counts in list(h_faint_counts) + list(h_bright_counts):
-        values.append(min(maxvalue - 1, int(counts * maxvalue * 1. / c)))
+        values.append(min(maxvalue - 1, int(counts * maxvalue * 1.0 / c)))
     # print(values)
     bitarray = []
     for v in values:

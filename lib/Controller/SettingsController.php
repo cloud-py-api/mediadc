@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -68,7 +68,7 @@ class SettingsController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @return JSONResponse array of all settings
 	 */
 	public function index() {
@@ -77,9 +77,9 @@ class SettingsController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param array $settings
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function update($settings) {
@@ -88,9 +88,9 @@ class SettingsController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param array $setting
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function updateSetting($setting) {

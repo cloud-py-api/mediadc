@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -51,7 +51,7 @@ class RecentTasksWidget implements IWidget {
 	/** @var CollectorService */
 	private $collectorService;
 
-	public function __construct(IInitialState $initialState, IL10N $il10n, 
+	public function __construct(IInitialState $initialState, IL10N $il10n,
 								IURLGenerator $urlGenerator, CollectorService $collectorService)
 	{
 		$this->initialState = $initialState;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -125,9 +125,9 @@ class CollectorService {
 
 	/**
 	 * Run background Python script for collecting duplicates.
-	 * 
+	 *
 	 * @param array $params task params
-	 * 
+	 *
 	 * @return array created task start result (queued or started)
 	 */
 	public function collect($params = []) {
@@ -156,9 +156,9 @@ class CollectorService {
 
 	/**
 	 * Restart existing Collector Task
-	 * 
+	 *
 	 * @param array $params
-	 * 
+	 *
 	 * @return array task restart result (queued or started)
 	 */
 	public function restart($params = []) {
@@ -226,9 +226,9 @@ class CollectorService {
 
 	/**
 	 * Callback to extract ColectorTask id
-	 * 
+	 *
 	 * @param CollectorTask $task
-	 * 
+	 *
 	 * @return int
 	 */
 	static function taskIdCallback($task) {
@@ -237,9 +237,9 @@ class CollectorService {
 
 	/**
 	 * Terminate CollectorTask background Python process
-	 * 
+	 *
 	 * @param int $taskId
-	 * 
+	 *
 	 * @return CollectorTask terminated CollectorTask
 	 */
 	public function terminate($taskId) {
@@ -260,7 +260,7 @@ class CollectorService {
 	/**
 	 * @param array $params task params
 	 * @param boolean $queued queued task flag (task type)
-	 * 
+	 *
 	 * @return CollectorTask|null created Collector Task
 	 */
 	public function createCollectorTask($params = [], $queued = false) {
@@ -305,7 +305,7 @@ class CollectorService {
 			'filesScanned' => 0,
 			'filesTotal' => count($params) === 0
 				? $this->getTargetFolderFilesCount($this->userFolder, $this->isShared($this->userFolder),
-											count($params) === 0 ? self::TARGET_MIME_TYPE[0] 
+											count($params) === 0 ? self::TARGET_MIME_TYPE[0]
 											: $params['collectorSettings']['target_mtype'], $excludeList)
 				: $taskData['files_total'],
 			'filesTotalSize' => count($params) === 0 ? $this->userFolder->getSize() : $taskData['files_total_size'],
@@ -326,9 +326,9 @@ class CollectorService {
 
 	/**
 	 * Create task and add it to the queued jobs list
-	 * 
+	 *
 	 * @param array $params task params
-	 * 
+	 *
 	 * @return CollectorTask|null created queued Collector task
 	 */
 	public function createQueuedTask($params = []) {
@@ -346,7 +346,7 @@ class CollectorService {
 
 	/**
 	 * Clean up Collector job (remove deleted photos&vidoes hashes from database)
-	 * 
+	 *
 	 * @return array Collector cleanup job results
 	 */
 	public function cleanup() {
@@ -377,7 +377,7 @@ class CollectorService {
 
 	/**
 	 * @param int $taskId
-	 * 
+	 *
 	 * @return CollectorTask|array
 	 */
 	public function get($taskId) {
@@ -393,7 +393,7 @@ class CollectorService {
 
 	/**
 	 * Returns current user's tasks
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getUserCollectorTasks() {
@@ -402,10 +402,10 @@ class CollectorService {
 
 	/**
 	 * Returns current user's recent tasks
-	 * 
+	 *
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getUserRecentTasks($limit = null, $offset = null) {
@@ -414,7 +414,7 @@ class CollectorService {
 
 	/**
 	 * @param int $taskId
-	 * 
+	 *
 	 * @return CollectorTask deleted task
 	 */
 	public function delete($taskId) {
@@ -427,7 +427,7 @@ class CollectorService {
 
 	/**
 	 * @param int $taskDetailId
-	 * 
+	 *
 	 * @return CollectorTaskDetail deleted task detail
 	 */
 	public function deleteTaskDetail(int $taskDetailId) {
@@ -437,7 +437,7 @@ class CollectorService {
 
 	/**
 	 * @param int $taskId
-	 * 
+	 *
 	 * @return void
 	 */
 	public function deleteTaskDetails($taskId) {
@@ -449,7 +449,7 @@ class CollectorService {
 
 	/**
 	 * Returns basic info about target directories
-	 * 
+	 *
 	 * @param CollectorTask $task
 	 * @return array target directories info
 	 */
@@ -496,7 +496,7 @@ class CollectorService {
 	/**
 	 * @param int $taskDetailId
 	 * @param bool $filesizeAscending
-	 * 
+	 *
 	 * @return array $filesInfo
 	 */
 	public function getDetailGroupFilesInfo($taskDetailId, $filesizeAscending) {
@@ -554,7 +554,7 @@ class CollectorService {
 
 	/**
 	 * @param int $taskId
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getDetailFilesTotalSize($taskId) {
@@ -579,12 +579,12 @@ class CollectorService {
 
 	/**
 	 * Removes Collector Task Detail group file
-	 * 
+	 *
 	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param int $fileid
 	 * @param bool $removeIfOneLeft
-	 * 
+	 *
 	 * @return array $result
 	 */
 	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid, $removeIfOneLeft = true) {
@@ -647,9 +647,9 @@ class CollectorService {
 
 	/**
 	 * Remove ColectorTaskDetail groups with deleting coresponding files
-	 * 
+	 *
 	 * @param array $taskDetailIds
-	 * 
+	 *
 	 * @return array $result
 	 */
 	public function removeTaskDetailGroups($taskDetailIds) {
@@ -658,18 +658,18 @@ class CollectorService {
 			array_push($result, $this->deleteTaskDetail($taskDetailId));
 		}
 		return [
-			'success' => count($result) === count($taskDetailIds), 
+			'success' => count($result) === count($taskDetailIds),
 			'removedTaskDetails' => $result
 		];
 	}
 
 	/**
 	 * Delete ColectorTaskDetail groups with deleting coresponding files
-	 * 
+	 *
 	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param array $fileIds
-	 * 
+	 *
 	 * @return array $result
 	 */
 	public function deleteTaskDetailFiles($taskDetailId, $fileIds) {
@@ -716,11 +716,11 @@ class CollectorService {
 
 	/**
 	 * Remove ColectorTaskDetail groups with deleting coresponding files
-	 * 
+	 *
 	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param array $fileIds
-	 * 
+	 *
 	 * @return array $result
 	 */
 	public function removeTaskDetailFiles($taskDetailId, $fileIds) {
@@ -746,7 +746,7 @@ class CollectorService {
 	 * @param int $taskId
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
 	public function details($taskId, $limit = null, $offset = null) {
@@ -765,7 +765,7 @@ class CollectorService {
 	 * @param array $targetDirectoryIds
 	 * @param int $targetMtype
 	 * @param array $excludeList
-	 * 
+	 *
 	 * @return array target directories `files_total` and `files_total_size`
 	 */
 	public function getTargetDirectoriesData($targetDirectoryIds, $targetMtype, $excludeList) {
@@ -795,7 +795,7 @@ class CollectorService {
 	 * @param Folder $folder
 	 * @param int $targetMtype
 	 * @param array $excludeList
-	 * 
+	 *
 	 * @return int Valid target files size
 	 */
 	public function getTargetFolderFilesSize($folder, $targetMtype, $excludeList) {
@@ -819,7 +819,7 @@ class CollectorService {
 	 * @param bool $shared
 	 * @param int $targetMtype
 	 * @param array $excludeList
-	 * 
+	 *
 	 * @return int folder files count
 	 */
 	public function getTargetFolderFilesCount($folder,$shared, $targetMtype, $excludeList) {
@@ -838,10 +838,10 @@ class CollectorService {
 
 	/**
 	 * Check if Folder or File passes excludeList
-	 * 
+	 *
 	 * @param Node $node
 	 * @param array $excludeList
-	 * 
+	 *
 	 * @return bool
 	 */
 	private function passesExcludeList($node, $excludeList) {
@@ -878,7 +878,7 @@ class CollectorService {
 
 	/**
 	 * @param Node $node
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function isShared($node) {
@@ -890,11 +890,11 @@ class CollectorService {
 	 * @param File $file
 	 * @param boolean $shared
 	 * $param int $targetMtype
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function validFile($file, $shared, $targetMtype){
-		return in_array($file->getMimePart(), self::TARGET_MIME_TYPE[$targetMtype]) 
+		return in_array($file->getMimePart(), self::TARGET_MIME_TYPE[$targetMtype])
 			&& $this->isShared($file) === $shared;
 	}
 

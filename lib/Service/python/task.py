@@ -42,6 +42,7 @@ TASK_KEEP_ALIVE = 8
 
 class TaskType(Enum):
     """Possible task types."""
+
     IMAGE = 0
     VIDEO = 1
     IMAGE_VIDEO = 2
@@ -49,41 +50,43 @@ class TaskType(Enum):
 
 def init_task_settings(task_info: dict) -> dict:
     """Prepares task for execution, returns a dictionary to pass to process_(image/video)_task functions."""
-    if task_info['files_scanned'] > 0:
-        db.clear_task_files_scanned_groups(task_info['id'])
-    task_settings = {'id': task_info['id'], 'data_dir': db.Config['datadir']}
-    excl_all = task_info['exclude_list']
-    task_settings['exclude_mask'] = list(dict.fromkeys(excl_all['user']['mask'] + excl_all['admin']['mask']))
-    task_settings['exclude_fileid'] = list(dict.fromkeys(excl_all['user']['fileid'] + excl_all['admin']['fileid']))
-    task_settings['mime_dir'] = db.get_mimetype_id("'httpd/unix-directory'")
-    task_settings['mime_image'] = db.get_mimetype_id("'image'")
-    task_settings['mime_video'] = db.get_mimetype_id("'video'")
-    collector_settings = task_info['collector_settings']
-    task_settings['hash_size'] = collector_settings['hash_size']
-    if not collector_settings['hashing_algorithm'] in get_installed_algorithms_list():
-        db.append_task_error(task_settings['id'], f"`{collector_settings['hashing_algorithm']}` is not available.")
+    if task_info["files_scanned"] > 0:
+        db.clear_task_files_scanned_groups(task_info["id"])
+    task_settings = {"id": task_info["id"], "data_dir": db.Config["datadir"]}
+    excl_all = task_info["exclude_list"]
+    task_settings["exclude_mask"] = list(dict.fromkeys(excl_all["user"]["mask"] + excl_all["admin"]["mask"]))
+    task_settings["exclude_fileid"] = list(dict.fromkeys(excl_all["user"]["fileid"] + excl_all["admin"]["fileid"]))
+    task_settings["mime_dir"] = db.get_mimetype_id("'httpd/unix-directory'")
+    task_settings["mime_image"] = db.get_mimetype_id("'image'")
+    task_settings["mime_video"] = db.get_mimetype_id("'video'")
+    collector_settings = task_info["collector_settings"]
+    task_settings["hash_size"] = collector_settings["hash_size"]
+    if not collector_settings["hashing_algorithm"] in get_installed_algorithms_list():
+        db.append_task_error(task_settings["id"], f"`{collector_settings['hashing_algorithm']}` is not available.")
         return {}
-    task_settings['hash_algo'] = collector_settings['hashing_algorithm']
-    if collector_settings['similarity_threshold'] == 100:
-        task_settings['precision_img'] = int(task_settings['hash_size'] / 8)
+    task_settings["hash_algo"] = collector_settings["hashing_algorithm"]
+    if collector_settings["similarity_threshold"] == 100:
+        task_settings["precision_img"] = int(task_settings["hash_size"] / 8)
     else:
-        number_of_bits = task_settings['hash_size']**2
-        if task_settings['hash_size'] <= 8:
-            task_settings['precision_img'] = number_of_bits - int(math.ceil(
-                number_of_bits / 100.0 * collector_settings['similarity_threshold']))
-            if task_settings['precision_img'] == 0:
-                task_settings['precision_img'] = 1
+        number_of_bits = task_settings["hash_size"] ** 2
+        if task_settings["hash_size"] <= 8:
+            task_settings["precision_img"] = number_of_bits - int(
+                math.ceil(number_of_bits / 100.0 * collector_settings["similarity_threshold"])
+            )
+            if task_settings["precision_img"] == 0:
+                task_settings["precision_img"] = 1
         else:
-            task_settings['precision_img'] = number_of_bits - int(math.floor(
-                number_of_bits / 100.0 * collector_settings['similarity_threshold']))
-    task_settings['precision_vid'] = task_settings['precision_img'] * 4
-    print('Image hamming distance: ', task_settings['precision_img'])
-    print('Video hamming distance between 4 frames: ', task_settings['precision_vid'])
-    print('Hashing algo:', task_settings['hash_algo'])
-    task_settings['type'] = collector_settings['target_mtype']
-    task_settings['target_dirs'] = task_info['target_directory_ids']
-    task_settings['target_dirs'] = sorted(list(map(int, task_settings['target_dirs'])))
-    task_settings['remote_filesize_limit'] = db.get_remote_filesize_limit()
+            task_settings["precision_img"] = number_of_bits - int(
+                math.floor(number_of_bits / 100.0 * collector_settings["similarity_threshold"])
+            )
+    task_settings["precision_vid"] = task_settings["precision_img"] * 4
+    print("Image hamming distance: ", task_settings["precision_img"])
+    print("Video hamming distance between 4 frames: ", task_settings["precision_vid"])
+    print("Hashing algo:", task_settings["hash_algo"])
+    task_settings["type"] = collector_settings["target_mtype"]
+    task_settings["target_dirs"] = task_info["target_directory_ids"]
+    task_settings["target_dirs"] = sorted(list(map(int, task_settings["target_dirs"])))
+    task_settings["remote_filesize_limit"] = db.get_remote_filesize_limit()
     return task_settings
 
 
@@ -96,28 +99,28 @@ def reset_data_groups():
 def analyze_and_lock(task_info: dict, forced: bool) -> bool:
     """Checks if can/need we to work on this task. Returns True if task was locked and must be processed."""
     time.sleep(1)
-    if task_info['py_pid'] != 0:
-        if db.get_time() > task_info['updated_time'] + int(TASK_KEEP_ALIVE) * 3:
-            print('Task was hanging.')
+    if task_info["py_pid"] != 0:
+        if db.get_time() > task_info["updated_time"] + int(TASK_KEEP_ALIVE) * 3:
+            print("Task was hanging.")
         else:
-            print('Task already running.')
+            print("Task already running.")
             return False
     elif not forced:
-        if task_info['errors']:
-            print('Task was previously finished with errors.')
+        if task_info["errors"]:
+            print("Task was previously finished with errors.")
         else:
-            if task_info['finished_time'] == 0:
-                if task_info['files_scanned'] > 0:
-                    print('Task was interrupted.')
+            if task_info["finished_time"] == 0:
+                if task_info["files_scanned"] > 0:
+                    print("Task was interrupted.")
                 else:
-                    print('Processing new task.')
+                    print("Processing new task.")
             else:
-                print('Task was previously finished successfully.')
+                print("Task was previously finished successfully.")
                 return False
-    if not db.lock_task(task_info['id'], task_info['updated_time']):
-        print('Cant lock task.')
+    if not db.lock_task(task_info["id"], task_info["updated_time"]):
+        print("Cant lock task.")
         return False
-    print('Task locked.')
+    print("Task locked.")
     return True
 
 
@@ -128,24 +131,31 @@ def updated_time_background_thread(task_id: int, exit_event):
             exit_event.wait(timeout=float(TASK_KEEP_ALIVE))
             if exit_event.is_set():
                 break
-            print('BT:Updating keepalive.')
+            print("BT:Updating keepalive.")
             db.set_task_keepalive(task_id, connection_id=1)
     except Exception as exception_info:
         print(f"BT:Exception({type(exception_info).__name__}): `{str(exception_info)}`")
-        db.append_task_error(task_id, f"BT:Exception({type(exception_info).__name__}): `{str(exception_info)}`",
-                             connection_id=1)
-    print('BT:Close DB connection.')
+        db.append_task_error(
+            task_id, f"BT:Exception({type(exception_info).__name__}): `{str(exception_info)}`", connection_id=1
+        )
+    print("BT:Close DB connection.")
     db.close_connection(1)
-    print('BT:Exiting.')
+    print("BT:Exiting.")
 
 
 def start_background_thread(task_info: dict):
     """Starts background daemon update thread for value `updated_time` of specified task."""
-    print('Starting background thread.')
-    task_info['exit_event'] = threading.Event()
-    task_info['b_thread'] = threading.Thread(target=updated_time_background_thread, daemon=True,
-                                             args=(task_info['id'], task_info['exit_event'],))
-    task_info['b_thread'].start()
+    print("Starting background thread.")
+    task_info["exit_event"] = threading.Event()
+    task_info["b_thread"] = threading.Thread(
+        target=updated_time_background_thread,
+        daemon=True,
+        args=(
+            task_info["id"],
+            task_info["exit_event"],
+        ),
+    )
+    task_info["b_thread"].start()
 
 
 def process(task_info: dict, forced: bool):
@@ -153,18 +163,18 @@ def process(task_info: dict, forced: bool):
     print(f"Processing task: id={task_info['id']}, forced={forced}")
     if not analyze_and_lock(task_info, forced):
         return
-    _taskStatus = 'error'
+    _taskStatus = "error"
     try:
         reset_data_groups()
         update_storages_info()
         task_settings = init_task_settings(task_info)
         if task_settings:
             module_init_done = True
-            task_type = TaskType(task_settings['type'])
+            task_type = TaskType(task_settings["type"])
             if task_type in (TaskType.IMAGE, TaskType.VIDEO, TaskType.IMAGE_VIDEO):
-                module_init_done &= dc_images_init(task_settings['id'])
+                module_init_done &= dc_images_init(task_settings["id"])
             if task_type in (TaskType.VIDEO, TaskType.IMAGE_VIDEO) and module_init_done:
-                module_init_done &= dc_videos_init(task_settings['id'])
+                module_init_done &= dc_videos_init(task_settings["id"])
             if module_init_done:
                 start_background_thread(task_info)
                 time_start = time.perf_counter()
@@ -175,28 +185,28 @@ def process(task_info: dict, forced: bool):
                 elif task_type == TaskType.IMAGE_VIDEO:
                     process_image_task(task_settings)
                     process_video_task(task_settings)
-                _taskStatus = 'finished'
+                _taskStatus = "finished"
                 print(f"Task execution_time: {time.perf_counter() - time_start}")
-                db.finalize_task(task_info['id'])
+                db.finalize_task(task_info["id"])
     except Exception as exception_info:
         print(f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
-        db.append_task_error(task_info['id'], f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
+        db.append_task_error(task_info["id"], f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
     finally:
-        if 'b_thread' in task_info:
-            task_info['exit_event'].set()
-            task_info['b_thread'].join(timeout=2.0)
-        print('Task unlocked.')
-        db.unlock_task(task_info['id'])
-        if task_info.get('collector_settings', {}).get('finish_notification', False):
-            db.occ_call('mediadc:collector:tasks:notify', str(task_info['id']), _taskStatus)
+        if "b_thread" in task_info:
+            task_info["exit_event"].set()
+            task_info["b_thread"].join(timeout=2.0)
+        print("Task unlocked.")
+        db.unlock_task(task_info["id"])
+        if task_info.get("collector_settings", {}).get("finish_notification", False):
+            db.occ_call("mediadc:collector:tasks:notify", str(task_info["id"]), _taskStatus)
 
 
 def process_image_task(task_settings: dict):
     """Top Level function to process image task. As input param expects dict from `init_task_settings` function."""
-    directories_ids = task_settings['target_dirs']
+    directories_ids = task_settings["target_dirs"]
     apply_exclude_list(db.get_paths_by_ids(directories_ids), task_settings, directories_ids)
     process_image_task_dirs(directories_ids, task_settings)
-    save_image_results(task_settings['id'])
+    save_image_results(task_settings["id"])
 
 
 def process_image_task_dirs(directories_ids: list, task_settings: dict):
@@ -207,10 +217,10 @@ def process_image_task_dirs(directories_ids: list, task_settings: dict):
 
 def process_video_task(task_settings: dict):
     """Top Level function to process video task. As input param expects dict from `init_task_settings` function."""
-    directories_ids = task_settings['target_dirs']
+    directories_ids = task_settings["target_dirs"]
     apply_exclude_list(db.get_paths_by_ids(directories_ids), task_settings, directories_ids)
     process_video_task_dirs(directories_ids, task_settings)
-    save_video_results(task_settings['id'])
+    save_video_results(task_settings["id"])
 
 
 def process_video_task_dirs(directories_ids: list, task_settings: dict):
@@ -224,15 +234,17 @@ def process_directory_images(dir_id: int, task_settings: dict) -> list:
     dir_info = db.get_paths_by_ids([dir_id])
     file_mounts = []
     if dir_info:
-        file_mounts = get_mounts_to(dir_info[0]['storage'], dir_info[0]['path'])
-    fs_records = db.get_directory_data_image(dir_id, task_settings['mime_dir'], task_settings['mime_image'], file_mounts)
+        file_mounts = get_mounts_to(dir_info[0]["storage"], dir_info[0]["path"])
+    fs_records = db.get_directory_data_image(
+        dir_id, task_settings["mime_dir"], task_settings["mime_image"], file_mounts
+    )
     if not fs_records:
         return []
     apply_exclude_list(fs_records, task_settings)
-    sub_dirs = extract_sub_dirs(fs_records, task_settings['mime_dir'])
+    sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
     dc_process_images(task_settings, fs_records)
     if fs_records:
-        db.increase_processed_files_count(task_settings['id'], len(fs_records))
+        db.increase_processed_files_count(task_settings["id"], len(fs_records))
     return sub_dirs
 
 
@@ -241,15 +253,17 @@ def process_directory_videos(dir_id: int, task_settings: dict) -> list:
     dir_info = db.get_paths_by_ids([dir_id])
     file_mounts = []
     if dir_info:
-        file_mounts = get_mounts_to(dir_info[0]['storage'], dir_info[0]['path'])
-    fs_records = db.get_directory_data_video(dir_id, task_settings['mime_dir'], task_settings['mime_video'], file_mounts)
+        file_mounts = get_mounts_to(dir_info[0]["storage"], dir_info[0]["path"])
+    fs_records = db.get_directory_data_video(
+        dir_id, task_settings["mime_dir"], task_settings["mime_video"], file_mounts
+    )
     if not fs_records:
         return []
     apply_exclude_list(fs_records, task_settings)
-    sub_dirs = extract_sub_dirs(fs_records, task_settings['mime_dir'])
+    sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
     dc_process_videos(task_settings, fs_records)
     if fs_records:
-        db.increase_processed_files_count(task_settings['id'], len(fs_records))
+        db.increase_processed_files_count(task_settings["id"], len(fs_records))
     return sub_dirs
 
 
@@ -257,9 +271,9 @@ def apply_exclude_list(fs_records: list, task_settings: dict, where_to_purge=Non
     """Purge all records according to exclude_(mask/fileid) from `where_to_purge`(or from fs_records)."""
     indexes_to_purge = []
     for index, fs_record in enumerate(fs_records):
-        if fs_record['fileid'] in task_settings['exclude_fileid']:
+        if fs_record["fileid"] in task_settings["exclude_fileid"]:
             indexes_to_purge.append(index)
-        elif is_path_in_exclude(fs_record['path'], task_settings['exclude_mask']):
+        elif is_path_in_exclude(fs_record["path"], task_settings["exclude_mask"]):
             indexes_to_purge.append(index)
     if where_to_purge is None:
         for index in reversed(indexes_to_purge):
@@ -275,8 +289,8 @@ def extract_sub_dirs(fs_records: list, mime_dir: int) -> list:
     sub_dirs = []
     indexes_to_purge = []
     for index, fs_record in enumerate(fs_records):
-        if fs_record['mimetype'] == mime_dir:
-            sub_dirs.append(fs_record['fileid'])
+        if fs_record["mimetype"] == mime_dir:
+            sub_dirs.append(fs_record["fileid"])
             indexes_to_purge.append(index)
     for index in reversed(indexes_to_purge):
         del fs_records[index]

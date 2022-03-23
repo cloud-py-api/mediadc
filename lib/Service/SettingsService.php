@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -52,7 +52,7 @@ class SettingsService {
 
 	/**
 	 * @param int $id
-	 * 
+	 *
 	 * @return Setting|array
 	 */
 	public function getSettingById($id) {
@@ -68,13 +68,13 @@ class SettingsService {
 
 	/**
 	 * @param string $name
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getSettingByName($name) {
 		try {
 			return [
-				'success' => true, 
+				'success' => true,
 				'setting' => $this->mapper->findByName($name)
 			];
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -87,7 +87,7 @@ class SettingsService {
 
 	/**
 	 * @param array|Setting $setting
-	 * 
+	 *
 	 * @return array
 	 */
 	public function updateSetting($setting) {
@@ -122,7 +122,7 @@ class SettingsService {
 
 	/**
 	 * @param array $settings
-	 * 
+	 *
 	 * @return array
 	 */
 	public function updateSettings($settings) {
@@ -137,7 +137,7 @@ class SettingsService {
 			])));
 		}
 		return [
-			'success' => count($updated) === count($settings), 
+			'success' => count($updated) === count($settings),
 			'updated_settings' => $updated,
 		];
 	}

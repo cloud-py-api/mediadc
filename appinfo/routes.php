@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
  *
  * @author Andrey Borysenko <andrey18106x@gmail.com>

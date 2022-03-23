@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -51,7 +51,7 @@ class PythonController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function check() {
@@ -60,7 +60,7 @@ class PythonController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function install() {
@@ -69,9 +69,9 @@ class PythonController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param string $listName python dependecies list name
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function installDepsList($listName = '') {
@@ -80,9 +80,9 @@ class PythonController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param array $packagesList python packages names list
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function updateDepsList($packagesList = []) {
@@ -91,9 +91,9 @@ class PythonController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param array $packagesList python packages names list
-	 * 
+	 *
 	 * @return JSONResponse
 	 */
 	public function deleteDepsList(array $packagesList = []) {

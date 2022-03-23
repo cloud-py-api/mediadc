@@ -129,4 +129,3 @@ Updated `python_command` setting from alias to full/absolute path to the Python.
 - First beta release available at Nextcloud App Store
 
 ### Fixed
-
