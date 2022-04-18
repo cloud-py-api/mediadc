@@ -42,12 +42,11 @@ ImagesGroups = {}  # {group1:[fileid1,fileid2],group2:[fileid3,fileid4]}
 SetOfGroups = []  # [flat_numpy_array1,flat_numpy_array2,flat_numpy_array3]
 GroupsCount = 0  # number of elements in SetOfGroups
 Imported = False  # (group_hash1,group_hash2)
-Heif_AV1 = False
 CHamming = False  # is hexhamming present. Changes state in dc_images_init.
 
 
 def dc_images_init(task_id: int) -> bool:
-    global Imported, Heif_AV1, CHamming
+    global Imported, CHamming
     if Imported:
         return True
     results = import_packages(["numpy", "PIL", "imagehash"], dest_sym_table=globals())
@@ -55,7 +54,7 @@ def dc_images_init(task_id: int) -> bool:
         Imported = True
         results = import_packages(["pillow_heif"], dest_sym_table=globals())
         if not results:
-            Heif_AV1 = True
+            pillow_heif.register_heif_opener()
             print("Images: HEIC(Apple) decoder - enabled.")
         results = import_packages(["hexhamming"], dest_sym_table=globals())
         if not results:
@@ -124,7 +123,7 @@ def calc_hash(algo: str, hash_size: int, image_path: str, data: bytes):
 
 
 def process_image_record(precision: int, img_hash, fileid: int):
-    global ImagesGroups, SetOfGroups, GroupsCount
+    global GroupsCount
     if CHamming:
         for i in range(GroupsCount):
             if hexhamming.check_hexstrings_within_dist(SetOfGroups[i], img_hash, precision):
@@ -141,9 +140,9 @@ def process_image_record(precision: int, img_hash, fileid: int):
 
 
 def reset_images():
-    global ImagesGroups, SetOfGroups, GroupsCount
-    ImagesGroups = {}
-    SetOfGroups = []
+    global GroupsCount
+    ImagesGroups.clear()
+    SetOfGroups.clear()
     GroupsCount = 0
 
 
@@ -179,40 +178,7 @@ def pil_to_hash(algo: str, hash_size: int, pil_image):
 
 def hash_image_data(algo: str, hash_size: int, image_data: bytes, path: str):
     try:
-        if path.lower().endswith(
-            (
-                ".heic",
-                ".heif",
-                ".hif",
-            )
-        ):
-            if not Heif_AV1:
-                return None
-            if getattr(pillow_heif, "is_supported", None):
-                if not pillow_heif.is_supported(image_data):
-                    print(f"{path}: Unsupported format.")
-                    return None
-            else:
-                if pillow_heif.check(image_data) not in (
-                    pillow_heif.heif_filetype_yes_supported,
-                    pillow_heif.heif_filetype_maybe,
-                ):
-                    print(f"{path}: Unsupported format.")
-                    return None
-            if getattr(pillow_heif, "read_heif", None):
-                heif_file = pillow_heif.read_heif(image_data)
-            else:
-                heif_file = pillow_heif.read(image_data)
-            pil_image = PIL.Image.frombytes(
-                heif_file.mode,
-                heif_file.size,
-                heif_file.data,
-                "raw",
-                heif_file.mode,
-                heif_file.stride,
-            )
-        else:
-            pil_image = PIL.Image.open(io.BytesIO(image_data))
+        pil_image = PIL.Image.open(io.BytesIO(image_data))
         return pil_to_hash(algo, hash_size, pil_image)
     except Exception as exception_info:
         print(f"Exception({type(exception_info).__name__}): `{path}`: `{str(exception_info)}`")

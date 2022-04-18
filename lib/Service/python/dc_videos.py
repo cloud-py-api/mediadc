@@ -101,7 +101,7 @@ def dc_process_videos(settings: dict, video_records: list):
 
 
 def process_video_record(precision: int, video_hash, fileid: int):
-    global VideoGroups, SetOfGroups, GroupsCount
+    global GroupsCount
     if CHamming:
         for i in range(GroupsCount):
             if hexhamming.check_hexstrings_within_dist(SetOfGroups[i], video_hash, precision):
@@ -118,9 +118,9 @@ def process_video_record(precision: int, video_hash, fileid: int):
 
 
 def reset_videos():
-    global VideoGroups, SetOfGroups, GroupsCount
-    VideoGroups = {}
-    SetOfGroups = []
+    global GroupsCount
+    VideoGroups.clear()
+    SetOfGroups.clear()
     GroupsCount = 0
 
 
