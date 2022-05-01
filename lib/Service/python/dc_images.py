@@ -163,6 +163,7 @@ def save_image_results(task_id: int):
 
 
 def pil_to_hash(algo: str, hash_size: int, pil_image):
+    pil_image = PIL.ImageOps.exif_transpose(pil_image)
     if algo == "phash":
         image_hash = imagehash.phash(pil_image, hash_size=hash_size)
     elif algo == "dhash":
