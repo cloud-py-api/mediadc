@@ -180,10 +180,10 @@ def do_hash_video(algo: str, hash_size: int, video_info: dict, file_info: dict, 
     if any(len(x) == 0 for x in res[1:]):
         return False
     hashes_l = [
-        calc_hash(algo, hash_size, "", res[1]),
-        calc_hash(algo, hash_size, "", res[2]),
-        calc_hash(algo, hash_size, "", res[3]),
-        calc_hash(algo, hash_size, "", res[4]),
+        calc_hash(algo, hash_size, res[1]),
+        calc_hash(algo, hash_size, res[2]),
+        calc_hash(algo, hash_size, res[3]),
+        calc_hash(algo, hash_size, res[4]),
     ]
     if any(x is None for x in hashes_l):
         return False
