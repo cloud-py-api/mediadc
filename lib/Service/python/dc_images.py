@@ -96,7 +96,7 @@ def process_hash(algo: str, hash_size: int, image_info: dict, data_dir: str, rem
     data = get_file_data(image_info, data_dir, remote_filesize_limit)
     if len(data) == 0:
         return None
-    hash_of_image = calc_hash(algo, hash_size, image_info["path"], data)
+    hash_of_image = calc_hash(algo, hash_size, data)
     if hash_of_image is None:
         store_err_image_hash(image_info["fileid"], image_info["mtime"], image_info["skipped"] + 1)
         return None
@@ -115,8 +115,8 @@ def arr_hash_to_string(arr) -> str:
     return numpy.packbits(arr, axis=None).tobytes().hex()
 
 
-def calc_hash(algo: str, hash_size: int, image_path: str, data: bytes):
-    image_hash = hash_image_data(algo, hash_size, data, image_path)
+def calc_hash(algo: str, hash_size: int, image_data: bytes):
+    image_hash = hash_image_data(algo, hash_size, image_data)
     if image_hash is None:
         return None
     return image_hash.flatten()
@@ -177,10 +177,10 @@ def pil_to_hash(algo: str, hash_size: int, pil_image):
     return image_hash
 
 
-def hash_image_data(algo: str, hash_size: int, image_data: bytes, path: str):
+def hash_image_data(algo: str, hash_size: int, image_data: bytes):
     try:
         pil_image = PIL.Image.open(io.BytesIO(image_data))
         return pil_to_hash(algo, hash_size, pil_image)
     except Exception as exception_info:
-        print(f"Exception({type(exception_info).__name__}): `{path}`: `{str(exception_info)}`")
+        print(f"Exception({type(exception_info).__name__}): `{str(exception_info)}`")
         return None
