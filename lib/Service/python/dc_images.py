@@ -55,7 +55,7 @@ def dc_images_init(task_id: int) -> bool:
         results = import_packages(["pillow_heif"], dest_sym_table=globals())
         if not results:
             pillow_heif.register_heif_opener()
-            print("Images: HEIC(Apple) decoder - enabled.")
+            print("Images: HEVC decoder - enabled.")
         results = import_packages(["hexhamming"], dest_sym_table=globals())
         if not results:
             CHamming = True

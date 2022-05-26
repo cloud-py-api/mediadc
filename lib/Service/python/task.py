@@ -8,6 +8,7 @@ import os
 import threading
 import time
 from enum import Enum
+from pathlib import Path
 
 import db
 from dc_images import (
@@ -250,8 +251,11 @@ def process_directory_images(dir_id: int, task_settings: dict) -> list:
     )
     if not fs_records:
         return []
+    ignore_files = get_ignore_flag(fs_records)
     apply_exclude_list(fs_records, task_settings)
     sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
+    if ignore_files:
+        fs_records.clear()
     dc_process_images(task_settings, fs_records)
     if fs_records:
         db.increase_processed_files_count(task_settings["id"], len(fs_records))
@@ -269,8 +273,11 @@ def process_directory_videos(dir_id: int, task_settings: dict) -> list:
     )
     if not fs_records:
         return []
+    ignore_files = get_ignore_flag(fs_records)
     apply_exclude_list(fs_records, task_settings)
     sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
+    if ignore_files:
+        fs_records.clear()
     dc_process_videos(task_settings, fs_records)
     if fs_records:
         db.increase_processed_files_count(task_settings["id"], len(fs_records))
@@ -312,5 +319,12 @@ def is_path_in_exclude(path: str, exclude_patterns: list) -> bool:
     name = os.path.basename(path)
     for pattern in exclude_patterns:
         if fnmatch.fnmatch(name, pattern):
+            return True
+    return False
+
+
+def get_ignore_flag(fs_records: list) -> bool:
+    for fs_record in fs_records:
+        if Path(fs_record["path"]).name in (".noimage", ".nomedia"):
             return True
     return False
