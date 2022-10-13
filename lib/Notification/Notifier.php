@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -33,10 +33,10 @@ use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
-use Psr\Log\LoggerInterface;
 
 
-class Notifier implements INotifier {
+class Notifier implements INotifier
+{
 
 	/** @var IFactory */
 	private $factory;
@@ -44,22 +44,24 @@ class Notifier implements INotifier {
 	/** @var IURLGenerator */
 	private $url;
 
-	public function __construct(IFactory $factory, IURLGenerator $urlGenerator,
-								LoggerInterface $logger) {
+	public function __construct(IFactory $factory, IURLGenerator $urlGenerator)
+	{
 		$this->factory = $factory;
 		$this->url = $urlGenerator;
-		$this->logger = $logger;
 	}
 
-	public function getID(): string {
+	public function getID(): string
+	{
 		return Application::APP_ID;
 	}
 
-	public function getName(): string {
+	public function getName(): string
+	{
 		return $this->factory->get(Application::APP_ID)->t('Task finished alert');
 	}
 
-	public function prepare(INotification $notification, string $languageCode): INotification {
+	public function prepare(INotification $notification, string $languageCode): INotification
+	{
 		if ($notification->getApp() !== Application::APP_ID) {
 			throw new \InvalidArgumentException();
 		}
@@ -84,5 +86,4 @@ class Notifier implements INotifier {
 
 		throw new \InvalidArgumentException();
 	}
-
 }

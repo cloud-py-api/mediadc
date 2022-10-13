@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -37,7 +37,8 @@ use OCA\MediaDC\Service\SettingsService;
 use Psr\Log\LoggerInterface;
 
 
-class AppUpdateStep implements IRepairStep {
+class AppUpdateStep implements IRepairStep
+{
 
 	/** @var PythonService */
 	private $pythonService;
@@ -48,18 +49,23 @@ class AppUpdateStep implements IRepairStep {
 	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(PythonService $pythonService, SettingsService $settingsService,
-								LoggerInterface $logger) {
+	public function __construct(
+		PythonService $pythonService,
+		SettingsService $settingsService,
+		LoggerInterface $logger
+	) {
 		$this->pythonService = $pythonService;
 		$this->settingsService = $settingsService;
 		$this->logger = $logger;
 	}
 
-	public function getName(): string {
+	public function getName(): string
+	{
 		return "Python dependencies update along with MediaDC app update";
 	}
 
-	public function run(IOutput $output) {
+	public function run(IOutput $output)
+	{
 		$output->startProgress(1);
 		if ($this->settingsService->getSettingByName('installed')['success']) {
 			/** @var Setting */
@@ -94,5 +100,4 @@ class AppUpdateStep implements IRepairStep {
 		$output->advance(1);
 		$output->finishProgress();
 	}
-
 }

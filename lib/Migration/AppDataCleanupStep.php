@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -34,24 +34,27 @@ use OCP\Migration\IRepairStep;
 use OCA\MediaDC\Service\CleanupService;
 
 
-class AppDataCleanupStep implements IRepairStep {
+class AppDataCleanupStep implements IRepairStep
+{
 
 	/** @var CleanupService */
 	private $cleanupService;
 
-	public function __construct(CleanupService $cleanupService) {
+	public function __construct(CleanupService $cleanupService)
+	{
 		$this->cleanupService = $cleanupService;
 	}
 
-	public function getName(): string {
+	public function getName(): string
+	{
 		return "Cleanup MediaDC static tables data";
 	}
 
-	public function run(IOutput $output) {
+	public function run(IOutput $output)
+	{
 		$output->startProgress(1);
 		$this->cleanupService->dropAppTables();
 		$output->advance(1);
 		$output->finishProgress();
 	}
-
 }

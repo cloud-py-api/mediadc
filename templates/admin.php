@@ -1,11 +1,13 @@
 <?php
+
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @license GNU AGPL version 3 or any later version
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @license AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -14,15 +16,16 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 script(\OCA\MediaDC\AppInfo\Application::APP_ID, 'mediadc-settings');
+style(\OCA\MediaDC\AppInfo\Application::APP_ID, 'style');
 
 ?>
 

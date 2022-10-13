@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,17 +23,18 @@
  -->
 
 <template>
-	<Content app-name="app-mediadc">
+	<Content app-name="mediadc">
 		<AppNavigation>
 			<template #list>
 				<AppNavigationItem :to="{name: 'collector'}"
-					class="app-navigation__mediadc"
 					:title="t('mediadc', 'Tasks')"
-					icon="icon-category-app-bundles"
+					icon="icon-toggle-filelist"
 					exact />
+				<AppNavigationItem :to="{name: 'resolved'}"
+					:title="t('mediadc', 'Resolved')"
+					icon="icon-video-off" />
 				<AppNavigationItem v-if="showConfiguration"
 					:to="{name: 'configuration'}"
-					class="app-navigation__mediadc"
 					:title="t('mediadc', 'Configuration')"
 					icon="icon-user-admin" />
 			</template>
@@ -80,11 +81,3 @@ export default {
 	},
 }
 </script>
-<style scoped>
-.app-content {
-	display: flex;
-	flex-grow: 1;
-	flex-direction: column;
-	align-content: space-between;
-}
-</style>

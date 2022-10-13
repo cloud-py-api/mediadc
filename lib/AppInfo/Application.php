@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -37,24 +37,28 @@ use OCP\Notification\IManager;
 use OCA\MediaDC\Dashboard\RecentTasksWidget;
 
 
-class Application extends App implements IBootstrap {
+class Application extends App implements IBootstrap
+{
 
 	public const APP_ID = 'mediadc';
 
 	/** @var IManager */
 	private $notificationManager;
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct(self::APP_ID);
 
 		$this->notificationManager = \OC::$server->get(\OCP\Notification\IManager::class);
 	}
 
-	public function register(IRegistrationContext $context): void {
+	public function register(IRegistrationContext $context): void
+	{
 		$context->registerDashboardWidget(RecentTasksWidget::class);
 		$this->notificationManager->registerNotifierService(\OCA\MediaDC\Notification\Notifier::class);
 	}
 
-	public function boot(IBootContext $context): void {
+	public function boot(IBootContext $context): void
+	{
 	}
 }

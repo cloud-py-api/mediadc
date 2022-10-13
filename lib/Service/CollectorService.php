@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Сopyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Сopyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -51,7 +51,8 @@ use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
 use OCP\Lock\LockedException;
 
 
-class CollectorService {
+class CollectorService
+{
 
 	/** @var string */
 	private $userId;
@@ -100,13 +101,20 @@ class CollectorService {
 	const TASK_TYPE_QUEUED = 'queued';
 
 
-	public function __construct(?string $userId, IRootFolder $rootFolder,
-								SettingMapper $settingsMapper, CollectorTaskMapper $tasksMapper,
-								CollectorTaskDetailMapper $tasksDetailsMapper,
-								PythonService $pythonService, LoggerInterface $logger,
-								PhotosService $photosService, VideosService $videosService,
-								IJobList $jobList, IPreview $previewManager,
-								UtilsService $utils) {
+	public function __construct(
+		?string $userId,
+		IRootFolder $rootFolder,
+		SettingMapper $settingsMapper,
+		CollectorTaskMapper $tasksMapper,
+		CollectorTaskDetailMapper $tasksDetailsMapper,
+		PythonService $pythonService,
+		LoggerInterface $logger,
+		PhotosService $photosService,
+		VideosService $videosService,
+		IJobList $jobList,
+		IPreview $previewManager,
+		UtilsService $utils
+	) {
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
@@ -130,7 +138,8 @@ class CollectorService {
 	 *
 	 * @return array created task start result (queued or started)
 	 */
-	public function collect($params = []) {
+	public function runTask(array $params = []): array
+	{
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
 		$processesRunning = count($this->tasksMapper->findAllRunning());
@@ -161,7 +170,8 @@ class CollectorService {
 	 *
 	 * @return array task restart result (queued or started)
 	 */
-	public function restart($params = []) {
+	public function restartTask(array $params = [])
+	{
 		if (isset($params['taskId'])) {
 			$taskId = $params['taskId'];
 		}
@@ -178,7 +188,9 @@ class CollectorService {
 		/** @var Setting */
 		$pyLimitSetting = $this->settingsMapper->findByName('python_limit');
 		$processesRunning = $this->tasksMapper->findAllRunning();
-		$taskIdsRunning = array_map('\OCA\MediaDC\Service\CollectorService::taskIdCallback', $processesRunning);
+		$taskIdsRunning = array_map(function ($task) {
+			return $task->getId();
+		}, $processesRunning);
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$taskData = $this->getTargetDirectoriesData($params['targetDirectoryIds'], intval($params['collectorSettings']['target_mtype']), $excludeList);
@@ -205,7 +217,7 @@ class CollectorService {
 
 		if (!in_array($taskId, $taskIdsRunning)) {
 			if ($pyLimitSetting !== null && count($processesRunning) < (int)$pyLimitSetting->getValue() && !$empty) {
-				$this->tasksMapper->update($collectorTask);
+				$collectorTask = $this->tasksMapper->update($collectorTask);
 				$this->deleteTaskDetails($taskId);
 				$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
 			} else if ($empty) {
@@ -221,18 +233,12 @@ class CollectorService {
 			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
 		}
 
-		return ['success' => $collectorTask !== null, 'queued' => $queuedTask !== null, 'empty' => $empty];
-	}
-
-	/**
-	 * Callback to extract ColectorTask id
-	 *
-	 * @param CollectorTask $task
-	 *
-	 * @return int
-	 */
-	static function taskIdCallback($task) {
-		return $task->getId();
+		return [
+			'success' => $collectorTask !== null,
+			'queued' => $queuedTask !== null,
+			'empty' => $empty,
+			'restartedTask' => $collectorTask,
+		];
 	}
 
 	/**
@@ -240,9 +246,10 @@ class CollectorService {
 	 *
 	 * @param int $taskId
 	 *
-	 * @return CollectorTask terminated CollectorTask
+	 * @return \OCA\MediaDC\Db\CollectorTask terminated CollectorTask
 	 */
-	public function terminate($taskId) {
+	public function terminate($taskId): CollectorTask
+	{
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		if (intval($collectorTask->getPyPid()) !== 0 && $taskId === $collectorTask->getId()) {
@@ -258,12 +265,40 @@ class CollectorService {
 	}
 
 	/**
-	 * @param array $params task params
-	 * @param boolean $queued queued task flag (task type)
+	 * Duplicate CollectorTask
 	 *
-	 * @return CollectorTask|null created Collector Task
+	 * @param int $taskId
+	 *
+	 * @return \OCA\MediaDC\Db\CollectorTask|null duplicated CollectorTask
 	 */
-	public function createCollectorTask($params = [], $queued = false) {
+	public function duplicate($taskId): ?CollectorTask
+	{
+		/** @var CollectorTask */
+		$collectorTask = $this->tasksMapper->find($taskId);
+		$collectorSettings = json_decode($collectorTask->getCollectorSettings(), true);
+		$duplicatedCollectorTask = $this->createCollectorTask([
+			'type' => 'duplicated',
+			'targetDirectoryIds' => json_decode($collectorTask->getTargetDirectoryIds()),
+			'collectorSettings' => [
+				'hashing_algorithm' => $collectorSettings['hashing_algorithm'],
+				'similarity_threshold' => $collectorSettings['similarity_threshold'],
+				'hash_size' => $collectorSettings['hash_size'],
+				'target_mtype' => $collectorSettings['target_mtype'],
+				'finish_notification' => $collectorSettings['finish_notification'],
+			],
+			'excludeList' => json_decode($collectorTask->getExcludeList(), true),
+		]);
+		return $duplicatedCollectorTask;
+	}
+
+	/**
+	 * @param array $params task params
+	 * @param bool $queued queued task flag (task type)
+	 *
+	 * @return \OCA\MediaDC\Db\CollectorTask|null created Collector Task
+	 */
+	public function createCollectorTask(array $params = [], bool $queued = false): ?CollectorTask
+	{
 		if (count($params) === 0) {
 			/** @var Setting */
 			$pyAlgorithmSetting = $this->settingsMapper->findByName('hashing_algorithm');
@@ -301,12 +336,17 @@ class CollectorService {
 				'hash_size' => count($params) === 0 ? $pyHashSizeSetting->getValue() : intval($pyHashSizeSetting),
 				'target_mtype' => count($params) === 0 ? 0 : intval($params['collectorSettings']['target_mtype']),
 				'finish_notification' => count($params) === 0 ? true : $params['collectorSettings']['finish_notification'],
+				'duplicated' => isset($params['type']) && $params['type'] === 'duplicated',
 			]),
 			'filesScanned' => 0,
 			'filesTotal' => count($params) === 0
-				? $this->getTargetFolderFilesCount($this->userFolder, $this->isShared($this->userFolder),
-											count($params) === 0 ? self::TARGET_MIME_TYPE[0]
-											: $params['collectorSettings']['target_mtype'], $excludeList)
+				? $this->getTargetFolderFilesCount(
+					$this->userFolder,
+					$this->isShared($this->userFolder),
+					count($params) === 0 ? self::TARGET_MIME_TYPE[0]
+						: $params['collectorSettings']['target_mtype'],
+					$excludeList
+				)
 				: $taskData['files_total'],
 			'filesTotalSize' => count($params) === 0 ? $this->userFolder->getSize() : $taskData['files_total_size'],
 			'deletedFilesCount' => 0,
@@ -329,9 +369,10 @@ class CollectorService {
 	 *
 	 * @param array $params task params
 	 *
-	 * @return CollectorTask|null created queued Collector task
+	 * @return \OCA\MediaDC\Db\CollectorTask|null created queued Collector task
 	 */
-	public function createQueuedTask($params = []) {
+	public function createQueuedTask(array $params = []): ?CollectorTask
+	{
 		$createdTask = $this->createCollectorTask($params, true);
 		if ($createdTask !== null) {
 			$this->jobList->add(QueuedTaskJob::class, [
@@ -349,8 +390,9 @@ class CollectorService {
 	 *
 	 * @return array Collector cleanup job results
 	 */
-	public function cleanup() {
-		$this->logger->info('[CollectorService] cleanup job executed.');
+	public function cleanup(): array
+	{
+		$this->logger->info('[' . self::class . '] cleanup job executed.');
 		$photos = $this->photosService->getAllFileids();
 		$photosDeleted = 0;
 		foreach ($photos as $photo) {
@@ -371,16 +413,17 @@ class CollectorService {
 			'photosDeleted' => $photosDeleted,
 			'videosDeleted' => $videosDeleted
 		];
-		$this->logger->info('[CollectorService] cleanup job finished. Results: ' . json_encode($result));
+		$this->logger->info('[' . self::class . '] cleanup job finished. Results: ' . json_encode($result));
 		return $result;
 	}
 
 	/**
 	 * @param int $taskId
 	 *
-	 * @return CollectorTask|array
+	 * @return \OCA\MediaDC\Db\CollectorTask[]|array
 	 */
-	public function get($taskId) {
+	public function getCollectorTask(int $taskId)
+	{
 		try {
 			return $this->tasksMapper->find($taskId);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -394,9 +437,10 @@ class CollectorService {
 	/**
 	 * Returns current user's tasks
 	 *
-	 * @return array
+	 * @return \OCA\MediaDC\Db\CollectorTask[]
 	 */
-	public function getUserCollectorTasks() {
+	public function getUserCollectorTasks(): array
+	{
 		return $this->tasksMapper->findAllByOwner($this->userId);
 	}
 
@@ -408,16 +452,18 @@ class CollectorService {
 	 *
 	 * @return array
 	 */
-	public function getUserRecentTasks($limit = null, $offset = null) {
-		return $this->tasksMapper->findRecentByOwner($this->userId, $limit);
+	public function getUserRecentTasks(int $limit = null, int $offset = null): array
+	{
+		return $this->tasksMapper->findRecentByOwner($this->userId, $limit, $offset);
 	}
 
 	/**
 	 * @param int $taskId
 	 *
-	 * @return CollectorTask deleted task
+	 * @return \OCA\MediaDC\Db\CollectorTask deleted task
 	 */
-	public function delete($taskId) {
+	public function delete(int $taskId): CollectorTask
+	{
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$this->terminate($taskId);
@@ -428,10 +474,16 @@ class CollectorService {
 	/**
 	 * @param int $taskDetailId
 	 *
-	 * @return CollectorTaskDetail deleted task detail
+	 * @return \OCA\MediaDC\Db\CollectorTaskDetail deleted task detail
 	 */
-	public function deleteTaskDetail(int $taskDetailId) {
+	public function deleteTaskDetail(int $taskDetailId): CollectorTaskDetail
+	{
 		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
+		$taskDetailGroupFileIds = json_decode($taskDetail->getGroupFilesIds());
+		foreach ($taskDetailGroupFileIds as $fileId) {
+			$this->markResolvedPhoto($fileId, true);
+			$this->markResolvedVideo($fileId, true);
+		}
 		return $this->tasksDetailsMapper->delete($taskDetail);
 	}
 
@@ -440,20 +492,20 @@ class CollectorService {
 	 *
 	 * @return void
 	 */
-	public function deleteTaskDetails($taskId) {
-		$collectorTaskDetails = $this->tasksDetailsMapper->findAllById($taskId);
-		foreach($collectorTaskDetails as $collectorTaskDetail) {
-			$this->tasksDetailsMapper->delete($collectorTaskDetail);
-		}
+	public function deleteTaskDetails(int $taskId): void
+	{
+		$this->tasksDetailsMapper->deleteAllByTaskId($taskId);
 	}
 
 	/**
 	 * Returns basic info about target directories
 	 *
-	 * @param CollectorTask $task
+	 * @param \OCA\MediaDC\Db\CollectorTask $task
+	 *
 	 * @return array target directories info
 	 */
-	public function getTaskInfo($task) {
+	public function getTaskInfo(CollectorTask $task): array
+	{
 		$targetDirectories = [];
 		$excludeDirectories = [];
 		$targetDirectoryIds = json_decode($task->getTargetDirectoryIds());
@@ -499,14 +551,15 @@ class CollectorService {
 	 *
 	 * @return array $filesInfo
 	 */
-	public function getDetailGroupFilesInfo($taskDetailId, $filesizeAscending) {
+	public function getDetailGroupFilesInfo(int $taskDetailId, bool $filesizeAscending)
+	{
 		try {
 			/** @var CollectorTaskDetail */
 			$collectorTaskDetail = $this->tasksDetailsMapper->find($taskDetailId);
 			$filesInfo = [];
 			$filesTotalSize = 0;
 			$groupFilesIds = json_decode($collectorTaskDetail->getGroupFilesIds());
-			foreach($groupFilesIds as $groupFileId) {
+			foreach ($groupFilesIds as $groupFileId) {
 				/** @var File $node */
 				foreach ($this->userFolder->getById($groupFileId) as $node) {
 					if ($node instanceof File) {
@@ -526,10 +579,16 @@ class CollectorService {
 					}
 				}
 				// Sort page files by filesize (ascending/descending)
-				usort($filesInfo,
+				usort(
+					$filesInfo,
 					($filesizeAscending) ?
-					'\OCA\MediaDC\Service\CollectorService::filesInfoSortAscCallback'
-					: '\OCA\MediaDC\Service\CollectorService::filesInfoSortDescCallback');
+						function (array $file_x, array $file_y) {
+							return $file_x['filesize'] - $file_y['filesize'];
+						}
+						: function (array $file_x, array $file_y) {
+							return $file_y['filesize'] - $file_x['filesize'];
+						}
+				);
 			}
 			return [
 				'files' => $filesInfo,
@@ -544,20 +603,13 @@ class CollectorService {
 		}
 	}
 
-	public static function filesInfoSortAscCallback(array $file_x, array $file_y) {
-		return $file_x['filesize'] - $file_y['filesize'];
-	}
-
-	public static function filesInfoSortDescCallback(array $file_x, array $file_y) {
-		return $file_y['filesize'] - $file_x['filesize'];
-	}
-
 	/**
 	 * @param int $taskId
 	 *
-	 * @return array
+	 * @return array filessize and filestotal
 	 */
-	public function getDetailFilesTotalSize($taskId) {
+	public function getDetailFilesTotalSize(int $taskId)
+	{
 		$size = 0;
 		$count = 0;
 		$taskDetails = $this->tasksDetailsMapper->findAllById($taskId);
@@ -587,7 +639,8 @@ class CollectorService {
 	 *
 	 * @return array $result
 	 */
-	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid, $removeIfOneLeft = true) {
+	public function deleteTaskDetailFile($taskId, $taskDetailId, $fileid, $removeIfOneLeft = true)
+	{
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		$deletedFilesCount = $collectorTask->getDeletedFilesCount();
@@ -652,7 +705,8 @@ class CollectorService {
 	 *
 	 * @return array $result
 	 */
-	public function removeTaskDetailGroups($taskDetailIds) {
+	public function removeTaskDetailGroups(array $taskDetailIds)
+	{
 		$result = [];
 		foreach ($taskDetailIds as $taskDetailId) {
 			array_push($result, $this->deleteTaskDetail($taskDetailId));
@@ -666,13 +720,13 @@ class CollectorService {
 	/**
 	 * Delete ColectorTaskDetail groups with deleting coresponding files
 	 *
-	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param array $fileIds
 	 *
 	 * @return array $result
 	 */
-	public function deleteTaskDetailFiles($taskDetailId, $fileIds) {
+	public function deleteTaskDetailFiles(int $taskDetailId, array $fileIds)
+	{
 		$result = [];
 		$errors = [
 			'locked' => [],
@@ -717,13 +771,13 @@ class CollectorService {
 	/**
 	 * Remove ColectorTaskDetail groups with deleting coresponding files
 	 *
-	 * @param int $taskId
 	 * @param int $taskDetailId
 	 * @param array $fileIds
 	 *
 	 * @return array $result
 	 */
-	public function removeTaskDetailFiles($taskDetailId, $fileIds) {
+	public function removeTaskDetailFiles(int $taskDetailId, array $fileIds)
+	{
 		$result = [];
 		/** @var CollectorTaskDetail $taskDetail */
 		$taskDetail = $this->tasksDetailsMapper->find($taskDetailId);
@@ -732,6 +786,8 @@ class CollectorService {
 			$fileIdIndex = array_search($fileId, $taskDetailGroupFileIds);
 			if ($fileIdIndex !== false) {
 				array_push($result, array_splice($taskDetailGroupFileIds, $fileIdIndex, 1)[0]);
+				$this->markResolvedPhoto($fileId, true);
+				$this->markResolvedVideo($fileId, true);
 			}
 		}
 		$taskDetail->setGroupFilesIds(json_encode($taskDetailGroupFileIds));
@@ -746,10 +802,12 @@ class CollectorService {
 	 * @param int $taskId
 	 * @param int $limit
 	 * @param int $offset
+	 * @param array $filter
 	 *
 	 * @return array
 	 */
-	public function details($taskId, $limit = null, $offset = null) {
+	public function details(int $taskId, int $limit = null, int $offset = null, array $filter = []): array
+	{
 		try {
 			return $this->tasksDetailsMapper->findAllById($taskId, $limit, $offset);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -762,13 +820,78 @@ class CollectorService {
 	}
 
 	/**
+	 * Returns current user's resolved files (photos and videos)
+	 * 
+	 * @param int $limit
+	 * @param int $offset
+	 */
+	public function resolved(string $type, int $limit = null, int $offset = null)
+	{
+		if (in_array($type, ['photos', 'videos'])) {
+			return [
+				$type => $type === 'photos' ? $this->photosService->getResolvedPhotos($this->userId, $limit, $offset)
+					: $this->videosService->getResolvedVideos($this->userId, $limit, $offset)
+			];
+		}
+		return null;
+	}
+
+	/**
+	 * Mark resolved
+	 * 
+	 * @param string $type
+	 * @param int $fileid
+	 * @param bool $resolved
+	 * 
+	 * @return int
+	 */
+	public function markResolved(string $type, int $fileid, bool $resolved = true): array
+	{
+		if ($type === 'photos') {
+			$result = $this->photosService->resolve($fileid, $resolved);
+		} else if ($type === 'videos') {
+			$result = $this->videosService->resolve($fileid, $resolved);
+		}
+		return ['success' => $result === 1];
+	}
+
+	/**
+	 * Mark resolved photo
+	 * 
+	 * @param int $fileid
+	 * @param bool $resolved
+	 * 
+	 * @return int
+	 */
+	public function markResolvedPhoto(int $fileid, bool $resolved = true): array
+	{
+		$result = $this->photosService->resolve($fileid, $resolved);
+		return ['success' => $result === 1];
+	}
+
+	/**
+	 * Mark resolved video
+	 * 
+	 * @param int $fileid
+	 * @param bool $resolved
+	 * 
+	 * @return int
+	 */
+	public function markResolvedVideo(int $fileid, bool $resolved = true): array
+	{
+		$result = $this->videosService->resolve($fileid, $resolved);
+		return ['success' => $result === 1];
+	}
+
+	/**
 	 * @param array $targetDirectoryIds
 	 * @param int $targetMtype
 	 * @param array $excludeList
 	 *
 	 * @return array target directories `files_total` and `files_total_size`
 	 */
-	public function getTargetDirectoriesData($targetDirectoryIds, $targetMtype, $excludeList) {
+	public function getTargetDirectoriesData($targetDirectoryIds, $targetMtype, $excludeList)
+	{
 		$result = [
 			'files_total' => 0,
 			'files_total_size' => 0,
@@ -780,8 +903,10 @@ class CollectorService {
 					if ($node instanceof Folder && $this->passesExcludeList($node, $excludeList)) {
 						$result['files_total'] += $this->getTargetFolderFilesCount($node, $this->isShared($node), $targetMtype, $excludeList);
 						$result['files_total_size'] += $this->getTargetFolderFilesSize($node, $targetMtype, $excludeList);
-					} else if ($node instanceof File && $this->validFile($node, $this->isShared($node), $targetMtype)
-								&& $this->passesExcludeList($node, $excludeList)) {
+					} else if (
+						$node instanceof File && $this->validFile($node, $this->isShared($node), $targetMtype)
+						&& $this->passesExcludeList($node, $excludeList)
+					) {
 						$result['files_total'] += 1;
 						$result['files_total_size'] += $node->getSize();
 					}
@@ -798,15 +923,18 @@ class CollectorService {
 	 *
 	 * @return int Valid target files size
 	 */
-	public function getTargetFolderFilesSize($folder, $targetMtype, $excludeList) {
+	public function getTargetFolderFilesSize($folder, $targetMtype, $excludeList)
+	{
 		$size = 0;
 		$nodes = $folder->getDirectoryListing();
 		if (count($nodes) > 0) {
 			foreach ($nodes as $node) {
 				if ($node instanceof Folder && $this->passesExcludeList($node, $excludeList)) {
 					$size += $this->getTargetFolderFilesSize($node, $targetMtype, $excludeList);
-				} else if ($node instanceof File && $this->validFile($node, $this->isShared($node), $targetMtype)
-							&& $this->passesExcludeList($node, $excludeList)) {
+				} else if (
+					$node instanceof File && $this->validFile($node, $this->isShared($node), $targetMtype)
+					&& $this->passesExcludeList($node, $excludeList)
+				) {
 					$size += $node->getSize();
 				}
 			}
@@ -822,12 +950,15 @@ class CollectorService {
 	 *
 	 * @return int folder files count
 	 */
-	public function getTargetFolderFilesCount($folder,$shared, $targetMtype, $excludeList) {
+	public function getTargetFolderFilesCount($folder, $shared, $targetMtype, $excludeList)
+	{
 		$count = 0;
 		$nodes = $folder->getDirectoryListing();
 		foreach ($nodes as $node) {
-			if ($node instanceof File && $this->validFile($node, $shared, $targetMtype)
-				&& $this->passesExcludeList($node, $excludeList)) {
+			if (
+				$node instanceof File && $this->validFile($node, $shared, $targetMtype)
+				&& $this->passesExcludeList($node, $excludeList)
+			) {
 				$count += 1;
 			} else if ($node instanceof Folder && $this->passesExcludeList($node, $excludeList)) {
 				$count += $this->getTargetFolderFilesCount($node, $this->isShared($node), $targetMtype, $excludeList);
@@ -844,7 +975,8 @@ class CollectorService {
 	 *
 	 * @return bool
 	 */
-	private function passesExcludeList($node, $excludeList) {
+	private function passesExcludeList(Node $node, array $excludeList)
+	{
 		if (isset($excludeList['admin']['mask'])) {
 			foreach ($excludeList['admin']['mask'] as $rule) {
 				if (fnmatch($rule, $node->getName())) {
@@ -879,23 +1011,24 @@ class CollectorService {
 	/**
 	 * @param Node $node
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	private function isShared($node) {
+	private function isShared(Node $node): bool
+	{
 		return $node->getStorage()->instanceOfStorage(SharedStorage::class) ||
 			$node->getStorage()->instanceOfStorage(\OCA\GroupFolders\Mount\GroupFolderStorage::class);
 	}
 
 	/**
 	 * @param File $file
-	 * @param boolean $shared
-	 * $param int $targetMtype
+	 * @param bool $shared
+	 * @param int $targetMtype
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	private function validFile($file, $shared, $targetMtype){
+	private function validFile(File $file, bool $shared, int $targetMtype): bool
+	{
 		return in_array($file->getMimePart(), self::TARGET_MIME_TYPE[$targetMtype])
 			&& $this->isShared($file) === $shared;
 	}
-
 }

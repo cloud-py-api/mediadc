@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -39,13 +39,16 @@ use OCP\Util;
 
 use OCA\MediaDC\AppInfo\Application;
 
-class PageController extends Controller {
+class PageController extends Controller
+{
 
 	/** @var IEventDispatcher */
 	private $eventDispatcher;
 
-	public function __construct(IRequest $request,
-								IEventDispatcher $eventDispatcher) {
+	public function __construct(
+		IRequest $request,
+		IEventDispatcher $eventDispatcher
+	) {
 		parent::__construct(Application::APP_ID, $request);
 
 		$this->eventDispatcher = $eventDispatcher;
@@ -58,11 +61,13 @@ class PageController extends Controller {
 	 *
 	 * @return TemplateResponse
 	 */
-	public function index(): TemplateResponse {
+	public function index(): TemplateResponse
+	{
 		$this->eventDispatcher->dispatchTyped(new LoadSidebar());
 		$this->eventDispatcher->dispatchTyped(new LoadViewer());
 
 		Util::addScript(Application::APP_ID, Application::APP_ID . '-main');
+		Util::addStyle(Application::APP_ID, 'style');
 
 		$response = new TemplateResponse(Application::APP_ID, 'main');
 

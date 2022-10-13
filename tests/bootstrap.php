@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -26,8 +26,8 @@
 
 define('PHPUNIT_RUN', 1);
 
-require_once __DIR__.'/../../../lib/base.php';
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../../../lib/base.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 \OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
 \OC_App::loadApp('mediadc');

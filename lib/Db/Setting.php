@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -46,7 +46,8 @@ use OCP\AppFramework\Db\Entity;
  * @method void setDisplayName(string $settingDisplayName)
  * @method void setDescription(string $settingDescription)
  */
-class Setting extends Entity implements JsonSerializable {
+class Setting extends Entity implements JsonSerializable
+{
 
 	protected $name;
 	protected $value;
@@ -56,7 +57,8 @@ class Setting extends Entity implements JsonSerializable {
 	/**
 	 * @param array $params
 	 */
-	public function __construct(array $params = []) {
+	public function __construct(array $params = [])
+	{
 		if (isset($params['id'])) {
 			$this->setId($params['id']);
 		}
@@ -74,7 +76,8 @@ class Setting extends Entity implements JsonSerializable {
 		}
 	}
 
-	public function jsonSerialize(): array {
+	public function jsonSerialize(): array
+	{
 		return [
 			'id' => $this->getId(),
 			'name' => $this->getName(),

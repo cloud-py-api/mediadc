@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -37,7 +37,8 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\PythonService;
 
 
-class PythonController extends Controller {
+class PythonController extends Controller
+{
 
 	/** @var PythonService */
 	private $service;
@@ -54,7 +55,8 @@ class PythonController extends Controller {
 	 *
 	 * @return JSONResponse
 	 */
-	public function check() {
+	public function check()
+	{
 		return new JSONResponse($this->service->checkInstallation(), Http::STATUS_OK);
 	}
 
@@ -63,7 +65,8 @@ class PythonController extends Controller {
 	 *
 	 * @return JSONResponse
 	 */
-	public function install() {
+	public function install()
+	{
 		return new JSONResponse($this->service->installDependencies(), Http::STATUS_OK);
 	}
 
@@ -74,7 +77,8 @@ class PythonController extends Controller {
 	 *
 	 * @return JSONResponse
 	 */
-	public function installDepsList($listName = '') {
+	public function installDepsList($listName = '')
+	{
 		return new JSONResponse($this->service->installDependencies($listName), Http::STATUS_OK);
 	}
 
@@ -85,7 +89,8 @@ class PythonController extends Controller {
 	 *
 	 * @return JSONResponse
 	 */
-	public function updateDepsList($packagesList = []) {
+	public function updateDepsList($packagesList = [])
+	{
 		return new JSONResponse($this->service->updateDependencies($packagesList), Http::STATUS_OK);
 	}
 
@@ -96,8 +101,8 @@ class PythonController extends Controller {
 	 *
 	 * @return JSONResponse
 	 */
-	public function deleteDepsList(array $packagesList = []) {
+	public function deleteDepsList(array $packagesList = [])
+	{
 		return new JSONResponse($this->service->deleteDependencies($packagesList), Http::STATUS_OK);
 	}
-
 }

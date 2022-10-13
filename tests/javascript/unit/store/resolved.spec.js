@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -22,12 +22,8 @@
  *
  */
 
-import { mount } from '@vue/test-utils'
-import MediaDC from '../../../../src/MediaDC.vue'
-
-describe('Testing MediaDC entry component', () => {
-	it('check app heading', () => {
-		const wrapper = mount(MediaDC)
-		expect(wrapper.element.childNodes.querySelector('.heading > h1').innerHTML).toBe('MediaDC')
+describe('store/resolved test', () => {
+	it('should be true', () => {
+		expect(true).toEqual(true)
 	})
 })

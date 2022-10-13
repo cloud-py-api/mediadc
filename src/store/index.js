@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -28,6 +28,7 @@ import Vuex, { Store } from 'vuex'
 import settings from './settings'
 import tasks from './tasks'
 import details from './details'
+import resolved from './resolved'
 
 Vue.use(Vuex)
 
@@ -36,6 +37,7 @@ export default new Store({
 		settings,
 		tasks,
 		details,
+		resolved,
 	},
 
 	strict: process.env.NODE_ENV !== 'production',

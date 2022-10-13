@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,10 +23,8 @@
  -->
 
 <template>
-	<div class="file" :style="'width: ' + detailsGridSize + 'px;'">
-		<div v-if="updating" class="updating-blackout">
-			<span class="icon-loading" />
-		</div>
+	<div class="file" :class="{'icon-loading': updating}" :style="'width: ' + detailsGridSize + 'px;'">
+		<div v-if="updating" class="updating-blackout" />
 		<div class="file-thumb" @click="openFile(file)">
 			<div v-show="loaded"
 				v-if="file.filempart === 'image' || (file.filempart === 'video' && file.has_preview)"
@@ -70,12 +68,26 @@
 		<div class="file-info">
 			<span class="filename" :title="file.filepath">{{ file.filename }}</span>
 			<span class="owner">{{ file.fileowner }}</span>
-			<span class="size">{{ formatBytes(Number(file.filesize)) }}</span>
+			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<div class="actions" style="display: flex;">
-				<CheckboxRadioSwitch class="batch-checkbox"
+				<CheckboxRadioSwitch v-tooltip="t('mediadc', 'Select file')"
+					class="mediadc-checkbox-only"
 					:checked.sync="checked"
-					style="margin-right: 20px;" />
-				<span class="delete-file-btn icon-delete-white" @click="deleteGroupFile(file)" />
+					style="margin: 0 14px 0 10px;" />
+				<Button v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
+					type="tertiary"
+					@click="deleteGroupFile(file)">
+					<template #icon>
+						<span class="icon-delete" />
+					</template>
+				</Button>
+				<Button v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
+					type="tertiary"
+					@click="removeGroupFile(file)">
+					<template #icon>
+						<span class="icon-close" />
+					</template>
+				</Button>
 			</div>
 		</div>
 	</div>
@@ -83,17 +95,23 @@
 
 <script>
 import axios from '@nextcloud/axios'
-import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
-import { mapGetters } from 'vuex'
 import { getCurrentUser } from '@nextcloud/auth'
 import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
+import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
+import { mapGetters } from 'vuex'
+
 import Formats from '../../mixins/Formats'
+
+import Button from '@nextcloud/vue/dist/Components/Button'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'DetailsFile',
-	components: { CheckboxRadioSwitch },
+	components: {
+		Button,
+		CheckboxRadioSwitch,
+	},
 	mixins: [Formats],
 	props: {
 		file: {
@@ -205,7 +223,7 @@ export default {
 						const files = this.files
 						if (this.allFiles.length === 2) { // Remove detail when 1 file left
 							emit('openNextDetailGroup', this.detail)
-							this.$store.dispatch('deleteDetail', this.detail)
+							this.$store.commit('deleteDetail', this.detail)
 							showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
 						}
 						const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
@@ -218,9 +236,7 @@ export default {
 						}
 						this.$emit('update:files', files)
 						emit('updateTaskInfo')
-						this.$store.dispatch('setTask', res.data.task).then(() => {
-							emit('updateGroupFilesPagination', this.file)
-						})
+						emit('updateGroupFilesPagination', this.file)
 					} else if ('locked' in res.data && res.data.locked) {
 						showWarning(this.t('mediadc', 'Wait until file loaded before deleting'))
 					} else if ('not_permited' in res.data && res.data.not_permited) {
@@ -238,6 +254,35 @@ export default {
 					this.updating = false
 				})
 		},
+		removeGroupFile(file) {
+			this.updating = true
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/remove`), { fileIds: [file.fileid] }).then(res => {
+				if (res.data.success) {
+					const files = this.files
+					if (this.allFiles.length === 2) { // Remove detail when 1 file left
+						emit('openNextDetailGroup', this.detail)
+						this.$store.commit('deleteDetail', this.detail)
+						showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
+					}
+					const fileidIndex = files.findIndex(f => f.fileid === file.fileid)
+					files.splice(fileidIndex, 1)
+					const checkedIndex = this.checkedFiles.findIndex(f => f.fileid === file.fileid)
+					if (this.checked && checkedIndex !== -1) {
+						const newCheckedFiles = this.checkedFiles
+						newCheckedFiles.splice(checkedIndex, 1)
+						this.$emit('update:checkedFiles', newCheckedFiles)
+					}
+					this.$emit('update:files', files)
+					emit('updateTaskInfo')
+					emit('updateGroupFilesPagination', this.file)
+					this.updating = false
+				}
+			}).catch(err => {
+				console.debug(err)
+				showError(this.t('mediadc', 'Some server error occured'))
+				this.updating = false
+			})
+		},
 		deselect(filesToDeselect) {
 			if (this.checked && filesToDeselect.map(f => f.fileid).includes(this.file.fileid)) {
 				this.checked = false
@@ -248,30 +293,7 @@ export default {
 </script>
 
 <style scoped>
-.file {
-	position: relative;
-}
-
-.file-thumb {
-	display: flex;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-
-.file-thumb-loaded {
-	display: flex;
-	width: 100%;
-}
-
-img {
-	width: 100%;
-	height: auto;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	cursor: pointer;
-}
-
-.updating-blackout {
+.file.icon-loading .updating-blackout {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -281,7 +303,34 @@ img {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 5px;
+	border-radius: var(--border-radius-large);
+	z-index: 1;
+}
+
+.file {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	justify-content: space-between;
+	border: 1px solid var(--color-border-dark);
+	transition: box-shadow .3s;
+	margin: 10px;
+	background-color: var(--color-background-dark);
+	border-radius: var(--border-radius-large);
+	overflow: hidden;
+}
+
+.file-thumb-loaded {
+	display: flex;
+	width: 100%;
+	border-radius: var(--border-radius-large);
+}
+
+.file-thumb img {
+	width: 100%;
+	height: auto;
+	cursor: pointer;
+	border-radius: var(--border-radius-large);
 }
 
 .placeholder {
@@ -291,12 +340,11 @@ img {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+	border-radius: var(--border-radius-large);
 }
 
 body.theme--dark .placeholder {
-	background-color: #fff;
+	background-color: var(--color-loading-dark);
 }
 
 .file-info {
@@ -305,11 +353,9 @@ body.theme--dark .placeholder {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: #000;
+	background-color: var(--color-background-dark);
 	text-align: center;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	color: #fff;
+	color: var(--color-main-text);
 }
 
 .filename {
@@ -317,30 +363,5 @@ body.theme--dark .placeholder {
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.delete-file-btn {
-	padding: 20px;
-	border-radius: 50%;
-	width: 16px;
-	height: 16px;
-	cursor: pointer;
-	background-image: var(--icon-delete-fff);
-}
-
-.delete-file-btn:hover {
-	background-color: #eee;
-}
-
-.delete-file-btn:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .delete-file-btn {
-	background-image: var(--icon-delete-000);
-}
-
-.delete-file-btn:hover, body.theme--dark .delete-file-btn:hover {
-	background-image: var(--icon-delete-e9322d);
 }
 </style>

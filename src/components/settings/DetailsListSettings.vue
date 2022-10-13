@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,8 +23,10 @@
  -->
 
 <template>
-	<div class="section" style="padding: 20px;">
-		<h3>{{ t('mediadc', 'Duplicates list settings') }}</h3>
+	<div class="section" style="padding: 0 10px;">
+		<h3 style="font-weight: bold;">
+			{{ t('mediadc', 'Duplicates list settings') }}
+		</h3>
 		<div class="setting">
 			<label for="details-list-items-per-page">{{ t('mediadc', 'Groups per page') }}</label>
 			<input id="details-list-items-per-page"
@@ -88,23 +90,23 @@ export default {
 	watch: {
 		selectedSize() {
 			window.localStorage.setItem('mediadc_details_files_grid_size', this.selectedSize)
-			this.$store.dispatch('setDetailsGridSize', this.selectedSize)
+			this.$store.commit('setDetailsGridSize', this.selectedSize)
 		},
 		detailsListItemPerPage() {
 			window.localStorage.setItem('mediadc_details_list_items_per_page', this.detailsListItemPerPage)
-			this.$store.dispatch('setDetailsListItemsPerPage', this.detailsListItemPerPage)
+			this.$store.commit('setDetailsListItemsPerPage', this.detailsListItemPerPage)
 		},
 		groupItemsPerPage() {
 			window.localStorage.setItem('mediadc_group_items_per_page', this.groupItemsPerPage)
-			this.$store.dispatch('setGroupItemsPerPage', this.groupItemsPerPage)
+			this.$store.commit('setGroupItemsPerPage', this.groupItemsPerPage)
 		},
 		deleteFileConfirmation() {
 			window.localStorage.setItem('mediadc_delete_file_confirmation', this.deleteFileConfirmation)
-			this.$store.dispatch('setDeleteFileConfirmation', this.deleteFileConfirmation)
+			this.$store.commit('setDeleteFileConfirmation', this.deleteFileConfirmation)
 		},
 		autoOpenNextGroup() {
 			window.localStorage.setItem('mediadc_auto_open_next_group', this.autoOpenNextGroup)
-			this.$store.dispatch('setAutoOpenNextGroup', this.autoOpenNextGroup)
+			this.$store.commit('setAutoOpenNextGroup', this.autoOpenNextGroup)
 		},
 	},
 	beforeMount() {

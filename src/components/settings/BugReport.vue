@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -24,21 +24,29 @@
 
 <template>
 	<div class="bug-report">
-		<h2>{{ t('mediadc', 'Bug report') }}</h2>
-		<p>{{ t('mediadc', 'Collect not sensitive system info for bug report') }}</p>
-		<div class="actions">
-			<button v-if="!loading" style="margin: 10px 0;" @click="collectSystemInfo">
-				{{ t('mediadc', 'Collect system info') }}
-			</button>
-			<button v-else style="margin: 10px 0;" disabled>
+		<p style="margin: 0 0 20px;">
+			{{ t('mediadc', 'Collect not sensitive system info for bug report') }}
+		</p>
+		<Button class="mediadc-button-vue"
+			type="secondary"
+			:disabled="updating"
+			@click="collectSystemInfo">
+			{{ t('mediadc', 'Collect system info') }}
+			<template v-if="updating" #icon>
 				<span class="icon-loading" />
-			</button>
-			<button v-if="systemInfo" @click="copySystemInfoToClipboard">
-				{{ t('mediadc', 'Copy to clipboard') }}
-			</button>
-		</div>
+			</template>
+		</button>
 		<div v-if="systemInfo" class="system-info">
-			<h3>System info</h3>
+			<h3>{{ t('mediadc', 'System info') }}</h3>
+			<Button v-if="systemInfo"
+				type="tertiary"
+				class="mediadc-button-vue"
+				@click="copySystemInfoToClipboard">
+				{{ t('mediadc', 'Copy to clipboard') }}
+				<template #icon>
+					<ContentCopy :size="16" />
+				</template>
+			</Button>
 			<p>
 				<pre>{{ systemInfo }}</pre>
 			</p>
@@ -51,23 +59,30 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess } from '@nextcloud/dialogs'
 
+import Button from '@nextcloud/vue/dist/Components/Button'
+import ContentCopy from 'vue-material-design-icons/ContentCopy'
+
 export default {
 	name: 'BugReport',
+	components: {
+		Button,
+		ContentCopy,
+	},
 	data() {
 		return {
 			systemInfo: null,
-			loading: false,
+			updating: false,
 		}
 	},
 	methods: {
 		collectSystemInfo() {
-			this.loading = true
+			this.updating = true
 			axios.get(generateUrl('/apps/mediadc/api/v1/system-info')).then(res => {
 				this.systemInfo = res.data
-				this.loading = false
+				this.updating = false
 			}).catch(err => {
 				console.debug(err)
-				this.loading = false
+				this.updating = false
 			})
 		},
 		copySystemInfoToClipboard() {
@@ -80,8 +95,15 @@ export default {
 
 <style scoped>
 .bug-report {
-	padding: 20px;
-	border-radius: 5px;
-	border: 1px solid #ff1414;
+	padding: 20px 0;
+	border-top: 1px solid var(--color-error);
+	border-bottom: 1px solid var(--color-error);
+}
+
+.system-info pre {
+	border: 1px solid var(--color-border);
+	padding: 10px 20px;
+	margin: 20px 0;
+	border-radius: var(--border-radius);
 }
 </style>

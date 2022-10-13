@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -22,7 +22,8 @@
  *
  */
 
-import Vue from 'vue'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
 
 const state = {
 	settings: [],
@@ -33,32 +34,32 @@ const state = {
 
 const mutations = {
 	setSettings(state, settings) {
-		Vue.set(state, 'settings', settings)
+		state.settings = settings
 	},
 	setSetting(state, setting) {
 		const settingIndex = state.settings.findIndex(s => s.name === setting.name)
 		const newSettings = state.settings
 		newSettings[settingIndex] = setting
-		Vue.set(state, 'settings', newSettings)
+		state.settings = newSettings
 	},
 	updateSetting(state, setting) {
 		const settingIndex = state.settings.findIndex(s => s.name === setting.name)
 		if (settingIndex !== -1) {
 			const settings = state.settings
 			settings[settingIndex] = setting
-			Vue.set(state, 'settings', settings)
+			state.settings = settings
 		}
 	},
 	setDetailsGridSize(state, size) {
 		if (state.detailsGridSize !== size) {
-			Vue.set(state, 'detailsGridSize', size)
+			state.detailsGridSize = size
 		}
 	},
 	setDeleteFileConfirmation(state, value) {
-		Vue.set(state, 'deleteFileConfirmation', value)
+		state.deleteFileConfirmation = value
 	},
 	setAutoOpenNextGroup(state, value) {
-		Vue.set(state, 'autoOpenNextGroup', value)
+		state.autoOpenNextGroup = value
 	},
 }
 
@@ -71,23 +72,21 @@ const getters = {
 }
 
 const actions = {
-	setSettings(context, settings) {
-		context.commit('setSettings', settings)
+	async getSettings({ commit }) {
+		return axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
+			commit('setSettings', res.data)
+			return res.data
+		}).catch(err => {
+			console.debug(err)
+		})
 	},
-	setSetting(context, setting) {
-		context.commit('setSetting', setting)
-	},
-	updateSetting(context, setting) {
-		context.commit('updateSetting', setting)
-	},
-	setDetailsGridSize(context, size) {
-		context.commit('setDetailsGridSize', size)
-	},
-	setDeleteFileConfirmation(context, value) {
-		context.commit('setDeleteFileConfirmation', value)
-	},
-	setAutoOpenNextGroup(context, value) {
-		context.commit('setAutoOpenNextGroup', value)
+	async getSettingByName({ commit }, settingName) {
+		return axios.get(generateUrl(`/apps/mediadc/api/v1/settings/name/${settingName}`)).then(res => {
+			if (res.data?.success) {
+				commit('updateSetting', res.data.setting)
+			}
+			return res
+		})
 	},
 }
 

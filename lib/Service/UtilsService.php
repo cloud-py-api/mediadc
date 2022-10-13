@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -39,7 +39,8 @@ use OCA\MediaDC\Db\SettingMapper;
 use Psr\Log\LoggerInterface;
 
 
-class UtilsService {
+class UtilsService
+{
 
 	/** @var IConfig */
 	private $config;
@@ -53,13 +54,16 @@ class UtilsService {
 	/** @var IAppManager */
 	private $appManager;
 
-	/** @var DatabaseStatistics */
+	/** @var ?DatabaseStatistics */
 	private $databaseStatistics;
 
-	public function __construct(IConfig $config, SettingMapper $settingMapper,
-								IAppManager $appManager, DatabaseStatistics $databaseStatistics,
-								LoggerInterface $logger)
-	{
+	public function __construct(
+		IConfig $config,
+		SettingMapper $settingMapper,
+		IAppManager $appManager,
+		?DatabaseStatistics $databaseStatistics,
+		LoggerInterface $logger
+	) {
 		$this->config = $config;
 		$this->settingMapper = $settingMapper;
 		$this->appManager = $appManager;
@@ -75,7 +79,15 @@ class UtilsService {
 	 *
 	 * @return string
 	 */
-	public function getPhpInterpreter() {
+	public function getPhpInterpreter()
+	{
+		$usePhpPathFromSettings = json_decode($this->settingMapper->findByName('use_php_path_from_settings')->getValue());
+
+		if (isset($usePhpPathFromSettings) && $usePhpPathFromSettings) {
+			$phpPath = json_decode($this->settingMapper->findByName('php_path')->getValue());
+			return $phpPath;
+		}
+
 		static $cachedExecutable = null;
 
 		if ($cachedExecutable !== null) {
@@ -127,7 +139,8 @@ class UtilsService {
 	 *
 	 * @return bool
 	 */
-	public function isFunctionEnabled($function_name) {
+	public function isFunctionEnabled($function_name)
+	{
 		if (!function_exists($function_name)) {
 			return false;
 		}
@@ -146,7 +159,8 @@ class UtilsService {
 		return true;
 	}
 
-	public function getPythonVersion(): array {
+	public function getPythonVersion(): array
+	{
 		/** @var Setting */
 		$pythonCommandSetting = $this->settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommandSetting->getValue();
@@ -164,7 +178,8 @@ class UtilsService {
 	 *
 	 * @return array $result
 	 */
-	public function isPythonCompatible(): array {
+	public function isPythonCompatible(): array
+	{
 		$pythonVersion = $this->getPythonVersion();
 		if (!$pythonVersion['success']) {
 			$this->logger->error('[' . self::class . '] getPythonVersion: ' . json_encode($pythonVersion));
@@ -187,13 +202,16 @@ class UtilsService {
 		return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 	}
 
-	public function getCustomAppsDirectory() {
+	public function getCustomAppsDirectory()
+	{
 		$apps_directory = $this->config->getSystemValue('apps_paths');
 		if ($apps_directory !== "" && is_array($apps_directory) && count($apps_directory) > 0) {
 			foreach ($apps_directory as $custom_apps_dir) {
 				$appDir = $custom_apps_dir['path'] . '/' . Application::APP_ID;
-				if (file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable']
-					&& file_exists($appDir) && is_dir($appDir)) {
+				if (
+					file_exists($custom_apps_dir['path']) && is_dir($custom_apps_dir['path']) && $custom_apps_dir['writable']
+					&& file_exists($appDir) && is_dir($appDir)
+				) {
 					return $custom_apps_dir['path'] . '/';
 				}
 			}
@@ -201,12 +219,13 @@ class UtilsService {
 		return getcwd() . '/apps/';
 	}
 
-	public function getSystemInfo(): array {
+	public function getSystemInfo(): array
+	{
 		$pythonVersion = $this->getPythonVersion();
 		$result = [
 			'nextcloud-version' => $this->config->getSystemValue('version'),
 			'webserver' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
-			'database' => $this->databaseStatistics->getDatabaseStatistics(),
+			'database' => $this->databaseStatistics !== null ? $this->databaseStatistics->getDatabaseStatistics() : null,
 			'php-version' => phpversion(),
 			'php-interpreter' => $this->getPhpInterpreter(),
 			'python-version' => $pythonVersion['success'] ? $pythonVersion['matches'] : 'Error: result_code=' . $pythonVersion['result_code'],
@@ -222,5 +241,4 @@ class UtilsService {
 		];
 		return $result;
 	}
-
 }

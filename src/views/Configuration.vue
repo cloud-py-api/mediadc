@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,9 +23,9 @@
  -->
 
 <template>
-	<div v-if="!loading" class="mediadc-configuration">
+	<div v-if="!loading" class="container" style="text-align: center;">
 		<h2>{{ rootTitle }}</h2>
-		<div v-if="isAdmin" class="configuration">
+		<div v-if="isAdmin">
 			<p>
 				{{ t('mediadc', 'Welcome to MediaDC. You\'re almost there! The last setup step - installation of Python dependencies.') }}
 				<br>
@@ -41,34 +41,55 @@
 				{{ t('mediadc', 'If you have any additional questions contact us in') }} <a href="https://t.me/mediadc_support">{{ t('mediadc', 'Telegram chat') }}</a>.
 			</p>
 			<div class="installed">
-				<CheckboxRadioSwitch :checked.sync="installed" disabled>
+				<CheckboxRadioSwitch v-tooltip="installed
+						? t('mediadc', 'Required packages installed')
+						: t('mediadc', 'Required package not installed')"
+					:checked.sync="installed"
+					style="margin: 10px auto;"
+					disabled>
 					{{ t('mediadc', 'Installed:') }} {{ installed }}
 				</CheckboxRadioSwitch>
 			</div>
-			<button v-if="!installing" @click="install">
-				{{ !installed ? t('mediadc', 'Install') : t('mediadc', 'Reinstall') }}
-			</button>
-			<button v-else disabled>
-				<span class="icon-loading" />
-			</button>
-			<button v-if="!checking && !installing" @click="check">
-				{{ t('mediadc', 'Check installation') }}
-			</button>
-			<button v-else disabled>
-				<span class="icon-loading" />
-			</button>
-			<button v-if="installed" @click="finishConfiguration">
-				{{ t('mediadc', 'Install finished') }}
-			</button>
+			<div class="general-actions">
+				<Button class="mediadc-button-vue"
+					type="secondary"
+					:disabled="installing"
+					@click="install">
+					<template #default>
+						{{ !installed ? t('mediadc', 'Install') : t('mediadc', 'Reinstall') }}
+					</template>
+					<template v-if="installing" #icon>
+						<span class="icon-loading" />
+					</template>
+				</Button>
+				<Button class="mediadc-button-vue"
+					type="secondary"
+					style="margin: 0 10px"
+					:disabled="checking || installing"
+					@click="check">
+					<template #default>
+						{{ t('mediadc', 'Check installation') }}
+					</template>
+					<template v-if="checking || installing" #icon>
+						<span class="icon-loading" />
+					</template>
+				</Button>
+				<Button v-if="installed"
+					class="mediadc-button-vue"
+					type="secondary"
+					@click="finishConfiguration">
+					{{ t('mediadc', 'Install finished') }}
+				</Button>
+			</div>
 		</div>
 		<div v-else-if="!isAdmin && !installed && !loading">
 			<p>{{ t('mediadc', 'MediaDC application can be configured only by Administrator.') }}</p>
 			<p>{{ t('mediadc', 'Please, contact your cloud Administrator.') }}</p>
 		</div>
 		<div v-else>
-			<button v-if="installed" @click="finishConfiguration">
+			<Button v-if="installed" class="mediadc-button-vue" @click="finishConfiguration">
 				{{ t('mediadc', 'Go to MediaDC') }}
-			</button>
+			</Button>
 		</div>
 		<div v-if="isAdmin" class="install-details">
 			<div v-if="available_algorithms && available_algorithms.length > 0 && installed"
@@ -96,39 +117,33 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="listName in Object.keys(installed_list).sort((first, second) => first > second)" :key="listName">
+						<tr v-for="listName in Object.keys(installed_list).sort().reverse()" :key="listName">
 							<td>{{ listName }}</td>
 							<td>
-								<span v-for="(packageName, index) in Object.keys(installed_list[listName])" :key="packageName" class="package">
-									<span class="package-title">
+								<span v-for="(packageName, index) in Object.keys(installed_list[listName]).sort()" :key="packageName" class="package">
+									<span v-tooltip="getPackageTooltip(listName, packageName)">
 										{{ installed_list[listName][packageName].package }}{{ (index !== Object.keys(installed_list[listName]).length - 1) ? ', ' : '' }}
 									</span>
-									<div class="package-tooltip">
-										<span v-if="installed_list[listName][packageName].version !== 'none'"
-											class="tooltip-content">
-											{{ installed_list[listName][packageName].location }}:
-											{{ installed_list[listName][packageName].version }}
-										</span>
-										<span v-else class="tooltip-content">
-											{{ t('mediadc', 'Not installed') }}
-										</span>
-									</div>
 								</span>
 							</td>
 							<td>{{ not_installed_list[listName].length === 0 }}</td>
-							<td>
-								<button :disabled="Object.keys(not_installed_list[listName]).length === 0"
+							<td style="display: flex; align-items: center; justify-content: center;">
+								<Button class="mediadc-button-vue"
+									:disabled="Object.keys(not_installed_list[listName]).length === 0"
 									@click="installDepsList(listName)">
 									{{ t('mediadc', 'Install') }}
-								</button>
-								<button :disabled="Object.keys(not_installed_list[listName]).length > 0"
+								</Button>
+								<Button class="mediadc-button-vue"
+									:disabled="Object.keys(not_installed_list[listName]).length > 0"
+									style="margin: 0 10px"
 									@click="updateDepsList(listName)">
 									{{ t('mediadc', 'Update') }}
-								</button>
-								<button :disabled="Object.keys(not_installed_list[listName]).length > 0"
+								</Button>
+								<Button class="mediadc-button-vue"
+									:disabled="Object.keys(not_installed_list[listName]).length > 0"
 									@click="deleteDepsList(listName)">
 									{{ t('mediadc', 'Delete') }}
-								</button>
+								</Button>
 							</td>
 						</tr>
 					</tbody>
@@ -162,12 +177,18 @@
 
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
+
 import Configure from '../mixins/Configure'
+
+import Button from '@nextcloud/vue/dist/Components/Button'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 
 export default {
 	name: 'Configuration',
-	components: { CheckboxRadioSwitch },
+	components: {
+		Button,
+		CheckboxRadioSwitch,
+	},
 	mixins: [
 		Configure,
 	],
@@ -186,13 +207,23 @@ export default {
 			isAdmin: getCurrentUser() === null ? false : getCurrentUser().isAdmin,
 		}
 	},
+	methods: {
+		getPackageTooltip(listName, packageName) {
+			if (this.installed_list[listName][packageName].version !== 'none') {
+				return `${this.installed_list[listName][packageName].location}: ${this.installed_list[listName][packageName].version}`
+			}
+			return 'Not installed'
+		},
+	},
 }
 </script>
 
 <style scoped>
-.mediadc-configuration {
-	padding: 20px;
+h2 {
+	font-size: 24px;
+	font-weight: bold;
 	text-align: center;
+	margin: 20px 0 10px;
 }
 
 a {
@@ -207,6 +238,12 @@ a {
 
 .installed input {
 	margin: 0 10px;
+}
+
+.general-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .dependencies-table {
@@ -235,40 +272,6 @@ a {
 	border-right: none;
 }
 
-.package {
-	position: relative;
-}
-
-.package-tooltip {
-	display: none;
-	padding: 0 5px;
-	border-radius: 5px;
-	background-color: #000;
-	color: #fff;
-	position: absolute;
-	top: calc(-100% - 5px);
-	left: 50%;
-	transform: translateX(-50%);
-	font-size: 12px;
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-}
-
-.package-tooltip:before {
-	content: '';
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%) rotateZ(45deg);
-	bottom: -3px;
-	width: 10px;
-	height: 10px;
-	background-color: #000;
-	z-index: -1;
-}
-
-.package:hover .package-tooltip {
-	display: block;
-}
-
 .action-blackout {
 	position: absolute;
 	top: 0;
@@ -280,20 +283,21 @@ a {
 	justify-content: center;
 	background-color: rgba(0, 0, 0, 0.3);
 	z-index: 10;
-	border-radius: 10px;
+	border-top-left-radius: var(--border-radius-large);
+	border-top-right-radius: var(--border-radius-large);
 }
 
 .install-errors {
 	max-height: 50vh;
 	overflow-y: scroll;
-	border: 1px solid #ff3333;
+	border: 1px solid var(--color-error);
 	border-radius: 5px;
 	padding: 0 10px 10px;
 	margin: 10px auto;
 }
 
 .errors-list-item {
-	border-bottom: 1px solid #ffcccc;
+	border-bottom: 1px solid var(--color-error);
 	padding: 5px;
 	text-align-last: left;
 }
@@ -301,14 +305,14 @@ a {
 .install-warnings {
 	max-height: 50vh;
 	overflow-y: scroll;
-	border: 1px solid #ffc629;
+	border: 1px solid var(--color-warning);
 	border-radius: 5px;
 	padding: 0 10px 10px;
 	margin: 10px auto;
 }
 
 .warnings-list-item {
-	border-bottom: 1px solid #f7ffcc;
+	border-bottom: 1px solid var(--color-warning);
 	padding: 5px;
 	text-align-last: left;
 }

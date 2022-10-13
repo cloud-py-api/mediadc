@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -35,7 +35,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\MediaDC\AppInfo\Application;
 
 
-class CleanupService {
+class CleanupService
+{
 
 	/** @var IDBConnection */
 	private $db;
@@ -49,32 +50,23 @@ class CleanupService {
 		$this->schema = $schema;
 	}
 
-	public function dropAppTables() {
-		$tables = array_filter($this->schema->getTableNames(), '\OCA\MediaDC\Service\CleanupService::tablesCallback');
+	public function dropAppTables()
+	{
+		$tables = array_filter($this->schema->getTableNames(), function (string $tableName) {
+			return strpos($tableName, Application::APP_ID) !== false;
+		});
 		foreach ($tables as $table) {
 			$this->db->dropTable($table);
 		}
 		$this->removeAppMigrations();
 	}
 
-	/**
-	 * Callback for tables filter
-	 *
-	 * @param string $tableName
-	 *
-	 * @return bool
-	 */
-	static function tablesCallback($tableName) {
-		return strpos($tableName, Application::APP_ID) !== false;
-	}
-
-	private function removeAppMigrations() {
-		/** @var IQueryBuilder */
+	private function removeAppMigrations()
+	{
 		$qb = $this->db->getQueryBuilder();
 		$qb->delete('migrations')->where(
 			$qb->expr()->eq('app', $qb->createNamedParameter(Application::APP_ID, IQueryBuilder::PARAM_STR))
 		);
-		$qb->execute();
+		$qb->executeStatement();
 	}
-
 }

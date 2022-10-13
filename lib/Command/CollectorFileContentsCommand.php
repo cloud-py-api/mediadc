@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -39,7 +39,8 @@ use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
 
 
-class CollectorFileContentsCommand extends Command {
+class CollectorFileContentsCommand extends Command
+{
 
 	public const ARGUMENT_FILE_ID = 'fileid';
 	public const ARGUMENT_USER_ID = 'userid';
@@ -50,21 +51,24 @@ class CollectorFileContentsCommand extends Command {
 	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(IRootFolder $rootFolder, LoggerInterface $logger) {
+	public function __construct(IRootFolder $rootFolder, LoggerInterface $logger)
+	{
 		parent::__construct();
 
 		$this->rootFolder = $rootFolder;
 		$this->logger = $logger;
 	}
 
-	protected function configure(): void {
+	protected function configure(): void
+	{
 		$this->setName("mediadc:tasks:filecontents");
 		$this->setDescription("Returns file binary data");
 		$this->addArgument(self::ARGUMENT_FILE_ID, InputArgument::REQUIRED);
 		$this->addArgument(self::ARGUMENT_USER_ID, InputArgument::REQUIRED);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output): int {
+	protected function execute(InputInterface $input, OutputInterface $output): int
+	{
 		$fileid = $input->getArgument(self::ARGUMENT_FILE_ID);
 		$userid = $input->getArgument(self::ARGUMENT_USER_ID);
 
@@ -86,5 +90,4 @@ class CollectorFileContentsCommand extends Command {
 
 		return 1;
 	}
-
 }

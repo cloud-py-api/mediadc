@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -36,53 +36,59 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\MediaDC\AppInfo\Application;
 
 
-class SettingMapper extends QBMapper {
+class SettingMapper extends QBMapper
+{
 
-	public function __construct(IDBConnection $db) {
+	public function __construct(IDBConnection $db)
+	{
 		parent::__construct($db, Application::APP_ID . '_settings');
 	}
 
 	/**
+	 * @param int $id
+	 * 
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 * 
+	 * @return \OCA\MediaDC\Db\Setting
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Entity
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-
 		return $this->findEntity($qb);
 	}
 
-	public function findAll($limit=null, $offset=null): array {
+	public function findAll(int $limit = null, int $offset = null): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->setMaxResults($limit)
 			->setFirstResult($offset);
-
 		return $this->findEntities($qb);
 	}
 
 	/**
+	 * @param string $name
+	 * 
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 * 
+	 * @return \OCA\MediaDC\Db\Setting
 	 */
-	public function findByName(String $name): Entity {
+	public function findByName(string $name): Entity
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
 				$qb->expr()->eq('name', $qb->createNamedParameter($name, IQueryBuilder::PARAM_STR))
 			);
-
 		return $this->findEntity($qb);
 	}
-
 }

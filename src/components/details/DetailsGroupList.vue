@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -27,7 +27,11 @@
 		<div class="filters">
 			<div class="sorting">
 				{{ t('mediadc', 'Files size sorting') }}
-				<span :class="filesAscending ? 'icon-triangle-s sorting-group-files-btn' : 'icon-triangle-n sorting-group-files-btn'" @click="updateFileSorting" />
+				<Button type="tertiary" style="margin: 0 10px;" @click="updateFileSorting">
+					<template #icon>
+						<span :class="filesAscending ? 'icon-triangle-s sorting-group-files-btn' : 'icon-triangle-n sorting-group-files-btn'" />
+					</template>
+				</Button>
 			</div>
 			<div class="search">
 				<label for="filename-filter">
@@ -42,39 +46,24 @@
 			</div>
 			<div v-if="checkedFiles.length > 0" class="batch-editing">
 				{{ translatePlural('mediadc', 'Batch actions for %n file', 'Batch actions for %n files', checkedFiles.length) }}
-				<div class="app-content-list-menu" style="margin: 0 0 0 10px; position: relative;">
-					<div class="icon-more batch-actions-menu-button" @click="openBatchActionsPopup" />
-					<div :class="batchActionsOpened ? 'popovermenu open' : 'popovermenu'"
-						style="right: -1px;">
-						<ul>
-							<li>
-								<a class="icon-checkmark" @click="selectAllFiles">
-									<span>{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}</span>
-								</a>
-							</li>
-							<li v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage">
-								<a class="icon-checkmark" @click="selectAllFilesOnPage">
-									<span>{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
-								</a>
-							</li>
-							<li>
-								<a class="icon-close" :title="t('mediadc', 'Remove without deleting')" @click="removeCheckedFiles">
-									<span>{{ translatePlural('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}</span>
-								</a>
-							</li>
-							<li>
-								<a class="icon-delete" @click="deleteCheckedFiles">
-									<span>{{ translatePlural('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+				<Actions placement="left" style="margin-left: 5px;">
+					<ActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}" icon="icon-checkmark" @click="selectAllFiles">
+						{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
+					</ActionButton>
+					<ActionButton v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
+						{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
+					</ActionButton>
+					<ActionButton v-tooltip="{content: t('mediadc', 'Mark resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
+						{{ translatePlural('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}
+					</ActionButton>
+					<ActionButton v-tooltip="{content: translatePlural('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
+						{{ translatePlural('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}
+					</ActionButton>
+				</Actions>
 			</div>
 		</div>
 		<div v-if="!filesFiltered" class="details-group-files">
-			<DetailsFile
-				v-for="file in files"
+			<DetailsFile v-for="file in files"
 				:key="file.fileid"
 				:file="file"
 				:files="files"
@@ -83,8 +72,7 @@
 				:detail="detail" />
 		</div>
 		<div v-else-if="filteredFiles.length > 0" class="details-group-files">
-			<DetailsFile
-				v-for="file in filteredFiles"
+			<DetailsFile v-for="file in filteredFiles"
 				:key="file.fileid"
 				:file="file"
 				:files="files"
@@ -111,10 +99,18 @@ import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dia
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { emit } from '@nextcloud/event-bus'
+import Actions from '@nextcloud/vue/dist/Components/Actions'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
+import Button from '@nextcloud/vue/dist/Components/Button'
 
 export default {
 	name: 'DetailsGroupList',
-	components: { DetailsFile },
+	components: {
+		DetailsFile,
+		Actions,
+		ActionButton,
+		Button,
+	},
 	mixins: [Formats],
 	props: {
 		files: {
@@ -227,7 +223,7 @@ export default {
 					if ((this.allFiles.length - this.checkedFiles.length) <= 1) {
 						emit('openNextDetailGroup', this.detail)
 						// Remove detail
-						this.$store.dispatch('deleteDetail', this.detail)
+						this.$store.commit('deleteDetail', this.detail)
 						if ((this.allFiles.length - this.checkedFiles.length) === 1) {
 							showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
 						}
@@ -285,7 +281,7 @@ export default {
 			if ((this.allFiles.length - this.checkedFiles.length) <= 1 && res.data.deletedFileIds.length === this.checkedFiles.length) {
 				emit('openNextDetailGroup', this.detail)
 				// Remove detail
-				this.$store.dispatch('deleteDetail', this.detail)
+				this.$store.commit('deleteDetail', this.detail)
 				if ((this.allFiles.length - this.checkedFiles.length) === 1) {
 					showMessage(this.t('mediadc', 'Group successfully removed (1 file left)'))
 				}
@@ -325,13 +321,9 @@ export default {
 <style scoped>
 .details-group {
 	width: 100%;
-	border-top: 1px solid #dadada;
-	border-bottom: 1px solid #dadada;
+	border-top: 1px solid var(--color-border-dark);
+	border-bottom: 1px solid var(--color-border-dark);
 	margin: 10px 0;
-}
-
-body.theme--dark .details-group {
-	border-color: #717171;
 }
 
 .details-group-files {
@@ -340,22 +332,6 @@ body.theme--dark .details-group {
 	justify-content: center;
 	max-height: 100vh;
 	overflow-y: scroll;
-}
-
-.file {
-	display: flex;
-	height: 100%;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 192px;
-	border-radius: 5px;
-	border: 1px solid #dadada;
-	transition: box-shadow .3s;
-	margin: 10px;
-}
-
-body.theme--dark .file {
-	border-color: #717171;
 }
 
 @media (max-width: 540px) {
@@ -378,7 +354,7 @@ body.theme--dark .file {
 	justify-content: space-between;
 	padding: 5px 10px;
 	margin: 10px 0;
-	border: 1px solid #dadada;
+	border: 1px solid var(--color-border-dark);
 	border-radius: 5px;
 }
 
@@ -392,29 +368,6 @@ body.theme--dark .file {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-.sorting-group-files-btn {
-	padding: 20px;
-	border-radius: 50%;
-	margin: 0 5px;
-	cursor: pointer;
-}
-
-.sorting-group-files-btn:hover {
-	background-color: #eee;
-}
-
-.sorting-group-files-btn:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .sorting-group-files-btn:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .sorting-group-files-btn:active {
-	background-color: #5b5b5b;
 }
 
 .batch-editing {
@@ -431,7 +384,7 @@ body.theme--dark .sorting-group-files-btn:active {
 	user-select: none;
 }
 
-.batch-actions-menu-button:hover {
+/* .batch-actions-menu-button:hover {
 	background-color: #eee;
 }
 
@@ -445,5 +398,5 @@ body.theme--dark .batch-actions-menu-button:hover {
 
 body.theme--dark .batch-actions-menu-button:active {
 	background-color: #5b5b5b;
-}
+} */
 </style>

@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -25,9 +25,9 @@
 <template>
 	<div v-if="!loading" class="container">
 		<div class="heading">
-			<h1>{{ rootTitle }}</h1>
+			<h2>{{ rootTitle }}</h2>
 			<p>
-				{{ t('mediadc_collector_welcome',
+				{{ t('mediadc',
 					'Welcome to Media Duplicate Collector (MediaDC). ' +
 						'Here you can manage your duplicate collection tasks and ' +
 						'see the history of previous finished tasks.')
@@ -42,10 +42,6 @@
 </template>
 
 <script>
-import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
-import { mapGetters } from 'vuex'
-
 import Configure from '../mixins/Configure'
 import TasksNew from '../components/tasks/TasksNew'
 import TasksList from '../components/tasks/TasksList'
@@ -74,26 +70,10 @@ export default {
 			updating: false,
 		}
 	},
-	computed: {
-		...mapGetters([
-			'settings',
-			'tasks',
-		]),
-	},
 	beforeMount() {
-		this.getContent()
-	},
-	methods: {
-		async getContent() {
-			this.$emit('update:loading', true)
-			this.getTasks()
-		},
-		async getTasks() {
-			axios.get(generateUrl('/apps/mediadc/api/v1/tasks')).then(res => {
-				this.$store.dispatch('setTasks', res.data)
-				this.$emit('update:loading', false)
-			})
-		},
+		this.$store.dispatch('getTasks', true).then(() => {
+			this.$emit('update:loading', false)
+		})
 	},
 }
 </script>
@@ -106,15 +86,11 @@ export default {
 	margin: 0 auto;
 }
 
-h1 {
+h2 {
 	font-size: 24px;
 	font-weight: bold;
 	text-align: center;
 	margin: 20px 0 10px;
-}
-
-button {
-	margin: 20px 0;
 }
 
 p {
@@ -131,7 +107,6 @@ p {
 @media (max-width: 960px) {
 	.mediadc-row {
 		flex-wrap: wrap;
-		justify-content: center;
 	}
 }
 </style>

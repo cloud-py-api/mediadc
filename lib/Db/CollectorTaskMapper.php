@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -36,9 +36,11 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\MediaDC\AppInfo\Application;
 
 
-class CollectorTaskMapper extends QBMapper {
+class CollectorTaskMapper extends QBMapper
+{
 
-	public function __construct(IDBConnection $db) {
+	public function __construct(IDBConnection $db)
+	{
 		parent::__construct($db, Application::APP_ID . '_tasks');
 	}
 
@@ -46,43 +48,39 @@ class CollectorTaskMapper extends QBMapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Entity
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-
 		return $this->findEntity($qb);
 	}
 
-	public function findAll(int $limit=null, int $offset=null): array {
+	public function findAll(int $limit = null, int $offset = null): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->setMaxResults($limit)
 			->setFirstResult($offset);
-
 		return $this->findEntities($qb);
 	}
 
-	public function findAllRunning(): array {
-		/** @var IQueryBuilder */
+	public function findAllRunning(): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where($qb->expr()->gt('py_pid', $qb->createNamedParameter(0, IQueryBuilder::PARAM_INT)));
-
 		return $this->findEntities($qb);
 	}
 
-	public function findAllByOwner(string $owner, int $limit=null, int $offset=null): array {
+	public function findAllByOwner(string $owner, int $limit = null, int $offset = null): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
@@ -90,13 +88,12 @@ class CollectorTaskMapper extends QBMapper {
 			)
 			->setMaxResults($limit)
 			->setFirstResult($offset);
-
 		return $this->findEntities($qb);
 	}
 
-	public function findRecentByOwner(string $owner, int $limit=null, int $offset=null): array {
+	public function findRecentByOwner(string $owner, int $limit = null, int $offset = null): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
@@ -105,13 +102,12 @@ class CollectorTaskMapper extends QBMapper {
 			->orderBy('created_time', 'desc')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
-
 		return $this->findEntities($qb);
 	}
 
-	public function findAllRunningByOwner(string $owner, int $limit=null, int $offset=null): array {
+	public function findAllRunningByOwner(string $owner, int $limit = null, int $offset = null): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
@@ -120,8 +116,6 @@ class CollectorTaskMapper extends QBMapper {
 			)
 			->setMaxResults($limit)
 			->setFirstResult($offset);
-
 		return $this->findEntities($qb);
 	}
-
 }

@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -33,7 +33,8 @@ use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 
 
-class PythonService {
+class PythonService
+{
 
 	/** @var string */
 	private $cwd;
@@ -44,7 +45,8 @@ class PythonService {
 	/** @var UtilsService */
 	private $utils;
 
-	public function __construct(SettingMapper $settingMapper, UtilsService $utils) {
+	public function __construct(SettingMapper $settingMapper, UtilsService $utils)
+	{
 		$this->utils = $utils;
 		/** @var Setting */
 		$pythonCommand = $settingMapper->findByName('python_command');
@@ -66,7 +68,8 @@ class PythonService {
 	 * If `$nonBlocking = false` - function will return array with the `result_code`
 	 * and `output` of the script after Python script finish executing.
 	 */
-	public function run($scriptName, $scriptParams = [], $nonBlocking = false, $env = []) {
+	public function run($scriptName, $scriptParams = [], $nonBlocking = false, $env = [])
+	{
 		if (count($scriptParams) > 0) {
 			$params = array_map(function ($key, $value) {
 				return $value !== '' ? "$key $value " : "$key";
@@ -113,7 +116,8 @@ class PythonService {
 	 *
 	 * @return array check results with errors list
 	 */
-	private function checkDepsRequirements() {
+	private function checkDepsRequirements()
+	{
 		$errors = [];
 		if (!$this->utils->isFunctionEnabled('exec')) {
 			array_push($errors, '`exec` PHP function is not available.');
@@ -130,7 +134,8 @@ class PythonService {
 	 *
 	 * @return array installation results list
 	 */
-	public function installDependencies($listName = '') {
+	public function installDependencies($listName = '')
+	{
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
@@ -151,7 +156,8 @@ class PythonService {
 	/**
 	 * @return array list of uninstalled Python packages
 	 */
-	public function checkInstallation() {
+	public function checkInstallation()
+	{
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
@@ -172,7 +178,8 @@ class PythonService {
 	 *
 	 * @return array installed packages list after deleting
 	 */
-	public function deleteDependencies($packagesList = []) {
+	public function deleteDependencies($packagesList = [])
+	{
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
@@ -193,7 +200,8 @@ class PythonService {
 	 *
 	 * @return array installed packages list after deleting
 	 */
-	public function updateDependencies($packagesList = []) {
+	public function updateDependencies($packagesList = [])
+	{
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
@@ -214,7 +222,8 @@ class PythonService {
 	 *
 	 * @return array
 	 */
-	private function parsePythonOutput($pythonResult) {
+	private function parsePythonOutput($pythonResult)
+	{
 		$output = $pythonResult['output'];
 		$result_code = $pythonResult['result_code'];
 
@@ -231,7 +240,7 @@ class PythonService {
 		if ($result_code === 0) {
 			if (count($output) > 0) {
 				$result = [];
-				foreach(json_decode($output[0]) as $result_key => $result_value) {
+				foreach (json_decode($output[0]) as $result_key => $result_value) {
 					$result[$result_key] = $result_value;
 				}
 				if (isset($result['required'])) {
@@ -278,5 +287,4 @@ class PythonService {
 			'warnings' => $warnings,
 		];
 	}
-
 }

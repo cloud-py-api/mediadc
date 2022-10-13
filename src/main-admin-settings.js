@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -25,9 +25,12 @@
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
 import Nextcloudl10n from './mixins/Nextcludl10n'
+import { Tooltip } from '@nextcloud/vue'
 
 import Vue from 'vue'
 import AdminSettings from './components/settings/AdminSettings'
+
+Vue.directive('tooltip', Tooltip)
 
 // eslint-disable-next-line
 __webpack_nonce__ = btoa(getRequestToken())

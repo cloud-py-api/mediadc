@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
@@ -33,7 +33,8 @@ use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
 
 
-class Version0001Date20210627153636 extends SimpleMigrationStep {
+class Version0001Date20210627153636 extends SimpleMigrationStep
+{
 
 	/**
 	 * @param IOutput $output
@@ -41,7 +42,8 @@ class Version0001Date20210627153636 extends SimpleMigrationStep {
 	 * @param array $options
 	 * @return null|ISchemaWrapper
 	 */
-	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options) {
+	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options)
+	{
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
@@ -234,5 +236,4 @@ class Version0001Date20210627153636 extends SimpleMigrationStep {
 
 		return $schema;
 	}
-
 }

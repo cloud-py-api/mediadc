@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -35,23 +35,27 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class CollectorCleanupCommand extends Command {
+class CollectorCleanupCommand extends Command
+{
 
 	/** @var CollectorService */
 	private $collectorService;
 
-	public function __construct(CollectorService $collectorService) {
+	public function __construct(CollectorService $collectorService)
+	{
 		parent::__construct();
 
 		$this->collectorService = $collectorService;
 	}
 
-	protected function configure(): void {
+	protected function configure(): void
+	{
 		$this->setName("mediadc:collector:cleanup");
 		$this->setDescription("Executes Collector database cleanup mechanism");
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output): int {
+	protected function execute(InputInterface $input, OutputInterface $output): int
+	{
 		try {
 			$result = $this->collectorService->cleanup();
 			$output->writeln("Collector cleanup result:");
@@ -66,5 +70,4 @@ class CollectorCleanupCommand extends Command {
 		}
 		return 1;
 	}
-
 }

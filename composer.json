@@ -14,8 +14,11 @@
 		"psalm": "psalm.phar",
 		"test:unit": "phpunit -c tests/phpunit.unit.xml --fail-on-warning"
 	},
+	"require": {
+		"php": ">=7.3 <=8.1"
+	},
 	"require-dev": {
-		"christophwurst/nextcloud": "v20.0.7",
+		"christophwurst/nextcloud": "v23.0.2",
 		"roave/security-advisories": "dev-master",
 		"psalm/phar": "^4.6",
 		"phpunit/phpunit": "^9.5",

@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -24,6 +24,7 @@
 
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
+import { Tooltip } from '@nextcloud/vue'
 import { sync } from 'vuex-router-sync'
 import Nextcloudl10n from './mixins/Nextcludl10n'
 import Vue from 'vue'
@@ -39,6 +40,8 @@ __webpack_nonce__ = btoa(getRequestToken())
 __webpack_public_path__ = generateFilePath('mediadc', '', 'js/')
 
 sync(store, router)
+
+Vue.directive('tooltip', Tooltip)
 
 Vue.mixin(Nextcloudl10n)
 
