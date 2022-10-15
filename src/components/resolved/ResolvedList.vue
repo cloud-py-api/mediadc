@@ -39,8 +39,10 @@
 					</template>
 				</Button>
 				<template v-if="resolved.total_pages > 1">
-					<select v-model="goToPage" name="to_page" id="to_page">
-						<option v-for="page of pagesRange" :key="page" :value="page">{{ page + 1 }}</option>
+					<select id="to_page" v-model="goToPage" name="to_page">
+						<option v-for="page of pagesRange" :key="page" :value="page">
+							{{ page + 1 }}
+						</option>
 					</select>
 					<Button v-tooltip="t('mediadc', 'Go to page')"
 						type="tertiary"
@@ -83,8 +85,10 @@
 				</template>
 			</Button>
 			<template v-if="resolved.total_pages > 1">
-				<select v-model="goToPage" name="to_page" id="to_page">
-					<option v-for="page of pagesRange" :key="page" :value="page">{{ page + 1 }}</option>
+				<select id="to_page" v-model="goToPage" name="to_page">
+					<option v-for="page of pagesRange" :key="page" :value="page">
+						{{ page + 1 }}
+					</option>
 				</select>
 				<Button v-tooltip="t('mediadc', 'Go to page')"
 					type="tertiary"
@@ -168,20 +172,21 @@
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 
-import Formats from '../../mixins/Formats'
-import ResolvedListFile from './ResolvedListFile'
+import Formats from '../../mixins/Formats.js'
+import ResolvedListFile from './ResolvedListFile.vue'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import ListItem from '@nextcloud/vue/dist/Components/ListItem'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent.js'
+import ListItem from '@nextcloud/vue/dist/Components/ListItem.js'
+
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	name: 'ResolvedList',
 	components: {
 		ActionButton,
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		EmptyContent,
 		ListItem,
 		ResolvedListFile,
@@ -216,7 +221,7 @@ export default {
 		...mapActions(['getResolved']),
 		unresolve(fileid) {
 			const lastFileOnPage = this.resolved.data.length === 1
-			this.$store.dispatch('resolveFile', {fileid: fileid, resolved: false}).then(res => {
+			this.$store.dispatch('resolveFile', { fileid, resolved: false }).then(res => {
 				if (res.data?.success) {
 					if (lastFileOnPage && this.page > 0) {
 						this.$store.commit('updatePage', this.page - 1)

@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import Configure from '../mixins/Configure'
-import TasksNew from '../components/tasks/TasksNew'
-import TasksList from '../components/tasks/TasksList'
+import Configure from '../mixins/Configure.js'
+import TasksNew from '../components/tasks/TasksNew.vue'
+import TasksList from '../components/tasks/TasksList.vue'
 
 export default {
 	name: 'Collector',

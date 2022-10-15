@@ -24,10 +24,10 @@
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import { showError, showSuccess } from '@nextcloud/dialogs'
+import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 
-import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import Formats from '../mixins/Formats'
+import { translate as t } from '@nextcloud/l10n'
+import Formats from '../mixins/Formats.js'
 
 const state = {
 	tasks: [],
@@ -37,9 +37,9 @@ const mutations = {
 
 	/**
 	 * Set list of tasks
-	 * 
-	 * @param {object} state 
-	 * @param {object[]} tasks 
+	 *
+	 * @param {object} state the store data
+	 * @param {object[]} tasks list of tasks
 	 */
 	setTasks(state, tasks) {
 		state.tasks = tasks.sort((a, b) => b.created_time - a.created_time)
@@ -47,7 +47,7 @@ const mutations = {
 
 	/**
 	 * Update task data in the list
-	 * 
+	 *
 	 * @param {object} state the store data
 	 * @param {object} task updated task object
 	 */
@@ -60,7 +60,7 @@ const mutations = {
 
 	/**
 	 * Remove deleted task from the list
-	 * 
+	 *
 	 * @param {object} state the store data
 	 * @param {object} task deleted task to remove
 	 */
@@ -77,15 +77,15 @@ const getters = {
 	/**
 	 * List of created tasks
 	 *
-	 * @param {object} state the store data 
-	 * @returns {Array}
+	 * @param {object} state the store data
+	 * @return {Array}
 	 */
 	tasks: state => state.tasks,
 
 	/**
-	 * 
+	 *
 	 * @param {object} state the store data
-	 * @returns {object}
+	 * @return {object}
 	 */
 	taskById: state => id => state.tasks.find(task => task.id === id),
 }
@@ -94,10 +94,11 @@ const actions = {
 
 	/**
 	 * Retrieve and commit list of tasks
-	 * 
-	 * @param {object} commit context.commit the store mutations
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.commit the store mutations
 	 * @param {boolean} recent boolean flag for recent sorted tasks
-	 * @returns {Promise<object>} request results
+	 * @return {Promise<object>} request results
 	 */
 	async getTasks({ commit }, recent = false) {
 		return axios.get(generateUrl(`/apps/mediadc/api/v1/tasks?recent=${recent}`)).then(res => {
@@ -108,10 +109,10 @@ const actions = {
 
 	/**
 	 * Perform request to run the task
-	 * 
+	 *
 	 * @param {object} context the store mutations
 	 * @param {object} data request data
-	 * @returns {Promise}
+	 * @return {Promise}
 	 */
 	async runTask(context, data) {
 		return axios.post(generateUrl('/apps/mediadc/api/v1/tasks/run'), data)
@@ -119,10 +120,11 @@ const actions = {
 
 	/**
 	 * Perform terminate task request
-	 * 
-	 * @param {object} commit context.commit the store mutations
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.commit the store mutations
 	 * @param {number} taskId task id
-	 * @returns {Promise<object>}
+	 * @return {Promise<object>}
 	 */
 	async terminateTask({ commit }, taskId) {
 		return axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${taskId}/terminate`)).then(res => {
@@ -139,10 +141,11 @@ const actions = {
 
 	/**
 	 * Perform delete task request
-	 * 
-	 * @param {object} commit context.commit the store mutations
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.commit the store mutations
 	 * @param {object} task target task
-	 * @returns {Promise<object>}
+	 * @return {Promise<object>}
 	 */
 	async deleteTask({ commit }, task) {
 		return axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}`)).then(res => {
@@ -158,10 +161,11 @@ const actions = {
 
 	/**
 	 * Perform duplicate task request
-	 * 
-	 * @param {object} dispatch context.dispatch the store actions
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.dispatch the store actions
 	 * @param {object} task target task
-	 * @returns {Promise<object>}
+	 * @return {Promise<object>}
 	 */
 	async duplicateTask({ dispatch }, task) {
 		return axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}/duplicate`)).then(res => {
@@ -178,14 +182,14 @@ const actions = {
 
 	/**
 	 * Perform restart task request
-	 * 
-	 * @param {object} dispatch context.dispatch the store actions
-	 * @param {object} commit context.commit the store mutations
-	 * @param {object} rootGetters context.rootGetters the store root getters
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.commit the store mutations
+	 * @param {object} context.rootGetters context.rootGetters the store root getters
 	 * @param {object} task target task
-	 * @returns {Promise<object>}
+	 * @return {Promise<object>}
 	 */
-	async restartTask({ dispatch, commit, rootGetters }, task) {
+	async restartTask({ commit, rootGetters }, task) {
 		return axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
 			taskId: task.id,
 			targetDirectoryIds: task.target_directory_ids,

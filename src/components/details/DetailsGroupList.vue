@@ -92,16 +92,18 @@
 </template>
 
 <script>
-import Formats from '../../mixins/Formats'
+import axios from '@nextcloud/axios'
 import { mapGetters } from 'vuex'
-import DetailsFile from './DetailsFile'
 import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
-import axios from '@nextcloud/axios'
 import { emit } from '@nextcloud/event-bus'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import Button from '@nextcloud/vue/dist/Components/Button'
+
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+
+import Formats from '../../mixins/Formats.js'
+import DetailsFile from './DetailsFile.vue'
 
 export default {
 	name: 'DetailsGroupList',
@@ -109,7 +111,7 @@ export default {
 		DetailsFile,
 		Actions,
 		ActionButton,
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 	},
 	mixins: [Formats],
 	props: {

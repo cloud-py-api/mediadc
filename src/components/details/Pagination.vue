@@ -41,8 +41,10 @@
 			</template>
 		</Button>
 		<template v-if="details.length > itemsPerPage">
-			<select v-model="goToPage" name="to_page" id="to_page">
-				<option v-for="page of pagesRange" :key="page" :value="page">{{ page + 1 }}</option>
+			<select id="to_page" v-model="goToPage" name="to_page">
+				<option v-for="rPage of pagesRange" :key="rPage" :value="rPage">
+					{{ rPage + 1 }}
+				</option>
 			</select>
 			<Button v-tooltip="t('mediadc', 'Go to page')"
 				type="tertiary"
@@ -56,13 +58,13 @@
 </template>
 
 <script>
-import Button from '@nextcloud/vue/dist/Components/Button'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
 import { mapGetters } from 'vuex'
 
 export default {
 	name: 'Pagination',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 	},
 	props: {
 		details: {

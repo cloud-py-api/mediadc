@@ -85,14 +85,14 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { mapGetters } from 'vuex'
 
-import Formats from '../../mixins/Formats'
+import Formats from '../../mixins/Formats.js'
 
-import Button from '@nextcloud/vue/dist/Components/Button'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
 
 export default {
 	name: 'ResolvedListFile',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 	},
 	mixins: [Formats],
 	props: {
@@ -125,7 +125,7 @@ export default {
 		unresolve(fileid) {
 			this.updating = true
 			const lastFileOnPage = this.resolved.data.length === 1
-			this.$store.dispatch('resolveFile', { fileid: fileid, resolved: false }).then(res => {
+			this.$store.dispatch('resolveFile', { fileid, resolved: false }).then(res => {
 				this.updating = false
 				if (res.data?.success) {
 					if (lastFileOnPage && this.page > 0) {

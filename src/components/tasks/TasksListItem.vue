@@ -62,12 +62,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ContentCopy from 'vue-material-design-icons/ContentCopy'
-import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar'
-import ListItem from '@nextcloud/vue/dist/Components/ListItem'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
+import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar.js'
+import ListItem from '@nextcloud/vue/dist/Components/ListItem.js'
 
-import Formats from '../../mixins/Formats'
+import Formats from '../../mixins/Formats.js'
 
 export default {
 	name: 'TasksListItem',

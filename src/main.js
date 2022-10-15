@@ -26,12 +26,12 @@ import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
 import { Tooltip } from '@nextcloud/vue'
 import { sync } from 'vuex-router-sync'
-import Nextcloudl10n from './mixins/Nextcludl10n'
+import Nextcloudl10n from './mixins/Nextcludl10n.js'
 import Vue from 'vue'
 
-import MediaDC from './MediaDC'
-import router from './router'
-import store from './store'
+import MediaDC from './MediaDC.vue'
+import router from './router/index.js'
+import store from './store/index.js'
 
 // eslint-disable-next-line
 __webpack_nonce__ = btoa(getRequestToken())

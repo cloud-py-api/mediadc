@@ -25,7 +25,7 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 
-import Formats from '../mixins/Formats'
+import Formats from '../mixins/Formats.js'
 
 const state = {
 	task: {},
@@ -51,6 +51,7 @@ const state = {
 	sortGroups: true,
 }
 
+// eslint-disable-next-line jsdoc/require-jsdoc
 function paginate(details, itemsPerPage) {
 	const paginated = []
 	for (let i = 0; i < details.length; i++) {
@@ -76,7 +77,7 @@ const mutations = {
 		state.detailsInfo.filestotal = data.filestotal
 	},
 	setDetails(state, details) {
-		state.details = details.map((v, i) => { v.virtualId = i + 1; v.state = { checked: false, opened: false }; return v; })
+		state.details = details.map((v, i) => { v.virtualId = i + 1; v.state = { checked: false, opened: false }; return v })
 		state.paginatedDetails = paginate(details, state.itemsPerPage)
 		const sortedDetails = details.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
 		state.sortedDetails = sortedDetails
@@ -164,7 +165,7 @@ const actions = {
 	async getDetailFilesTotalSize(context) {
 		const taskId = context.rootState.route.params.taskId
 		return axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${taskId}/filestotal`)).then(res => {
-			context.commit('setDetailsInfo', { taskId: taskId, filessize: res.data.filessize, filestotal: res.data.filestotal })
+			context.commit('setDetailsInfo', { taskId, filessize: res.data.filessize, filestotal: res.data.filestotal })
 			return res
 		})
 	},

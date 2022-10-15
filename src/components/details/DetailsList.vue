@@ -58,8 +58,8 @@
 				<label for="group-id-filter">
 					{{ t('mediadc', 'Filter by duplicate group id: ') }}
 					<input id="group-id-filter"
-						v-tooltip="t('mediadc', 'Filter by id or range of ids (1-10)')"
 						v-model="filterId"
+						v-tooltip="t('mediadc', 'Filter by id or range of ids (1-10)')"
 						type="search"
 						name="group-id-filter"
 						placeholder="#id"
@@ -161,22 +161,25 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
-import { mapGetters } from 'vuex'
-import Formats from '../../mixins/Formats'
-import DetailsListItem from './DetailsListItem'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import Pagination from './Pagination'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+
+import { mapGetters } from 'vuex'
+
+import Formats from '../../mixins/Formats.js'
+
+import DetailsListItem from './DetailsListItem.vue'
+import Pagination from './Pagination.vue'
 
 export default {
 	name: 'DetailsList',
 	components: {
 		DetailsListItem,
 		CheckboxRadioSwitch,
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		Actions,
 		ActionButton,
 		Pagination,
@@ -291,14 +294,14 @@ export default {
 		filterByGroupId() {
 			if (this.filterId !== null && this.filterId !== '') {
 				const singleIdRegex = /^[1-9]$/s
-				const rangeIdsRegex = /^\d+\-\d+$/s
+				const rangeIdsRegex = /^\d+-\d+$/s
 				this.page = 0
-				
+
 				if (singleIdRegex.test(this.filterId)) {
 					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.virtualId.toString().includes(this.filterId)))
 				} else if (rangeIdsRegex.test(this.filterId)) {
-					let beginRange = this.filterId.split('-')[0]
-					let endRange = this.filterId.split('-')[1]
+					const beginRange = this.filterId.split('-')[0]
+					const endRange = this.filterId.split('-')[1]
 					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.virtualId >= beginRange && d.virtualId <= endRange))
 				}
 			} else {
@@ -343,7 +346,7 @@ export default {
 			}
 		},
 		selectAllGroups() {
-			let _details = (!this.filtered) ? this.details : this.detailsFiltered
+			const _details = (!this.filtered) ? this.details : this.detailsFiltered
 			if (this.checkedDetailGroups.length === _details.length) {
 				this._deselectAllGroups(_details)
 			} else {
@@ -356,7 +359,8 @@ export default {
 			}
 		},
 		selectAllGroupsOnPage() {
-			let _details = (!this.filtered) ? ((!this.sortGroups) ? this.paginatedDetails : this.paginatedSortedDetails) 
+			const _details = (!this.filtered)
+				? ((!this.sortGroups) ? this.paginatedDetails : this.paginatedSortedDetails)
 				: ((!this.sortGroups) ? this.paginatedDetailsFiltered : this.paginatedDetailsFilteredSorted)
 			if (_details[this.page].length === this.checkedDetailGroupsIntersect.length) {
 				const groupsToDeselect = this.checkedDetailGroupsIntersect
@@ -392,7 +396,8 @@ export default {
 			this.page = this.goToPage
 		},
 		toggleGroups() {
-			let _details = (!this.filtered) ? ((!this.sortGroups) ? this.paginatedDetails[this.page] : this.paginatedSortedDetails[this.page]) 
+			const _details = (!this.filtered)
+				? ((!this.sortGroups) ? this.paginatedDetails[this.page] : this.paginatedSortedDetails[this.page])
 				: ((!this.sortGroups) ? this.paginatedDetailsFiltered[this.page] : this.paginatedDetailsFilteredSorted[this.page])
 			for (const detail of _details) {
 				emit('toggleGroup', detail)

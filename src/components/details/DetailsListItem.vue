@@ -58,8 +58,13 @@
 					<span class="icon-view-next" />
 				</template>
 			</Button>
-			<select v-model="goToPage" style="margin-left: 5px;" name="to_page" id="to_page">
-				<option v-for="page of pagesRange" :key="page" :value="page">{{ page + 1 }}</option>
+			<select id="to_page"
+				v-model="goToPage"
+				style="margin-left: 5px;"
+				name="to_page">
+				<option v-for="rPage of pagesRange" :key="rPage" :value="rPage">
+					{{ rPage + 1 }}
+				</option>
 			</select>
 			<Button v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage"
 				v-tooltip="t('mediadc', 'Go to page')"
@@ -85,22 +90,24 @@
 <script>
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import DetailsGroupList from './DetailsGroupList'
-import Formats from '../../mixins/Formats'
-import { mapGetters } from 'vuex'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import Button from '@nextcloud/vue/dist/Components/Button'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+
+import { mapGetters } from 'vuex'
+
+import Formats from '../../mixins/Formats.js'
+import DetailsGroupList from './DetailsGroupList.vue'
 
 export default {
 	name: 'DetailsListItem',
 	components: {
 		Actions,
 		ActionButton,
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		CheckboxRadioSwitch,
 		DetailsGroupList,
 	},

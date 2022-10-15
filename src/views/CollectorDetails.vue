@@ -128,7 +128,7 @@
 			</Transition>
 			<Transition name="fade" appear>
 				<div v-if="isValidUser" class="details-row">
-					<DetailsList v-if="getStatusBadge(task) === 'finished'"/>
+					<DetailsList v-if="getStatusBadge(task) === 'finished'" />
 				</div>
 				<div v-else>
 					<p style="text-align: center;">
@@ -164,16 +164,16 @@ import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
 import { mapActions, mapGetters } from 'vuex'
 
-import Configure from '../mixins/Configure'
-import DetailsList from '../components/details/DetailsList'
-import Formats from '../mixins/Formats'
-import TasksEdit from '../components/tasks/TasksEdit'
+import Configure from '../mixins/Configure.js'
+import DetailsList from '../components/details/DetailsList.vue'
+import Formats from '../mixins/Formats.js'
+import TasksEdit from '../components/tasks/TasksEdit.vue'
 
-import Actions from '@nextcloud/vue/dist/Components/Actions'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import ContentCopy from 'vue-material-design-icons/ContentCopy'
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {
 	name: 'CollectorDetails',
@@ -183,7 +183,7 @@ export default {
 		Actions,
 		ActionButton,
 		ProgressBar,
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		ContentCopy,
 	},
 	mixins: [

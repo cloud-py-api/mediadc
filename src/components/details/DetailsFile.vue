@@ -99,17 +99,18 @@ import { getCurrentUser } from '@nextcloud/auth'
 import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
+
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+
 import { mapGetters } from 'vuex'
 
-import Formats from '../../mixins/Formats'
-
-import Button from '@nextcloud/vue/dist/Components/Button'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import Formats from '../../mixins/Formats.js'
 
 export default {
 	name: 'DetailsFile',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		CheckboxRadioSwitch,
 	},
 	mixins: [Formats],

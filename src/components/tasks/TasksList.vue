@@ -53,10 +53,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent.js'
 
-import Formats from '../../mixins/Formats'
-import TasksListItem from './TasksListItem'
+import Formats from '../../mixins/Formats.js'
+import TasksListItem from './TasksListItem.vue'
 
 export default {
 	name: 'TasksList',
@@ -121,7 +121,6 @@ export default {
 	border-radius: 16px;
 	border-color: var(--color-border-dark);
 }
-
 
 .task-row:hover {
 	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);

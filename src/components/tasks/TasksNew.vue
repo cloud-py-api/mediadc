@@ -191,16 +191,16 @@
 import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
 import { mapActions, mapGetters } from 'vuex'
 
-import { requestFileInfo, getFileId } from '../../utils/files'
+import { requestFileInfo, getFileId } from '../../utils/files.js'
 
-import Button from '@nextcloud/vue/dist/Components/Button'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import PlusThick from 'vue-material-design-icons/PlusThick'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
 export default {
 	name: 'TasksNew',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		CheckboxRadioSwitch,
 		PlusThick,
 	},

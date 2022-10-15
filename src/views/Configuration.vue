@@ -178,15 +178,15 @@
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
 
-import Configure from '../mixins/Configure'
+import Configure from '../mixins/Configure.js'
 
-import Button from '@nextcloud/vue/dist/Components/Button'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
 
 export default {
 	name: 'Configuration',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		CheckboxRadioSwitch,
 	},
 	mixins: [

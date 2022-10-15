@@ -59,13 +59,13 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess } from '@nextcloud/dialogs'
 
-import Button from '@nextcloud/vue/dist/Components/Button'
-import ContentCopy from 'vue-material-design-icons/ContentCopy'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {
 	name: 'BugReport',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		ContentCopy,
 	},
 	data() {

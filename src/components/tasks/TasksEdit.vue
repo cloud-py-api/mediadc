@@ -26,7 +26,7 @@
 	<transition name="fade">
 		<div class="block-wrapper">
 			<div class="edit-task-block">
-				<div class="edit-task-close" @click="closeEditTaskDialog()"></div>
+				<div class="edit-task-close" @click="closeEditTaskDialog()" />
 				<h2>{{ t('mediadc', 'Edit task') }}</h2>
 				<div class="selection-container">
 					<div class="block target-directories-block">
@@ -186,21 +186,24 @@
 </template>
 
 <script>
+import axios from '@nextcloud/axios'
+import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
-import axios from '@nextcloud/axios'
-import { requestFileInfo, getFileId } from '../../utils/files'
-import { mapGetters } from 'vuex'
-import { getCurrentUser } from '@nextcloud/auth'
 import { emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import PlusThick from 'vue-material-design-icons/PlusThick'
+
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import PlusThick from 'vue-material-design-icons/PlusThick.vue'
+
+import { mapGetters } from 'vuex'
+
+import { requestFileInfo, getFileId } from '../../utils/files.js'
 
 export default {
 	name: 'TasksEdit',
 	components: {
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		CheckboxRadioSwitch,
 		PlusThick,
 	},
@@ -425,10 +428,12 @@ export default {
 .fade-leave-active {
 	transition: opacity 250ms;
 }
+
 .fade-enter,
 .fade-leave-to {
 	opacity: 0;
 }
+
 .fade-visibility-enter,
 .fade-visibility-leave-to {
 	visibility: hidden;
@@ -445,7 +450,7 @@ export default {
 	justify-content: center;
 	width: 100%;
 	height: 100%;
-	
+
 }
 
 .edit-task-block {

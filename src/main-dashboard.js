@@ -24,10 +24,10 @@
 
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
-import Nextcloudl10n from './mixins/Nextcludl10n'
+import Nextcloudl10n from './mixins/Nextcludl10n.js'
 
 import Vue from 'vue'
-import Dashboard from './views/Dashboard'
+import Dashboard from './views/Dashboard.vue'
 
 // eslint-disable-next-line
 __webpack_nonce__ = btoa(getRequestToken())

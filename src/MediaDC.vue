@@ -53,19 +53,19 @@
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
 
-import Content from '@nextcloud/vue/dist/Components/Content'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+import Content from '@nextcloud/vue/dist/Components/Content.js'
+import AppContent from '@nextcloud/vue/dist/Components/AppContent.js'
+import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation.js'
+import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem.js'
+import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings.js'
 
-import Configure from './mixins/Configure'
-import DetailsListSettings from './components/settings/DetailsListSettings'
+import Configure from './mixins/Configure.js'
+import DetailsListSettings from './components/settings/DetailsListSettings.vue'
 
 export default {
 	name: 'MediaDC',
 	components: {
-		Content,
+		Content, // eslint-disable-line vue/no-reserved-component-names
 		AppContent,
 		AppNavigation,
 		AppNavigationItem,

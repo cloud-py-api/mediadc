@@ -26,10 +26,10 @@ import { generateUrl } from '@nextcloud/router'
 import VueRouter from 'vue-router'
 import Vue from 'vue'
 
-const Collector = () => import('../views/Collector')
-const CollectorDetails = () => import('../views/CollectorDetails')
-const Resolved = () => import('../views/Resolved')
-const Configuration = () => import('../views/Configuration')
+const Collector = () => import('../views/Collector.vue')
+const CollectorDetails = () => import('../views/CollectorDetails.vue')
+const Resolved = () => import('../views/Resolved.vue')
+const Configuration = () => import('../views/Configuration.vue')
 
 Vue.use(VueRouter)
 

@@ -24,11 +24,11 @@
 
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
-import Nextcloudl10n from './mixins/Nextcludl10n'
+import Nextcloudl10n from './mixins/Nextcludl10n.js'
 import { Tooltip } from '@nextcloud/vue'
 
 import Vue from 'vue'
-import AdminSettings from './components/settings/AdminSettings'
+import AdminSettings from './components/settings/AdminSettings.vue'
 
 Vue.directive('tooltip', Tooltip)
 

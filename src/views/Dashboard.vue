@@ -55,9 +55,9 @@ import { generateUrl } from '@nextcloud/router'
 import { loadState } from '@nextcloud/initial-state'
 import { DashboardWidget, DashboardWidgetItem } from '@nextcloud/vue-dashboard'
 
-import Formats from '../mixins/Formats'
+import Formats from '../mixins/Formats.js'
 
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent.js'
 
 const tasks = loadState('mediadc', 'mediadc-recent-tasks')
 

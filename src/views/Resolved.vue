@@ -43,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ResolvedList from '../components/resolved/ResolvedList'
+import ResolvedList from '../components/resolved/ResolvedList.vue'
 
 export default {
 	name: 'Resolved',

@@ -22,7 +22,7 @@
  *
  */
 
-import { formatBytes } from '../utils/files'
+import { formatBytes } from '../utils/files.js'
 import moment from '@nextcloud/moment'
 import { translate as t } from '@nextcloud/l10n'
 

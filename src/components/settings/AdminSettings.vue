@@ -196,21 +196,23 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton'
-import BugReport from './BugReport'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
-import ListItem from '@nextcloud/vue/dist/Components/ListItem'
-import PlusThick from 'vue-material-design-icons/PlusThick'
-import SettingsSection from '@nextcloud/vue/dist/Components/SettingsSection'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent.js'
+import ListItem from '@nextcloud/vue/dist/Components/ListItem.js'
+import SettingsSection from '@nextcloud/vue/dist/Components/SettingsSection.js'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+
+import PlusThick from 'vue-material-design-icons/PlusThick.vue'
+
+import BugReport from './BugReport.vue'
 
 export default {
 	name: 'AdminSettings',
 	components: {
 		ActionButton,
 		BugReport,
-		Button,
+		Button, // eslint-disable-line vue/no-reserved-component-names
 		EmptyContent,
 		ListItem,
 		PlusThick,
