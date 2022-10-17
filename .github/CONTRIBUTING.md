@@ -23,4 +23,4 @@ Thanks for wanting to contribute source code to the MediaDC app. That's great!
 
 ## Translations
 
-During the beta version testing we don't support translations.
+You can submit translations using [Transifex](https://explore.transifex.com/nextcloud/nextcloud/)
