@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "mediadc",
+    {
+    "Tasks" : "Tugas",
+    "Configuration" : "Konfigurasi",
+    "Settings" : "Setelan",
+    "Delete file" : "Hapus berkas",
+    "Deselect all" : "Tidak ada yang dipilih",
+    "Select all" : "Pilih semua",
+    "Remove" : "Buang",
+    "Confirm" : "Konfirmasi",
+    "Decline" : "Tolak",
+    "Error" : "Galat",
+    "Copied to clipboard" : "Disalin ke papan klip",
+    "Select" : "Pilih",
+    "Photos" : "Foto",
+    "Videos" : "Video",
+    "Start" : "Mulai",
+    "Delete" : "Hapus",
+    "Edit" : "Sunting",
+    "Install" : "Pasang",
+    "Type" : "tipe",
+    "Actions" : "Tindakan",
+    "Update" : "Perbarui",
+    "Save changes" : "Simpan perubahan"
+},
+"nplurals=1; plural=0;");

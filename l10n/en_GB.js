@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "mediadc",
+    {
+    "Tasks" : "Tasks",
+    "Configuration" : "Configuration",
+    "Settings" : "Settings",
+    "Delete file" : "Delete file",
+    "Deselect all" : "Deselect all",
+    "Select all" : "Select all",
+    "Remove" : "Remove",
+    "Confirm" : "Confirm",
+    "Decline" : "Decline",
+    "Error" : "Error",
+    "Copy to clipboard" : "Copy to clipboard",
+    "Copied to clipboard" : "Copied to clipboard",
+    "Select" : "Select",
+    "Photos" : "Photos",
+    "Videos" : "Videos",
+    "Start" : "Start",
+    "Delete" : "Delete",
+    "Edit" : "Edit",
+    "Type" : "Type",
+    "Actions" : "Actions",
+    "Update" : "Update",
+    "Save changes" : "Save changes"
+},
+"nplurals=2; plural=(n != 1);");

@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "mediadc",
+    {
+    "Tasks" : "Uzdevumi",
+    "Configuration" : "Konfigurācija",
+    "Settings" : "Iestatījumi",
+    "Delete file" : "Dzēst datni",
+    "Deselect all" : "Atcelt atzīmi",
+    "Select all" : "Atzīmēt visu",
+    "Remove" : "Noņemt",
+    "Confirm" : "Apstiprināt",
+    "Decline" : "Noraidīt",
+    "Error" : "Kļūda",
+    "Copy to clipboard" : "Kopēt starpliktuvē",
+    "Copied to clipboard" : "Nokopēts starpliktuvē",
+    "Select" : "Atzīmēt",
+    "Photos" : "Bildes",
+    "Videos" : "Video",
+    "Start" : "Sākt",
+    "Delete" : "Dzēst",
+    "Edit" : "Rediģēt",
+    "Type" : "Tips",
+    "Actions" : "Darbības",
+    "Update" : "Atjaunināt",
+    "Save changes" : "Saglabāt izmaiņas"
+},
+"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

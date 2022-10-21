@@ -1,0 +1,27 @@
+OC.L10N.register(
+    "mediadc",
+    {
+    "Tasks" : "Nhiệm vụ",
+    "Configuration" : "Cấu hình",
+    "Settings" : "Cài đặt",
+    "Select file" : "Chọn tập tin",
+    "Delete file" : "Xóa tệp",
+    "Deselect all" : "Bỏ chọn tất cả",
+    "Select all" : "Chọn tất cả",
+    "Remove" : "Xoá",
+    "Confirm" : "Xác nhận",
+    "Error" : "Lỗi",
+    "Copied to clipboard" : "Đã sao chép vào bộ nhớ tạm",
+    "Select" : "Chọn",
+    "Photos" : "Ảnh",
+    "Videos" : "Phim",
+    "Start" : "Bắt đầu",
+    "Delete" : "Xóa",
+    "Edit" : "Chỉnh sửa",
+    "Install" : "Cài đặt",
+    "Type" : "Loại",
+    "Actions" : "Hành động",
+    "Update" : "Cập nhật",
+    "Save changes" : "Lưu thay đổi"
+},
+"nplurals=1; plural=0;");
