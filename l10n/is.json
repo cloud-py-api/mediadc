@@ -1,0 +1,28 @@
+{ "translations": {
+    "Tasks" : "Verkefni",
+    "Configuration" : "Uppsetning",
+    "Settings" : "Stillingar",
+    "Delete file" : "Eyða skrá",
+    "Deselect all" : "Afvelja allt",
+    "Select all" : "Select all",
+    "Go to page" : "Go to page",
+    "Remove" : "Fjarlægja",
+    "Confirm" : "Staðfesta",
+    "Decline" : "Hafna",
+    "Error" : "Villa",
+    "Copy to clipboard" : "Afrita á klippispjald",
+    "Copied to clipboard" : "Afritað á klippispjald",
+    "Select" : "Velja",
+    "Photos" : "Ljósmyndir",
+    "Videos" : "Myndskeið",
+    "Start" : "Start",
+    "Duplicate" : "Tvítaka",
+    "Delete" : "Eyða",
+    "Edit" : "Breyta",
+    "Install" : "Setja upp",
+    "Type" : "Tegund",
+    "Actions" : "Aðgerðir",
+    "Update" : "Uppfæra",
+    "Save changes" : "Vista breytingar"
+},"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
+}

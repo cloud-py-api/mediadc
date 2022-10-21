@@ -1,0 +1,28 @@
+{ "translations": {
+    "Tasks" : "Tarefas",
+    "Configuration" : "Configuración",
+    "Settings" : "Axustes",
+    "Select file" : "Seleccionar ficheiro",
+    "Delete file" : "Eliminar ficheiro",
+    "Deselect all" : "Desmarcar todo",
+    "Select all" : "Seleccionar todo",
+    "Remove" : "Retirar",
+    "Confirm" : "Confirmar",
+    "Decline" : "Declinar",
+    "Error" : "Erro",
+    "Copy to clipboard" : "Copiar no portapapeis.",
+    "Copied to clipboard" : "Copiado no portapapeis.",
+    "Select" : "Seleccionar",
+    "Photos" : "Fotos",
+    "Videos" : "Vídeos",
+    "Start" : "Iniciar",
+    "Delete" : "Eliminar",
+    "Edit" : "Editar",
+    "Delete task" : "Eliminar tarefa",
+    "Install" : "Instalar",
+    "Type" : "Tipo",
+    "Actions" : "Accións",
+    "Update" : "Actualizar",
+    "Save changes" : "Gardar cambios"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
