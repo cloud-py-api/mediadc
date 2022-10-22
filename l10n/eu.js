@@ -29,8 +29,14 @@ OC.L10N.register(
     "Delete task" : "Ezabatu zeregina",
     "Install" : "Instalatu",
     "Type" : "Mota",
+    "Packages" : "Paketeak",
+    "Installed" : "Instalatuta",
     "Actions" : "Ekintzak",
     "Update" : "Eguneratu",
-    "Save changes" : "Gorde aldaketak"
+    "Configuration errors" : "Konfigurazio erroreak",
+    "Configuration warnings" : "Konfigurazio oharrak",
+    "Save changes" : "Gorde aldaketak",
+    "Not installed" : "Instalatu gabe",
+    "No tasks yet." : "Ez dago jarduerarik oraindik."
 },
 "nplurals=2; plural=(n != 1);");
