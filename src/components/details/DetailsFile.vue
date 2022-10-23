@@ -224,11 +224,11 @@ export default {
 					} else if ('locked' in res.data && res.data.locked) {
 						showWarning(this.t('mediadc', 'Wait until file loaded before deleting'))
 					} else if ('not_permited' in res.data && res.data.not_permited) {
-						showError(this.t('mediadc', 'Not enough permitions to delete file'))
+						showError(this.t('mediadc', 'Not enough permissions to delete file'))
 					} else if ('not_found' in res.data && res.data.not_found) {
 						showError(this.t('mediadc', 'File not found. Probably it\'s already deleted'))
 					} else {
-						showError(this.t('mediadc', 'Some error occured while deleting file'))
+						showError(this.t('mediadc', 'An error occured while deleting file'))
 					}
 					this.updating = false
 				})
