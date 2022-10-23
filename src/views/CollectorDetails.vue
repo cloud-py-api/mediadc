@@ -327,7 +327,7 @@ export default {
 			this.$store.commit('setDetailFilesTotalSize', { taskId: this.$route.params.taskId, filestotal: 0, filessize: 0 })
 		},
 		getDirOwnerToolip(dir) {
-			return `${this.t('mediadc', 'owner:')} ${dir.fileowner}`
+			return `${this.t('mediadc', 'Owner:')} ${dir.fileowner}`
 		},
 		copyErrorsToClipboard() {
 			navigator.clipboard.writeText(JSON.stringify(Object.assign(this.task.errors.split('\\n')), null, 2))
