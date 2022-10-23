@@ -130,7 +130,9 @@ def get_directory_data_image(dir_id: int, dir_mimetype: int, img_mimetype: int, 
             f"LEFT JOIN {get_image_table_name()} AS imgcache " \
             f"ON fcache.fileid = imgcache.fileid AND fcache.mtime = imgcache.mtime " \
             f"WHERE (fcache.parent = {dir_id}{mp_query}) " \
-            f"AND (fcache.mimetype = {dir_mimetype} OR fcache.mimepart = {img_mimetype});"
+            f"AND (fcache.mimetype = {dir_mimetype}" \
+            f" OR fcache.mimepart = {img_mimetype}" \
+            f" OR fcache.name IN ('.nomedia', '.noimage'));"
     return execute_fetchall(query)
 
 
@@ -146,7 +148,9 @@ def get_directory_data_video(dir_id: int, dir_mimetype: int, video_mimetype: int
             f"LEFT JOIN {get_video_table_name()} AS vcache " \
             f"ON fcache.fileid = vcache.fileid AND fcache.mtime = vcache.mtime " \
             f"WHERE (fcache.parent = {dir_id}{mp_query}) " \
-            f"AND (fcache.mimetype = {dir_mimetype} OR fcache.mimepart = {video_mimetype});"
+            f"AND (fcache.mimetype = {dir_mimetype}" \
+            f" OR fcache.mimepart = {video_mimetype}" \
+            f" OR fcache.name IN ('.nomedia', '.noimage'));"
     dirs_list = execute_fetchall(query)
     for each_dir in dirs_list:
         if isinstance(each_dir['timestamps'], str):
