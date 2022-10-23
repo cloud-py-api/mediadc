@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "MediaDC Tasks" : "MediaDC feladatok",
     "MediaDC" : "MediaDC",
     "Tasks" : "Feladatok",
     "Resolved" : "Megoldott",
@@ -16,7 +17,7 @@ OC.L10N.register(
     "Resolved list" : "Megoldottak listája",
     "Change to grid view" : "Váltás rácsnézetre",
     "Change to list view" : "Váltás listanézetre",
-    "MediaDC settings" : "MediaDC beállítások",
+    "MediaDC settings" : "MediaDC beállításai",
     "Remove" : "Eltávolítás",
     "Confirm" : "Megerősítés",
     "Decline" : "Elutasítás",
@@ -37,13 +38,23 @@ OC.L10N.register(
     "Type" : "Típus",
     "Actions" : "Műveletek",
     "Update" : "Frissítés",
+    "Dependencies checking failed. Some server error occured" : "A függőségek ellenőrzése sikertelen. Kiszolgálóhiba történt.",
     "Photos&Videos" : "Fotók és videók",
+    "MediaDC Task Details" : "MediaDC – Feladat részletei",
+    "MediaDC Configuration" : "MediaDC – Beállítások",
+    "MediaDC Resolved files" : "MediaDC – Feloldott fájlok",
+    "Some error occured while deleting task" : "Hiba történt a feladat törlése során",
+    "Task successfully started with duplicated settings!" : "A feladat sikeresen elindult a kettőzött beállításokkal.",
     "Test text" : "Tesztszöveg",
+    "Remove without deleting" : "Eltávolítás törlés nélkül",
     "No matching found" : "Nincs egyező",
     "Save changes" : "Változások mentése",
+    "in GBytes" : "gigabájtban",
     "Settings successfully updated" : "Beállítások sikeresen frissítve",
     "Setting successfully updated" : "Beállítás sikeresen frissítve",
+    "No tasks yet. Create a new one!" : "Még nincsenek feladatok. Hozzon létre egy újat.",
     "onwer:" : "tulajdonos:",
-    "Not installed" : "Nincs telepítve"
+    "Not installed" : "Nincs telepítve",
+    "No tasks yet." : "Még nincsenek feladatok."
 },
 "nplurals=2; plural=(n != 1);");
