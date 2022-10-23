@@ -28,10 +28,10 @@
 			<h3>
 				{{ t('mediadc', 'Duplicates list') }}
 				<span v-if="getStatusBadge(task) === 'finished'">
-					- {{ details.length }} {{ translatePlural('mediadc', 'group, ', 'groups', details.length) }}
+					- {{ details.length }} {{ n('mediadc', 'group ', 'groups', details.length) }}
 				</span>
 				<span v-if="detailsInfo.filestotal !== -1 && detailsInfo.filessize !== -1">
-					({{ detailsInfo.filestotal }} {{ translatePlural('mediadc', 'file', 'files', detailsInfo.filestotal) }} - {{ formatBytes(detailsInfo.filessize) }})
+					({{ detailsInfo.filestotal }} {{ n('mediadc', 'file', 'files', detailsInfo.filestotal) }} - {{ formatBytes(detailsInfo.filessize) }})
 				</span>
 			</h3>
 			<div class="pagination-wrapper">
@@ -79,7 +79,7 @@
 						</template>
 					</Button>
 					<div v-if="checkedDetailGroups.length > 0" class="batch-editing">
-						{{ translatePlural('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
+						{{ n('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
 						<Actions placement="top" style="margin-left: 5px;">
 							<template v-if="!filtered">
 								<ActionButton icon="icon-checkmark" @click="selectAllGroups">
@@ -103,7 +103,7 @@
 							<ActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group resolved'), placement: 'left'}"
 								icon="icon-delete"
 								@click="removeCheckedGroups">
-								{{ translatePlural('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
+								{{ n('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
 							</ActionButton>
 						</Actions>
 					</div>

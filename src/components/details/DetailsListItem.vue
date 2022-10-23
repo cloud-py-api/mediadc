@@ -34,7 +34,7 @@
 				</template>
 				<template #default>
 					{{ t('mediadc', 'Duplicate group') }} #{{ detail.virtualId }} ({{ JSON.parse(detail.group_files_ids).length }}
-					{{ translatePlural('mediadc', 'file', 'files', JSON.parse(detail.group_files_ids).length) }}{{ Array.isArray(files) && files.length > 0 ? ' - ' + formatBytes(groupFilesSize) : '' }})
+					{{ n('mediadc', 'file', 'files', JSON.parse(detail.group_files_ids).length) }}{{ Array.isArray(files) && files.length > 0 ? ' - ' + formatBytes(groupFilesSize) : '' }})
 					<span :class="!opened ? 'icon-triangle-s' : 'icon-triangle-n'"
 						style="display: inline-flex; margin: 0 0 0 5px;" />
 				</template>

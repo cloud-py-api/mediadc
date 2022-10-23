@@ -60,12 +60,12 @@
 							<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 							<div style="display: flex; flex-direction: column;">
 								<span>
-									<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ translatePlural('mediadc', 'file', 'files', task.files_total) }}
+									<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ n('mediadc', 'file', 'files', task.files_total) }}
 									({{ formatBytes(Number(task.files_total_size)) }})
 									({{ task !== null && 'collector_settings' in task ? t('mediadc', 'precision: ') + JSON.parse(task.collector_settings).similarity_threshold + '%' : '' }})
 									<br>
 									<b>{{ t('mediadc', 'Deleted: ') }} </b>
-									{{ task.deleted_files_count }} {{ translatePlural('mediadc', 'file', 'files', task.deleted_files_count) }}
+									{{ task.deleted_files_count }} {{ n('mediadc', 'file', 'files', task.deleted_files_count) }}
 									({{ formatBytes(Number(task.deleted_files_size)) }})
 								</span>
 								<span>
@@ -297,12 +297,9 @@ export default {
 		deleteTask(task) {
 			if (this.isValidUser) {
 				if (confirm(this.t('mediadc', 'Are sure, you want delete this task?'))) {
-					this.deleting = true
-					this.$store.dispatch('deleteTask', task)
-					axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}`)).then(res => {
+					this.$store.dispatch('deleteTask', task).then(() => {
 						this.$router.push({ name: 'collector' })
 						showSuccess(this.t('mediadc', 'Task successfully deleted'))
-						this.deleting = false
 					})
 				}
 			} else {

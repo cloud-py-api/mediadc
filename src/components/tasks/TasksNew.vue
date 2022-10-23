@@ -331,7 +331,7 @@ export default {
 				} else if (res.data.limit) {
 					showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 				} else if (res.data.empty) {
-					showWarning(this.translatePlural('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
+					showWarning(this.n('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
 				} else {
 					showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 				}

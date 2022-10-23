@@ -53,7 +53,7 @@
 					</Button>
 				</template>
 			</div>
-			<h2>{{ t('mediadc', 'Resolved list') }} ({{ resolved.total_items }} {{ translatePlural('mediadc', 'file', 'files', resolved.total_items) }})</h2>
+			<h2>{{ t('mediadc', 'Resolved list') }} ({{ resolved.total_items }} {{ n('mediadc', 'file', 'files', resolved.total_items) }})</h2>
 			<Button v-tooltip="t('mediadc', 'Toggle media type')"
 				type="tertiary"
 				class="toggle-type-button"

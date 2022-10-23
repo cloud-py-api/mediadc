@@ -45,7 +45,7 @@
 				</label>
 			</div>
 			<div v-if="checkedFiles.length > 0" class="batch-editing">
-				{{ translatePlural('mediadc', 'Batch actions for %n file', 'Batch actions for %n files', checkedFiles.length) }}
+				{{ n('mediadc', 'Batch actions for %n file', 'Batch actions for %n files', checkedFiles.length) }}
 				<Actions placement="left" style="margin-left: 5px;">
 					<ActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}" icon="icon-checkmark" @click="selectAllFiles">
 						{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
@@ -54,10 +54,10 @@
 						{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
 					</ActionButton>
 					<ActionButton v-tooltip="{content: t('mediadc', 'Mark resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
-						{{ translatePlural('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}
+						{{ n('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}
 					</ActionButton>
-					<ActionButton v-tooltip="{content: translatePlural('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
-						{{ translatePlural('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}
+					<ActionButton v-tooltip="{content: n('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
+						{{ n('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}
 					</ActionButton>
 				</Actions>
 			</div>

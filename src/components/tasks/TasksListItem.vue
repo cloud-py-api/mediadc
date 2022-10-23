@@ -90,7 +90,7 @@ export default {
 		]),
 		listItemTitle() {
 			return `${this.parseTargetMtype(this.task)}
-				${this.task.files_scanned !== this.task.files_total ? this.task.files_scanned + '/' : ''}${this.task.files_total} ${this.translatePlural('mediadc', 'file', 'files', this.task.files_total)}
+				${this.task.files_scanned !== this.task.files_total ? this.task.files_scanned + '/' : ''}${this.task.files_total} ${this.n('mediadc', 'file', 'files', this.task.files_total)}
 				(${this.formatBytes(Number(this.task.files_total_size))})`
 		},
 		listItemDetails() {
