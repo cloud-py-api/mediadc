@@ -99,7 +99,7 @@
 						<div v-for="dir in taskInfo.target_directories" :key="dir.fileid" class="target-directory-row">
 							<div class="owner-tooltip">
 								<div class="tooltip-title">
-									{{ t('mediadc', 'onwer:') }} {{ dir.fileowner }}
+									{{ t('mediadc', 'Owner:') }} {{ dir.fileowner }}
 								</div>
 								<div class="tooltip-content">
 									<a :href="filesDirLink(dir)" target="_blank">
