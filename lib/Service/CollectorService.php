@@ -519,7 +519,7 @@ class CollectorService
 				array_push($targetDirectories, [
 					'fileid' => $directory->getId(),
 					'filename' => $directory->getName(),
-					'filesize' => $this->getTargetFolderFilesSize($directory, $taskSettings['target_mtype'], $excludeList),
+					'filesize' => (!$this->hasIgnoreFlag($directory)) ? $this->getTargetFolderFilesSize($directory, $taskSettings['target_mtype'], $excludeList) : 0,
 					'fileowner' => $directory->getOwner()->getUID(),
 					'filepath' => $directory->getPath(),
 					'filerelpath' => $directory->getInternalPath(),
@@ -900,11 +900,11 @@ class CollectorService
 			$nodes = $this->userFolder->getById($targetId);
 			if (count($nodes) > 0) {
 				foreach ($nodes as $node) {
-					if ($node instanceof Folder && $this->passesExcludeList($node, $excludeList)) {
+					if ($node instanceof Folder && $this->passesExcludeList($node, $excludeList) && !$this->hasIgnoreFlag($node)) {
 						$result['files_total'] += $this->getTargetFolderFilesCount($node, $this->isShared($node), $targetMtype, $excludeList);
 						$result['files_total_size'] += $this->getTargetFolderFilesSize($node, $targetMtype, $excludeList);
 					} else if (
-						$node instanceof File && $this->validFile($node, $this->isShared($node), $targetMtype)
+						$node instanceof File && $this->isValidFile($node, $this->isShared($node), $targetMtype)
 						&& $this->passesExcludeList($node, $excludeList)
 					) {
 						$result['files_total'] += 1;
@@ -925,6 +925,9 @@ class CollectorService
 	 */
 	public function getTargetFolderFilesSize($folder, $targetMtype, $excludeList)
 	{
+		if ($this->hasIgnoreFlag($folder)) {
+			return 0;
+		}
 		$size = 0;
 		$nodes = $folder->getDirectoryListing();
 		if (count($nodes) > 0) {
@@ -932,7 +935,7 @@ class CollectorService
 				if ($node instanceof Folder && $this->passesExcludeList($node, $excludeList)) {
 					$size += $this->getTargetFolderFilesSize($node, $targetMtype, $excludeList);
 				} else if (
-					$node instanceof File && $this->validFile($node, $this->isShared($node), $targetMtype)
+					$node instanceof File && $this->isValidFile($node, $this->isShared($node), $targetMtype)
 					&& $this->passesExcludeList($node, $excludeList)
 				) {
 					$size += $node->getSize();
@@ -952,11 +955,14 @@ class CollectorService
 	 */
 	public function getTargetFolderFilesCount($folder, $shared, $targetMtype, $excludeList)
 	{
+		if ($this->hasIgnoreFlag($folder)) {
+			return 0;
+		}
 		$count = 0;
 		$nodes = $folder->getDirectoryListing();
 		foreach ($nodes as $node) {
 			if (
-				$node instanceof File && $this->validFile($node, $shared, $targetMtype)
+				$node instanceof File && $this->isValidFile($node, $shared, $targetMtype)
 				&& $this->passesExcludeList($node, $excludeList)
 			) {
 				$count += 1;
@@ -1009,6 +1015,21 @@ class CollectorService
 	}
 
 	/**
+	 * Check if Folder contains ignore flags `.nomedia` or `.noimage`
+	 * 
+	 * @param Folder $folder target folder
+	 * 
+	 * @return bool
+	 */
+	public function hasIgnoreFlag(Folder $folder): bool
+	{
+		if ($folder instanceof Folder && ($folder->nodeExists('.nomedia') || $folder->nodeExists('.noimage'))) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * @param Node $node
 	 *
 	 * @return bool
@@ -1026,7 +1047,7 @@ class CollectorService
 	 *
 	 * @return bool
 	 */
-	private function validFile(File $file, bool $shared, int $targetMtype): bool
+	private function isValidFile(File $file, bool $shared, int $targetMtype): bool
 	{
 		return in_array($file->getMimePart(), self::TARGET_MIME_TYPE[$targetMtype])
 			&& $this->isShared($file) === $shared;

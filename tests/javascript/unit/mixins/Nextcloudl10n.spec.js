@@ -52,7 +52,7 @@ describe('mixins/Nextcloudl10n test', () => {
 
 	it('should provide translate methods', () => {
 		expect(wrapper.vm).toHaveProperty('t')
-		expect(wrapper.vm).toHaveProperty('translatePlural')
+		expect(wrapper.vm).toHaveProperty('n')
 	})
 
 	it('should perform translate', () => {
@@ -72,7 +72,7 @@ describe('mixins/Nextcloudl10n test', () => {
 		[9, 'Test texts'],
 		[10, 'Test texts'],
 	])('should perform translatePlural', (len, expected) => {
-		expect(wrapper.vm.translatePlural('mediadc', 'Test text', 'Test texts', len)).toBe(expected)
+		expect(wrapper.vm.n('mediadc', 'Test text', 'Test texts', len)).toBe(expected)
 	})
 
 })

@@ -249,13 +249,12 @@ def process_directory_images(dir_id: int, task_settings: dict) -> list:
     fs_records = db.get_directory_data_image(
         dir_id, task_settings["mime_dir"], task_settings["mime_image"], file_mounts
     )
+    if get_ignore_flag(fs_records):
+        fs_records.clear()
     if not fs_records:
         return []
-    ignore_files = get_ignore_flag(fs_records)
     apply_exclude_list(fs_records, task_settings)
     sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
-    if ignore_files:
-        fs_records.clear()
     dc_process_images(task_settings, fs_records)
     if fs_records:
         db.increase_processed_files_count(task_settings["id"], len(fs_records))
@@ -271,13 +270,12 @@ def process_directory_videos(dir_id: int, task_settings: dict) -> list:
     fs_records = db.get_directory_data_video(
         dir_id, task_settings["mime_dir"], task_settings["mime_video"], file_mounts
     )
+    if get_ignore_flag(fs_records):
+        fs_records.clear()
     if not fs_records:
         return []
-    ignore_files = get_ignore_flag(fs_records)
     apply_exclude_list(fs_records, task_settings)
     sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
-    if ignore_files:
-        fs_records.clear()
     dc_process_videos(task_settings, fs_records)
     if fs_records:
         db.increase_processed_files_count(task_settings["id"], len(fs_records))
