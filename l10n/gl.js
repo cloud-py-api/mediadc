@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Configuración",
     "Settings" : "Axustes",
     "Select file" : "Seleccionar ficheiro",
-    "Delete file" : "Eliminar ficheiro",
     "Deselect all" : "Desmarcar todo",
     "Select all" : "Seleccionar todo",
     "Remove" : "Retirar",

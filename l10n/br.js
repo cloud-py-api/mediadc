@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Configuration" : "Stumm",
     "Settings" : "Arventennoù",
-    "Delete file" : "Dilemel ar restr",
     "Deselect all" : "Disibab pep tra",
     "Select all" : "Dibab pep tra",
     "Remove" : "Lemel",

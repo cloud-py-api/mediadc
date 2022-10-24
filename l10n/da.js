@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "sætning",
     "Settings" : "Indstillinger",
     "Select file" : "Vælg fil",
-    "Delete file" : "Slet fil",
     "Deselect all" : "Fravælg alle",
     "Select all" : "Vælg alle",
     "Change to grid view" : "Skift til gittervisning",

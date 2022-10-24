@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Cấu hình",
     "Settings" : "Cài đặt",
     "Select file" : "Chọn tập tin",
-    "Delete file" : "Xóa tệp",
     "Deselect all" : "Bỏ chọn tất cả",
     "Select all" : "Chọn tất cả",
     "Remove" : "Xoá",

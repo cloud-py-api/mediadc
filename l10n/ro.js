@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Sarcini",
     "Configuration" : "Configurație",
     "Settings" : "Setări",
-    "Delete file" : "Șterge fișier",
     "Deselect all" : "Deselectează tot",
     "Select all" : "Selectează tot",
     "Remove" : "Elimină",

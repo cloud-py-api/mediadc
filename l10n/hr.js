@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Zadaci",
     "Configuration" : "Konfiguracija",
     "Settings" : "Postavke",
-    "Delete file" : "Izbriši datoteku",
     "Deselect all" : "Odznači sve",
     "Select all" : "Odaberi sve",
     "Select group" : "Označi grupu",

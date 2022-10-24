@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Ülesanded",
     "Configuration" : "Seadistamine",
     "Settings" : "Seaded",
-    "Delete file" : "Kustuta fail",
     "Select all" : "Vali kõik",
     "Remove" : "Eemalda",
     "Confirm" : "Kinnita",

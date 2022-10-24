@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Asetukset",
     "Settings" : "Asetukset",
     "Select file" : "Valitse tiedosto",
-    "Delete file" : "Poista tiedosto",
     "Deselect all" : "Poista valinnat",
     "Select all" : "Valitse kaikki",
     "Select group" : "Valitse ryhmä",

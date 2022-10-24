@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Settings" : "Тохиргоо",
-    "Delete file" : "Файл устгах",
     "Select all" : "бүгдийг сонгох",
     "Remove" : "Устгах",
     "Confirm" : "Батлах",

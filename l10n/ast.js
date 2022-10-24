@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Xeres",
     "Configuration" : "Configuración",
     "Settings" : "Settings",
-    "Delete file" : "Desasniciar ficheru",
     "Select all" : "Esbillar too",
     "Remove" : "Desaniciar",
     "Confirm" : "Confirmar",

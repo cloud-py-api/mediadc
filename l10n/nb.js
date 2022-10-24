@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Oppsett",
     "Settings" : "Innstillinger",
     "Select file" : "Velg fil",
-    "Delete file" : "Slett fil",
     "Deselect all" : "Fjern all markering",
     "Select all" : "Velg alle",
     "Select group" : "Velg gruppe",

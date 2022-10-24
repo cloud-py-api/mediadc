@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Settings" : "ການຕັ້ງຄ່າ",
-    "Delete file" : "ລຶບຟາຍ",
     "Deselect all" : "ເລືອກຄຶນທັງໝົດ",
     "Select all" : "ເລືອກທັງໝົດ",
     "Remove" : "ຍ້າຍອອກ",

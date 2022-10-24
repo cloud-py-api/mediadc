@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Taskoj",
     "Configuration" : "Agordo",
     "Settings" : "Agordoj",
-    "Delete file" : "Forigi dosieron",
     "Deselect all" : "Malelekti ĉion",
     "Select all" : "Elekti ĉion",
     "Remove" : "Forigi",

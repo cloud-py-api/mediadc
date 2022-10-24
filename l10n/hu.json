@@ -6,7 +6,6 @@
     "Configuration" : "Konfiguráció",
     "Settings" : "Beállítások",
     "Select file" : "Fájl kiválasztása",
-    "Delete file" : "Fájl törlése",
     "Deselect all" : "Kijelölés megszüntetése",
     "Select all" : "Összes kiválasztása",
     "Select group" : "Válasszon csoportot",
@@ -43,7 +42,6 @@
     "MediaDC Resolved files" : "MediaDC – Feloldott fájlok",
     "Some error occured while deleting task" : "Hiba történt a feladat törlése során",
     "Task successfully started with duplicated settings!" : "A feladat sikeresen elindult a kettőzött beállításokkal.",
-    "Test text" : "Tesztszöveg",
     "Remove without deleting" : "Eltávolítás törlés nélkül",
     "No matching found" : "Nincs egyező",
     "Save changes" : "Változások mentése",
@@ -51,7 +49,6 @@
     "Settings successfully updated" : "Beállítások sikeresen frissítve",
     "Setting successfully updated" : "Beállítás sikeresen frissítve",
     "No tasks yet. Create a new one!" : "Még nincsenek feladatok. Hozzon létre egy újat.",
-    "onwer:" : "tulajdonos:",
     "Not installed" : "Nincs telepítve",
     "No tasks yet." : "Még nincsenek feladatok."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

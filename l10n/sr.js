@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Задаци",
     "Configuration" : "Подешавање",
     "Settings" : "Поставке",
-    "Delete file" : "Обриши фајл",
     "Deselect all" : "Поништи цео избор",
     "Select all" : "Одабери све ",
     "Remove" : "Уклони",

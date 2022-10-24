@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Ezarpenak",
     "Settings" : "Ezarpenak",
     "Select file" : "Hautatu fitxategia",
-    "Delete file" : "Ezabatu fitxategia",
     "Deselect all" : "Deshautatu dena",
     "Select all" : "Hautatu denak",
     "Select group" : "Hautatu taldea",

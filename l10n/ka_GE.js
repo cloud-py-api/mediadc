@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "დავალებები",
     "Configuration" : "კონფიგურაცია",
     "Settings" : "პარამეტრები",
-    "Delete file" : "გაუქმდეს ფაილი",
     "Deselect all" : "ყველას წაშლა",
     "Select all" : "ყველას არჩევა",
     "Remove" : "წაშლა",

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Innstillingar",
     "Settings" : "Innstillingar",
     "Select file" : "Vel fil",
-    "Delete file" : "Slett fil",
     "Select all" : "Merk alt",
     "Go to page" : "Gå til side",
     "Remove" : "Fjern",

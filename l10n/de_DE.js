@@ -1,11 +1,13 @@
 OC.L10N.register(
     "mediadc",
     {
+    "MediaDC" : "MediaDC",
     "Tasks" : "Aufgaben",
+    "Resolved" : "Aufgelöst",
     "Configuration" : "Konfiguration",
     "Settings" : "Einstellungen",
     "Select file" : "Datei auswählen",
-    "Delete file" : "Datei löschen",
+    "Remove file (mark resolved)" : "Datei entfernen (Als gelöst markieren)",
     "Deselect all" : "Auswahl aufheben",
     "Select all" : "Alle auswählen",
     "Select group" : "Gruppe auswählen",

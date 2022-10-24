@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "งาน",
     "Configuration" : "การกำหนดค่า",
     "Settings" : "การตั้งค่า",
-    "Delete file" : "ลบไฟล์",
     "Deselect all" : "ยกเลิกการเลือกทั้งหมด",
     "Select all" : "เลือกทั้งหมด",
     "Remove" : "ลบออก",

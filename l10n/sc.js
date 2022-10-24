@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Fainas",
     "Configuration" : "Cunfiguratzione",
     "Settings" : "Impostatziones",
-    "Delete file" : "Cantzella archìviu",
     "Deselect all" : "Deseletziona totu",
     "Select all" : "Seletziona totu",
     "Select group" : "Seletziona grupos",

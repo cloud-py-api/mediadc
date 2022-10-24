@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "وظایف",
     "Configuration" : "پیکربندی",
     "Settings" : "تنظیمات",
-    "Delete file" : "حذف فایل",
     "Deselect all" : "لغو انتخاب همه",
     "Select all" : "انتخاب همه",
     "Remove" : "حذف",
