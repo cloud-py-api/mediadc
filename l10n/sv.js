@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Inställningar",
     "Settings" : "Inställningar",
     "Select file" : "Välj fil",
-    "Delete file" : "Ta bort fil",
     "Deselect all" : "Avmarkera alla",
     "Select all" : "Välj alla",
     "Select group" : "Välj grupp",

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Конфигурация",
     "Settings" : "Настройки",
     "Select file" : "Избор на файл",
-    "Delete file" : "Изтриване на файл",
     "Deselect all" : "Откажи всички избрани",
     "Select all" : "Избери всички",
     "Select group" : "Избеор на група",

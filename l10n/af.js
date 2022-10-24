@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Tasks" : "Take",
     "Settings" : "Instellings",
-    "Delete file" : "Skrap lêer",
     "Select all" : "Kies alle",
     "Remove" : "Verwyder",
     "Confirm" : "Bevestig",

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Настройки",
     "Settings" : "Настройки",
     "Select file" : "Выбрать файл",
-    "Delete file" : "Удалить файл",
     "Deselect all" : "Снять выбор со всех",
     "Select all" : "Выбрать всё",
     "Select group" : "Выбрать группу",
@@ -30,7 +29,6 @@ OC.L10N.register(
     "Type" : "Тип",
     "Actions" : "Действия",
     "Update" : "Обновить",
-    "Save changes" : "Сохранить изменения",
-    "onwer:" : "владелец:"
+    "Save changes" : "Сохранить изменения"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

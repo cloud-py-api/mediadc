@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Uzdevumi",
     "Configuration" : "Konfigurācija",
     "Settings" : "Iestatījumi",
-    "Delete file" : "Dzēst datni",
     "Deselect all" : "Atcelt atzīmi",
     "Select all" : "Atzīmēt visu",
     "Remove" : "Noņemt",

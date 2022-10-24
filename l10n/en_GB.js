@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Tasks",
     "Configuration" : "Configuration",
     "Settings" : "Settings",
-    "Delete file" : "Delete file",
     "Deselect all" : "Deselect all",
     "Select all" : "Select all",
     "Remove" : "Remove",

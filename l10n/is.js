@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Verkefni",
     "Configuration" : "Uppsetning",
     "Settings" : "Stillingar",
-    "Delete file" : "Eyða skrá",
     "Deselect all" : "Afvelja allt",
     "Select all" : "Select all",
     "Go to page" : "Go to page",

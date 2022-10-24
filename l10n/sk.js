@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Nastavenia",
     "Settings" : "Nastavenia",
     "Select file" : "Označ súbor",
-    "Delete file" : "Zmazať súbor",
     "Deselect all" : "Odznačiť všetko",
     "Select all" : "Vybrať všetko",
     "Select group" : "Vybrať skupinu",

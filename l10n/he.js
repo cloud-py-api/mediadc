@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "משימות",
     "Configuration" : "הגדרות",
     "Settings" : "הגדרות",
-    "Delete file" : "מחיקת קבצים",
     "Deselect all" : "ביטול בחירה",
     "Select all" : "בחר הכל",
     "Select group" : "בחירת קבוצה",

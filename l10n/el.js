@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Ρύθμιση",
     "Settings" : "Ρυθμίσεις",
     "Select file" : "Επιλέξτε Αρχείο",
-    "Delete file" : "Διαγραφή αρχείου",
     "Deselect all" : "Αναίρεση επιλογής όλων",
     "Select all" : "Επιλογή όλων",
     "Go to page" : "Μετάβαση στη σελίδα",

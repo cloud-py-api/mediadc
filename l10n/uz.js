@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Tasks" : "Tasks",
     "Settings" : "Sozlamalar",
-    "Delete file" : "Delete file",
     "Select all" : "Select all",
     "Remove" : "Remove",
     "Confirm" : "Confirm",

@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Configuració",
     "Settings" : "Paràmetres",
     "Select file" : "Selecciona un fitxer",
-    "Delete file" : "Suprimeix el fitxer",
     "Deselect all" : "No seleccionis res",
     "Select all" : "Selecciona-ho tot",
     "Select group" : "Selecciona un grup",

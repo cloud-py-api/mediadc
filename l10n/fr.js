@@ -7,7 +7,6 @@ OC.L10N.register(
     "Configuration" : "Configuration",
     "Settings" : "Paramètres",
     "Select file" : "Sélectionner un fichier",
-    "Delete file" : "Supprimer le fichier",
     "Are you sure, you want delete this file?" : "Êtes-vous certain de vouloir supprimer ce fichier ?",
     "Deselect all" : "Tout désélectionner",
     "Select all" : "Tout sélectionner",
@@ -48,7 +47,6 @@ OC.L10N.register(
     "Edit" : "Modifier",
     "Delete task" : "Supprimer la tâche",
     "Task terminated" : "Tâche arrêtée",
-    "owner:" : "propriétaire :",
     "wikis" : "wikis",
     "Installed:" : "Installé :",
     "Install" : "Installer",
@@ -60,9 +58,7 @@ OC.L10N.register(
     "Actions" : "Actions",
     "Update" : "Mise à jour",
     "Photos&Videos" : "Photos&Vidéos",
-    "Test text" : "Texte de test",
     "Save changes" : "Enregistrer les modifications",
-    "onwer:" : "propriétaire :",
     "Not installed" : "Non installé"
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

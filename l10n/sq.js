@@ -4,7 +4,6 @@ OC.L10N.register(
     "Tasks" : "Detyra",
     "Configuration" : "Formësim",
     "Settings" : "Rregullimet",
-    "Delete file" : "Fshi skedarin",
     "Deselect all" : "Hiqi të gjithë",
     "Select all" : "Zgjidhi të gjitha",
     "Remove" : "Hiq",

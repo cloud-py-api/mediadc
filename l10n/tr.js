@@ -5,7 +5,6 @@ OC.L10N.register(
     "Configuration" : "Yapılandırma",
     "Settings" : "Ayarlar",
     "Select file" : "Dosyayı seç",
-    "Delete file" : "Dosyayı sil",
     "Deselect all" : "Tümünü bırak",
     "Select all" : "Tümünü seç",
     "Select group" : "Grubu seçin",
