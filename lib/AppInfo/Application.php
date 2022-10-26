@@ -36,7 +36,6 @@ use OCP\Notification\IManager;
 
 use OCA\MediaDC\Dashboard\RecentTasksWidget;
 
-
 class Application extends App implements IBootstrap
 {
 
@@ -50,6 +49,10 @@ class Application extends App implements IBootstrap
 		parent::__construct(self::APP_ID);
 
 		$this->notificationManager = \OC::$server->get(\OCP\Notification\IManager::class);
+		$eventDispatcher = \OC::$server->get(\OCP\EventDispatcher\IEventDispatcher::class);
+		$eventDispatcher->addListener(\OCA\Files\Event\LoadAdditionalScriptsEvent::class, function () {
+			\OCP\Util::addScript(self::APP_ID, Application::APP_ID . '-filesplugin');
+		});
 	}
 
 	public function register(IRegistrationContext $context): void

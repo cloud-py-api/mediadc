@@ -6,6 +6,7 @@ const BabelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-m
 
 webpackConfig.entry['settings'] = path.join(__dirname, 'src', 'main-admin-settings.js')
 webpackConfig.entry['dashboard'] = path.join(__dirname, 'src', 'main-dashboard.js')
+webpackConfig.entry['filesplugin'] = path.join(__dirname, 'src', 'filesplugin.js')
 webpackRules.RULE_JS.exclude = BabelLoaderExcludeNodeModulesExcept([
 	'@nextcloud/event-bus',
 	'@nextcloud/dialogs',
