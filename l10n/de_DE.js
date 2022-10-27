@@ -224,6 +224,7 @@ OC.L10N.register(
     "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
     "Remove without deleting" : "Ohne Löschen entfernen",
     "No matching found" : "Keine Übereinstimmungen gefunden",
+    "Duplicate group removed" : "Dubletten-Gruppe entfernt",
     "Save changes" : "Änderungen speichern",
     "in GBytes" : "in GBytes",
     "Settings successfully updated" : "Einstellungen erfolgreich aktualisiert",
