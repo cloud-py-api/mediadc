@@ -23,4 +23,4 @@ Thanks for wanting to contribute source code to the MediaDC app. That's great!
 
 ## Translations
 
-You can submit translations using [Transifex](https://explore.transifex.com/nextcloud/nextcloud/)
+You can submit translations using [Transifex](https://www.transifex.com/nextcloud/nextcloud/mediadc/)
