@@ -5,14 +5,12 @@
 
 [![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/andrey18106/mediadc/releases)
 
-| We're not quite active for now (because of war in Ukraine)
-
 **📸📹 Collect photo and video duplicates to save your cloud storage space**
 
 | **Not working on FreeBSD systems for now**
 
-![Home page](/screenshots/task-managment.png)
-![Home page](/screenshots/task-results.png)
+![Home page](/screenshots/mediadc_home.png)
+![Task page](/screenshots/mediadc_task_details_2.png)
 Nextcloud Media Duplicate Collector application
 
 ## Why is this so awesome?

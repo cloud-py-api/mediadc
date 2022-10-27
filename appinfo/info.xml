@@ -33,12 +33,15 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 	<website>https://github.com/andrey18106/mediadc</website>
 	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
 	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/task-results-2.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/task-results.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/task-managment.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/install-view.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/install-success.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/admin-config.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_home.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_1.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_2.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_3.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_configuration.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_1.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_2.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_3.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="21" max-version="24" />
 		<php min-version="7.3" min-int-size="64" />
