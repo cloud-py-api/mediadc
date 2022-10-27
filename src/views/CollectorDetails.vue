@@ -119,7 +119,7 @@
 												: '/'
 										}}
 									</b>
-									({{ formatBytes(dir.filesize) }})
+									({{ !dir.hasignoreflag ? formatBytes(dir.filesize) : t('mediadc', 'Ignored') }})
 								</a>
 							</div>
 						</div>

@@ -523,6 +523,7 @@ class CollectorService
 					'fileowner' => $directory->getOwner()->getUID(),
 					'filepath' => $directory->getPath(),
 					'filerelpath' => $directory->getInternalPath(),
+					'hasignoreflag' => $this->hasIgnoreFlag($directory),
 				]);
 			}
 		}
