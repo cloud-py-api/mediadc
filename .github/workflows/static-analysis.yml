@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [7.3, 7.4, 8.0]
+        php-versions: [7.4, 8.0]
     steps:
     - uses: actions/checkout@v3
 
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          ocp-version: [ 'dev-master', 'dev-stable21', 'dev-stable22' ]
+          ocp-version: ['dev-master', 'dev-stable23']
     name: Psalm statis-analysis
     steps:
       - uses: actions/checkout@v3
