@@ -36,7 +36,6 @@ use OCA\ServerInfo\DatabaseStatistics;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
-use Psr\Log\LoggerInterface;
 
 
 class UtilsService
@@ -61,14 +60,12 @@ class UtilsService
 		IConfig $config,
 		SettingMapper $settingMapper,
 		IAppManager $appManager,
-		?DatabaseStatistics $databaseStatistics,
-		LoggerInterface $logger
+		?DatabaseStatistics $databaseStatistics
 	) {
 		$this->config = $config;
 		$this->settingMapper = $settingMapper;
 		$this->appManager = $appManager;
 		$this->databaseStatistics = $databaseStatistics;
-		$this->logger = $logger;
 	}
 
 	/**
@@ -182,7 +179,6 @@ class UtilsService
 	{
 		$pythonVersion = $this->getPythonVersion();
 		if (!$pythonVersion['success']) {
-			$this->logger->error('[' . self::class . '] getPythonVersion: ' . json_encode($pythonVersion));
 			return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 		}
 		$pythonVersionDigits = explode(".", $pythonVersion['matches']);

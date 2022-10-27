@@ -25,22 +25,25 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 
+// eslint-disable-next-line
 function getSettings() {
 	return axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
 		return res.data
 	})
 }
 
+// eslint-disable-next-line
 function settingByName(settings, name) {
 	return settings.find(s => s.name === name)
 }
 
+// eslint-disable-next-line
 function createNewTaskFromFolder(folderId) {
 	return getSettings().then((settings) => {
 		const data = {
 			targetDirectoryIds: JSON.stringify([folderId]),
 			excludeList: {
-				user: { mask: [], fileid: [],},
+				user: { mask: [], fileid: [] },
 				admin: JSON.parse(settingByName(settings, 'exclude_list').value) || { mask: [], fileid: [] },
 			},
 			collectorSettings: {
