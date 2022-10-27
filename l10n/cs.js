@@ -224,6 +224,7 @@ OC.L10N.register(
     "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"],
     "Remove without deleting" : "Odebrat bez mazání",
     "No matching found" : "Nenalezeny žádné shody",
+    "Duplicate group removed" : "Skupina duplicit odebrána",
     "Save changes" : "Uložit změny",
     "in GBytes" : "v GBajtech",
     "Settings successfully updated" : "Nastavení úspěšně zaktualizována",

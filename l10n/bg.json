@@ -222,6 +222,7 @@
     "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"],
     "Remove without deleting" : "Премахване без изтриване",
     "No matching found" : "Няма намерено съвпадение",
+    "Duplicate group removed" : "Дублиращата се група е премахната",
     "Save changes" : "Запиши промените",
     "in GBytes" : "в /гигабайти/ GBytes",
     "Settings successfully updated" : "Настройките са актуализирани успешно",
