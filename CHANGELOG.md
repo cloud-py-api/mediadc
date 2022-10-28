@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.10 - 2022-10-27]
+## [0.1.10 - 2022-10-28]
 
 This is the last version working on Nextcloud 21-24. The next major versions would be for 25.
 
