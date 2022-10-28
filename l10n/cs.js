@@ -198,6 +198,8 @@ OC.L10N.register(
     "Configuration warnings" : "Varování ohledně nastavení",
     "Here you can view resolved media files " : "Zde je možné si zobrazit vyřešené soubory s médii",
     "This files won't be scanned in further tasks." : "Tyto soubory nebudou v budoucích úlohách skenovány",
+    "Scan for duplicates" : "Skenovat ohledně duplicit",
+    "New task for folder scan successfully created" : "Nová úloha pro skenování složky byla úspěšně vytvořena",
     "Installation successfully finished" : "Instalace úspěšně dokončena",
     "Installation finished. Not all packages installed" : "Instalace dokončena. Ne všechny balíčky nainstalovány",
     "Installation failed. Some server error occured" : "Instalace se nezdařila. Vyskytla se nějaká chyba na serveru",

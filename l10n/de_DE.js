@@ -198,6 +198,8 @@ OC.L10N.register(
     "Configuration warnings" : "Konfigurationswarnungen",
     "Here you can view resolved media files " : "Hier können Sie aufgelöste Mediendateien anzeigen",
     "This files won't be scanned in further tasks." : "Diese Dateien werden in weiteren Aufgaben nicht durchsucht.",
+    "Scan for duplicates" : "Nach Duplikaten scannen",
+    "New task for folder scan successfully created" : "NeueNeue Aufgabe zum Scannen von Ordnern erfolgreich erstellt",
     "Installation successfully finished" : "Installation erfolgreich abgeschlossen",
     "Installation finished. Not all packages installed" : "Installation abgeschlossen. Nicht alle Pakete wurden installiert",
     "Installation failed. Some server error occured" : "Installation fehlgeschlagen. Serverfehler aufgetreten",
