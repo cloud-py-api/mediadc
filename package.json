@@ -74,6 +74,7 @@
 		"@vue/vue2-jest": "^27.0.0",
 		"autoprefixer": "^10.4.7",
 		"babel-loader-exclude-node-modules-except": "^1.2.1",
+		"eslint": "^8.26.0",
 		"module-replace-webpack-plugin": "0.0.12",
 		"postcss": "^8.4.16",
 		"postcss-loader": "^6.2.1",
