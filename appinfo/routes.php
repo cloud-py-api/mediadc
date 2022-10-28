@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -28,11 +28,12 @@ return [
 		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'page#index', 'url' => '/tasks/{taskId}', 'verb' => 'GET', 'postfix' => 'collector'],
 		['name' => 'page#index', 'url' => '/configuration', 'verb' => 'GET', 'postfix' => 'configuration'],
+		['name' => 'page#index', 'url' => '/resolved', 'verb' => 'GET', 'postfix' => 'resolved'],
 
 		// SETTINGS API
 		['name' => 'settings#index', 'url' => '/api/v1/settings', 'verb' => 'GET'],
 		['name' => 'settings#update', 'url' => '/api/v1/settings', 'verb' => 'PUT'],
-		['name' => 'settings#settingById', 'url' => '/api/v1/settings/{id}', 'verb' => 'GET'],
+		['name' => 'settings#getSettingById', 'url' => '/api/v1/settings/{id}', 'verb' => 'GET'],
 		['name' => 'settings#getSettingByName', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'GET'],
 		['name' => 'settings#updateSetting', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'PUT'],
 		['name' => 'settings#truncate', 'url' => '/api/v1/settings/truncate/{name}', 'verb' => 'POST'],
@@ -55,8 +56,13 @@ return [
 		['name' => 'collector#deleteTaskDetailFile', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/{fileId}', 'verb' => 'DELETE'],
 		['name' => 'collector#deleteTask', 'url' => '/api/v1/tasks/{taskId}', 'verb' => 'DELETE'],
 		['name' => 'collector#terminateTask', 'url' => '/api/v1/tasks/{taskId}/terminate', 'verb' => 'POST'],
-		['name' => 'collector#collect', 'url' => '/api/v1/tasks/run', 'verb' => 'POST'],
-		['name' => 'collector#restart', 'url' => '/api/v1/tasks/restart', 'verb' => 'POST'],
+		['name' => 'collector#duplicateTask', 'url' => '/api/v1/tasks/{taskId}/duplicate', 'verb' => 'POST'],
+		['name' => 'collector#runTask', 'url' => '/api/v1/tasks/run', 'verb' => 'POST'],
+		['name' => 'collector#restartTask', 'url' => '/api/v1/tasks/restart', 'verb' => 'POST'],
+
+		// COLLECTOR RESOLVED API
+		['name' => 'collector#resolved', 'url' => '/api/v1/resolved', 'verb' => 'GET'],
+		['name' => 'collector#markResolved', 'url' => '/api/v1/resolved/mark/{fileId}', 'verb' => 'POST'],
 
 		// BATCH ACTIONS API
 		['name' => 'collector#removeTaskDetailGroups', 'url' => '/api/v1/tasks/{taskId}/details/remove', 'verb' => 'POST'],

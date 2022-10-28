@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.10 - 2022-10-28]
+
+This is the last version working on Nextcloud 21-24. The next major versions would be for 25.
+
+### Added
+
+- Added duplicate task option in context menu on tasks list item
+- Added "go to page" pagination option (https://github.com/andrey18106/mediadc/issues/63)
+- Added toggle groups open state button in duplicates list
+- Added new "Resolved" page with processed media files (https://github.com/andrey18106/mediadc/issues/31)
+- Added new Admin settings options: php_path, use_php_path_from_settings (https://github.com/andrey18106/mediadc/issues/64)
+- Added new Files app folder context menu option "Scan for duplicates"
+- Added support for `.nomedia` and `.noimage` ingore flags (https://github.com/andrey18106/mediadc/issues/61)
+
+### Changed
+
+- Changed numeration of items in duplicates list (https://github.com/andrey18106/mediadc/issues/38)
+- Changed filtering, filtering by single duplicate group id and by range of ids (e.g. 1-10)
+- Changed admin settings layout
+- Changed data initialization mechanizm, added automatic applying of the init data changes to the database
+
+### Fixed
+
+- Fixed batch editing action "Select all on page" with sorted groups
+
 ## [0.1.9 - 2022-02-14]
 
 ### Added
@@ -129,4 +154,3 @@ Updated `python_command` setting from alias to full/absolute path to the Python.
 - First beta release available at Nextcloud App Store
 
 ### Fixed
-

@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -34,28 +34,32 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 
-class SettingsService {
+class SettingsService
+{
 
 	/** @var SettingMapper */
 	private $mapper;
 
-	public function __construct(SettingMapper $settingMapper) {
+	public function __construct(SettingMapper $settingMapper)
+	{
 		$this->mapper = $settingMapper;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getSettings() {
+	public function getSettings()
+	{
 		return $this->mapper->findAll();
 	}
 
 	/**
 	 * @param int $id
-	 * 
-	 * @return Setting|array
+	 *
+	 * @return \OCA\MediaDC\Db\Setting|array
 	 */
-	public function getSettingById($id) {
+	public function getSettingById($id): ?Setting
+	{
 		try {
 			return $this->mapper->find($id);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -68,13 +72,14 @@ class SettingsService {
 
 	/**
 	 * @param string $name
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getSettingByName($name) {
+	public function getSettingByName($name)
+	{
 		try {
 			return [
-				'success' => true, 
+				'success' => true,
 				'setting' => $this->mapper->findByName($name)
 			];
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -87,10 +92,11 @@ class SettingsService {
 
 	/**
 	 * @param array|Setting $setting
-	 * 
+	 *
 	 * @return array
 	 */
-	public function updateSetting($setting) {
+	public function updateSetting($setting)
+	{
 		try {
 			if ($setting instanceof Setting) {
 				$updatedSetting = $this->mapper->update($setting);
@@ -122,12 +128,13 @@ class SettingsService {
 
 	/**
 	 * @param array $settings
-	 * 
+	 *
 	 * @return array
 	 */
-	public function updateSettings($settings) {
+	public function updateSettings($settings)
+	{
 		$updated = [];
-		foreach($settings as $setting) {
+		foreach ($settings as $setting) {
 			array_push($updated, $this->mapper->update(new Setting([
 				'id' => $setting['id'],
 				'name' => $setting['name'],
@@ -137,9 +144,8 @@ class SettingsService {
 			])));
 		}
 		return [
-			'success' => count($updated) === count($settings), 
+			'success' => count($updated) === count($settings),
 			'updated_settings' => $updated,
 		];
 	}
-
 }

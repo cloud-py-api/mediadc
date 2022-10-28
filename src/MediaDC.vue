@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,17 +23,18 @@
  -->
 
 <template>
-	<Content app-name="app-mediadc">
+	<Content app-name="mediadc">
 		<AppNavigation>
 			<template #list>
 				<AppNavigationItem :to="{name: 'collector'}"
-					class="app-navigation__mediadc"
 					:title="t('mediadc', 'Tasks')"
-					icon="icon-category-app-bundles"
+					icon="icon-toggle-filelist"
 					exact />
+				<AppNavigationItem :to="{name: 'resolved'}"
+					:title="t('mediadc', 'Resolved')"
+					icon="icon-video-off" />
 				<AppNavigationItem v-if="showConfiguration"
 					:to="{name: 'configuration'}"
-					class="app-navigation__mediadc"
 					:title="t('mediadc', 'Configuration')"
 					icon="icon-user-admin" />
 			</template>
@@ -52,19 +53,19 @@
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
 
-import Content from '@nextcloud/vue/dist/Components/Content'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent'
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings'
+import Content from '@nextcloud/vue/dist/Components/Content.js'
+import AppContent from '@nextcloud/vue/dist/Components/AppContent.js'
+import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation.js'
+import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem.js'
+import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings.js'
 
-import Configure from './mixins/Configure'
-import DetailsListSettings from './components/settings/DetailsListSettings'
+import Configure from './mixins/Configure.js'
+import DetailsListSettings from './components/settings/DetailsListSettings.vue'
 
 export default {
 	name: 'MediaDC',
 	components: {
-		Content,
+		Content, // eslint-disable-line vue/no-reserved-component-names
 		AppContent,
 		AppNavigation,
 		AppNavigationItem,
@@ -80,11 +81,3 @@ export default {
 	},
 }
 </script>
-<style scoped>
-.app-content {
-	display: flex;
-	flex-grow: 1;
-	flex-direction: column;
-	align-content: space-between;
-}
-</style>

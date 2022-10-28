@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -22,8 +22,9 @@
  *
  */
 
-import { formatBytes } from '../utils/files'
-import moment from 'moment'
+import { formatBytes } from '../utils/files.js'
+import moment from '@nextcloud/moment'
+import { translate as t } from '@nextcloud/l10n'
 
 const keepAliveInterval = 8
 const targetMType = [
@@ -58,6 +59,9 @@ export default {
 				}
 				if (Number(task.finished_time) > 0 && Number(task.py_pid) === 0) {
 					return 'finished'
+				}
+				if (JSON.parse(task.collector_settings)?.duplicated) {
+					return 'duplicated'
 				}
 				return 'pending'
 			}

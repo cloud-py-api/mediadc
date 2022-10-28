@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -28,23 +28,29 @@
 			<h3>
 				{{ t('mediadc', 'Duplicates list') }}
 				<span v-if="getStatusBadge(task) === 'finished'">
-					- {{ details.length }} {{ translatePlural('mediadc', 'group, ', 'groups', details.length) }}
-					({{ filestotal }} {{ translatePlural('mediadc', 'file', 'files', filestotal) }} - {{ formatBytes(filessize) }})
+					- {{ details.length }} {{ n('mediadc', 'group ', 'groups', details.length) }}
+				</span>
+				<span v-if="detailsInfo.filestotal !== -1 && detailsInfo.filessize !== -1">
+					({{ detailsInfo.filestotal }} {{ n('mediadc', 'file', 'files', detailsInfo.filestotal) }} - {{ formatBytes(detailsInfo.filessize) }})
 				</span>
 			</h3>
-			<div class="pagination">
-				<CheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
-					{{ t('mediadc', 'Sort groups') }}
-				</CheckboxRadioSwitch>
-				<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'"
-					:title="t('mediadc', 'Sorting details by files count')"
-					@click="toggleSorting" />
-				<span v-if="details.length > itemsPerPage"
-					class="icon-view-previous pagination-button"
-					@click="prevGroupsPage()" />
-				<span v-if="details.length > itemsPerPage">{{ t('mediadc', 'Page:') }}&nbsp;</span>
-				<span v-if="details.length > itemsPerPage">{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
-				<span v-if="details.length > itemsPerPage" class="icon-view-next pagination-button" @click="nextGroupsPage()" />
+			<div class="pagination-wrapper">
+				<div class="pagination-sorting">
+					<CheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
+						{{ t('mediadc', 'Sort groups') }}
+					</CheckboxRadioSwitch>
+					<Button v-tooltip="t('mediadc', 'Sorting details by files count')"
+						type="tertiary"
+						@click="toggleSorting">
+						<template #icon>
+							<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'" />
+						</template>
+					</Button>
+				</div>
+				<Pagination :details="(!filtered) ? details : detailsFiltered"
+					:prev-groups-page="prevGroupsPage"
+					:next-groups-page="nextGroupsPage"
+					:page.sync="page" />
 			</div>
 		</div>
 		<div v-if="details.length > 0">
@@ -53,42 +59,57 @@
 					{{ t('mediadc', 'Filter by duplicate group id: ') }}
 					<input id="group-id-filter"
 						v-model="filterId"
+						v-tooltip="t('mediadc', 'Filter by id or range of ids (1-10)')"
 						type="search"
 						name="group-id-filter"
 						placeholder="#id"
+						style="max-width: 33%;"
 						@input="filterByGroupId">
 				</label>
-				<div v-if="checkedDetailGroups.length > 0" class="batch-editing">
-					{{ translatePlural('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
-					<div class="app-content-list-menu" style="margin: 0 0 0 10px; position: relative;">
-						<div class="icon-more batch-actions-menu-button" @click="openBatchActionsPopup" />
-						<div :class="batchActionsOpened ? 'popovermenu open' : 'popovermenu'"
-							style="right: -1px;">
-							<ul>
-								<li>
-									<a class="icon-checkmark" @click="selectAllGroups">
-										<span>{{ checkedDetailGroups.length === details.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}</span>
-									</a>
-								</li>
-								<li v-if="details.length > itemsPerPage">
-									<a class="icon-checkmark" @click="selectAllGroupsOnPage">
-										<span>{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}</span>
-									</a>
-								</li>
-								<li>
-									<a class="icon-close" @click="removeCheckedGroups">
-										<span>{{ translatePlural('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}</span>
-									</a>
-								</li>
-							</ul>
-						</div>
+				<div class="batch-actions" style="display: flex;">
+					<Button v-tooltip="t('mediadc', 'Toggle duplicate groups')"
+						type="tertiary"
+						style="margin-right: 10px;"
+						@click="toggleGroups">
+						<template #icon>
+							<span class="icon-category-organization" />
+						</template>
+						<template #default>
+							{{ t('mediadc', 'Toggle groups') }}
+						</template>
+					</Button>
+					<div v-if="checkedDetailGroups.length > 0" class="batch-editing">
+						{{ n('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
+						<Actions placement="top" style="margin-left: 5px;">
+							<template v-if="!filtered">
+								<ActionButton icon="icon-checkmark" @click="selectAllGroups">
+									{{ checkedDetailGroups.length === details.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
+								</ActionButton>
+								<ActionButton v-if="details.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
+									{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length || checkedDetailGroupsIntersect.length === paginatedSortedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
+								</ActionButton>
+							</template>
+							<template v-else>
+								<ActionButton icon="icon-checkmark" @click="selectAllGroups">
+									{{ checkedDetailGroups.length === detailsFiltered.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
+								</ActionButton>
+								<ActionButton v-if="detailsFiltered.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
+									{{ checkedDetailGroupsIntersect.length === paginatedDetailsFiltered[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
+								</ActionButton>
+							</template>
+							<ActionButton v-if="checkedDetailGroups.length > 0" icon="icon-close" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
+								{{ t('mediadc', 'Uncheck selected') }}
+							</ActionButton>
+							<ActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group resolved'), placement: 'left'}"
+								icon="icon-delete"
+								@click="removeCheckedGroups">
+								{{ n('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
+							</ActionButton>
+						</Actions>
 					</div>
 				</div>
 			</div>
-			<div v-if="batchUpdating" class="action-blackout">
-				<span class="icon-loading" />
-			</div>
-			<div v-else-if="detailsFiltered === undefined || (detailsFiltered.length === 0 && (filterId === '' || filterId === null))">
+			<div v-if="!filtered">
 				<template v-if="sortGroups">
 					<div v-for="detail in paginatedSortedDetails[page]"
 						v-show="JSON.parse(detail.group_files_ids).length > 1"
@@ -106,17 +127,27 @@
 					</div>
 				</template>
 			</div>
-			<div v-else-if="detailsFiltered.length > 0">
-				<div v-for="detail in detailsFiltered"
-					v-show="JSON.parse(detail.group_files_ids).length > 1"
-					:key="detail.id"
-					class="task-details-row">
-					<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
-				</div>
+			<div v-else-if="detailsFiltered.length > 0 && filtered">
+				<template v-if="!sortGroups">
+					<div v-for="detail in paginatedDetailsFiltered[page]"
+						v-show="JSON.parse(detail.group_files_ids).length > 1"
+						:key="detail.id"
+						class="task-details-row">
+						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+					</div>
+				</template>
+				<template v-else>
+					<div v-for="detail in paginatedDetailsFilteredSorted[page]"
+						v-show="JSON.parse(detail.group_files_ids).length > 1"
+						:key="detail.id"
+						class="task-details-row">
+						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
+					</div>
+				</template>
 			</div>
 			<div v-else>
 				<p style="text-align: center; font-weight: bold;">
-					{{ t('mediadc', 'No matching found') }}
+					{{ t('mediadc', 'No matchings found') }}
 				</p>
 			</div>
 		</div>
@@ -130,60 +161,94 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
-import { mapGetters } from 'vuex'
-import Formats from '../../mixins/Formats'
-import DetailsListItem from './DetailsListItem'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+
+import { mapGetters } from 'vuex'
+
+import Formats from '../../mixins/Formats.js'
+
+import DetailsListItem from './DetailsListItem.vue'
+import Pagination from './Pagination.vue'
 
 export default {
 	name: 'DetailsList',
-	components: { DetailsListItem, CheckboxRadioSwitch },
-	mixins: [Formats],
-	props: {
-		filessize: {
-			type: Number,
-			required: true,
-		},
-		filestotal: {
-			type: Number,
-			required: true,
-		},
+	components: {
+		DetailsListItem,
+		CheckboxRadioSwitch,
+		Button, // eslint-disable-line vue/no-reserved-component-names
+		Actions,
+		ActionButton,
+		Pagination,
 	},
+	mixins: [Formats],
 	data() {
 		return {
 			page: 0,
 			filterId: null,
 			checkedDetailGroups: [],
 			batchActionsOpened: false,
-			batchActionResult: null,
-			batchUpdating: false,
 			sortGroups: true,
+			goToPage: 0,
 		}
 	},
 	computed: {
 		...mapGetters([
 			'task',
+			'taskInfo',
 			'details',
+			'detailsInfo',
 			'sortedDetails',
 			'sorted',
 			'paginatedDetails',
 			'paginatedSortedDetails',
+			'paginatedDetailsFiltered',
+			'paginatedDetailsFilteredSorted',
 			'itemsPerPage',
 			'detailsFiltered',
+			'detailsFilteredSorted',
 			'autoOpenNextGroup',
 		]),
+		filtered() {
+			return this.filterId !== '' && this.filterId !== null
+		},
 		checkedDetailGroupsIntersect() {
-			const a = new Set(this.paginatedDetails[this.page].map(d => d.id))
+			let a = []
+			if (!this.sortGroups) {
+				if (this.filtered) {
+					a = new Set(this.paginatedDetailsFiltered[this.page].map(d => d.id))
+				} else {
+					a = new Set(this.paginatedDetails[this.page].map(d => d.id))
+				}
+			} else {
+				if (this.filtered) {
+					a = new Set(this.paginatedDetailsFilteredSorted[this.page].map(d => d.id))
+				} else {
+					a = new Set(this.paginatedSortedDetails[this.page].map(d => d.id))
+				}
+			}
 			const b = new Set(this.checkedDetailGroups.map(d => d.id))
 			const intersect = new Set([...a].filter(i => b.has(i)))
 			return Array.from(intersect)
+		},
+		pagesRange() {
+			if (this.filterId === null) {
+				return Array.from({ length: Math.ceil(this.details.length / this.itemsPerPage) }, (_, i) => i)
+			} else {
+				return Array.from({ length: Math.ceil(this.detailsFiltered.length / this.itemsPerPage) }, (_, i) => i)
+			}
 		},
 	},
 	watch: {
 		itemsPerPage(newItemsPerPage) {
 			if (this.page >= Math.ceil(this.details.length / newItemsPerPage)) {
 				this.page = Math.ceil(this.details.length / newItemsPerPage) - 1
+			}
+			if (this.goToPage >= Math.ceil(this.details.length / newItemsPerPage)) {
+				this.goToPage = Math.ceil(this.details.length / newItemsPerPage) - 1
 			}
 		},
 		details(newDetails) {
@@ -193,14 +258,14 @@ export default {
 		},
 		sortGroups() {
 			window.localStorage.setItem('mediadc_details_sort_groups', this.sortGroups)
-			this.$store.dispatch('setSortGroups', this.sortGroups)
+			this.$store.commit('setSortGroups', this.sortGroups)
 		},
 	},
 	beforeMount() {
 		this.$emit('update:loading', false)
 		const sortGroups = window.localStorage.getItem('mediadc_details_sort_groups')
 		this.sortGroups = sortGroups !== null ? JSON.parse(sortGroups) === true : true
-		this.$store.dispatch('setSortGroups', sortGroups !== null ? JSON.parse(sortGroups) === true : true)
+		this.$store.commit('setSortGroups', sortGroups !== null ? JSON.parse(sortGroups) === true : true)
 		subscribe('openNextDetailGroup', this.openNextDetailGroup)
 	},
 	beforeDestroy() {
@@ -215,20 +280,32 @@ export default {
 			}
 		},
 		nextGroupsPage() {
-			if (this.page < Math.ceil(this.details.length / this.itemsPerPage) - 1) {
+			if (!this.filtered && this.page < Math.ceil(this.details.length / this.itemsPerPage) - 1) {
+				this.page += 1
+			} else if (this.page < Math.ceil(this.detailsFiltered.length / this.itemsPerPage) - 1) {
 				this.page += 1
 			} else {
 				showWarning(this.t('mediadc', 'Last page reached!'))
 			}
 		},
 		toggleSorting() {
-			this.$store.dispatch('setSorted', !this.sorted)
+			this.$store.commit('setSorted', !this.sorted)
 		},
 		filterByGroupId() {
 			if (this.filterId !== null && this.filterId !== '') {
-				this.$store.dispatch('setDetailsFiltered', this.details.filter(d => d.id.toString().includes(this.filterId)))
+				const singleIdRegex = /^[1-9]$/s
+				const rangeIdsRegex = /^\d+-\d+$/s
+				this.page = 0
+
+				if (singleIdRegex.test(this.filterId)) {
+					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.virtualId.toString().includes(this.filterId)))
+				} else if (rangeIdsRegex.test(this.filterId)) {
+					const beginRange = this.filterId.split('-')[0]
+					const endRange = this.filterId.split('-')[1]
+					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.virtualId >= beginRange && d.virtualId <= endRange))
+				}
 			} else {
-				this.$store.dispatch('setDetailsFiltered', [])
+				this.$store.commit('setDetailsFiltered', [])
 			}
 		},
 		openBatchActionsPopup() {
@@ -251,7 +328,7 @@ export default {
 						const removedDetailIndex = updatedDetails.findIndex(d => d.id === taskDetail.id)
 						updatedDetails.splice(removedDetailIndex, 1)
 					}
-					this.$store.dispatch('setDetails', updatedDetails)
+					this.$store.commit('setDetails', updatedDetails)
 					showSuccess(this.t('mediadc', 'Selected groups successfully removed'))
 				}
 			}).catch(err => {
@@ -259,18 +336,21 @@ export default {
 				console.debug(err)
 			})
 		},
-		selectAllGroups() {
-			if (this.checkedDetailGroups.length === this.details.length) {
-				emit('deselectGroups', this.checkedDetailGroups.map(d => d.id))
-				for (const detail of this.details) {
-					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
-					if (detailIndex !== -1) {
-						this.checkedDetailGroups.splice(detailIndex, 1)
-					}
+		_deselectAllGroups(_details) {
+			emit('deselectGroups', this.checkedDetailGroups.map(d => d.id))
+			for (const detail of this.details) {
+				const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+				if (detailIndex !== -1) {
+					this.checkedDetailGroups.splice(detailIndex, 1)
 				}
-				setTimeout(() => { this.batchUpdating = false }, 300)
+			}
+		},
+		selectAllGroups() {
+			const _details = (!this.filtered) ? this.details : this.detailsFiltered
+			if (this.checkedDetailGroups.length === _details.length) {
+				this._deselectAllGroups(_details)
 			} else {
-				for (const detail of this.details) {
+				for (const detail of _details) {
 					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
 					if (detailIndex === -1) {
 						this.checkedDetailGroups.push(detail)
@@ -279,7 +359,10 @@ export default {
 			}
 		},
 		selectAllGroupsOnPage() {
-			if (this.paginatedDetails[this.page].length === this.checkedDetailGroupsIntersect.length) {
+			const _details = (!this.filtered)
+				? ((!this.sortGroups) ? this.paginatedDetails : this.paginatedSortedDetails)
+				: ((!this.sortGroups) ? this.paginatedDetailsFiltered : this.paginatedDetailsFilteredSorted)
+			if (_details[this.page].length === this.checkedDetailGroupsIntersect.length) {
 				const groupsToDeselect = this.checkedDetailGroupsIntersect
 				emit('deselectGroups', groupsToDeselect)
 				for (const detail of groupsToDeselect) {
@@ -289,7 +372,7 @@ export default {
 					}
 				}
 			} else {
-				for (const detail of this.paginatedDetails[this.page]) {
+				for (const detail of _details[this.page]) {
 					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
 					if (detailIndex === -1) {
 						this.checkedDetailGroups.push(detail)
@@ -309,6 +392,17 @@ export default {
 				}
 			}
 		},
+		navigateToPage() {
+			this.page = this.goToPage
+		},
+		toggleGroups() {
+			const _details = (!this.filtered)
+				? ((!this.sortGroups) ? this.paginatedDetails[this.page] : this.paginatedSortedDetails[this.page])
+				: ((!this.sortGroups) ? this.paginatedDetailsFiltered[this.page] : this.paginatedDetailsFilteredSorted[this.page])
+			for (const detail of _details) {
+				emit('toggleGroup', detail)
+			}
+		},
 	},
 }
 </script>
@@ -317,7 +411,7 @@ export default {
 .task-details {
 	width: 100%;
 	padding: 20px 10px 20px 20px;
-	border: 1px solid #dadada;
+	border: 1px solid var(--color-border-dark);
 	border-radius: 5px;
 	overflow-y: scroll;
 	margin: 0 auto;
@@ -348,16 +442,23 @@ export default {
 }
 
 @media (max-width: 540px) {
+	.task-details {
+		padding: 15px 0px 10px 10px;
+	}
+
 	.task-details-heading {
 		flex-direction: column;
 		text-align: center;
 	}
+
+	.pagination-wrapper {
+		flex-direction: column;
+	}
 }
 
-.pagination {
+.pagination-wrapper, .pagination-sorting, .pagination {
 	display: flex;
 	align-items: center;
-	/* margin: 10px 0; */
 }
 
 .pagination-button {
@@ -368,37 +469,6 @@ export default {
 	cursor: pointer;
 	border-radius: 50%;
 	user-select: none;
-}
-
-.sorting {
-	display: flex;
-}
-
-.toggle-sorting-button {
-	padding: 20px;
-	border-radius: 50%;
-	user-select: none;
-	cursor: pointer;
-}
-
-.pagination-button:hover, .toggle-sorting-button:hover {
-	background-color: #eee;
-}
-
-.pagination-button:active, .toggle-sorting-button:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .pagination-button:hover, body.theme--dark .toggle-sorting-button:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .pagination-button:active, body.theme--dark .toggle-sorting-button:active {
-	background-color: #5b5b5b;
-}
-
-body.theme--dark .task-details {
-	border-color: #717171;
 }
 
 .task-details-row {
@@ -417,12 +487,12 @@ body.theme--dark .task-details {
 	justify-content: space-between;
 	padding: 5px 10px;
 	margin: 10px 0;
-	border: 1px solid #dadada;
+	border: 1px solid var(--color-border-dark);
 	border-radius: 5px;
 }
 
 body.theme--dark .task-details-row, body.theme--dark .filters {
-	border-color: #717171;
+	border-color: var(--color-border-dark);
 }
 
 @media (max-width: 540px) {
@@ -432,32 +502,8 @@ body.theme--dark .task-details-row, body.theme--dark .filters {
 }
 
 .batch-editing {
-	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-.batch-actions-menu-button {
-	padding: 20px;
-	border-radius: 50%;
-	cursor: pointer;
-	user-select: none;
-}
-
-.batch-actions-menu-button:hover {
-	background-color: #eee;
-}
-
-.batch-actions-menu-button:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .batch-actions-menu-button:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .batch-actions-menu-button:active {
-	background-color: #5b5b5b;
 }
 </style>

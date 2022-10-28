@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -23,16 +23,17 @@
  */
 
 import { generateUrl } from '@nextcloud/router'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import Vue from 'vue'
 
-const Configuration = () => import('../views/Configuration')
-const Collector = () => import('../views/Collector')
-const CollectorDetails = () => import('../views/CollectorDetails')
+const Collector = () => import('../views/Collector.vue')
+const CollectorDetails = () => import('../views/CollectorDetails.vue')
+const Resolved = () => import('../views/Resolved.vue')
+const Configuration = () => import('../views/Configuration.vue')
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
 	mode: 'history',
 	base: generateUrl('/apps/mediadc', ''),
 	linkActiveClass: 'active',
@@ -41,7 +42,7 @@ export default new Router({
 			path: '/',
 			component: Collector,
 			name: 'collector',
-			props: route => ({
+			props: (route) => ({
 				rootTitle: t('mediadc', 'MediaDC'),
 			}),
 		},
@@ -49,7 +50,7 @@ export default new Router({
 			path: '/tasks/:taskId',
 			component: CollectorDetails,
 			name: 'collectorDetails',
-			props: route => ({
+			props: (route) => ({
 				rootTitle: t('mediadc', 'MediaDC Task Details'),
 				taskId: route.params.taskId,
 			}),
@@ -58,8 +59,16 @@ export default new Router({
 			path: '/configuration',
 			component: Configuration,
 			name: 'configuration',
-			props: route => ({
+			props: (route) => ({
 				rootTitle: t('mediadc', 'MediaDC Configuration'),
+			}),
+		},
+		{
+			path: '/resolved',
+			component: Resolved,
+			name: 'resolved',
+			props: (route) => ({
+				rootTitle: t('mediadc', 'MediaDC Resolved files'),
 			}),
 		},
 	],

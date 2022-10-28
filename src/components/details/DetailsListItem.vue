@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,53 +23,94 @@
  -->
 
 <template>
-	<div class="details-list-item">
-		<div v-show="updating" class="action-blackout">
-			<span class="icon-loading" />
-		</div>
+	<div class="details-list-item" :class="{'icon-loading': updating}">
 		<div class="details-list-item-title">
-			<CheckboxRadioSwitch class="batch-checkbox" :checked.sync="checked" />
-			<span class="group-info" @click="openDetailFiles(detail)">
-				<span class="icon-projects" style="margin: 0 10px 0 10px;" />
-				{{ t('mediadc', 'Duplicate group') }} #{{ detail.id }} ({{ JSON.parse(detail.group_files_ids).length }}
-				{{ translatePlural('mediadc', 'file', 'files', JSON.parse(detail.group_files_ids).length) }}{{ Array.isArray(files) && files.length > 0 ? ' - ' + formatBytes(groupFilesSize) : '' }})
-				<span :class="!opened ? 'icon-triangle-s open-details-btn' : 'icon-triangle-n open-details-btn'" />
-			</span>
-			<span class="icon-delete delete-group-btn"
-				:title="t('mediadc', 'Remove group without deleting files')"
-				@click="removeTaskDetail(detail)" />
+			<CheckboxRadioSwitch v-tooltip="{content: t('mediadc', 'Select group'), placement: 'top'}"
+				class="mediadc-checkbox-only batch-checkbox"
+				:checked.sync="checked" />
+			<Button type="tertiary" class="open-details-btn" @click="openDetailFiles(detail)">
+				<template #icon>
+					<span class="icon-projects" />
+				</template>
+				<template #default>
+					{{ t('mediadc', 'Duplicate group') }} #{{ detail.virtualId }} ({{ JSON.parse(detail.group_files_ids).length }}
+					{{ n('mediadc', 'file', 'files', JSON.parse(detail.group_files_ids).length) }}{{ Array.isArray(files) && files.length > 0 ? ' - ' + formatBytes(groupFilesSize) : '' }})
+					<span :class="!opened ? 'icon-triangle-s' : 'icon-triangle-n'"
+						style="display: inline-flex; margin: 0 0 0 5px;" />
+				</template>
+			</Button>
+			<Actions>
+				<ActionButton icon="icon-delete delete-group-btn" @click="removeTaskDetail(detail)">
+					{{ t('mediadc', 'Remove group without deleting files') }}
+				</ActionButton>
+			</Actions>
 		</div>
 		<div v-if="opened && JSON.parse(detail.group_files_ids).length > groupItemsPerPage" class="pagination">
-			<span class="icon-view-previous pagination-button"
-				@click="openPrevDetailFiles(detail)" />
+			<Button type="tertiary" style="margin-right: 5px;" @click="openPrevDetailFiles(detail)">
+				<template #icon>
+					<span class="icon-view-previous" />
+				</template>
+			</Button>
 			<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
 			<span>{{ page + 1 }}/{{ Math.ceil(JSON.parse(detail.group_files_ids).length / groupItemsPerPage) }}</span>
-			<span class="icon-view-next pagination-button"
-				@click="openNextDetailFiles(detail)" />
+			<Button type="tertiary" style="margin-left: 5px;" @click="openNextDetailFiles(detail)">
+				<template #icon>
+					<span class="icon-view-next" />
+				</template>
+			</Button>
+			<select id="to_page"
+				v-model="goToPage"
+				style="margin-left: 5px;"
+				name="to_page">
+				<option v-for="rPage of pagesRange" :key="rPage" :value="rPage">
+					{{ rPage + 1 }}
+				</option>
+			</select>
+			<Button v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage"
+				v-tooltip="t('mediadc', 'Go to page')"
+				type="tertiary"
+				@click="navigateToPage">
+				<template #icon>
+					<span class="icon-confirm" />
+				</template>
+			</Button>
 		</div>
-		<DetailsGroupList v-show="opened"
-			:detail="detail"
-			:files="files"
-			:all-files="allFiles"
-			:loading-files.sync="loadingFiles"
-			:updating.sync="updating"
-			:files-ascending.sync="filesAscending" />
+		<Transition name="fade">
+			<DetailsGroupList v-if="opened"
+				:detail="detail"
+				:files="files"
+				:all-files="allFiles"
+				:loading-files.sync="loadingFiles"
+				:updating.sync="updating"
+				:files-ascending.sync="filesAscending" />
+		</Transition>
 	</div>
 </template>
 
 <script>
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import DetailsGroupList from './DetailsGroupList'
-import Formats from '../../mixins/Formats'
-import { mapGetters } from 'vuex'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+
+import { mapGetters } from 'vuex'
+
+import Formats from '../../mixins/Formats.js'
+import DetailsGroupList from './DetailsGroupList.vue'
 
 export default {
 	name: 'DetailsListItem',
-	components: { DetailsGroupList, CheckboxRadioSwitch },
+	components: {
+		Actions,
+		ActionButton,
+		Button, // eslint-disable-line vue/no-reserved-component-names
+		CheckboxRadioSwitch,
+		DetailsGroupList,
+	},
 	mixins: [Formats],
 	props: {
 		detail: {
@@ -93,6 +134,7 @@ export default {
 			checked: false,
 			filesAscending: false,
 			updating: false,
+			goToPage: 0,
 		}
 	},
 	computed: {
@@ -100,9 +142,13 @@ export default {
 			'task',
 			'details',
 			'groupItemsPerPage',
+			'deleteFileConfirmation',
 		]),
 		groupFilesSize() {
 			return this.allFiles.length > 0 ? this.allFiles.reduce((sum, file) => sum + file.filesize, 0) : 0
+		},
+		pagesRange() {
+			return Array.from({ length: Math.ceil(JSON.parse(this.detail.group_files_ids).length / this.groupItemsPerPage) }, (_, i) => i)
 		},
 	},
 	watch: {
@@ -134,6 +180,9 @@ export default {
 				}
 				this.paginatedFiles = this.paginateFiles(this.allFiles)
 				this.files = this.paginatedFiles[this.page]
+				if (this.goToPage >= Math.ceil(JSON.parse(this.detail.group_files_ids).length / newGroupItemsPerPage)) {
+					this.goToPage = Math.ceil(JSON.parse(this.detail.group_files_ids).length / newGroupItemsPerPage) - 1
+				}
 			}
 		},
 		allFiles(newAllFiles) {
@@ -150,11 +199,13 @@ export default {
 		subscribe('updateGroupFilesPagination', this.updateFilesPagination)
 		subscribe('deselectGroups', this.deselect)
 		subscribe('openGroup', this.openGroup)
+		subscribe('toggleGroup', this.toggleGroup)
 	},
 	beforeDestroy() {
 		unsubscribe('updateGroupFilesPagination', this.updateFilesPagination)
 		unsubscribe('deselectGroups', this.deselect)
 		unsubscribe('openGroup', this.openGroup)
+		unsubscribe('toggleGroup', this.toggleGroup)
 	},
 	methods: {
 		openDetailFiles(detail) {
@@ -214,40 +265,47 @@ export default {
 			return paginatedFiles
 		},
 		removeTaskDetail(detail) {
-			if (confirm(this.t('mediadc', 'Are you sure, you want remove this group without deleting files?'))) {
-				this.updating = true
-				axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${detail.task_id}/detail/${detail.id}`)).then(res => {
-					if (res.data.success) {
-						emit('openNextDetailGroup', this.detail)
-						const updatedDetails = [...this.details]
-						const removedDetailIndex = updatedDetails.findIndex(d => d.id === this.detail.id)
-						updatedDetails.splice(removedDetailIndex, 1)
-						this.$store.dispatch('setDetails', updatedDetails)
-						const checkedIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
-						const newCheckedDetailGroups = [...this.checkedDetailGroups]
-						if (this.checked && checkedIndex !== -1) {
-							newCheckedDetailGroups.splice(checkedIndex, 1)
-							this.$emit('update:checkedDetailGroups', newCheckedDetailGroups)
-						}
-						emit('updateTaskInfo')
-						showSuccess(this.t('mediadc', 'Duplicate group removed'))
-						const detailCheckedIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
-						if (detailCheckedIndex !== -1) {
-							const newCheckedDetailGroups = this.checkedDetailGroups
-							newCheckedDetailGroups.splice(detailCheckedIndex, 1)
-							this.$emit('update:checkedDetailGroups', newCheckedDetailGroups)
-						}
-						this.updating = false
-					} else {
-						showError(this.t('mediadc', 'Some error occured while deleting duplicate group'))
-						this.updating = false
+			if (this.deleteFileConfirmation) {
+				if (confirm(this.t('mediadc', 'Are you sure, you want remove this group without deleting files?'))) {
+					this._removeTaskDetail(detail)
+				}
+			} else {
+				this._removeTaskDetail(detail)
+			}
+		},
+		_removeTaskDetail(detail) {
+			this.updating = true
+			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${detail.task_id}/detail/${detail.id}`)).then(res => {
+				if (res.data.success) {
+					emit('openNextDetailGroup', this.detail)
+					const updatedDetails = [...this.details]
+					const removedDetailIndex = updatedDetails.findIndex(d => d.id === this.detail.id)
+					updatedDetails.splice(removedDetailIndex, 1)
+					this.$store.dispatch('setDetails', updatedDetails)
+					const checkedIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					const newCheckedDetailGroups = [...this.checkedDetailGroups]
+					if (this.checked && checkedIndex !== -1) {
+						newCheckedDetailGroups.splice(checkedIndex, 1)
+						this.$emit('update:checkedDetailGroups', newCheckedDetailGroups)
 					}
-				}).catch(err => {
-					console.debug(err)
+					emit('updateTaskInfo')
+					showSuccess(this.t('mediadc', 'Duplicate group succesffully removed'))
+					const detailCheckedIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					if (detailCheckedIndex !== -1) {
+						const newCheckedDetailGroups = this.checkedDetailGroups
+						newCheckedDetailGroups.splice(detailCheckedIndex, 1)
+						this.$emit('update:checkedDetailGroups', newCheckedDetailGroups)
+					}
+					this.updating = false
+				} else {
 					showError(this.t('mediadc', 'Some error occured while deleting duplicate group'))
 					this.updating = false
-				})
-			}
+				}
+			}).catch(err => {
+				console.debug(err)
+				showError(this.t('mediadc', 'Some error occured while deleting duplicate group'))
+				this.updating = false
+			})
 		},
 		sortFiles(ascending) {
 			this.allFiles.sort((a, b) => (ascending) ? a.filesize - b.filesize : b.filesize - a.filesize)
@@ -274,11 +332,38 @@ export default {
 				this.openDetailFiles(detail)
 			}
 		},
+		toggleGroup(detail) {
+			if (this.detail.id === detail.id) {
+				this.openDetailFiles(detail)
+			}
+		},
+		navigateToPage() {
+			this.page = this.goToPage
+			this.files = this.paginatedFiles[this.page]
+		},
 	},
 }
 </script>
 
+<style>
+.open-details-btn .button-vue__text {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>
+
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
 .details-list-item {
 	width: 100%;
 	padding: 10px;
@@ -294,116 +379,28 @@ export default {
 	align-items: center;
 }
 
-.group-info {
-	padding: 10px;
-	border-radius: 20px;
-	display: flex;
-	align-items: center;
-	user-select: none;
-}
-
-.group-info:hover {
-	cursor: pointer;
-	background-color: #eee;
-}
-
-.group-info:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .group-info:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .group-info:active {
-	background-color: #5b5b5b;
-}
-
 .pagination {
 	display: flex;
 	align-items: center;
-	/* margin: 10px 0; */
 }
 
-.pagination-button {
-	padding: 20px;
-	margin: 0 5px;
-	width: 16px;
-	height: 16px;
-	cursor: pointer;
-	border-radius: 50%;
+.group-info {
+	display: flex;
+	align-items: center;
 	user-select: none;
-}
-
-.pagination-button:hover {
-	background-color: #eee;
-}
-
-.pagination-button:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .pagination-button:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .pagination-button:active {
-	background-color: #5b5b5b;
-}
-
-.open-details-btn {
-	display: inline-flex;
-	width: 16px;
-	height: 16px;
-	margin: 0 5px 0 10px;
-	cursor: pointer;
 }
 
 .delete-group-btn {
 	visibility: hidden;
-	cursor: pointer;
-	margin: 0 10px 0 5px;
-	padding: 20px;
-	border-radius: 50%;
-}
-
-.delete-group-btn:hover {
-	background-color: #eee;
-}
-
-.delete-group-btn:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .delete-group-btn:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .delete-group-btn:active {
-	background-color: #5b5b5b;
 }
 
 .details-list-item:hover .delete-group-btn {
 	visibility: visible;
 }
 
-.action-blackout {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 999;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 5px;
-}
-
 .batch-checkbox {
 	visibility: hidden;
-	margin-right: 20px;
+	margin-right: 14px;
 }
 
 .batch-checkbox .checkbox-radio-switch__icon {

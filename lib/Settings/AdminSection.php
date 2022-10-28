@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -34,7 +34,8 @@ use OCP\IL10N;
 use OCP\Settings\IIconSection;
 
 
-class AdminSection implements IIconSection {
+class AdminSection implements IIconSection
+{
 
 	/** @var IL10N */
 	private $l;
@@ -48,11 +49,13 @@ class AdminSection implements IIconSection {
 		$this->urlGenerator = $urlGenerator;
 	}
 
-	public function getId() {
+	public function getId()
+	{
 		return Application::APP_ID;
 	}
 
-	public function getName() {
+	public function getName()
+	{
 		return $this->l->t('MediaDC');
 	}
 
@@ -61,8 +64,8 @@ class AdminSection implements IIconSection {
 		return 50;
 	}
 
-	public function getIcon() {
+	public function getIcon()
+	{
 		return $this->urlGenerator->imagePath(Application::APP_ID, 'settings.svg');
 	}
-
 }

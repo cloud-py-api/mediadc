@@ -1,7 +1,7 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
  - @author Andrey Borysenko <andrey18106x@gmail.com>
  -
@@ -23,141 +23,189 @@
  -->
 
 <template>
-	<div v-show="opened" class="blackout">
-		<div class="edit-task-block">
-			<span class="icon-close close-edit-button" @click="closeEditTaskDialog" />
-			<h2>{{ t('mediadc', 'Edit task') }}</h2>
-			<div class="selection-container">
-				<div class="block target-directories-block">
-					<h3>{{ t('mediadc', 'Target directories') }}</h3>
-					<div v-if="targetDirectoriesIds.length > 0">
-						<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
-							<div class="target-directory">
-								<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
-								<span class="delete-button icon-delete" @click="removeTargetDirectory(fileid)" />
+	<transition name="fade">
+		<div class="block-wrapper">
+			<div class="edit-task-block">
+				<div class="edit-task-close" @click="closeEditTaskDialog()" />
+				<h2>{{ t('mediadc', 'Edit task') }}</h2>
+				<div class="selection-container">
+					<div class="block target-directories-block">
+						<h3>{{ t('mediadc', 'Target directories') }}</h3>
+						<div v-if="targetDirectoriesIds.length > 0">
+							<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
+								<div class="target-directory">
+									<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
+									<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+										type="tertiary"
+										@click="removeTargetDirectory(fileid)">
+										<template #icon>
+											<span class="icon-delete" />
+										</template>
+									</Button>
+								</div>
 							</div>
 						</div>
+						<div v-else>
+							<span>{{ t('mediadc', 'Not selected') }}</span>
+						</div>
+						<br>
+						<Button class="mediadc-button-vue"
+							:aria-label="t('mediadc', 'Select target directory')"
+							@click="openDirectoriesExplorer">
+							<template #icon>
+								<PlusThick :size="16" />
+							</template>
+							{{ t('mediadc', 'Select') }}
+						</Button>
 					</div>
-					<div v-else>
-						<span>{{ t('mediadc', 'Not selected') }}</span>
-					</div>
-					<br>
-					<button @click="openDirectoriesExplorer">
-						<span class="icon-add" />
-						{{ t('mediadc', 'Select') }}
-					</button>
-				</div>
-				<div class="block">
-					<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
-					<div v-if="excludeDirectoriesPaths.length > 0">
-						<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
-							<div class="target-directory">
-								<span style="overflow-y: scroll;">{{ excludeFileIds[fileid] }}</span>
-								<span class="delete-button icon-delete" @click="removeExcludeDirectory(fileid)" />
+					<div class="block">
+						<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
+						<div v-if="excludeDirectoriesPaths.length > 0">
+							<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
+								<div class="target-directory">
+									<span style="overflow-y: scroll; white-space: nowrap;">{{ excludeFileIds[fileid] }}</span>
+									<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+										type="tertiary"
+										@click="removeExcludeDirectory(fileid)">
+										<template #icon>
+											<span class="icon-delete" />
+										</template>
+									</Button>
+								</div>
 							</div>
 						</div>
+						<div v-else>
+							<span>{{ t('mediadc', 'Not selected') }}</span>
+						</div>
+						<br>
+						<Button class="mediadc-button-vue"
+							:aria-label="t('mediadc', 'Select exclude directory')"
+							@click="openExcludeExplorer">
+							<template #icon>
+								<PlusThick :size="16" />
+							</template>
+							{{ t('mediadc', 'Select') }}
+						</Button>
 					</div>
-					<div v-else>
-						<span>{{ t('mediadc', 'Not selected') }}</span>
-					</div>
-					<br>
-					<button @click="openExcludeExplorer">
-						<span class="icon-add" />
-						{{ t('mediadc', 'Select') }}
-					</button>
 				</div>
-			</div>
-			<div class="selection-container">
-				<div class="block">
-					<h3>{{ t('mediadc', 'Custom exclude mask') }}</h3>
-					<div v-if="customExcludeList.length > 0" class="custom-masks-list">
-						<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
-							<span>{{ mask }}</span>
-							<span class="icon-delete" style="cursor: pointer;" @click="deleteCustomMask(mask)" />
+				<div class="selection-container">
+					<div class="block">
+						<h3>{{ t('mediadc', 'Custom exclude mask') }}</h3>
+						<div v-if="customExcludeList.length > 0" class="custom-masks-list">
+							<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
+								<span>{{ mask }}</span>
+								<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+									type="tertiary"
+									@click="deleteCustomMask(mask)">
+									<template #icon>
+										<span class="icon-delete" />
+									</template>
+								</Button>
+							</div>
+						</div>
+						<div v-else>
+							<span>{{ t('mediadc', 'Not added') }}</span>
+						</div>
+						<div v-if="addingCustomMask" style="display: flex; align-items: center;">
+							<input id="custom-exclude-mask"
+								ref="customExcludeMask"
+								v-model="customExcludeMask"
+								type="text"
+								@keyup.enter="addCustomMask"
+								@keyup.esc="cancelAddingCustomMask">
+							<Button v-tooltip="t('mediadc', 'Confirm')"
+								type="tertiary"
+								@click="addCustomMask">
+								<template #icon>
+									<span class="icon-checkmark" />
+								</template>
+							</Button>
+							<Button v-tooltip="t('mediadc', 'Decline')"
+								type="tertiary"
+								@click="cancelAddingCustomMask">
+								<template #icon>
+									<span class="icon-close" />
+								</template>
+							</Button>
+						</div>
+						<div style="display: flex; align-items: center; margin: 20px 0;">
+							<Button class="mediadc-button-vue" @click="addNewMask">
+								<template #icon>
+									<PlusThick :size="16" />
+								</template>
+								<span>{{ t('mediadc', 'Add mask') }}</span>
+							</Button>
 						</div>
 					</div>
-					<div v-else>
-						<span>{{ t('mediadc', 'Not added') }}</span>
-					</div>
-					<div v-if="addingCustomMask" style="display: flex; align-items: center;">
-						<input id="custom-exclude-mask"
-							ref="customExcludeMask"
-							v-model="customExcludeMask"
-							type="text"
-							@keyup.enter="addCustomMask"
-							@keyup.esc="cancelAddingCustomMask">
-						<span class="icon-checkmark" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="addCustomMask" />
-						<span class="icon-close" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="cancelAddingCustomMask" />
-					</div>
-					<div style="display: flex; align-items: center; margin: 20px 0;">
-						<button @click="addNewMask">
-							<span class="icon-add" />
-							<span>{{ t('mediadc', 'Add mask') }}</span>
-						</button>
+					<div class="block">
+						<h3 style="margin: 5px 0;">
+							{{ t('mediadc', 'Target Mime Type') }}
+						</h3>
+						<select id="target_mtype"
+							v-model="targetMimeType"
+							name="target_mtype">
+							<option :value="0">
+								{{ t('mediadc', 'Photos') }}
+							</option>
+							<option :value="1">
+								{{ t('mediadc', 'Videos') }}
+							</option>
+							<option :value="2">
+								{{ t('mediadc', 'Photos and Videos') }}
+							</option>
+						</select>
+						<h3 style="margin: 5px 0;">
+							{{ t('mediadc', 'Similarity threshold') }}
+						</h3>
+						<input v-model="similarity_threshold"
+							type="number"
+							min="50"
+							max="100"
+							style="margin: 0 0 10px;">
 					</div>
 				</div>
-				<div class="block">
-					<h3 style="margin: 5px 0;">
-						{{ t('mediadc', 'Target Mime Type') }}
-					</h3>
-					<select id="target_mtype"
-						v-model="targetMimeType"
-						name="target_mtype">
-						<option :value="0">
-							{{ t('mediadc', 'Photos') }}
-						</option>
-						<option :value="1">
-							{{ t('mediadc', 'Videos') }}
-						</option>
-						<option :value="2">
-							{{ t('mediadc', 'Photos and Videos') }}
-						</option>
-					</select>
-					<h3 style="margin: 5px 0;">
-						{{ t('mediadc', 'Similarity threshold') }}
-					</h3>
-					<input v-model="similarity_threshold"
-						type="number"
-						min="50"
-						max="100"
-						style="margin: 0 0 10px;">
+				<div class="create-task-actions">
+					<Button class="mediadc-button-vue"
+						:aria-label="t('mediadc', 'Create and Run new Task')"
+						:disabled="runningTask || Object.keys(targetDirectoriesPaths).length === 0"
+						@click="restartTask">
+						<template #default>
+							{{ t('mediadc', 'Restart task') }}
+						</template>
+						<template v-if="runningTask" #icon>
+							<span class="icon-loading" />
+						</template>
+					</Button>
+					<CheckboxRadioSwitch :checked.sync="finishNotification">
+						{{ t('mediadc', 'Finish notification') }}
+					</CheckboxRadioSwitch>
 				</div>
-			</div>
-			<div class="create-task-actions">
-				<button v-if="!runningTask"
-					:disabled="Object.keys(targetDirectoriesPaths).length === 0"
-					@click="restartTask">
-					{{ t('mediadc', 'Restart task') }}
-				</button>
-				<button v-else disabled>
-					<span class="icon-loading" />
-				</button>
-				<CheckboxRadioSwitch :checked.sync="finishNotification">
-					{{ t('mediadc', 'Finish notification') }}
-				</CheckboxRadioSwitch>
 			</div>
 		</div>
-	</div>
+	</transition>
 </template>
 
 <script>
+import axios from '@nextcloud/axios'
+import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
-import axios from '@nextcloud/axios'
-import { requestFileInfo, getFileId } from '../../utils/files'
-import { mapGetters } from 'vuex'
-import { getCurrentUser } from '@nextcloud/auth'
 import { emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import PlusThick from 'vue-material-design-icons/PlusThick.vue'
+
+import { mapGetters } from 'vuex'
+
+import { requestFileInfo, getFileId } from '../../utils/files.js'
 
 export default {
 	name: 'TasksEdit',
-	components: { CheckboxRadioSwitch },
-	props: {
-		opened: {
-			type: Boolean,
-			required: true,
-		},
+	components: {
+		Button, // eslint-disable-line vue/no-reserved-component-names
+		CheckboxRadioSwitch,
+		PlusThick,
 	},
 	data() {
 		return {
@@ -251,7 +299,6 @@ export default {
 							}
 						}
 					})
-					this.targetDirectoriesPaths.push('/')
 				}
 			})
 		},
@@ -282,8 +329,7 @@ export default {
 		},
 		restartTask() {
 			this.runningTask = true
-			this.getSettings().then(res => {
-				this.$store.dispatch('setSettings', res.data)
+			this.$store.dispatch('getSettings').then(() => {
 				axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
 					taskId: this.task.id,
 					targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
@@ -311,7 +357,7 @@ export default {
 					} else if (res.data.limit) {
 						showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 					} else if (res.data.empty) {
-						showWarning(this.translatePlural('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
+						showWarning(this.n('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
 					} else {
 						showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 					}
@@ -329,9 +375,6 @@ export default {
 				this.excludeDirectoriesPaths.splice(dirIndex, 1)
 				delete this.excludeFileIds[fileid]
 			}
-		},
-		removeExcludeFileid(fileid) {
-			delete this.excludeFileIds[fileid]
 		},
 		addNewMask() {
 			this.addingCustomMask = true
@@ -360,12 +403,6 @@ export default {
 			const maskIndex = this.customExcludeList.findIndex(m => m === mask)
 			this.customExcludeList.splice(maskIndex, 1)
 		},
-		async getTasks() {
-			axios.get(generateUrl('/apps/mediadc/api/v1/tasks')).then(res => {
-				this.$store.dispatch('setTasks', res.data)
-				this.$emit('update:loading', false)
-			})
-		},
 		resetForm() {
 			this.targetDirectoriesPaths = {}
 			this.targetDirectoriesIds = []
@@ -382,41 +419,64 @@ export default {
 		closeEditTaskDialog() {
 			this.$emit('update:opened', false)
 		},
-		async getSettings() {
-			return axios.get(generateUrl('/apps/mediadc/api/v1/settings'))
-		},
 	},
 }
 </script>
 
 <style scoped>
-.blackout {
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 250ms;
+}
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
+
+.fade-visibility-enter,
+.fade-visibility-leave-to {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.block-wrapper {
 	position: fixed;
+	z-index: 9998;
 	top: 0;
 	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.3);
-	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+
 }
 
 .edit-task-block {
-	border: 1px solid #dadada;
-	border-radius: 5px;
-	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .05);
+	position: relative;
+	border: 1px solid var(--color-border-dark);
+	border-radius: var(--border-radius-large);
+	box-shadow: 0 0 30px var(--color-box-shadow);
 	padding: 20px 20px 10px;
 	width: 100%;
 	max-width: 600px;
-	position: absolute;
-	background-color: #fff;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	margin: auto;
+	background-color: var(--color-main-background);
 }
 
-.selection-container {
-	width: 100%;
-	display: flex;
+.edit-task-close {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	padding: 25px;
+	background: var(--icon-close-000) no-repeat center;
+	opacity: .5;
+	cursor: pointer;
+}
+
+.edit-task-close:hover {
+	opacity: 1;
 }
 
 @media (max-width: 767px) {
@@ -430,31 +490,8 @@ export default {
 		width: 90vw;
 		height: 80vh;
 		overflow-y: scroll;
-		top: calc(50% + calc(100% - 96vh));
+		top: calc(100% - 96vh);
 	}
-}
-
-.block {
-	width: 100%;
-	height: 100%;
-	max-height: 200px;
-	overflow-y: scroll;
-	padding: 10px 15px;
-	margin: 5px 10px;
-	border: 1px solid #dadada;
-	border-radius: 5px;
-}
-
-.block:hover {
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, .05)
-}
-
-.target-directory, .custom-mask {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 5px 0;
-	border-bottom: 1px solid #dadada;
 }
 
 .delete-button {
@@ -463,36 +500,6 @@ export default {
 	height: 15px;
 	cursor: pointer;
 	margin: 0 10px;
-}
-
-.close-edit-button {
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	padding: 20px;
-	border-radius: 50%;
-	cursor: pointer;
-	opacity: 0.5;
-}
-
-.close-edit-button:hover, .close-edit-button:active {
-	opacity: 1;
-}
-
-body.theme--dark .actions-menu-button:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .close-edit-button:active {
-	background-color: #5b5b5b;
-}
-
-body.theme--dark .edit-task-block, body.theme--dark .block {
-	border-color: #717171;
-}
-
-body.theme--dark .edit-task-block {
-	background-color: #111;
 }
 
 .create-task-actions {

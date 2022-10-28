@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -22,23 +22,37 @@
  *
  */
 
-import Vue from 'vue'
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+
+import Formats from '../mixins/Formats.js'
 
 const state = {
 	task: {},
-	taskInfo: [],
+	taskInfo: {
+		exclude_directories: [],
+		target_directories: [],
+	},
 	details: [],
+	detailsInfo: {
+		filessize: 0,
+		filestotal: 0,
+	},
 	sortedDetails: [],
 	detailsFiltered: [],
+	detailsFilteredSorted: [],
 	paginatedDetails: [],
 	paginatedSortedDetails: [],
+	paginatedDetailsFiltered: [],
+	paginatedDetailsFilteredSorted: [],
 	itemsPerPage: 5,
 	groupItemsPerPage: 10,
 	sorted: false,
 	sortGroups: true,
 }
 
-const paginate = (details, itemsPerPage) => {
+// eslint-disable-next-line jsdoc/require-jsdoc
+function paginate(details, itemsPerPage) {
 	const paginated = []
 	for (let i = 0; i < details.length; i++) {
 		const last = paginated[paginated.length - 1]
@@ -53,47 +67,60 @@ const paginate = (details, itemsPerPage) => {
 
 const mutations = {
 	setTask(state, task) {
-		Vue.set(state, 'task', task)
+		state.task = task
 	},
 	setTaskInfo(state, taskInfo) {
-		Vue.set(state, 'taskInfo', taskInfo)
+		state.taskInfo = taskInfo
+	},
+	setDetailsInfo(state, data) {
+		state.detailsInfo.filessize = data.filessize
+		state.detailsInfo.filestotal = data.filestotal
 	},
 	setDetails(state, details) {
-		Vue.set(state, 'details', details)
-		Vue.set(state, 'paginatedDetails', paginate(details, state.itemsPerPage))
+		state.details = details.map((v, i) => { v.virtualId = i + 1; v.state = { checked: false, opened: false }; return v })
+		state.paginatedDetails = paginate(details, state.itemsPerPage)
 		const sortedDetails = details.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
-		Vue.set(state, 'sortedDetails', sortedDetails)
-		Vue.set(state, 'paginatedSortedDetails', paginate(sortedDetails, state.itemsPerPage))
+		state.sortedDetails = sortedDetails
+		state.paginatedSortedDetails = paginate(sortedDetails, state.itemsPerPage)
 	},
 	deleteDetail(state, detail) {
 		const newDetails = [...state.details]
 		const detailIndex = newDetails.findIndex(d => d.id === detail.id)
 		newDetails.splice(detailIndex, 1)
-		Vue.set(state, 'details', newDetails)
-		Vue.set(state, 'paginatedDetails', paginate(newDetails, state.itemsPerPage))
+		state.details = newDetails
+		state.paginatedDetails = paginate(newDetails, state.itemsPerPage)
 		const sortedDetails = newDetails.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
-		Vue.set(state, 'sortedDetails', sortedDetails)
-		Vue.set(state, 'paginatedSortedDetails', paginate(sortedDetails, state.itemsPerPage))
+		state.sortedDetails = sortedDetails
+		state.paginatedSortedDetails = paginate(sortedDetails, state.itemsPerPage)
 	},
 	setDetailsListItemsPerPage(state, itemsPerPage) {
-		Vue.set(state, 'itemsPerPage', Number(itemsPerPage))
-		Vue.set(state, 'paginatedDetails', paginate(state.details, Number(itemsPerPage)))
-		Vue.set(state, 'paginatedSortedDetails', paginate(state.sortedDetails, Number(itemsPerPage)))
+		state.itemsPerPage = Number(itemsPerPage)
+		state.paginatedDetails = paginate(state.details, Number(itemsPerPage))
+		state.paginatedSortedDetails = paginate(state.sortedDetails, Number(itemsPerPage))
 	},
 	setGroupItemsPerPage(state, itemsPerPage) {
-		Vue.set(state, 'groupItemsPerPage', Number(itemsPerPage))
+		state.groupItemsPerPage = Number(itemsPerPage)
 	},
 	setSorted(state, sorted) {
 		const sortedDetails = state.details.sort((a, b) => sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
-		Vue.set(state, 'sortedDetails', sortedDetails)
-		Vue.set(state, 'paginatedSortedDetails', paginate(sortedDetails, state.itemsPerPage))
-		Vue.set(state, 'sorted', sorted)
+		state.sortedDetails = sortedDetails
+		if (state.detailsFiltered.length > 0) {
+			const sortedDetailsFiltered = state.detailsFiltered.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
+			state.detailsFilteredSorted = sortedDetailsFiltered
+			state.paginatedDetailsFilteredSorted = paginate(sortedDetailsFiltered, state.itemsPerPage)
+		}
+		state.paginatedSortedDetails = paginate(sortedDetails, state.itemsPerPage)
+		state.sorted = sorted
 	},
 	setSortGroups(state, sortGroups) {
-		Vue.set(state, 'sortGroups', sortGroups)
+		state.sortGroups = sortGroups
 	},
-	setDetailsFiltered(state, detailFiltered) {
-		Vue.set(state, 'detailsFiltered', detailFiltered)
+	setDetailsFiltered(state, detailsFiltered) {
+		state.detailsFiltered = detailsFiltered
+		state.paginatedDetailsFiltered = paginate(detailsFiltered, state.itemsPerPage)
+		const sortedDetailsFiltered = detailsFiltered.sort((a, b) => state.sorted ? JSON.parse(b.group_files_ids).length - JSON.parse(a.group_files_ids).length : JSON.parse(a.group_files_ids).length - JSON.parse(b.group_files_ids).length)
+		state.detailsFilteredSorted = sortedDetailsFiltered
+		state.paginatedDetailsFilteredSorted = paginate(sortedDetailsFiltered, state.itemsPerPage)
 	},
 }
 
@@ -101,10 +128,14 @@ const getters = {
 	task: state => state.task,
 	taskInfo: state => state.taskInfo,
 	details: state => state.details,
+	detailsInfo: state => state.detailsInfo,
 	sortedDetails: state => state.sortedDetails,
 	detailsFiltered: state => state.detailsFiltered,
+	detailsFilteredSorted: state => state.detailsFilteredSorted,
 	paginatedDetails: state => state.paginatedDetails,
 	paginatedSortedDetails: state => state.paginatedSortedDetails,
+	paginatedDetailsFiltered: state => state.paginatedDetailsFiltered,
+	paginatedDetailsFilteredSorted: state => state.paginatedDetailsFilteredSorted,
 	itemsPerPage: state => state.itemsPerPage,
 	groupItemsPerPage: state => state.groupItemsPerPage,
 	sorted: state => state.sorted,
@@ -112,32 +143,31 @@ const getters = {
 }
 
 const actions = {
-	setTask(context, task) {
-		context.commit('setTask', task)
+	async getTaskDetails(context) {
+		return axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${context.rootState.route.params.taskId}`)).then(res => {
+			if ('success' in res.data && res.data.success) {
+				context.commit('setTask', res.data.collectorTask)
+				context.commit('setDetails', res.data.collectorTaskDetails)
+
+				if (Formats.methods.getStatusBadge(context.state.task) === 'finished'
+					&& context.state.detailsInfo.filestotal === 0 && context.state.detailsInfo.filessize === 0) {
+					context.dispatch('getDetailFilesTotalSize')
+				}
+			}
+		})
 	},
-	setTaskInfo(context, taskInfo) {
-		context.commit('setTaskInfo', taskInfo)
+	async getTaskInfo(context) {
+		return axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${context.rootState.route.params.taskId}/info`)).then(res => {
+			context.commit('setTaskInfo', res.data.collectorTaskInfo)
+			return res
+		})
 	},
-	setDetails(context, details) {
-		context.commit('setDetails', details)
-	},
-	deleteDetail(context, detail) {
-		context.commit('deleteDetail', detail)
-	},
-	setDetailsListItemsPerPage(context, itemsPerPage) {
-		context.commit('setDetailsListItemsPerPage', itemsPerPage)
-	},
-	setGroupItemsPerPage(context, itemsPerPage) {
-		context.commit('setGroupItemsPerPage', itemsPerPage)
-	},
-	setSorted(context, sorted) {
-		context.commit('setSorted', sorted)
-	},
-	setDetailsFiltered(context, detailFiltered) {
-		context.commit('setDetailsFiltered', detailFiltered)
-	},
-	setSortGroups(context, sortGroups) {
-		context.commit('setSortGroups', sortGroups)
+	async getDetailFilesTotalSize(context) {
+		const taskId = context.rootState.route.params.taskId
+		return axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${taskId}/filestotal`)).then(res => {
+			context.commit('setDetailsInfo', { taskId, filessize: res.data.filessize, filestotal: res.data.filestotal })
+			return res
+		})
 	},
 }
 

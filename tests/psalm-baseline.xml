@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
+  <file src="lib/BackgroundJob/CollectorCleanupJob.php">
+    <UndefinedConstant occurrences="1">
+      <code>\OCP\BackgroundJob\IJob::TIME_INSENSITIVE</code>
+    </UndefinedConstant>
+    <UndefinedMethod occurrences="1">
+      <code>setTimeSensitivity</code>
+    </UndefinedMethod>
+  </file>
   <file src="lib/Command/CollectorCleanupCommand.php">
     <UndefinedClass occurrences="1">
       <code>Command</code>
@@ -9,6 +17,16 @@
     <UndefinedClass occurrences="1">
       <code>Command</code>
     </UndefinedClass>
+  </file>
+  <file src="lib/Command/CollectorTaskNotificationCommand.php">
+    <UndefinedClass occurrences="1">
+      <code>Command</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Controller/CollectorController.php">
+    <InvalidArgument occurrences="1">
+      <code>$this-&gt;service-&gt;markResolved($type, $fileId, $resolved)</code>
+    </InvalidArgument>
   </file>
   <file src="lib/Controller/PageController.php">
     <UndefinedClass occurrences="2">
@@ -29,27 +47,15 @@
       <code>$this-&gt;initialState</code>
     </UndefinedThisPropertyFetch>
   </file>
-  <file src="lib/Db/PhotoMapper.php">
-    <UndefinedClass occurrences="2">
-      <code>IResult</code>
-      <code>IResult</code>
-    </UndefinedClass>
-  </file>
-  <file src="lib/Db/VideoMapper.php">
-    <UndefinedClass occurrences="2">
-      <code>IResult</code>
-      <code>IResult</code>
-    </UndefinedClass>
-  </file>
-  <file src="lib/Migration/AppUpdateStep.php">
-    <UndefinedClass occurrences="1">
-      <code>LoggerInterface</code>
-    </UndefinedClass>
-    <UndefinedDocblockClass occurrences="3">
+  <file src="lib/Db/CollectorTaskDetailMapper.php">
+    <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;logger</code>
+    </UndefinedThisPropertyAssignment>
+  </file>
+  <file src="lib/Migration/AppDataInitializationStep.php">
+    <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;logger</code>
-      <code>LoggerInterface</code>
-    </UndefinedDocblockClass>
+    </UndefinedThisPropertyAssignment>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
     <ImplementedParamTypeMismatch occurrences="1">
@@ -63,36 +69,67 @@
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/CollectorService.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;tasksMapper-&gt;find($taskId)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>\OCA\MediaDC\Db\CollectorTask[]|array</code>
+    </InvalidReturnType>
+    <MismatchingDocblockReturnType occurrences="3">
+      <code>int</code>
+      <code>int</code>
+      <code>int</code>
+    </MismatchingDocblockReturnType>
     <MissingDependency occurrences="1">
       <code>IRootFolder</code>
     </MissingDependency>
     <RedundantCondition occurrences="1">
       <code>$createdTask !== null</code>
     </RedundantCondition>
-    <UndefinedClass occurrences="3">
-      <code>LoggerInterface</code>
+    <TypeDoesNotContainType occurrences="1">
+      <code>count($params) === 0</code>
+    </TypeDoesNotContainType>
+    <UndefinedClass occurrences="2">
       <code>SharedStorage</code>
       <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="7">
-      <code>$this-&gt;logger</code>
-      <code>$this-&gt;logger</code>
-      <code>$this-&gt;logger</code>
-      <code>$this-&gt;logger</code>
-      <code>$this-&gt;logger</code>
-      <code>$this-&gt;logger</code>
-      <code>LoggerInterface</code>
-    </UndefinedDocblockClass>
   </file>
-  <file src="lib/Service/PythonService.php">
+  <file src="lib/Service/PhotosService.php">
+    <MissingDependency occurrences="1">
+      <code>IRootFolder</code>
+    </MissingDependency>
+    <RedundantCondition occurrences="1">
+      <code>isset($offset)</code>
+    </RedundantCondition>
+    <TypeDoesNotContainNull occurrences="1">
+      <code>0</code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="lib/Service/SettingsService.php">
+    <MismatchingDocblockReturnType occurrences="1">
+      <code>\OCA\MediaDC\Db\Setting|array</code>
+    </MismatchingDocblockReturnType>
+  </file>
+  <file src="lib/Service/UtilsService.php">
     <UndefinedClass occurrences="1">
-      <code>LoggerInterface</code>
+      <code>?DatabaseStatistics</code>
     </UndefinedClass>
     <UndefinedDocblockClass occurrences="3">
       <code>$ini</code>
-      <code>$this-&gt;logger</code>
-      <code>LoggerInterface</code>
+      <code>$this-&gt;databaseStatistics</code>
+      <code>?DatabaseStatistics</code>
     </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Service/VideosService.php">
+    <MissingDependency occurrences="1">
+      <code>IRootFolder</code>
+    </MissingDependency>
+    <RedundantCondition occurrences="1">
+      <code>isset($offset)</code>
+    </RedundantCondition>
+    <TypeDoesNotContainNull occurrences="1">
+      <code>0</code>
+    </TypeDoesNotContainNull>
   </file>
   <file src="lib/Settings/AdminSection.php">
     <UndefinedClass occurrences="1">

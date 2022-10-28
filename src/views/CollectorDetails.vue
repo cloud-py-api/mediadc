@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -29,107 +29,125 @@
 			<div class="task-details-heading">
 				<h2>
 					{{ rootTitle }}
-					<span v-if="isValidUser"
-						:class="!collapsedStatus
-							? 'icon-triangle-n collapse-task-status-btn'
-							: 'icon-triangle-s collapse-task-status-btn'"
-						:title="t('mediadc', 'Collapse task status')"
-						@click="collapseTaskStatus" />
+					<Button v-if="isValidUser"
+						v-tooltip="{content: !collapsedStatus
+							? t('mediadc', 'Collapse task status')
+							: t('mediadc', 'Show task status'), placement: 'bottom-end'}"
+						type="tertiary"
+						style="margin: 0 10px;"
+						@click="collapseTaskStatus">
+						<template #icon>
+							<span :class="!collapsedStatus ? 'icon-triangle-n' : 'icon-triangle-s'" />
+						</template>
+					</Button>
 				</h2>
-				<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
-					<p>
-						{{ t('mediadc', 'Here you can view task details, manage task (stop or restart), ' +
-							'delete found duplicated photos and videos.') }}
-					</p>
-					<p>
-						{{ t('mediadc', 'Deleted files are placed in the trashbin, so that they can be restored in case of need.') }}
-					</p>
-				</div>
+				<Transition name="fade" appear>
+					<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
+						<p>
+							{{ t('mediadc', 'Here you can view task details, manage task (stop or restart), ' +
+								'delete found duplicated photos and videos.') }}
+						</p>
+						<p>
+							{{ t('mediadc', 'Deleted files are placed in the trashbin, so that they can be restored in case of need.') }}
+						</p>
+					</div>
+				</Transition>
 			</div>
-			<div v-if="isValidUser" v-show="!collapsedStatus" class="task-status-row">
-				<div class="task-status">
-					<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
-					<div style="display: flex; flex-direction: column;">
-						<span>
-							<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ translatePlural('mediadc', 'file', 'files', task.files_total) }}
-							({{ formatBytes(Number(task.files_total_size)) }})
-							({{ task !== null && 'collector_settings' in task ? t('mediadc', 'precision: ') + JSON.parse(task.collector_settings).similarity_threshold + '%' : '' }})
-							<br>
-							<b>{{ t('mediadc', 'Deleted: ') }} </b>
-							{{ task.deleted_files_count }} {{ translatePlural('mediadc', 'file', 'files', task.deleted_files_count) }}
-							({{ formatBytes(Number(task.deleted_files_size)) }})
-						</span>
-						<span>
-							{{ parseUnixTimestamp(task.created_time) }}
-							{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }}
-						</span>
-					</div>
-					<div class="app-content-list-menu" style="margin: 0 0 0 10px; position: relative;">
-						<div class="icon-more actions-menu-button" @click="openActionsPopup" />
-						<div :class="actionsOpened ? 'popovermenu open' : 'popovermenu'"
-							style="right: -1px;">
-							<ul>
-								<li>
-									<a class="icon-history" @click="restartTask(task)">
-										<span>{{ t('mediadc', 'Restart') }}</span>
-									</a>
-								</li>
-								<li>
-									<a class="icon-rename" @click="openEditTaskDialog(task)">
-										<span>{{ t('mediadc', 'Edit') }}</span>
-									</a>
-								</li>
-								<li>
-									<a class="icon-pause" @click="terminateTask(task)">
-										<span>{{ t('mediadc', 'Stop') }}</span>
-									</a>
-								</li>
-								<li>
-									<a class="icon-delete" @click="deleteTask(task)">
-										<span>{{ t('mediadc', 'Delete') }}</span>
-									</a>
-								</li>
-							</ul>
+			<Transition name="fade" appear>
+				<div v-if="isValidUser" v-show="!collapsedStatus" class="task-status-row">
+					<div class="task-status-wrapper" style="display: flex; flex-direction: column; margin: 20px;">
+						<div class="task-status">
+							<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
+							<div style="display: flex; flex-direction: column;">
+								<span>
+									<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ n('mediadc', 'file', 'files', task.files_total) }}
+									({{ formatBytes(Number(task.files_total_size)) }})
+									({{ task !== null && 'collector_settings' in task ? t('mediadc', 'precision: ') + JSON.parse(task.collector_settings).similarity_threshold + '%' : '' }})
+									<br>
+									<b>{{ t('mediadc', 'Deleted: ') }} </b>
+									{{ task.deleted_files_count }} {{ n('mediadc', 'file', 'files', task.deleted_files_count) }}
+									({{ formatBytes(Number(task.deleted_files_size)) }})
+								</span>
+								<span>
+									{{ parseUnixTimestamp(task.created_time) }}
+									{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }}
+								</span>
+							</div>
+							<Actions style="margin: 0 0 0 10px;">
+								<ActionButton v-tooltip="{content: t('mediadc', 'Restart task with current params'), placement: 'left'}"
+									icon="icon-history"
+									:close-after-click="true"
+									@click="restartTask(task)">
+									{{ t('mediadc', 'Restart') }}
+								</ActionButton>
+								<ActionButton v-tooltip="{content: t('mediadc', 'Edit task params'), placement: 'left'}"
+									icon="icon-rename"
+									:close-after-click="true"
+									@click="openEditTaskDialog(task)">
+									{{ t('mediadc', 'Edit') }}
+								</ActionButton>
+								<ActionButton v-tooltip="{content: t('mediadc', 'Terminate task execution'), placement: 'left'}"
+									icon="icon-pause"
+									:close-after-click="true"
+									@click="terminateTask(task)">
+									{{ t('mediadc', 'Stop') }}
+								</ActionButton>
+								<ActionButton v-tooltip="{content: t('mediadc', 'Delete task'), placement: 'left'}"
+									icon="icon-delete"
+									:close-after-click="true"
+									@click="deleteTask(task)">
+									{{ t('mediadc', 'Delete') }}
+								</ActionButton>
+							</Actions>
 						</div>
+						<ProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
+							size="small"
+							:error="getStatusBadge(task) === 'error'" />
 					</div>
-				</div>
-				<div class="task-info">
-					<h3>{{ t('mediadc', 'Target directories') }}</h3>
-					<div class="target-directories-list">
-						<div v-for="dir in taskInfo.target_directories" :key="dir.fileid" class="target-directory-row">
-							<div class="owner-tooltip">
-								<div class="tooltip-title">
-									{{ t('mediadc', 'Owner:') }} {{ dir.fileowner }}
-								</div>
-								<div class="tooltip-content">
-									<a :href="filesDirLink(dir)" target="_blank">
-										<b>
-											{{
-												dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '') !== ''
-													? dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '')
-													: '/'
-											}}
-										</b>
-										({{ formatBytes(dir.filesize) }})
-									</a>
-								</div>
+					<div class="task-info">
+						<h3>{{ t('mediadc', 'Target directories') }}</h3>
+						<div class="target-directories-list">
+							<div v-for="dir in taskInfo.target_directories"
+								:key="dir.fileid"
+								v-tooltip="{content: getDirOwnerToolip(dir), placement: 'bottom'}"
+								class="target-directory-row">
+								<a :href="filesDirLink(dir)" target="_blank">
+									<b>
+										{{
+											dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '') !== ''
+												? dir.filepath.replace(`/${dir.fileowner}/files`, '').replace(`/${currentUser}/files`, '')
+												: '/'
+										}}
+									</b>
+									({{ !dir.hasignoreflag ? formatBytes(dir.filesize) : t('mediadc', 'Ignored') }})
+								</a>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div v-if="isValidUser" class="details-row">
-				<DetailsList v-if="getStatusBadge(task) === 'finished'"
-					:filessize="filessize"
-					:filestotal="filestotal" />
-			</div>
-			<div v-else>
-				<p style="text-align: center;">
-					<b>{{ t('mediadc', 'You are not allowed to manage other user\'s tasks.') }}</b>
-				</p>
-			</div>
-			<div v-if="task.errors !== undefined && task.errors.length > 0" class="errors">
-				<h3>{{ t('mediadc', 'Task errors') }}</h3>
+			</Transition>
+			<Transition name="fade" appear>
+				<div v-if="isValidUser" class="details-row">
+					<DetailsList v-if="getStatusBadge(task) === 'finished'" />
+				</div>
+				<div v-else>
+					<p style="text-align: center;">
+						<b>{{ t('mediadc', 'You are not allowed to manage other user\'s tasks.') }}</b>
+					</p>
+				</div>
+			</Transition>
+			<div v-if="hasErrors" class="errors">
+				<div class="errors-heading" style="display: flex; align-items: center;">
+					<h3>{{ t('mediadc', 'Task errors' ) }}</h3>
+					<Button v-tooltip="t('mediadc', 'Copy to clipboard')"
+						type="tertiary-no-background"
+						style="margin: 0 10px;"
+						@click="copyErrorsToClipboard">
+						<template #icon>
+							<ContentCopy :size="20" />
+						</template>
+					</Button>
+				</div>
 				<div v-for="error in task.errors.split('\\n')" :key="error" class="error-row">
 					{{ error }}
 				</div>
@@ -140,21 +158,33 @@
 
 <script>
 import axios from '@nextcloud/axios'
-import { mapGetters } from 'vuex'
-import Formats from '../mixins/Formats'
-import { generateUrl } from '@nextcloud/router'
-import DetailsList from '../components/details/DetailsList'
-import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
-import Configure from '../mixins/Configure'
 import { getCurrentUser } from '@nextcloud/auth'
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
-import TasksEdit from '../components/tasks/TasksEdit'
+import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
+import { generateUrl } from '@nextcloud/router'
+import { mapActions, mapGetters } from 'vuex'
+
+import Configure from '../mixins/Configure.js'
+import DetailsList from '../components/details/DetailsList.vue'
+import Formats from '../mixins/Formats.js'
+import TasksEdit from '../components/tasks/TasksEdit.vue'
+
+import Actions from '@nextcloud/vue/dist/Components/Actions.js'
+import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar.js'
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {
 	name: 'CollectorDetails',
 	components: {
 		DetailsList,
 		TasksEdit,
+		Actions,
+		ActionButton,
+		ProgressBar,
+		Button, // eslint-disable-line vue/no-reserved-component-names
+		ContentCopy,
 	},
 	mixins: [
 		Formats,
@@ -172,11 +202,7 @@ export default {
 	},
 	data() {
 		return {
-			updater: null,
-			statsUpdater: null,
-			filessize: 0,
-			filestotal: 0,
-			actionsOpened: false,
+			tasksUpdater: null,
 			collapsedStatus: false,
 			editingTask: false,
 		}
@@ -189,10 +215,13 @@ export default {
 			'settingByName',
 		]),
 		isValidUser() {
-			return getCurrentUser().uid === this.task.owner
+			return getCurrentUser().uid === this.task?.owner
 		},
 		currentUser() {
 			return getCurrentUser().uid
+		},
+		hasErrors() {
+			return this.task?.errors?.length > 0
 		},
 	},
 	beforeMount() {
@@ -201,16 +230,20 @@ export default {
 		this.getTaskInfo()
 		subscribe('restartTask', this.onRestartTaskEvent)
 		subscribe('updateTaskInfo', this.getDetailFilesTotalSize)
-		this.updater = setInterval(this.getTaskDetails, 5000)
+		this.tasksUpdater = setInterval(this.getTaskDetails, 5000)
 	},
 	beforeDestroy() {
-		clearInterval(this.updater)
-		unsubscribe('updateTaskInfo', this.getTaskInfo)
+		clearInterval(this.tasksUpdater)
+		unsubscribe('updateTaskInfo', this.getDetailFilesTotalSize)
 		unsubscribe('restartTask', this.onRestartTaskEvent)
 	},
 	methods: {
+		...mapActions([
+			'getTaskDetails',
+			'getTaskInfo',
+			'getDetailFilesTotalSize',
+		]),
 		terminateTask(task) {
-			this.toggleActionsPopup()
 			if (this.isValidUser) {
 				this.terminating = true
 				axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}/terminate`)).then(res => {
@@ -223,7 +256,6 @@ export default {
 			}
 		},
 		restartTask(task) {
-			this.toggleActionsPopup()
 			if (this.isValidUser) {
 				this.restarting = true
 				this.getSettings().then(() => {
@@ -246,8 +278,7 @@ export default {
 						if (res.data.success) {
 							showSuccess(this.t('mediadc', 'Task successfully restarted with previous settings!'))
 							this.getTaskDetails()
-							this.filessize = 0
-							this.filestotal = 0
+							this.$store.commit('setDetailFilesTotalSize', { taskId: this.$route.params.taskId, filestotal: 0, filessize: 0 })
 						} else if (res.data.limit) {
 							showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 						} else {
@@ -264,52 +295,16 @@ export default {
 			}
 		},
 		deleteTask(task) {
-			this.toggleActionsPopup()
 			if (this.isValidUser) {
 				if (confirm(this.t('mediadc', 'Are sure, you want delete this task?'))) {
-					this.deleting = true
-					axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}`)).then(res => {
+					this.$store.dispatch('deleteTask', task).then(() => {
 						this.$router.push({ name: 'collector' })
 						showSuccess(this.t('mediadc', 'Task successfully deleted'))
-						this.deleting = false
 					})
 				}
 			} else {
 				showWarning(this.t('mediadc', 'You are not allowed to delete this task'))
 			}
-		},
-		async getTaskDetails() {
-			axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${this.$route.params.taskId}`)).then(res => {
-				if ('success' in res.data && res.data.success) {
-					this.$store.dispatch('setTask', res.data.collectorTask)
-					this.$store.dispatch('setDetails', res.data.collectorTaskDetails)
-					if (this.getStatusBadge(this.task) === 'finished'
-						&& this.filestotal === 0 && this.filessize === 0) {
-						this.getDetailFilesTotalSize()
-					}
-				}
-				this.$emit('update:loading', false)
-			})
-		},
-		async getTaskInfo() {
-			axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${this.$route.params.taskId}/info`)).then(res => {
-				this.$store.dispatch('setTaskInfo', res.data.collectorTaskInfo)
-			})
-		},
-		async getDetailFilesTotalSize() {
-			axios.get(generateUrl(`/apps/mediadc/api/v1/tasks/${this.$route.params.taskId}/filestotal`)).then(res => {
-				this.filessize = res.data.filessize
-				this.filestotal = res.data.filestotal
-			})
-		},
-		openActionsPopup() {
-			document.addEventListener('click', this.toggleActionsPopup)
-		},
-		toggleActionsPopup() {
-			if (this.actionsOpened) {
-				document.removeEventListener('click', this.toggleActionsPopup)
-			}
-			this.actionsOpened = !this.actionsOpened
 		},
 		collapseTaskStatus() {
 			this.collapsedStatus = !this.collapsedStatus
@@ -329,14 +324,30 @@ export default {
 		onRestartTaskEvent() {
 			this.getTaskInfo()
 			this.getTaskDetails()
-			this.filessize = 0
-			this.filestotal = 0
+			this.$store.commit('setDetailFilesTotalSize', { taskId: this.$route.params.taskId, filestotal: 0, filessize: 0 })
+		},
+		getDirOwnerToolip(dir) {
+			return `${this.t('mediadc', 'Owner:')} ${dir.fileowner}`
+		},
+		copyErrorsToClipboard() {
+			navigator.clipboard.writeText(JSON.stringify(Object.assign(this.task.errors.split('\\n')), null, 2))
+			showSuccess(this.t('mediadc', 'Copied to clipboard'))
 		},
 	},
 }
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
 .container {
 	padding: 0 20px;
 	width: 100%;
@@ -358,25 +369,17 @@ h2 {
 	width: 100%;
 	margin: 20px auto 10px;
 	text-align: center;
-}
-
-.collapse-task-status-btn {
-	display: inline-flex;
-	cursor: pointer;
-	width: 16px;
-	height: 16px;
-	margin: 0 10px;
-	padding: 20px;
-	border-radius: 50%;
-	user-select: none;
+	font-size: 24px;
 }
 
 .task-details-heading p {
 	text-align: center;
+	font-size: 15px;
 }
 
 .details-row {
 	display: flex;
+	flex-direction: column;
 	margin: 0 10px 20px;
 	position: relative;
 }
@@ -397,86 +400,32 @@ h2 {
 	flex-wrap: wrap;
 }
 
+.task-status-wrapper {
+	border: 1px solid var(--color-border-dark);
+	border-radius: 16px;
+	overflow: hidden;
+}
+
+.task-status-wrapper progress {
+	margin-top: 5px;
+}
+
 .task-status {
 	display: inline-flex;
 	align-items: center;
-	border: 1px solid #dadada;
-	border-radius: 5px;
-	margin: 20px;
-	padding: 10px;
-}
-
-.actions-menu-button {
-	padding: 20px;
-	border-radius: 50%;
-	cursor: pointer;
-	user-select: none;
-}
-
-.actions-menu-button:hover, .collapse-task-status-btn:hover {
-	background-color: #eee;
-}
-
-.actions-menu-button:active, .collapse-task-status-btn:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .actions-menu-button:hover, body.theme--dark .collapse-task-status-btn:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .actions-menu-button:active, body.theme--dark .collapse-task-status-btn:active {
-	background-color: #5b5b5b;
-}
-
-body.theme--dark .task-status, body.theme--dark .task-info {
-	border-color: #717171;
+	padding: 10px
 }
 
 .task-info {
 	margin: 20px 0;
-	border: 1px solid #dadada;
-	border-radius: 5px;
+	border: 1px solid var(--color-border-dark);
+	border-radius: 10px;
 	padding: 10px 20px;
 	height: 100%;
-	min-height: 94px;
-	max-height: 94px;
+	min-height: 105px;
+	max-height: 105px;
 	max-width: 50%;
 	overflow-y: scroll;
-}
-
-.owner-tooltip {
-	position: relative;
-}
-
-.tooltip-title {
-	display: none;
-	padding: 0 5px;
-	border-radius: 5px;
-	background-color: #000;
-	color: #fff;
-	position: absolute;
-	top: calc(-100% - 5px);
-	left: 50%;
-	transform: translateX(-50%);
-	font-size: 12px;
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-}
-
-.tooltip-title:before {
-	content: '';
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%) rotateZ(45deg);
-	bottom: -3px;
-	width: 10px;
-	height: 10px;
-	background-color: #000;
-	z-index: -1;
-}
-
-.owner-tooltip:hover .tooltip-title {
-	display: block;
 }
 
 @media (max-width: 767px) {
@@ -486,7 +435,6 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 
 	.task-status {
 		flex-direction: column;
-		margin: 0 0 20px;
 		width: 100%;
 	}
 
@@ -498,18 +446,12 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 
 .task-info h3 {
 	margin: 0 0 5px 0;
+	font-weight: bold;
 }
 
 .target-directory-row {
 	white-space: nowrap;
-}
-
-.badge {
-	display: inline-flex;
-	padding: 0 10px;
-	background-color: #eee;
-	border-radius: 20px;
-	margin-right: 20px;
+	padding: 7px 0;
 }
 
 @media (max-width: 540px) {
@@ -523,41 +465,5 @@ body.theme--dark .task-status, body.theme--dark .task-info {
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
-}
-
-.badge.finished {
-	background-color: #49b382;
-	color: #fff;
-}
-
-.badge.running, .badge.pending {
-	background-color: #dadada;
-	color: #000;
-}
-
-.badge.error {
-	background-color: #bd3f3f;
-	color: #fff;
-}
-
-.badge.terminated {
-	background-color: #f17b1b;
-	color: #fff;
-}
-
-.errors {
-	margin: 20px;
-	border: 1px solid #bd3f3f;
-	border-radius: 5px;
-	padding: 10px;
-	max-height: 100vh;
-	overflow-y: scroll;
-}
-
-.error-row {
-	border-bottom: 1px solid #bd3f3f;
-	padding: 5px 0;
-	max-height: 100%;
-	overflow-y: scroll;
 }
 </style>

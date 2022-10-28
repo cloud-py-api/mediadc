@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -68,7 +68,8 @@ use OCP\AppFramework\Db\Entity;
  * @method void setPyPid(int $pyPid)
  * @method void setErrors(string $errors)
  */
-class CollectorTask extends Entity implements JsonSerializable {
+class CollectorTask extends Entity implements JsonSerializable
+{
 
 	protected $type;
 	protected $owner;
@@ -160,5 +161,4 @@ class CollectorTask extends Entity implements JsonSerializable {
 			'errors' => $this->getErrors(),
 		];
 	}
-
 }

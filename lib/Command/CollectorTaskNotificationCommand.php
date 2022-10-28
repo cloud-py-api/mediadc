@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -41,7 +41,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class CollectorTaskNotificationCommand extends Command {
+class CollectorTaskNotificationCommand extends Command
+{
 
 	public const ARGUMENT_TASK_ID = 'task_id';
 	public const ARGUMENT_TASK_STATUS = 'status';
@@ -55,9 +56,12 @@ class CollectorTaskNotificationCommand extends Command {
 	/** @var CollectorTaskDetailMapper */
 	private $taskDetailsMapper;
 
-	public function __construct(CollectorService $collectorService, 
-								CollectorTaskDetailMapper $taskDetailsMapper,
-								IManager $notificationManager, IURLGenerator $urlGenerator) {
+	public function __construct(
+		CollectorService $collectorService,
+		CollectorTaskDetailMapper $taskDetailsMapper,
+		IManager $notificationManager,
+		IURLGenerator $urlGenerator
+	) {
 		parent::__construct();
 
 		$this->collectorService = $collectorService;
@@ -66,18 +70,20 @@ class CollectorTaskNotificationCommand extends Command {
 		$this->url = $urlGenerator;
 	}
 
-	protected function configure(): void {
+	protected function configure(): void
+	{
 		$this->setName("mediadc:collector:tasks:notify");
 		$this->setDescription("Sends task finished notification to the user");
 		$this->addArgument(self::ARGUMENT_TASK_ID, InputArgument::REQUIRED);
 		$this->addArgument(self::ARGUMENT_TASK_STATUS, InputArgument::REQUIRED);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output): int {
+	protected function execute(InputInterface $input, OutputInterface $output): int
+	{
 		$taskId = $input->getArgument(self::ARGUMENT_TASK_ID);
 		$status = $input->getArgument(self::ARGUMENT_TASK_STATUS);
 		/** @var CollectorTask */
-		$collectorTask = $this->collectorService->get(intval($taskId));
+		$collectorTask = $this->collectorService->getCollectorTask(intval($taskId));
 		$collectorDetails = $this->taskDetailsMapper->findAllById(intval($taskId));
 		$duplicates = 0;
 		/** @var CollectorTaskDetail */
@@ -98,5 +104,4 @@ class CollectorTaskNotificationCommand extends Command {
 		$this->notificationManager->notify($notification);
 		return 0;
 	}
-
 }

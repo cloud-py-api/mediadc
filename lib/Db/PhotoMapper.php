@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Сopyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -35,59 +35,113 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
-use OCP\DB\IResult;
 
 
-class PhotoMapper extends QBMapper {
+class PhotoMapper extends QBMapper
+{
 
-	public function __construct(IDBConnection $db) {
+	public function __construct(IDBConnection $db)
+	{
 		parent::__construct($db, Application::APP_ID . '_photos');
 	}
 
 	/**
+	 * @param int $id
+	 * 
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
+	 * 
+	 * @return \OCA\MediaDC\Db\Photo
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Entity
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('*')
 			->from($this->tableName)
 			->where(
-				$qb->expr()->eq('file_id', $qb->createNamedParameter($id,IQueryBuilder::PARAM_INT))
+				$qb->expr()->eq('fileid', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
-
 		return $this->findEntity($qb);
 	}
 
-	public function findAllFileids($limit=null, $offset=null): array {
+	public function findAllFileids(int $limit = null, int $offset = null): array
+	{
 		$qb = $this->db->getQueryBuilder();
-
 		$qb->select('t.id', 't.fileid')
 			->from($this->tableName, 't')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
-
 		return $this->findEntities($qb);
 	}
 
-	public function inFileCache(int $fileid): bool {
-		/** @var IQueryBuilder */
+	/**
+	 * Check if file exists in filecache
+	 * 
+	 * @param int $fileid
+	 * 
+	 * @return bool
+	 */
+	public function inFileCache(int $fileid): bool
+	{
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.fileid')->from('filecache', 't')->where(
 			$qb->expr()->eq('fileid', $qb->createNamedParameter($fileid, IQueryBuilder::PARAM_INT))
 		);
 		try {
-			$result = $qb->execute();
-			return $result instanceof IResult ? $result->rowCount() === 0 : $result === 0;
+			$result = $qb->executeQuery();
+			return $result->rowCount() === 0;
 		} catch (Exception $e) {
 			return false;
 		}
 	}
 
-	public function truncate(): int {
-		$result = $this->db->getQueryBuilder()->delete($this->tableName)->execute();
-		return $result instanceof IResult ? $result->rowCount() : $result;
+	public function truncate(): int
+	{
+		return $this->db->getQueryBuilder()->delete($this->tableName)->executeStatement();
 	}
 
+	public function resolve(int $fileid, bool $resolved = true): int
+	{
+		$qb = $this->db->getQueryBuilder();
+		$qb->update($this->tableName)
+			->set('skipped', $qb->createNamedParameter($resolved ? 100 : 0, IQueryBuilder::PARAM_INT))
+			->where(
+				$qb->expr()->eq('fileid', $qb->createNamedParameter($fileid, IQueryBuilder::PARAM_INT))
+			);
+		return $qb->executeStatement();
+	}
+
+	/**
+	 * Find all user's resolved files (skipped flag >=100)
+	 *
+	 * @param string $userId
+	 * @param int $limit
+	 * @param int $offset
+	 * 
+	 * @return array
+	 */
+	public function findAllResolvedByUser(string $userId, int $limit = null, int $offset = null)
+	{
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(
+			'ocf.fileid',
+			'ocf.name',
+			'ocf.path',
+			'ocf.size',
+			'ocf.mimetype',
+			'ocf.mimepart'
+		)
+			->from($this->tableName, 'mdc_photos')
+			->innerJoin('mdc_photos', 'filecache', 'ocf', 'ocf.fileid=mdc_photos.fileid')
+			->innerJoin('ocf', 'storages', 'strg', 'ocf.storage=strg.numeric_id')
+			->innerJoin('strg', 'mounts', 'mnts', 'strg.numeric_id=mnts.storage_id')
+			->where(
+				$qb->expr()->eq('mnts.user_id', $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR)),
+				$qb->expr()->gte('mdc_photos.skipped', $qb->createNamedParameter(100, IQueryBuilder::PARAM_INT))
+			)
+			->groupBy('ocf.fileid')
+			->setMaxResults($limit)
+			->setFirstResult($offset);
+		return $qb->executeQuery()->fetchAll();
+	}
 }

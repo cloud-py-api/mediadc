@@ -2,14 +2,14 @@
 Currently it is a dev file for some features testing. Not included in releases, only for devs.
 """
 
-import sys
-import platform
 import os
+import platform
+import sys
 from pathlib import Path
+
 mdc_py_path = str(Path(os.path.dirname(os.path.abspath(__file__))).parent)
 sys.path.append(mdc_py_path)
 import install
-
 
 # @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
 #
@@ -33,37 +33,37 @@ import install
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-if __name__ == '__main__':
-    print('OS:', platform.platform())
-    print('Interpreter:', sys.executable, sys.version_info)
-    print('CPU:', platform.machine())
-    sys.modules['install'].PIP_DEBUG = 1
-    print('Pip present:', install.is_pip_present())
-    print('Testing install of DB packages....')
-    packages = {'cryptography': 'cryptography', 'nacl': 'pynacl', 'asn1crypto': 'asn1crypto'}
-    print(f'call check_packages with: {packages}')
+if __name__ == "__main__":
+    print("OS:", platform.platform())
+    print("Interpreter:", sys.executable, sys.version_info)
+    print("CPU:", platform.machine())
+    sys.modules["install"].PIP_DEBUG = 1
+    print("Pip present:", install.is_pip_present())
+    print("Testing install of DB packages....")
+    packages = {"cryptography": "cryptography", "nacl": "pynacl", "asn1crypto": "asn1crypto"}
+    print(f"call check_packages with: {packages}")
     check_packages_result = install.check_packages(packages)
     if check_packages_result:
-        print(f'call install with: {check_packages_result}')
+        print(f"call install with: {check_packages_result}")
         if install.install(check_packages_result) != 0:
-            print('install return error.')
-            print(f'ErrorsContainer:{install.ErrorsContainer}')
+            print("install return error.")
+            print(f"ErrorsContainer:{install.ErrorsContainer}")
             sys.exit(3)
     else:
-        print('they are all already installed!')
-    print('Testing install of core + boost packages....')
+        print("they are all already installed!")
+    print("Testing install of core + boost packages....")
     packages = {**install.RequiredPackagesList, **install.OptionalPackagesList, **install.get_all_boost_packages()}
     # sys.modules['install'].EXTRA_PIP_ARGS = ['--no-binary', ':all:']
     # packages = {'pyheif': 'pyheif'}
-    print(f'call check_packages with: {packages}')
+    print(f"call check_packages with: {packages}")
     check_packages_result = install.check_packages(packages)
     if check_packages_result:
-        print(f'call install with: {check_packages_result}')
+        print(f"call install with: {check_packages_result}")
         if install.install(check_packages_result) != 0:
-            print('install return error.')
-            print(f'ErrorsContainer:{install.ErrorsContainer}')
+            print("install return error.")
+            print(f"ErrorsContainer:{install.ErrorsContainer}")
             sys.exit(4)
     else:
-        print('they are all already installed!')
-    print('All looks fine!')
+        print("they are all already installed!")
+    print("All looks fine!")
     sys.exit(0)

@@ -1,9 +1,9 @@
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -24,6 +24,7 @@
 
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
+import { mapActions } from 'vuex'
 import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dialogs'
 
 export default {
@@ -51,16 +52,10 @@ export default {
 		}
 	},
 	methods: {
-		async getSettings() {
-			return axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
-				this.$store.dispatch('setSettings', res.data)
-				this.$emit('update:loading', false)
-			})
-		},
+		...mapActions(['getSettings', 'getSettingByName']),
 		async getInstalledSetting() {
-			axios.get(generateUrl('/apps/mediadc/api/v1/settings/name/installed')).then(res => {
+			this.getSettingByName('installed').then(res => {
 				if (res.data.success) {
-					this.$store.dispatch('updateSetting', res.data.setting)
 					this.installed_setting = res.data.setting
 					this.installed_setting.value = JSON.parse(this.installed_setting.value)
 					this.installed = res.data.setting.value.status
@@ -198,7 +193,7 @@ export default {
 			}
 			this.installed_setting.value.available_algorithms = 'available_algorithms' in res.data && res.data.available_algorithms ? res.data.available_algorithms : []
 			this.installed_setting.value.video_required = 'video_required' in res.data && res.data.video_required ? res.data.video_required : []
-			this.$store.dispatch('setSetting', this.installed_setting)
+			this.$store.commit('setSetting', this.installed_setting)
 			this.installed_list = 'installed_list' in res.data && res.data.installed_list ? res.data.installed_list : []
 			this.not_installed_list = {
 				required: 'required' in res.data && res.data.required ? res.data.required : {},

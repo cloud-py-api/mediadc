@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -33,13 +33,16 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
 
 
-class QueuedTaskJob extends QueuedJob {
+class QueuedTaskJob extends QueuedJob
+{
 
 	/** @var CollectorService */
 	private $collectorService;
 
-	public function __construct(ITimeFactory $time,
-								CollectorService $collectorService) {
+	public function __construct(
+		ITimeFactory $time,
+		CollectorService $collectorService
+	) {
 		parent::__construct($time);
 		$this->collectorService = $collectorService;
 	}
@@ -47,7 +50,8 @@ class QueuedTaskJob extends QueuedJob {
 	/**
 	 * @param array $argument
 	 */
-	protected function run($argument): void {
+	protected function run($argument): void
+	{
 		if (isset($argument['taskId'])) {
 			$taskId = $argument['taskId'];
 		}
@@ -66,7 +70,6 @@ class QueuedTaskJob extends QueuedJob {
 			'excludeList' => $excludeList,
 			'collectorSettings' => $collectorSettings
 		];
-		$this->collectorService->restart($taskParams);
+		$this->collectorService->restartTask($taskParams);
 	}
-
 }

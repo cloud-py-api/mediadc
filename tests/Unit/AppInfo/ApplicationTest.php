@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -30,12 +30,13 @@ use ChristophWurst\Nextcloud\Testing\TestCase;
 use OCA\Mediadc\AppInfo\Application;
 
 
-class ApplicationTest extends TestCase {
+class ApplicationTest extends TestCase
+{
 
-	public function testConstructor() {
+	public function testConstructor()
+	{
 		new Application();
 
 		$this->addToAssertionCount(1);
 	}
-
 }

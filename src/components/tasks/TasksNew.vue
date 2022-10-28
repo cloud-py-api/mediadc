@@ -31,8 +31,17 @@
 				<div v-if="targetDirectoriesIds.length > 0">
 					<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
 						<div class="target-directory">
-							<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
-							<span class="delete-button icon-delete" @click="removeTargetDirectory(fileid)" />
+							<span :title="targetDirectoriesPaths[fileid]"
+								style="overflow-y: scroll; white-space: nowrap;">
+								{{ targetDirectoriesPaths[fileid] }}
+							</span>
+							<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+								type="tertiary"
+								@click="removeTargetDirectory(fileid)">
+								<template #icon>
+									<span class="icon-delete" />
+								</template>
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -40,18 +49,31 @@
 					<span>{{ t('mediadc', 'Not selected') }}</span>
 				</div>
 				<br>
-				<button @click="openDirectoriesExplorer">
-					<span class="icon-add" />
+				<Button class="mediadc-button-vue"
+					:aria-label="t('mediadc', 'Select target directory')"
+					@click="openDirectoriesExplorer">
+					<template #icon>
+						<PlusThick :size="16" />
+					</template>
 					{{ t('mediadc', 'Select') }}
-				</button>
+				</Button>
 			</div>
 			<div class="block">
 				<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
 				<div v-if="excludeDirectoriesPaths.length > 0">
 					<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
 						<div class="target-directory">
-							<span style="overflow-y: scroll;">{{ excludeFileIds[fileid] }}</span>
-							<span class="delete-button icon-delete" @click="removeExcludeDirectory(fileid)" />
+							<span :title="excludeFileIds[fileid]"
+								style="overflow-y: scroll; white-space: nowrap;">
+								{{ excludeFileIds[fileid] }}
+							</span>
+							<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+								type="tertiary"
+								@click="removeExcludeDirectory(fileid)">
+								<template #icon>
+									<span class="icon-delete" />
+								</template>
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -59,10 +81,14 @@
 					<span>{{ t('mediadc', 'Not selected') }}</span>
 				</div>
 				<br>
-				<button @click="openExcludeExplorer">
-					<span class="icon-add" />
+				<Button class="mediadc-button-vue"
+					:aria-label="t('mediadc', 'Select exclude directory')"
+					@click="openExcludeExplorer">
+					<template #icon>
+						<PlusThick :size="16" />
+					</template>
 					{{ t('mediadc', 'Select') }}
-				</button>
+				</Button>
 			</div>
 		</div>
 		<div class="selection-container">
@@ -71,7 +97,13 @@
 				<div v-if="customExcludeList.length > 0" class="custom-masks-list">
 					<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
 						<span>{{ mask }}</span>
-						<span class="icon-delete" style="cursor: pointer;" @click="deleteCustomMask(mask)" />
+						<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+							type="tertiary"
+							@click="deleteCustomMask(mask)">
+							<template #icon>
+								<span class="icon-delete" />
+							</template>
+						</Button>
 					</div>
 				</div>
 				<div v-else>
@@ -84,14 +116,28 @@
 						type="text"
 						@keyup.enter="addCustomMask"
 						@keyup.esc="cancelAddingCustomMask">
-					<span class="icon-checkmark" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="addCustomMask" />
-					<span class="icon-close" style="width: 18px; height: 18px; margin: 0 5px; display: inline-block; cursor: pointer;" @click="cancelAddingCustomMask" />
+					<Button v-tooltip="t('mediadc', 'Confirm')"
+						type="tertiary"
+						@click="addCustomMask">
+						<template #icon>
+							<span class="icon-checkmark" />
+						</template>
+					</Button>
+					<Button v-tooltip="t('mediadc', 'Decline')"
+						type="tertiary"
+						@click="cancelAddingCustomMask">
+						<template #icon>
+							<span class="icon-close" />
+						</template>
+					</Button>
 				</div>
 				<div style="display: flex; align-items: center; margin: 20px 0;">
-					<button @click="addNewMask">
-						<span class="icon-add" />
+					<Button class="mediadc-button-vue" @click="addNewMask">
+						<template #icon>
+							<PlusThick :size="16" />
+						</template>
 						<span>{{ t('mediadc', 'Add mask') }}</span>
-					</button>
+					</Button>
 				</div>
 			</div>
 			<div class="block">
@@ -122,15 +168,19 @@
 			</div>
 		</div>
 		<div class="create-task-actions">
-			<button v-if="!runningTask"
-				:disabled="Object.keys(targetDirectoriesPaths).length === 0"
+			<Button class="mediadc-button-vue"
+				:aria-label="t('mediadc', 'Create and Run new Task')"
+				:disabled="runningTask || Object.keys(targetDirectoriesPaths).length === 0"
 				@click="runCollectorTask">
-				{{ t('mediadc', 'Run new Task') }}
-			</button>
-			<button v-else disabled>
-				<span class="icon-loading" />
-			</button>
-			<CheckboxRadioSwitch :checked.sync="finishNotification">
+				<template #default>
+					{{ t('mediadc', 'Run new Task') }}
+				</template>
+				<template v-if="runningTask" #icon>
+					<span class="icon-loading" />
+				</template>
+			</Button>
+			<CheckboxRadioSwitch v-tooltip="t('mediadc', 'Send notification on task finish')"
+				:checked.sync="finishNotification">
 				{{ t('mediadc', 'Finish notification') }}
 			</CheckboxRadioSwitch>
 		</div>
@@ -138,16 +188,22 @@
 </template>
 
 <script>
-import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
-import axios from '@nextcloud/axios'
-import { requestFileInfo, getFileId } from '../../utils/files'
-import { mapGetters } from 'vuex'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import { mapActions, mapGetters } from 'vuex'
+
+import { requestFileInfo, getFileId } from '../../utils/files.js'
+
+import Button from '@nextcloud/vue/dist/Components/Button.js'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
 export default {
 	name: 'TasksNew',
-	components: { CheckboxRadioSwitch },
+	components: {
+		Button, // eslint-disable-line vue/no-reserved-component-names
+		CheckboxRadioSwitch,
+		PlusThick,
+	},
 	data() {
 		return {
 			targetDirectoriesPaths: {},
@@ -176,6 +232,7 @@ export default {
 			: 90
 	},
 	methods: {
+		...mapActions(['runTask', 'getTasks']),
 		getDirectoriesPicker(title) {
 			return getFilePickerBuilder(title)
 				.setMultiSelect(false)
@@ -219,7 +276,6 @@ export default {
 							}
 						}
 					})
-					this.targetDirectoriesPaths.push('/')
 				}
 			})
 		},
@@ -250,7 +306,7 @@ export default {
 		},
 		runCollectorTask() {
 			this.runningTask = true
-			axios.post(generateUrl('/apps/mediadc/api/v1/tasks/run'), {
+			this.runTask({
 				targetDirectoryIds: JSON.stringify(this.targetDirectoriesIds),
 				excludeList: {
 					user: {
@@ -269,14 +325,13 @@ export default {
 			}).then(res => {
 				this.runningTask = false
 				if (res.data.success) {
-					this.$emit('update:loading', true)
 					this.getTasks()
 					this.resetForm()
 					showSuccess(this.t('mediadc', 'New task successfully created!'))
 				} else if (res.data.limit) {
 					showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 				} else if (res.data.empty) {
-					showWarning(this.translatePlural('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
+					showWarning(this.n('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
 				} else {
 					showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
 				}
@@ -293,9 +348,6 @@ export default {
 				this.excludeDirectoriesPaths.splice(dirIndex, 1)
 				delete this.excludeFileIds[fileid]
 			}
-		},
-		removeExcludeFileid(fileid) {
-			delete this.excludeFileIds[fileid]
 		},
 		addNewMask() {
 			this.addingCustomMask = true
@@ -324,12 +376,6 @@ export default {
 			const maskIndex = this.customExcludeList.findIndex(m => m === mask)
 			this.customExcludeList.splice(maskIndex, 1)
 		},
-		async getTasks() {
-			axios.get(generateUrl('/apps/mediadc/api/v1/tasks')).then(res => {
-				this.$store.dispatch('setTasks', res.data)
-				this.$emit('update:loading', false)
-			})
-		},
 		resetForm() {
 			this.targetDirectoriesPaths = {}
 			this.targetDirectoriesIds = []
@@ -348,8 +394,8 @@ export default {
 
 <style scoped>
 .new-task-block {
-	border: 1px solid #dadada;
-	border-radius: 5px;
+	border: 1px solid var(--color-border-dark);
+	border-radius: var(--border-radius-large);
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .05);
 	padding: 20px 20px 10px;
 	margin: 10px;
@@ -357,30 +403,14 @@ export default {
 	max-width: 600px;
 }
 
-.selection-container {
-	width: 100%;
-	display: flex;
+body.theme--dark .new-task-block {
+	border-color: var(--color-border-dark);
 }
 
 @media (max-width: 767px) {
 	.selection-container {
 		flex-wrap: wrap;
 	}
-}
-
-.block {
-	width: 100%;
-	height: 100%;
-	max-height: 200px;
-	overflow-y: scroll;
-	padding: 10px 15px;
-	margin: 5px 10px;
-	border: 1px solid #dadada;
-	border-radius: 5px;
-}
-
-.block:hover {
-	box-shadow: 0 0 10px 0 rgba(0, 0, 0, .05)
 }
 
 .target-directory, .custom-mask {
@@ -391,23 +421,21 @@ export default {
 	border-bottom: 1px solid #dadada;
 }
 
-.delete-button {
-	display: inline-flex;
-	width: 15px;
-	height: 15px;
-	cursor: pointer;
-	margin: 0 10px;
-}
-
-body.theme--dark .new-task-block, body.theme--dark .block {
-	border-color: #717171;
-}
-
 .create-task-actions {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-top: 5px;
 	padding: 0 10px;
+}
+
+@media (max-width: 480px) {
+	.create-task-actions {
+		flex-direction: column;
+	}
+
+	.create-task-actions button {
+		margin-bottom: 10px;
+	}
 }
 </style>

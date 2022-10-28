@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 /**
  * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
+ *
  * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
+ *
  * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
@@ -33,19 +33,23 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Settings\ISettings;
 
 
-class AdminSettings implements ISettings {
+class AdminSettings implements ISettings
+{
 
-	public function __construct() {
+	public function __construct()
+	{
 	}
 
 	/**
 	 * @return TemplateResponse
 	 */
-	public function getForm() {
+	public function getForm()
+	{
 		return new TemplateResponse(Application::APP_ID, 'admin');
 	}
 
-	public function getSection() {
+	public function getSection()
+	{
 		return Application::APP_ID;
 	}
 
@@ -53,5 +57,4 @@ class AdminSettings implements ISettings {
 	{
 		return 50;
 	}
-
 }

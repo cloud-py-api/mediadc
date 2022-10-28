@@ -13,8 +13,8 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        
+        uses: actions/checkout@v3
+
       - name: Get release info
         id: get_release_info
         run: |
@@ -30,7 +30,7 @@ jobs:
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -54,7 +54,7 @@ jobs:
           if-no-files-found: error
 
       - name: Create release draft
-        uses: ncipollo/release-action@v1.8.8
+        uses: ncipollo/release-action@v1.10.0
         with:
           name: ${{ steps.get_release_info.outputs.version }}
           tag: ${{ steps.get_release_info.outputs.tag }}

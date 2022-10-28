@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -28,38 +28,110 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Service;
 
+use OCP\Files\File;
+use OCP\IPreview;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
 use OCA\MediaDC\Db\Video;
 use OCA\MediaDC\Db\VideoMapper;
 
-
-class VideosService {
+class VideosService
+{
 
 	/** @var VideoMapper */
 	private $mapper;
 
-	public function __construct(VideoMapper $mapper)
-	{
+	/** @var Folder */
+	private $userFolder;
+
+	/** @var IPreview */
+	private $previewManager;
+
+	public function __construct(
+		?string $userId,
+		IRootFolder $rootFolder,
+		VideoMapper $mapper,
+		IPreview $previewManager
+	) {
+		if ($userId !== null) {
+			$this->userId = $userId;
+			$this->userFolder = $rootFolder->getUserFolder($this->userId);
+		}
+		$this->previewManager = $previewManager;
 		$this->mapper = $mapper;
 	}
 
-	public function get($id): Video {
+	public function get($id): Video
+	{
 		return $this->mapper->find($id);
 	}
 
-	public function getAllFileids(): array {
+	public function getAllFileids(): array
+	{
 		return $this->mapper->findAllFileids();
 	}
 
-	public function canBeDeleted($fileid): bool {
+	public function canBeDeleted($fileid): bool
+	{
 		return $this->mapper->inFileCache(intval($fileid));
 	}
 
-	public function delete($video): Video {
+	public function delete($video): Video
+	{
 		return $this->mapper->delete($video);
 	}
 
-	public function truncate(): int {
+	public function truncate(): int
+	{
 		return $this->mapper->truncate();
 	}
 
+	public function resolve(int $fileid, bool $resolved = true): int
+	{
+		return $this->mapper->resolve($fileid, $resolved);
+	}
+
+	/**
+	 * @param string $userId
+	 * @param int $limit
+	 * @param int $offset
+	 * 
+	 * @return array
+	 */
+	public function getResolvedVideos(string $userId = '', int $limit = null, int $offset = null): array
+	{
+		$result = $this->mapper->findAllResolvedByUser($userId, $limit, $offset);
+		$result = array_map(function ($filecache_data) {
+			/** @var File[] $node */
+			$node = $this->userFolder->getById($filecache_data['fileid']);
+			if (count($node) === 1) {
+				/** @var File $file */
+				$file = $node[0];
+				return [
+					'fileid' => $file->getId(),
+					'fileowner' => $file->getOwner()->getUID(),
+					'fileetag' => $file->getEtag(),
+					'filename' => $file->getName(),
+					'filemtype' => $file->getMimeType(),
+					'filempart' => $file->getMimePart(),
+					'relfilepath' => $file->getInternalPath(),
+					'filepath' => $file->getPath(),
+					'filesize' => $file->getSize(),
+					'has_preview' => $this->previewManager->isAvailable($file)
+				];
+			}
+			return [];
+		}, $result);
+		if (isset($offset)) {
+			$total_items = count($this->mapper->findAllResolvedByUser($userId));
+			$result = [
+				'data' => $result,
+				'page' => isset($offset) ? $offset / $limit : 0,
+				'total_items' => $total_items,
+				'total_pages' => ceil($total_items / $limit),
+			];
+			return $result;
+		}
+		return ['data' => $result];
+	}
 }

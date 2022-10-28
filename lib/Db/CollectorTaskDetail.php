@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2021 Andrey Borysenko <andrey18106x@gmail.com>
- * 
- * @copyright Copyright (c) 2021 Alexander Piskun <bigcat88@icloud.com>
- * 
- * @author 2021 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ *
+ * @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ *
+ * @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -42,7 +42,8 @@ use OCP\AppFramework\Db\Entity;
  * @method void setTaskId(string $taskId)
  * @method void setGroupFilesIds(string $groupFilesIds)
  */
-class CollectorTaskDetail extends Entity implements JsonSerializable {
+class CollectorTaskDetail extends Entity implements JsonSerializable
+{
 
 	protected $taskId;
 	protected $groupFilesIds;
@@ -50,7 +51,8 @@ class CollectorTaskDetail extends Entity implements JsonSerializable {
 	/**
 	 * @param array $params
 	 */
-	public function __construct(array $params = []) {
+	public function __construct(array $params = [])
+	{
 		if (isset($params['id'])) {
 			$this->setId($params['id']);
 		}
@@ -70,5 +72,4 @@ class CollectorTaskDetail extends Entity implements JsonSerializable {
 			'group_files_ids' => $this->getGroupFilesIds(),
 		];
 	}
-
 }
