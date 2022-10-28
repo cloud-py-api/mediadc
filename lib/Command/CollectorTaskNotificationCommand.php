@@ -83,7 +83,7 @@ class CollectorTaskNotificationCommand extends Command
 		$taskId = $input->getArgument(self::ARGUMENT_TASK_ID);
 		$status = $input->getArgument(self::ARGUMENT_TASK_STATUS);
 		/** @var CollectorTask */
-		$collectorTask = $this->collectorService->get(intval($taskId));
+		$collectorTask = $this->collectorService->getCollectorTask(intval($taskId));
 		$collectorDetails = $this->taskDetailsMapper->findAllById(intval($taskId));
 		$duplicates = 0;
 		/** @var CollectorTaskDetail */
