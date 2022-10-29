@@ -29,7 +29,7 @@
 			<div class="task-details-heading">
 				<h2>
 					{{ rootTitle }}
-					<Button v-if="isValidUser"
+					<NcButton v-if="isValidUser"
 						v-tooltip="{content: !collapsedStatus
 							? t('mediadc', 'Collapse task status')
 							: t('mediadc', 'Show task status'), placement: 'bottom-end'}"
@@ -39,7 +39,7 @@
 						<template #icon>
 							<span :class="!collapsedStatus ? 'icon-triangle-n' : 'icon-triangle-s'" />
 						</template>
-					</Button>
+					</NcButton>
 				</h2>
 				<Transition name="fade" appear>
 					<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
@@ -73,34 +73,34 @@
 									{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }}
 								</span>
 							</div>
-							<Actions style="margin: 0 0 0 10px;">
-								<ActionButton v-tooltip="{content: t('mediadc', 'Restart task with current params'), placement: 'left'}"
+							<NcActions style="margin: 0 0 0 10px;">
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Restart task with current params'), placement: 'left'}"
 									icon="icon-history"
 									:close-after-click="true"
 									@click="restartTask(task)">
 									{{ t('mediadc', 'Restart') }}
-								</ActionButton>
-								<ActionButton v-tooltip="{content: t('mediadc', 'Edit task params'), placement: 'left'}"
+								</NcActionButton>
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Edit task params'), placement: 'left'}"
 									icon="icon-rename"
 									:close-after-click="true"
 									@click="openEditTaskDialog(task)">
 									{{ t('mediadc', 'Edit') }}
-								</ActionButton>
-								<ActionButton v-tooltip="{content: t('mediadc', 'Terminate task execution'), placement: 'left'}"
+								</NcActionButton>
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Terminate task execution'), placement: 'left'}"
 									icon="icon-pause"
 									:close-after-click="true"
 									@click="terminateTask(task)">
 									{{ t('mediadc', 'Stop') }}
-								</ActionButton>
-								<ActionButton v-tooltip="{content: t('mediadc', 'Delete task'), placement: 'left'}"
+								</NcActionButton>
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Delete task'), placement: 'left'}"
 									icon="icon-delete"
 									:close-after-click="true"
 									@click="deleteTask(task)">
 									{{ t('mediadc', 'Delete') }}
-								</ActionButton>
-							</Actions>
+								</NcActionButton>
+							</NcActions>
 						</div>
-						<ProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
+						<NcProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
 							size="small"
 							:error="getStatusBadge(task) === 'error'" />
 					</div>
@@ -169,10 +169,10 @@ import DetailsList from '../components/details/DetailsList.vue'
 import Formats from '../mixins/Formats.js'
 import TasksEdit from '../components/tasks/TasksEdit.vue'
 
-import Actions from '@nextcloud/vue/dist/Components/Actions.js'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
-import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcProgressBar from '@nextcloud/vue/dist/Components/NcProgressBar.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {
@@ -180,10 +180,10 @@ export default {
 	components: {
 		DetailsList,
 		TasksEdit,
-		Actions,
-		ActionButton,
-		ProgressBar,
-		Button, // eslint-disable-line vue/no-reserved-component-names
+		NcActions,
+		NcActionButton,
+		NcProgressBar,
+		NcButton,
 		ContentCopy,
 	},
 	mixins: [
@@ -419,7 +419,7 @@ h2 {
 .task-info {
 	margin: 20px 0;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 10px;
+	border-radius: var(--border-radius-large);
 	padding: 10px 20px;
 	height: 100%;
 	min-height: 105px;

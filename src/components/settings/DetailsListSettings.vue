@@ -56,25 +56,25 @@
 			</select>
 		</div>
 		<div class="setting">
-			<CheckboxRadioSwitch :checked.sync="deleteFileConfirmation">
+			<NcCheckboxRadioSwitch :checked.sync="deleteFileConfirmation">
 				{{ t('mediadc', 'Delete file confirmation') }}
-			</CheckboxRadioSwitch>
+			</NcCheckboxRadioSwitch>
 		</div>
 		<div class="setting">
-			<CheckboxRadioSwitch :checked.sync="autoOpenNextGroup">
+			<NcCheckboxRadioSwitch :checked.sync="autoOpenNextGroup">
 				{{ t('mediadc', 'Auto open next group') }}
-			</CheckboxRadioSwitch>
+			</NcCheckboxRadioSwitch>
 		</div>
 	</div>
 </template>
 
 <script>
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 export default {
 	name: 'DetailsListSettings',
 	components: {
-		CheckboxRadioSwitch,
+		NcCheckboxRadioSwitch,
 	},
 	data() {
 		return {

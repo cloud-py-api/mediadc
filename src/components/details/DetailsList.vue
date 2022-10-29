@@ -36,16 +36,16 @@
 			</h3>
 			<div class="pagination-wrapper">
 				<div class="pagination-sorting">
-					<CheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
+					<NcCheckboxRadioSwitch :checked.sync="sortGroups" style="margin-right: 20px;">
 						{{ t('mediadc', 'Sort groups') }}
-					</CheckboxRadioSwitch>
-					<Button v-tooltip="t('mediadc', 'Sorting details by files count')"
+					</NcCheckboxRadioSwitch>
+					<NcButton v-tooltip="t('mediadc', 'Sorting details by files count')"
 						type="tertiary"
 						@click="toggleSorting">
 						<template #icon>
 							<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'" />
 						</template>
-					</Button>
+					</NcButton>
 				</div>
 				<Pagination :details="(!filtered) ? details : detailsFiltered"
 					:prev-groups-page="prevGroupsPage"
@@ -67,7 +67,7 @@
 						@input="filterByGroupId">
 				</label>
 				<div class="batch-actions" style="display: flex;">
-					<Button v-tooltip="t('mediadc', 'Toggle duplicate groups')"
+					<NcButton v-tooltip="t('mediadc', 'Toggle duplicate groups')"
 						type="tertiary"
 						style="margin-right: 10px;"
 						@click="toggleGroups">
@@ -77,35 +77,35 @@
 						<template #default>
 							{{ t('mediadc', 'Toggle groups') }}
 						</template>
-					</Button>
+					</NcButton>
 					<div v-if="checkedDetailGroups.length > 0" class="batch-editing">
 						{{ n('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
-						<Actions placement="top" style="margin-left: 5px;">
+						<NcActions placement="top" style="margin-left: 5px;">
 							<template v-if="!filtered">
-								<ActionButton icon="icon-checkmark" @click="selectAllGroups">
+								<NcActionButton icon="icon-checkmark" @click="selectAllGroups">
 									{{ checkedDetailGroups.length === details.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
-								</ActionButton>
-								<ActionButton v-if="details.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
+								</NcActionButton>
+								<NcActionButton v-if="details.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
 									{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length || checkedDetailGroupsIntersect.length === paginatedSortedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
-								</ActionButton>
+								</NcActionButton>
 							</template>
 							<template v-else>
-								<ActionButton icon="icon-checkmark" @click="selectAllGroups">
+								<NcActionButton icon="icon-checkmark" @click="selectAllGroups">
 									{{ checkedDetailGroups.length === detailsFiltered.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
-								</ActionButton>
-								<ActionButton v-if="detailsFiltered.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
+								</NcActionButton>
+								<NcActionButton v-if="detailsFiltered.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
 									{{ checkedDetailGroupsIntersect.length === paginatedDetailsFiltered[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
-								</ActionButton>
+								</NcActionButton>
 							</template>
-							<ActionButton v-if="checkedDetailGroups.length > 0" icon="icon-close" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
+							<NcActionButton v-if="checkedDetailGroups.length > 0" icon="icon-close" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
 								{{ t('mediadc', 'Uncheck selected') }}
-							</ActionButton>
-							<ActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group resolved'), placement: 'left'}"
+							</NcActionButton>
+							<NcActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group resolved'), placement: 'left'}"
 								icon="icon-delete"
 								@click="removeCheckedGroups">
 								{{ n('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
-							</ActionButton>
-						</Actions>
+							</NcActionButton>
+						</NcActions>
 					</div>
 				</div>
 			</div>
@@ -162,10 +162,10 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import Actions from '@nextcloud/vue/dist/Components/Actions.js'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 
 import { mapGetters } from 'vuex'
 
@@ -178,10 +178,10 @@ export default {
 	name: 'DetailsList',
 	components: {
 		DetailsListItem,
-		CheckboxRadioSwitch,
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		Actions,
-		ActionButton,
+		NcCheckboxRadioSwitch,
+		NcButton,
+		NcActions,
+		NcActionButton,
 		Pagination,
 	},
 	mixins: [Formats],
@@ -412,29 +412,15 @@ export default {
 	width: 100%;
 	padding: 20px 10px 20px 20px;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 5px;
+	border-radius: var(--border-radius-large);
 	overflow-y: scroll;
-	margin: 0 auto;
+	margin: 0 auto 20px;
 }
 
 .task-details-heading {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-}
-
-.action-blackout {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 999;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 5px;
 }
 
 .task-details-heading h3 {
@@ -475,8 +461,8 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	border: 1px solid #dedede;
-	border-radius: 5px;
+	border: 1px solid var(--color-border-dark);
+	border-radius: var(--border-radius-large);
 	margin-bottom: 5px;
 	transition: height .3s;
 }
@@ -488,10 +474,10 @@ export default {
 	padding: 5px 10px;
 	margin: 10px 0;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 5px;
+	border-radius: var(--border-radius-large);
 }
 
-body.theme--dark .task-details-row, body.theme--dark .filters {
+body[data-theme-dark] .task-details-row, body[data-theme-dark] .filters {
 	border-color: var(--color-border-dark);
 }
 

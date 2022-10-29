@@ -35,13 +35,13 @@
 							<div v-for="fileid in targetDirectoriesIds" :key="fileid" class="selected-target-directories-list">
 								<div class="target-directory">
 									<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
-									<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+									<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 										type="tertiary"
 										@click="removeTargetDirectory(fileid)">
 										<template #icon>
 											<span class="icon-delete" />
 										</template>
-									</Button>
+									</NcButton>
 								</div>
 							</div>
 						</div>
@@ -49,14 +49,14 @@
 							<span>{{ t('mediadc', 'Not selected') }}</span>
 						</div>
 						<br>
-						<Button class="mediadc-button-vue"
+						<NcButton class="mediadc-button-vue"
 							:aria-label="t('mediadc', 'Select target directory')"
 							@click="openDirectoriesExplorer">
 							<template #icon>
 								<PlusThick :size="16" />
 							</template>
 							{{ t('mediadc', 'Select') }}
-						</Button>
+						</NcButton>
 					</div>
 					<div class="block">
 						<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
@@ -64,13 +64,13 @@
 							<div v-for="fileid in Object.keys(excludeFileIds)" :key="fileid" class="selected-excluded-directories-list">
 								<div class="target-directory">
 									<span style="overflow-y: scroll; white-space: nowrap;">{{ excludeFileIds[fileid] }}</span>
-									<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+									<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 										type="tertiary"
 										@click="removeExcludeDirectory(fileid)">
 										<template #icon>
 											<span class="icon-delete" />
 										</template>
-									</Button>
+									</NcButton>
 								</div>
 							</div>
 						</div>
@@ -78,14 +78,14 @@
 							<span>{{ t('mediadc', 'Not selected') }}</span>
 						</div>
 						<br>
-						<Button class="mediadc-button-vue"
+						<NcButton class="mediadc-button-vue"
 							:aria-label="t('mediadc', 'Select exclude directory')"
 							@click="openExcludeExplorer">
 							<template #icon>
 								<PlusThick :size="16" />
 							</template>
 							{{ t('mediadc', 'Select') }}
-						</Button>
+						</NcButton>
 					</div>
 				</div>
 				<div class="selection-container">
@@ -94,13 +94,13 @@
 						<div v-if="customExcludeList.length > 0" class="custom-masks-list">
 							<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
 								<span>{{ mask }}</span>
-								<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+								<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 									type="tertiary"
 									@click="deleteCustomMask(mask)">
 									<template #icon>
 										<span class="icon-delete" />
 									</template>
-								</Button>
+								</NcButton>
 							</div>
 						</div>
 						<div v-else>
@@ -113,28 +113,28 @@
 								type="text"
 								@keyup.enter="addCustomMask"
 								@keyup.esc="cancelAddingCustomMask">
-							<Button v-tooltip="t('mediadc', 'Confirm')"
+							<NcButton v-tooltip="t('mediadc', 'Confirm')"
 								type="tertiary"
 								@click="addCustomMask">
 								<template #icon>
 									<span class="icon-checkmark" />
 								</template>
-							</Button>
-							<Button v-tooltip="t('mediadc', 'Decline')"
+							</NcButton>
+							<NcButton v-tooltip="t('mediadc', 'Decline')"
 								type="tertiary"
 								@click="cancelAddingCustomMask">
 								<template #icon>
 									<span class="icon-close" />
 								</template>
-							</Button>
+							</NcButton>
 						</div>
 						<div style="display: flex; align-items: center; margin: 20px 0;">
-							<Button class="mediadc-button-vue" @click="addNewMask">
+							<NcButton class="mediadc-button-vue" @click="addNewMask">
 								<template #icon>
 									<PlusThick :size="16" />
 								</template>
 								<span>{{ t('mediadc', 'Add mask') }}</span>
-							</Button>
+							</NcButton>
 						</div>
 					</div>
 					<div class="block">
@@ -165,7 +165,7 @@
 					</div>
 				</div>
 				<div class="create-task-actions">
-					<Button class="mediadc-button-vue"
+					<NcButton class="mediadc-button-vue"
 						:aria-label="t('mediadc', 'Create and Run new Task')"
 						:disabled="runningTask || Object.keys(targetDirectoriesPaths).length === 0"
 						@click="restartTask">
@@ -175,10 +175,10 @@
 						<template v-if="runningTask" #icon>
 							<span class="icon-loading" />
 						</template>
-					</Button>
-					<CheckboxRadioSwitch :checked.sync="finishNotification">
+					</NcButton>
+					<NcCheckboxRadioSwitch :checked.sync="finishNotification">
 						{{ t('mediadc', 'Finish notification') }}
-					</CheckboxRadioSwitch>
+					</NcCheckboxRadioSwitch>
 				</div>
 			</div>
 		</div>
@@ -192,8 +192,8 @@ import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
 import { emit } from '@nextcloud/event-bus'
 
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
 import { mapGetters } from 'vuex'
@@ -203,8 +203,8 @@ import { requestFileInfo, getFileId } from '../../utils/files.js'
 export default {
 	name: 'TasksEdit',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		CheckboxRadioSwitch,
+		NcButton,
+		NcCheckboxRadioSwitch,
 		PlusThick,
 	},
 	data() {
@@ -470,7 +470,7 @@ export default {
 	top: 10px;
 	right: 5px;
 	padding: 25px;
-	background: var(--icon-close-000) no-repeat center;
+	background: var(--icon-close-dark) no-repeat center;
 	opacity: .5;
 	cursor: pointer;
 }

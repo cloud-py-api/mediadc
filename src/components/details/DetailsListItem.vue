@@ -25,10 +25,10 @@
 <template>
 	<div class="details-list-item" :class="{'icon-loading': updating}">
 		<div class="details-list-item-title">
-			<CheckboxRadioSwitch v-tooltip="{content: t('mediadc', 'Select group'), placement: 'top'}"
+			<NcCheckboxRadioSwitch v-tooltip="{content: t('mediadc', 'Select group'), placement: 'top'}"
 				class="mediadc-checkbox-only batch-checkbox"
 				:checked.sync="checked" />
-			<Button type="tertiary" class="open-details-btn" @click="openDetailFiles(detail)">
+			<NcButton type="tertiary" class="open-details-btn" @click="openDetailFiles(detail)">
 				<template #icon>
 					<span class="icon-projects" />
 				</template>
@@ -38,26 +38,26 @@
 					<span :class="!opened ? 'icon-triangle-s' : 'icon-triangle-n'"
 						style="display: inline-flex; margin: 0 0 0 5px;" />
 				</template>
-			</Button>
-			<Actions>
-				<ActionButton icon="icon-delete delete-group-btn" @click="removeTaskDetail(detail)">
+			</NcButton>
+			<NcActions>
+				<NcActionButton icon="icon-delete delete-group-btn" @click="removeTaskDetail(detail)">
 					{{ t('mediadc', 'Remove group without deleting files') }}
-				</ActionButton>
-			</Actions>
+				</NcActionButton>
+			</NcActions>
 		</div>
 		<div v-if="opened && JSON.parse(detail.group_files_ids).length > groupItemsPerPage" class="pagination">
-			<Button type="tertiary" style="margin-right: 5px;" @click="openPrevDetailFiles(detail)">
+			<NcButton type="tertiary" style="margin-right: 5px;" @click="openPrevDetailFiles(detail)">
 				<template #icon>
 					<span class="icon-view-previous" />
 				</template>
-			</Button>
+			</NcButton>
 			<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
 			<span>{{ page + 1 }}/{{ Math.ceil(JSON.parse(detail.group_files_ids).length / groupItemsPerPage) }}</span>
-			<Button type="tertiary" style="margin-left: 5px;" @click="openNextDetailFiles(detail)">
+			<NcButton type="tertiary" style="margin-left: 5px;" @click="openNextDetailFiles(detail)">
 				<template #icon>
 					<span class="icon-view-next" />
 				</template>
-			</Button>
+			</NcButton>
 			<select id="to_page"
 				v-model="goToPage"
 				style="margin-left: 5px;"
@@ -66,14 +66,14 @@
 					{{ rPage + 1 }}
 				</option>
 			</select>
-			<Button v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage"
+			<NcButton v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage"
 				v-tooltip="t('mediadc', 'Go to page')"
 				type="tertiary"
 				@click="navigateToPage">
 				<template #icon>
 					<span class="icon-confirm" />
 				</template>
-			</Button>
+			</NcButton>
 		</div>
 		<Transition name="fade">
 			<DetailsGroupList v-if="opened"
@@ -92,10 +92,10 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
-import Actions from '@nextcloud/vue/dist/Components/Actions.js'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 import { mapGetters } from 'vuex'
 
@@ -105,10 +105,10 @@ import DetailsGroupList from './DetailsGroupList.vue'
 export default {
 	name: 'DetailsListItem',
 	components: {
-		Actions,
-		ActionButton,
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		CheckboxRadioSwitch,
+		NcActions,
+		NcActionButton,
+		NcButton,
+		NcCheckboxRadioSwitch,
 		DetailsGroupList,
 	},
 	mixins: [Formats],

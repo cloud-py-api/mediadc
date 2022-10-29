@@ -142,7 +142,7 @@ class UtilsService
 			return false;
 		}
 		/** @var IniGetWrapper $ini */
-		$ini = \OC::$server->get(IniGetWrapper::class);
+		$ini = \OCP\Server::get(IniGetWrapper::class);
 		$disabled = explode(',', $ini->get('disable_functions') ?: '');
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {

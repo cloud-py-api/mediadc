@@ -23,41 +23,41 @@
  -->
 
 <template>
-	<Content app-name="mediadc">
-		<AppNavigation>
+	<NcContent app-name="mediadc">
+		<NcAppNavigation>
 			<template #list>
-				<AppNavigationItem :to="{name: 'collector'}"
+				<NcAppNavigationItem :to="{name: 'collector'}"
 					:title="t('mediadc', 'Tasks')"
 					icon="icon-toggle-filelist"
 					exact />
-				<AppNavigationItem :to="{name: 'resolved'}"
+				<NcAppNavigationItem :to="{name: 'resolved'}"
 					:title="t('mediadc', 'Resolved')"
 					icon="icon-video-off" />
-				<AppNavigationItem v-if="showConfiguration"
+				<NcAppNavigationItem v-if="showConfiguration"
 					:to="{name: 'configuration'}"
 					:title="t('mediadc', 'Configuration')"
 					icon="icon-user-admin" />
 			</template>
 			<template #footer>
-				<AppNavigationSettings :title="t('mediadc', 'Settings')">
+				<NcAppNavigationSettings :title="t('mediadc', 'Settings')" :open="false">
 					<DetailsListSettings />
-				</AppNavigationSettings>
+				</NcAppNavigationSettings>
 			</template>
-		</AppNavigation>
-		<AppContent :class="{ 'icon-loading': loading }">
+		</NcAppNavigation>
+		<NcAppContent :class="{ 'icon-loading': loading }">
 			<router-view v-show="!loading" :loading.sync="loading" />
-		</AppContent>
-	</Content>
+		</NcAppContent>
+	</NcContent>
 </template>
 
 <script>
 import { getCurrentUser } from '@nextcloud/auth'
 
-import Content from '@nextcloud/vue/dist/Components/Content.js'
-import AppContent from '@nextcloud/vue/dist/Components/AppContent.js'
-import AppNavigation from '@nextcloud/vue/dist/Components/AppNavigation.js'
-import AppNavigationItem from '@nextcloud/vue/dist/Components/AppNavigationItem.js'
-import AppNavigationSettings from '@nextcloud/vue/dist/Components/AppNavigationSettings.js'
+import NcContent from '@nextcloud/vue/dist/Components/NcContent.js'
+import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
+import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
+import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
+import NcAppNavigationSettings from '@nextcloud/vue/dist/Components/NcAppNavigationSettings.js'
 
 import Configure from './mixins/Configure.js'
 import DetailsListSettings from './components/settings/DetailsListSettings.vue'
@@ -65,11 +65,11 @@ import DetailsListSettings from './components/settings/DetailsListSettings.vue'
 export default {
 	name: 'MediaDC',
 	components: {
-		Content, // eslint-disable-line vue/no-reserved-component-names
-		AppContent,
-		AppNavigation,
-		AppNavigationItem,
-		AppNavigationSettings,
+		NcContent,
+		NcAppContent,
+		NcAppNavigation,
+		NcAppNavigationItem,
+		NcAppNavigationSettings,
 		DetailsListSettings,
 	},
 	mixins: [Configure],

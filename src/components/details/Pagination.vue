@@ -24,47 +24,47 @@
 
 <template>
 	<div class="pagination">
-		<Button v-if="details.length > itemsPerPage"
+		<NcButton v-if="details.length > itemsPerPage"
 			type="tertiary"
 			@click="prevGroupsPage">
 			<template #icon>
 				<span class="icon-view-previous pagination-button" />
 			</template>
-		</Button>
+		</NcButton>
 		<span v-if="details.length > itemsPerPage" style="margin-left: 5px;">{{ t('mediadc', 'Page:') }}&nbsp;</span>
 		<span v-if="details.length > itemsPerPage" style="margin-right: 5px;">{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
-		<Button v-if="details.length > itemsPerPage"
+		<NcButton v-if="details.length > itemsPerPage"
 			type="tertiary"
 			@click="nextGroupsPage">
 			<template #icon>
 				<span class="icon-view-next pagination-button" />
 			</template>
-		</Button>
+		</NcButton>
 		<template v-if="details.length > itemsPerPage">
 			<select id="to_page" v-model="goToPage" name="to_page">
 				<option v-for="rPage of pagesRange" :key="rPage" :value="rPage">
 					{{ rPage + 1 }}
 				</option>
 			</select>
-			<Button v-tooltip="t('mediadc', 'Go to page')"
+			<NcButton v-tooltip="t('mediadc', 'Go to page')"
 				type="tertiary"
 				@click="navigateToPage">
 				<template #icon>
 					<span class="icon-confirm" />
 				</template>
-			</Button>
+			</NcButton>
 		</template>
 	</div>
 </template>
 
 <script>
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import { mapGetters } from 'vuex'
 
 export default {
 	name: 'Pagination',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
+		NcButton,
 	},
 	props: {
 		details: {

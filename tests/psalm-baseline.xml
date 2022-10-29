@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
-  <file src="lib/BackgroundJob/CollectorCleanupJob.php">
-    <UndefinedConstant occurrences="1">
-      <code>\OCP\BackgroundJob\IJob::TIME_INSENSITIVE</code>
-    </UndefinedConstant>
-    <UndefinedMethod occurrences="1">
-      <code>setTimeSensitivity</code>
-    </UndefinedMethod>
+  <file src="lib/AppInfo/Application.php">
+    <UndefinedClass occurrences="1">
+      <code>\OCP\Server</code>
+    </UndefinedClass>
   </file>
   <file src="lib/Command/CollectorCleanupCommand.php">
     <UndefinedClass occurrences="1">
@@ -111,8 +108,9 @@
     </MismatchingDocblockReturnType>
   </file>
   <file src="lib/Service/UtilsService.php">
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="2">
       <code>?DatabaseStatistics</code>
+      <code>\OCP\Server</code>
     </UndefinedClass>
     <UndefinedDocblockClass occurrences="3">
       <code>$ini</code>

@@ -70,24 +70,24 @@
 			<span class="owner">{{ file.fileowner }}</span>
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<div class="actions" style="display: flex;">
-				<CheckboxRadioSwitch v-tooltip="t('mediadc', 'Select file')"
+				<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Select file')"
 					class="mediadc-checkbox-only"
 					:checked.sync="checked"
 					style="margin: 0 14px 0 10px;" />
-				<Button v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
+				<NcButton v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
 					type="tertiary"
 					@click="deleteGroupFile(file)">
 					<template #icon>
 						<span class="icon-delete" />
 					</template>
-				</Button>
-				<Button v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
+				</NcButton>
+				<NcButton v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
 					type="tertiary"
 					@click="removeGroupFile(file)">
 					<template #icon>
 						<span class="icon-close" />
 					</template>
-				</Button>
+				</NcButton>
 			</div>
 		</div>
 	</div>
@@ -100,8 +100,8 @@ import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import { mapGetters } from 'vuex'
 
@@ -110,8 +110,8 @@ import Formats from '../../mixins/Formats.js'
 export default {
 	name: 'DetailsFile',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		CheckboxRadioSwitch,
+		NcButton,
+		NcCheckboxRadioSwitch,
 	},
 	mixins: [Formats],
 	props: {
@@ -344,7 +344,7 @@ export default {
 	border-radius: var(--border-radius-large);
 }
 
-body.theme--dark .placeholder {
+body[data-theme-dark] .placeholder {
 	background-color: var(--color-loading-dark);
 }
 

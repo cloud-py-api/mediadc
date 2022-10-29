@@ -27,11 +27,11 @@
 		<div class="filters">
 			<div class="sorting">
 				{{ t('mediadc', 'Files size sorting') }}
-				<Button type="tertiary" style="margin: 0 10px;" @click="updateFileSorting">
+				<NcButton type="tertiary" style="margin: 0 10px;" @click="updateFileSorting">
 					<template #icon>
 						<span :class="filesAscending ? 'icon-triangle-s sorting-group-files-btn' : 'icon-triangle-n sorting-group-files-btn'" />
 					</template>
-				</Button>
+				</NcButton>
 			</div>
 			<div class="search">
 				<label for="filename-filter">
@@ -46,20 +46,20 @@
 			</div>
 			<div v-if="checkedFiles.length > 0" class="batch-editing">
 				{{ n('mediadc', 'Batch actions for %n file', 'Batch actions for %n files', checkedFiles.length) }}
-				<Actions placement="left" style="margin-left: 5px;">
-					<ActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}" icon="icon-checkmark" @click="selectAllFiles">
+				<NcActions placement="left" style="margin-left: 5px;">
+					<NcActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}" icon="icon-checkmark" @click="selectAllFiles">
 						{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
-					</ActionButton>
-					<ActionButton v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
+					</NcActionButton>
+					<NcActionButton v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
 						{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
-					</ActionButton>
-					<ActionButton v-tooltip="{content: t('mediadc', 'Mark resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
+					</NcActionButton>
+					<NcActionButton v-tooltip="{content: t('mediadc', 'Mark resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
 						{{ n('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}
-					</ActionButton>
-					<ActionButton v-tooltip="{content: n('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
+					</NcActionButton>
+					<NcActionButton v-tooltip="{content: n('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
 						{{ n('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}
-					</ActionButton>
-				</Actions>
+					</NcActionButton>
+				</NcActions>
 			</div>
 		</div>
 		<div v-if="!filesFiltered" class="details-group-files">
@@ -98,9 +98,9 @@ import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dia
 import { generateUrl } from '@nextcloud/router'
 import { emit } from '@nextcloud/event-bus'
 
-import Actions from '@nextcloud/vue/dist/Components/Actions.js'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 import Formats from '../../mixins/Formats.js'
 import DetailsFile from './DetailsFile.vue'
@@ -109,9 +109,9 @@ export default {
 	name: 'DetailsGroupList',
 	components: {
 		DetailsFile,
-		Actions,
-		ActionButton,
-		Button, // eslint-disable-line vue/no-reserved-component-names
+		NcActions,
+		NcActionButton,
+		NcButton,
 	},
 	mixins: [Formats],
 	props: {
@@ -357,7 +357,7 @@ export default {
 	padding: 5px 10px;
 	margin: 10px 0;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 5px;
+	border-radius: var(--border-radius-large);
 }
 
 .search {
@@ -385,20 +385,4 @@ export default {
 	cursor: pointer;
 	user-select: none;
 }
-
-/* .batch-actions-menu-button:hover {
-	background-color: #eee;
-}
-
-.batch-actions-menu-button:active {
-	background-color: #ddd;
-}
-
-body.theme--dark .batch-actions-menu-button:hover {
-	background-color: #727272;
-}
-
-body.theme--dark .batch-actions-menu-button:active {
-	background-color: #5b5b5b;
-} */
 </style>
