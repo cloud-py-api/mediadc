@@ -12,7 +12,6 @@ OC.L10N.register(
     "Delete" : "Kkes",
     "Edit" : "Ẓreg",
     "Install" : "sebdeed",
-    "Type" : "Anaw",
-    "Save changes" : "Sekles asnifel"
+    "Type" : "Anaw"
 },
 "nplurals=2; plural=(n != 1);");

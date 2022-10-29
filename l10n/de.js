@@ -216,16 +216,6 @@ OC.L10N.register(
     "MediaDC Configuration" : "MediaDC Einstellungen",
     "Some error occured while deleting task" : "Beim Löschen der Aufgabe ist ein Fehler aufgetreten.",
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
-    "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
-    "Remove without deleting" : "Ohne Löschen entfernen",
-    "No matching found" : "Keine Übereinstimmungen gefunden",
-    "Duplicate group removed" : "Dubletten-Gruppe entfernt",
-    "Save changes" : "Änderungen speichern",
-    "in GBytes" : "in GBytes",
-    "Settings successfully updated" : "Einstellungen erfolgreich aktualisiert",
-    "Setting successfully updated" : "Einstellung erfolgreich aktualisiert",
-    "No tasks yet. Create a new one!" : "Bislang keine Aufgaben. Erstelle eine neue!",
-    "Not installed" : "Nicht installiert",
-    "No tasks yet." : "Bislang keine Aufgaben."
+    "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
 },
 "nplurals=2; plural=(n != 1);");

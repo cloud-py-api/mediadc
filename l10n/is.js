@@ -23,7 +23,6 @@ OC.L10N.register(
     "Install" : "Setja upp",
     "Type" : "Tegund",
     "Actions" : "Aðgerðir",
-    "Update" : "Uppfæra",
-    "Save changes" : "Vista breytingar"
+    "Update" : "Uppfæra"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

@@ -26,7 +26,6 @@ OC.L10N.register(
     "Install" : "Installer",
     "Type" : "Type",
     "Actions" : "Handlinger",
-    "Update" : "Opdater",
-    "Save changes" : "Gem ændringer"
+    "Update" : "Opdater"
 },
 "nplurals=2; plural=(n != 1);");

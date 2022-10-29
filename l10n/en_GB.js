@@ -20,7 +20,6 @@ OC.L10N.register(
     "Edit" : "Edit",
     "Type" : "Type",
     "Actions" : "Actions",
-    "Update" : "Update",
-    "Save changes" : "Save changes"
+    "Update" : "Update"
 },
 "nplurals=2; plural=(n != 1);");

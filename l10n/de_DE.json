@@ -154,6 +154,7 @@
     "Edit" : "Bearbeiten",
     "Terminate task execution" : "Aufgabenausführung Bennden",
     "Delete task" : "Aufgabe löschen",
+    "Ignored" : "Ignoriert",
     "You are not allowed to manage other user's tasks." : "Sie sind nicht berechtigt, die Aufgaben anderer Benutzer zu verwalten.",
     "Task errors" : "Aufgabenfehler",
     "Task terminated" : "Aufgabe beendet",
@@ -221,16 +222,6 @@
     "MediaDC Resolved files" : "MediaDC aufgelöste Dateien",
     "Some error occured while deleting task" : "Fehler beim Löschen der Aufgabe aufgetreten",
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
-    "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
-    "Remove without deleting" : "Ohne Löschen entfernen",
-    "No matching found" : "Keine Übereinstimmungen gefunden",
-    "Duplicate group removed" : "Dubletten-Gruppe entfernt",
-    "Save changes" : "Änderungen speichern",
-    "in GBytes" : "in GBytes",
-    "Settings successfully updated" : "Einstellungen erfolgreich aktualisiert",
-    "Setting successfully updated" : "Einstellung erfolgreich aktualisiert",
-    "No tasks yet. Create a new one!" : "Bislang keine Aufgaben. Erstellen Sie eine neue!",
-    "Not installed" : "Nicht installiert",
-    "No tasks yet." : "Bislang keine Aufgaben."
+    "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -24,7 +24,6 @@
     "Install" : "Εγκατάσταση",
     "Type" : "Τύπος",
     "Actions" : "Ενέργειες",
-    "Update" : "Ενημέρωση",
-    "Save changes" : "Αποθήκευση αλλαγών"
+    "Update" : "Ενημέρωση"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

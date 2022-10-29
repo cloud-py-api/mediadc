@@ -20,7 +20,6 @@ OC.L10N.register(
     "Edit" : "Modifi",
     "Type" : "Tipo",
     "Actions" : "Agoj",
-    "Update" : "Ĝisdatigi",
-    "Save changes" : "Konservi ŝanĝojn"
+    "Update" : "Ĝisdatigi"
 },
 "nplurals=2; plural=(n != 1);");

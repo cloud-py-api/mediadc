@@ -20,7 +20,6 @@ OC.L10N.register(
     "Install" : "Pasang",
     "Type" : "tipe",
     "Actions" : "Tindakan",
-    "Update" : "Perbarui",
-    "Save changes" : "Simpan perubahan"
+    "Update" : "Perbarui"
 },
 "nplurals=1; plural=0;");

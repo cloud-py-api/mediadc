@@ -33,9 +33,6 @@ OC.L10N.register(
     "Actions" : "Ekintzak",
     "Update" : "Eguneratu",
     "Configuration errors" : "Konfigurazio erroreak",
-    "Configuration warnings" : "Konfigurazio oharrak",
-    "Save changes" : "Gorde aldaketak",
-    "Not installed" : "Instalatu gabe",
-    "No tasks yet." : "Ez dago jarduerarik oraindik."
+    "Configuration warnings" : "Konfigurazio oharrak"
 },
 "nplurals=2; plural=(n != 1);");

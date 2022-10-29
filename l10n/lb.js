@@ -13,7 +13,6 @@ OC.L10N.register(
     "Edit" : "Änneren",
     "Type" : "Typ",
     "Actions" : "Aktiounen",
-    "Update" : "Update",
-    "Save changes" : "Ännerunge späicheren"
+    "Update" : "Update"
 },
 "nplurals=2; plural=(n != 1);");

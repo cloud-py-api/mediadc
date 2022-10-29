@@ -26,7 +26,6 @@ OC.L10N.register(
     "Install" : "Installa",
     "Type" : "Genia",
     "Actions" : "Atziones",
-    "Update" : "Agiorna",
-    "Save changes" : "Sarva càmbios"
+    "Update" : "Agiorna"
 },
 "nplurals=2; plural=(n != 1);");

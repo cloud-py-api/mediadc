@@ -25,7 +25,6 @@
     "Install" : "Installera",
     "Type" : "Typ",
     "Actions" : "Åtgärder",
-    "Update" : "Uppdatera",
-    "Save changes" : "Spara ändringar"
+    "Update" : "Uppdatera"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

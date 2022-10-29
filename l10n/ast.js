@@ -19,7 +19,6 @@ OC.L10N.register(
     "Edit" : "Editar",
     "Type" : "Type",
     "Actions" : "Aiciones",
-    "Update" : "Anovar",
-    "Save changes" : "Guardar camudancies"
+    "Update" : "Anovar"
 },
 "nplurals=2; plural=(n != 1);");

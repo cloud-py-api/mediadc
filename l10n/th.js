@@ -21,7 +21,6 @@ OC.L10N.register(
     "Install" : "ติดตั้ง",
     "Type" : "ประเภท",
     "Actions" : "การกระทำ",
-    "Update" : "อัปเดต",
-    "Save changes" : "บันทึกการเปลี่ยนแปลง"
+    "Update" : "อัปเดต"
 },
 "nplurals=1; plural=0;");

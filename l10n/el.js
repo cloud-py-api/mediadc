@@ -26,7 +26,6 @@ OC.L10N.register(
     "Install" : "Εγκατάσταση",
     "Type" : "Τύπος",
     "Actions" : "Ενέργειες",
-    "Update" : "Ενημέρωση",
-    "Save changes" : "Αποθήκευση αλλαγών"
+    "Update" : "Ενημέρωση"
 },
 "nplurals=2; plural=(n != 1);");

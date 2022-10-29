@@ -26,7 +26,6 @@ OC.L10N.register(
     "Install" : "Asenna",
     "Type" : "Tyyppi",
     "Actions" : "Toiminnot",
-    "Update" : "Päivitä",
-    "Save changes" : "Tallenna muutokset"
+    "Update" : "Päivitä"
 },
 "nplurals=2; plural=(n != 1);");
