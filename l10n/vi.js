@@ -20,7 +20,6 @@ OC.L10N.register(
     "Install" : "Cài đặt",
     "Type" : "Loại",
     "Actions" : "Hành động",
-    "Update" : "Cập nhật",
-    "Save changes" : "Lưu thay đổi"
+    "Update" : "Cập nhật"
 },
 "nplurals=1; plural=0;");

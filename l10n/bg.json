@@ -154,6 +154,7 @@
     "Edit" : "Редактиране",
     "Terminate task execution" : "Прекратяване на изпълнението на задачата",
     "Delete task" : "Изтрива задача",
+    "Ignored" : "Игнорирано",
     "You are not allowed to manage other user's tasks." : "Нямате право да управлявате задачи на други потребители.",
     "Task errors" : "Грешки в задачите",
     "Task terminated" : "Задачата е прекратена",
@@ -196,6 +197,8 @@
     "Configuration warnings" : "Предупреждения за конфигурацията",
     "Here you can view resolved media files " : "Тук можете да видите отстранените медийни файлове ",
     "This files won't be scanned in further tasks." : "Тези файлове няма да бъдат сканирани при следващите задачи.",
+    "Scan for duplicates" : "Сканиране за дубликати",
+    "New task for folder scan successfully created" : "Успешно създадена нова задача за сканиране на папка",
     "Installation successfully finished" : "Инсталирането е завършено успешно",
     "Installation finished. Not all packages installed" : "Инсталирането е завършено. Не всички пакети са инсталирани",
     "Installation failed. Some server error occured" : "Инсталирането е неуспешно. Възникна грешка на сървъра",
@@ -219,16 +222,6 @@
     "MediaDC Resolved files" : "Отстранени файлове на MediaDC",
     "Some error occured while deleting task" : "Възникна грешка при изтриването на задачата",
     "Task successfully started with duplicated settings!" : "Задачата е стартирана успешно с дублирани настройки!",
-    "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"],
-    "Remove without deleting" : "Премахване без изтриване",
-    "No matching found" : "Няма намерено съвпадение",
-    "Duplicate group removed" : "Дублиращата се група е премахната",
-    "Save changes" : "Запиши промените",
-    "in GBytes" : "в /гигабайти/ GBytes",
-    "Settings successfully updated" : "Настройките са актуализирани успешно",
-    "Setting successfully updated" : "Настройката е актуализирана успешно",
-    "No tasks yet. Create a new one!" : "Все още няма задачи. Създайте нова!",
-    "Not installed" : "Не е инсталиран/а/о",
-    "No tasks yet." : "Все още няма задачи."
+    "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

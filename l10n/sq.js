@@ -20,7 +20,6 @@ OC.L10N.register(
     "Edit" : "Përpuno",
     "Type" : "Shtyp",
     "Actions" : "Veprimet",
-    "Update" : "Përditëso",
-    "Save changes" : "Ruaj ndryshimet"
+    "Update" : "Përditëso"
 },
 "nplurals=2; plural=(n != 1);");

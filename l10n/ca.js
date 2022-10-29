@@ -27,7 +27,6 @@ OC.L10N.register(
     "Install" : "Instal·la",
     "Type" : "Tipus",
     "Actions" : "Accions",
-    "Update" : "Actualitzar",
-    "Save changes" : "Desa els canvis"
+    "Update" : "Actualitzar"
 },
 "nplurals=2; plural=(n != 1);");

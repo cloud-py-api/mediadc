@@ -20,7 +20,6 @@ OC.L10N.register(
     "Edit" : "შეცვლა",
     "Type" : "სახეობა",
     "Actions" : "მოქმედებები",
-    "Update" : "განახლება",
-    "Save changes" : "ცვილებების შენახვა"
+    "Update" : "განახლება"
 },
 "nplurals=2; plural=(n!=1);");

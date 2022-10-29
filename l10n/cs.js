@@ -156,6 +156,7 @@ OC.L10N.register(
     "Edit" : "Upravit",
     "Terminate task execution" : "Přerušit vykonávání úlohy",
     "Delete task" : "Smazat úkol",
+    "Ignored" : "Ignorováno",
     "You are not allowed to manage other user's tasks." : "Nemáte oprávnění spravovat úlohy ostatních uživatelů.",
     "Task errors" : "Chyby úlohy",
     "Task terminated" : "Úloha přerušena",
@@ -223,16 +224,6 @@ OC.L10N.register(
     "MediaDC Resolved files" : "Soubory vyřešené v MediaDC",
     "Some error occured while deleting task" : "Při mazání úlohy došlo k nějaké chybě",
     "Task successfully started with duplicated settings!" : "Úloha úspěšně spuštěna s duplikovanými nastaveními!",
-    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"],
-    "Remove without deleting" : "Odebrat bez mazání",
-    "No matching found" : "Nenalezeny žádné shody",
-    "Duplicate group removed" : "Skupina duplicit odebrána",
-    "Save changes" : "Uložit změny",
-    "in GBytes" : "v GBajtech",
-    "Settings successfully updated" : "Nastavení úspěšně zaktualizována",
-    "Setting successfully updated" : "Nastavení úspěšně zaktualizována",
-    "No tasks yet. Create a new one!" : "Zatím žádné úlohy. Vytvořte nějakou!",
-    "Not installed" : "Nenaistalováno",
-    "No tasks yet." : "Zatím žádné úlohy."
+    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"]
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

@@ -23,7 +23,6 @@ OC.L10N.register(
     "Install" : "התקנה",
     "Type" : "סוג",
     "Actions" : "פעולות",
-    "Update" : "עדכון",
-    "Save changes" : "שמירת השינויים"
+    "Update" : "עדכון"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

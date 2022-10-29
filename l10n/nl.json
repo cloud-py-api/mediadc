@@ -26,7 +26,6 @@
     "Install" : "Installeren",
     "Type" : "Type",
     "Actions" : "Acties",
-    "Update" : "Update",
-    "Save changes" : "Wijzigingen opslaan"
+    "Update" : "Update"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

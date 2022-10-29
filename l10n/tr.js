@@ -29,7 +29,6 @@ OC.L10N.register(
     "Install" : "Kur",
     "Type" : "Tür",
     "Actions" : "İşlemler",
-    "Update" : "Güncelle",
-    "Save changes" : "Değişiklikleri kaydet"
+    "Update" : "Güncelle"
 },
 "nplurals=2; plural=(n > 1);");

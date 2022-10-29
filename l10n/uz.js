@@ -12,7 +12,6 @@ OC.L10N.register(
     "Videos" : "Videos",
     "Delete" : "Delete",
     "Actions" : "Actions",
-    "Update" : "Update",
-    "Save changes" : "Save changes"
+    "Update" : "Update"
 },
 "nplurals=1; plural=0;");

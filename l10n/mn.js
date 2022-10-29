@@ -15,7 +15,6 @@ OC.L10N.register(
     "Edit" : "засварлах",
     "Type" : "Төрөл",
     "Actions" : "Үйл ажиллагаа",
-    "Update" : "Шинэчлэх",
-    "Save changes" : "Өөрчлөлтийг хадгалах"
+    "Update" : "Шинэчлэх"
 },
 "nplurals=2; plural=(n != 1);");

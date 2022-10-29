@@ -12,7 +12,6 @@ OC.L10N.register(
     "Photos" : "ඡායාරූප",
     "Edit" : "සංස්කරණය",
     "Actions" : "ක්‍රියාමාර්ග",
-    "Update" : "යාවත්කාල",
-    "Save changes" : "වෙනස්කම් සුරකින්න"
+    "Update" : "යාවත්කාල"
 },
 "nplurals=2; plural=(n != 1);");

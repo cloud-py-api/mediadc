@@ -19,7 +19,6 @@ OC.L10N.register(
     "Edit" : "Redigeeri",
     "Type" : "Tüüp",
     "Actions" : "Tegevused",
-    "Update" : "Uuenda",
-    "Save changes" : "Salvesta muudatused"
+    "Update" : "Uuenda"
 },
 "nplurals=2; plural=(n != 1);");

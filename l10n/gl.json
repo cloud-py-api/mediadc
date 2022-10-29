@@ -21,7 +21,6 @@
     "Install" : "Instalar",
     "Type" : "Tipo",
     "Actions" : "Accións",
-    "Update" : "Actualizar",
-    "Save changes" : "Gardar cambios"
+    "Update" : "Actualizar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

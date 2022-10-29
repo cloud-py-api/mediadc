@@ -27,7 +27,6 @@
     "Install" : "Kur",
     "Type" : "Tür",
     "Actions" : "İşlemler",
-    "Update" : "Güncelle",
-    "Save changes" : "Değişiklikleri kaydet"
+    "Update" : "Güncelle"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

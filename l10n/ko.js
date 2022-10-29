@@ -24,7 +24,6 @@ OC.L10N.register(
     "Install" : "설치",
     "Type" : "종류",
     "Actions" : "동작",
-    "Update" : "업데이트",
-    "Save changes" : "변경 사항 저장"
+    "Update" : "업데이트"
 },
 "nplurals=1; plural=0;");

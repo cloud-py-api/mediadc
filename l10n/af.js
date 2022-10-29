@@ -15,7 +15,6 @@ OC.L10N.register(
     "Edit" : "Wysig",
     "Type" : "Tipe",
     "Actions" : "Aksies",
-    "Update" : "Werk by",
-    "Save changes" : "Bewaar veranderinge"
+    "Update" : "Werk by"
 },
 "nplurals=2; plural=(n != 1);");

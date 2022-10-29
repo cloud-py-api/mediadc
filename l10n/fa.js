@@ -21,7 +21,6 @@ OC.L10N.register(
     "Install" : "نصب",
     "Type" : "نوع",
     "Actions" : "فعالیت ها",
-    "Update" : "به‌روز رسانی",
-    "Save changes" : "ذخیره تغییرات"
+    "Update" : "به‌روز رسانی"
 },
 "nplurals=2; plural=(n > 1);");

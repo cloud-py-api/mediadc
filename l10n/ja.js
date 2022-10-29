@@ -27,7 +27,6 @@ OC.L10N.register(
     "Install" : "インストール",
     "Type" : "タイプ",
     "Actions" : "アクション",
-    "Update" : "更新",
-    "Save changes" : "変更を保存"
+    "Update" : "更新"
 },
 "nplurals=1; plural=0;");

@@ -29,7 +29,6 @@ OC.L10N.register(
     "Install" : "安裝",
     "Type" : "類型",
     "Actions" : "操作",
-    "Update" : "更新",
-    "Save changes" : "保存更改"
+    "Update" : "更新"
 },
 "nplurals=1; plural=0;");

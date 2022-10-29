@@ -23,7 +23,6 @@ OC.L10N.register(
     "Install" : "Instalar",
     "Type" : "Tipo",
     "Actions" : "Accións",
-    "Update" : "Actualizar",
-    "Save changes" : "Gardar cambios"
+    "Update" : "Actualizar"
 },
 "nplurals=2; plural=(n != 1);");

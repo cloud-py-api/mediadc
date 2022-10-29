@@ -57,8 +57,6 @@ OC.L10N.register(
     "Installed" : "Installé",
     "Actions" : "Actions",
     "Update" : "Mise à jour",
-    "Photos&Videos" : "Photos&Vidéos",
-    "Save changes" : "Enregistrer les modifications",
-    "Not installed" : "Non installé"
+    "Photos&Videos" : "Photos&Vidéos"
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -28,7 +28,6 @@ OC.L10N.register(
     "Install" : "Inštalovať",
     "Type" : "Typ",
     "Actions" : "Akcie",
-    "Update" : "Aktualizovať",
-    "Save changes" : "Uložiť zmeny"
+    "Update" : "Aktualizovať"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");
