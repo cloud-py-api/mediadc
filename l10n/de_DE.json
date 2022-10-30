@@ -68,7 +68,7 @@
     "Resolved list" : "Liste der Aufgelösten",
     "Toggle media type" : "Medientyp umschalten",
     "Remove file from resolved list" : "Datei von der Liste der Aufgelösten entfernen",
-    "Create a new task or work on existing and resolve some!" : "Eine neue Aufgabe erstellen oder an bestehenden arbeiten und diese lösen!",
+    "Create a new one!" : "Neuse erstellen!",
     "Change to grid view" : "Zur Rasteransicht wechseln",
     "Change to list view" : "Zur Listenansicht wechseln",
     "No resolved ${selectedType} yet" : "Noch keine Lösung für ${selectedType}",
@@ -87,11 +87,11 @@
     "Some error occured while updating settings" : "Fehler beim Aktualisieren der Einstellungen",
     "The photo and video hashes would be cleaned before changing hashing_algorithm.\nContinue?" : "Die Foto- und Video-Hashes würden bereinigt werden, bevor hashing_algorithm geändert wird.\nFortsetzen?",
     "Hashing algorithm successfully updated" : "Hashing-Algorithmus erfolgreich aktualisiert",
-    "Some error occured while updateing setting. Try again" : "Fehler beim Aktualisieren der Einstellungen. Erneut versuchen",
+    "Some error occured while updating setting. Try again" : "Fehler beim Aktualisieren der Einstellungen. Erneut versuchen",
     "Some error occured while changing hashing algorithm" : "Fehler beim Ändern des Hash-Algorithmus",
     "The photo and video hashes would be cleaned before changing hash size.\nContinue?" : "Die Foto- und Video-Hashes werden bereinigt, bevor die Hash-Größe geändert wird.\nFortfahren?",
     "Hash size successfully updated" : "Hash-Größe erfolgreich aktualisiert",
-    "Some error occured while updating setting. Try again" : "Fehler beim Aktualisieren der Einstellungen. Erneut versuchen",
+    "Some error occured while updateing setting. Try again" : "Fehler beim Aktualisieren der Einstellungen. Erneut versuchen",
     "This mask already exists!" : "Diese Maske existiert bereits!",
     "Enter custom mask!" : "Benutzerdefinierte Maske eingeben!",
     "Collect not sensitive system info for bug report" : "Nicht vertrauliche Informationen für Fehlerbericht sammeln",
@@ -131,7 +131,6 @@
     "_Target folder has no files or all of them excluded_::_Target folders have no files or all of them excluded_" : ["Zielverzeichnis beinhaltet keine Datei oder sie ist ausgeschlossen","Zielverzeichnis beinhaltet keine Dateien oder alle Dateien sind ausgeschlossen"],
     "Recent Tasks" : "Aktuelle Aufgaben",
     "No tasks yet" : "Keine Aufgaben bislang",
-    "Create a new one!" : "Neuse erstellen!",
     "Start" : "Start",
     "Restart" : "Neustart",
     "Stop" : "Stopp",
@@ -222,6 +221,7 @@
     "MediaDC Resolved files" : "MediaDC aufgelöste Dateien",
     "Some error occured while deleting task" : "Fehler beim Löschen der Aufgabe aufgetreten",
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
-    "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
+    "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
+    "Create a new task or work on existing and resolve some!" : "Eine neue Aufgabe erstellen oder an bestehenden arbeiten und diese lösen!"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
