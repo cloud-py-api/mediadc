@@ -68,7 +68,7 @@
     "Resolved list" : "Seznam vyřešených",
     "Toggle media type" : "Přepnout typ média",
     "Remove file from resolved list" : "Odebrat soubor ze seznamu vyřešených",
-    "Create a new task or work on existing and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na stávající a nějaké vyřešte!",
+    "Create a new one!" : "Vytvořte novou!",
     "Change to grid view" : "Přepnout na zobrazení v mřížce",
     "Change to list view" : "Přepnout do zobrazení v seznamu",
     "No resolved ${selectedType} yet" : "Zatím žádné vyřešené ${selectedType}",
@@ -87,11 +87,11 @@
     "Some error occured while updating settings" : "Při aktualizaci nastavení došlo k nějaké chybě",
     "The photo and video hashes would be cleaned before changing hashing_algorithm.\nContinue?" : "Při změně algoritmu pořizování otisků (hash) fotek a videí by byly už vypočítané otisky zahozeny.\nPokračovat?",
     "Hashing algorithm successfully updated" : "Algoritmus pořizování otisků úspěšně aktualizován",
-    "Some error occured while updateing setting. Try again" : "Při aktualizování nastavení došlo k nějakým chybám. Zkuste to znovu",
+    "Some error occured while updating setting. Try again" : "Při aktualizování nastavení došlo k nějaké chybě. Zkuste to znovu",
     "Some error occured while changing hashing algorithm" : "Při změně algoritmu pořizování otisků došlo k nějaké chybě",
     "The photo and video hashes would be cleaned before changing hash size.\nContinue?" : "Při změně délky pořizovaných otisků (hash) fotek a videí by byly už vypočítané otisky zahozeny.\nPokračovat?",
     "Hash size successfully updated" : "Délka otisku úspěšně zaktualizována",
-    "Some error occured while updating setting. Try again" : "Při aktualizování nastavení došlo k nějaké chybě. Zkuste to znovu",
+    "Some error occured while updateing setting. Try again" : "Při aktualizování nastavení došlo k nějakým chybám. Zkuste to znovu",
     "This mask already exists!" : "Tato maska už existuje!",
     "Enter custom mask!" : "Zadejte uživatelsky určenou masku!",
     "Collect not sensitive system info for bug report" : "Shromáždit informace o systému (neobsahuje žádné citlivé informace) pro účely nahlášení chyby",
@@ -131,7 +131,6 @@
     "_Target folder has no files or all of them excluded_::_Target folders have no files or all of them excluded_" : ["Cílová složka neobsahuje žádné soubory nebo jsou všechny vynechány","Cílové složky neobsahují žádné soubory nebo jsou všechny vynechány","Cílové složky neobsahují žádné soubory nebo jsou všechny vynechány","Cílové složky neobsahují žádné soubory nebo jsou všechny vynechány"],
     "Recent Tasks" : "Nedávné úlohy",
     "No tasks yet" : "Zatím žádné úlohy",
-    "Create a new one!" : "Vytvořte novou!",
     "Start" : "Spustit",
     "Restart" : "Restartovat",
     "Stop" : "Zastavit",
@@ -222,6 +221,7 @@
     "MediaDC Resolved files" : "Soubory vyřešené v MediaDC",
     "Some error occured while deleting task" : "Při mazání úlohy došlo k nějaké chybě",
     "Task successfully started with duplicated settings!" : "Úloha úspěšně spuštěna s duplikovanými nastaveními!",
-    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"]
+    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"],
+    "Create a new task or work on existing and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na stávající a nějaké vyřešte!"
 },"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;"
 }
