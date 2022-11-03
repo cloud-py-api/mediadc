@@ -21,6 +21,7 @@ OC.L10N.register(
     "Photos" : "Bilder",
     "Videos" : "Videor",
     "Start" : "Start",
+    "Duplicate" : "Dubblett",
     "Delete" : "Radera",
     "Edit" : "Ändra",
     "Delete task" : "Ta bort uppgift",
