@@ -266,7 +266,7 @@ export default {
 		},
 		removeTaskDetail(detail) {
 			if (this.deleteFileConfirmation) {
-				if (confirm(this.t('mediadc', 'Are you sure, you want remove this group without deleting files?'))) {
+				if (confirm(this.t('mediadc', 'Are you sure you want to remove this group without deleting files?'))) {
 					this._removeTaskDetail(detail)
 				}
 			} else {
