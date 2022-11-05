@@ -296,7 +296,7 @@ export default {
 		},
 		deleteTask(task) {
 			if (this.isValidUser) {
-				if (confirm(this.t('mediadc', 'Are sure, you want delete this task?'))) {
+				if (confirm(this.t('mediadc', 'Are sure you want to delete this task?'))) {
 					this.$store.dispatch('deleteTask', task).then(() => {
 						this.$router.push({ name: 'collector' })
 						showSuccess(this.t('mediadc', 'Task successfully deleted'))
