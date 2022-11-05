@@ -284,7 +284,7 @@ export default {
 			this.saveChanges()
 		},
 		updateHashingAlgorithm() {
-			if (confirm(this.t('mediadc', 'The photo and video hashes would be cleaned before changing hashing_algorithm.\nContinue?'))) {
+			if (confirm(this.t('mediadc', 'The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?'))) {
 				this.truncatePhotosAndVideos().then(() => {
 					this.mappedSettings.hashing_algorithm.value = JSON.stringify(this.hashing_algorithm)
 					this.updateSetting(this.mappedSettings.hashing_algorithm.name, this.mappedSettings.hashing_algorithm).then(res => {
@@ -320,7 +320,7 @@ export default {
 						}
 					}).catch(err => {
 						console.debug(err)
-						showError(this.t('mediadc', 'Some error occured while updateing setting. Try again'))
+						showError(this.t('mediadc', 'An error occurred when updating the setting. Try again'))
 					})
 				})
 			} else {
