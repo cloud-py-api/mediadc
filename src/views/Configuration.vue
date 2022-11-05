@@ -83,8 +83,8 @@
 			</div>
 		</div>
 		<div v-else-if="!isAdmin && !installed && !loading">
-			<p>{{ t('mediadc', 'MediaDC application can be configured only by Administrator.') }}</p>
-			<p>{{ t('mediadc', 'Please, contact your cloud Administrator.') }}</p>
+			<p>{{ t('mediadc', 'MediaDC application can be configured only by administration.') }}</p>
+			<p>{{ t('mediadc', 'Please contact your cloud administration.') }}</p>
 		</div>
 		<div v-else>
 			<Button v-if="installed" class="mediadc-button-vue" @click="finishConfiguration">
