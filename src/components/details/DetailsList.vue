@@ -100,7 +100,7 @@
 							<ActionButton v-if="checkedDetailGroups.length > 0" icon="icon-close" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
 								{{ t('mediadc', 'Uncheck selected') }}
 							</ActionButton>
-							<ActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group resolved'), placement: 'left'}"
+							<ActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group as resolved'), placement: 'left'}"
 								icon="icon-delete"
 								@click="removeCheckedGroups">
 								{{ n('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
@@ -332,7 +332,7 @@ export default {
 					showSuccess(this.t('mediadc', 'Selected groups successfully removed'))
 				}
 			}).catch(err => {
-				showError(this.t('mediadc', 'Some server error occured'))
+				showError(this.t('mediadc', 'An server error occurred'))
 				console.debug(err)
 			})
 		},
