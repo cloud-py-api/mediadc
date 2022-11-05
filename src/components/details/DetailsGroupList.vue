@@ -252,7 +252,7 @@ export default {
 		},
 		deleteCheckedFiles() {
 			if (this.allFiles.length === this.checkedFiles.length) {
-				if (confirm(this.t('mediadc', 'Are you sure, you want delete all files'))) {
+				if (confirm(this.t('mediadc', 'Are you sure you want to delete all files'))) {
 					this._deleteCheckedFiles()
 				}
 			} else {
