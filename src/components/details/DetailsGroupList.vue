@@ -269,12 +269,12 @@ export default {
 					this._updateDeletedFiles(res)
 				} else {
 					console.debug(res.data.errors)
-					showError(this.t('mediadc', 'Some server error occured. Files not deleted'))
+					showError(this.t('mediadc', 'A server error occurred. Files not deleted'))
 					this.$emit('update:updating', false)
 				}
 			}).catch(err => {
 				console.debug(err)
-				showError(this.t('mediadc', 'Some server error occured'))
+				showError(this.t('mediadc', 'A server error occurred'))
 				this.$emit('update:updating', false)
 			})
 		},
