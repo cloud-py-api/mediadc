@@ -355,7 +355,7 @@ export default {
 						emit('restartTask')
 						showSuccess(this.t('mediadc', 'Task successfully restarted!'))
 					} else if (res.data.limit) {
-						showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
+						showWarning(this.t('mediadc', 'Running tasks limit exceeded. Try again later.'))
 					} else if (res.data.empty) {
 						showWarning(this.n('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
 					} else {
