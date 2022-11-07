@@ -107,7 +107,7 @@
 					<div v-show="updating" class="action-blackout">
 						<span class="icon-loading" />
 					</div>
-					<caption>{{ t('mediadc', 'Python dependecies list') }}</caption>
+					<caption>{{ t('mediadc', 'Python dependencies list') }}</caption>
 					<thead>
 						<tr>
 							<th><b>{{ t('mediadc', 'Type') }}</b></th>
