@@ -18,6 +18,7 @@ OC.L10N.register(
     "Start" : "Komenco",
     "Delete" : "Forigi",
     "Edit" : "Modifi",
+    "Install" : "Instali",
     "Type" : "Tipo",
     "Actions" : "Agoj",
     "Update" : "Ĝisdatigi"
