@@ -282,12 +282,12 @@ export default {
 						} else if (res.data.limit) {
 							showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 						} else {
-							showWarning(this.t('medaidc', 'Some error occured while running Collector Task. Try again.'))
+							showWarning(this.t('medaidc', 'Some error occurred while running Collector Task. Try again.'))
 						}
 					}).catch(err => {
 						this.restarting = false
 						console.debug(err)
-						showError('Some error occured while running Collector Task. Try again.')
+						showError('Some error occurred while running Collector Task. Try again.')
 					})
 				})
 			} else {
@@ -296,7 +296,7 @@ export default {
 		},
 		deleteTask(task) {
 			if (this.isValidUser) {
-				if (confirm(this.t('mediadc', 'Are sure, you want delete this task?'))) {
+				if (confirm(this.t('mediadc', 'Are sure you want to delete this task?'))) {
 					this.$store.dispatch('deleteTask', task).then(() => {
 						this.$router.push({ name: 'collector' })
 						showSuccess(this.t('mediadc', 'Task successfully deleted'))

@@ -261,7 +261,7 @@ export default {
 			axios.put(generateUrl('/apps/mediadc/api/v1/settings'), { settings: this.settings })
 				.catch(err => {
 					console.debug(err)
-					showError(this.t('mediadc', 'Some error occured while updating settings'))
+					showError(this.t('mediadc', 'Some error occurred while updating settings'))
 				})
 		},
 		async truncatePhotosAndVideos() {
@@ -284,7 +284,7 @@ export default {
 			this.saveChanges()
 		},
 		updateHashingAlgorithm() {
-			if (confirm(this.t('mediadc', 'The photo and video hashes would be cleaned before changing hashing_algorithm.\nContinue?'))) {
+			if (confirm(this.t('mediadc', 'The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?'))) {
 				this.truncatePhotosAndVideos().then(() => {
 					this.mappedSettings.hashing_algorithm.value = JSON.stringify(this.hashing_algorithm)
 					this.updateSetting(this.mappedSettings.hashing_algorithm.name, this.mappedSettings.hashing_algorithm).then(res => {
@@ -296,11 +296,11 @@ export default {
 						}
 					}).catch(err => {
 						console.debug(err)
-						showError(this.t('mediadc', 'Some error occured while updateing setting. Try again'))
+						showError(this.t('mediadc', 'Some error occurred while updateing setting. Try again'))
 					})
 				}).catch(err => {
 					console.debug(err)
-					showError(this.t('mediadc', 'Some error occured while changing hashing algorithm'))
+					showError(this.t('mediadc', 'Some error occurred while changing hashing algorithm'))
 					this.hashing_algorithm = JSON.parse(this.mappedSettings.hashing_algorithm.value)
 				})
 			} else {
@@ -320,7 +320,7 @@ export default {
 						}
 					}).catch(err => {
 						console.debug(err)
-						showError(this.t('mediadc', 'Some error occured while updateing setting. Try again'))
+						showError(this.t('mediadc', 'An error occurred when updating the setting. Try again'))
 					})
 				})
 			} else {
@@ -335,7 +335,7 @@ export default {
 			this.updateSetting(this.mappedSettings.exclude_list.name, this.mappedSettings.exclude_list)
 				.catch(err => {
 					console.debug(err)
-					showError(this.t('mediadc', 'Some error occured while updating setting. Try again'))
+					showError(this.t('mediadc', 'Some error occurred while updating setting. Try again'))
 				})
 		},
 		addNewMask() {

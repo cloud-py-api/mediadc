@@ -25,7 +25,7 @@
 <template>
 	<div class="bug-report">
 		<p style="margin: 0 0 20px;">
-			{{ t('mediadc', 'Collect not sensitive system info for bug report') }}
+			{{ t('mediadc', 'Collect non sensitive system info for bug report') }}
 		</p>
 		<Button class="mediadc-button-vue"
 			type="secondary"

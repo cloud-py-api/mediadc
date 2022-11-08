@@ -95,7 +95,7 @@ const actions = {
 			return res
 		}).catch(err => {
 			console.debug(err)
-			showError(t('mediadc', 'Some server error occured'))
+			showError(t('mediadc', 'A server error occurred'))
 		})
 	},
 }

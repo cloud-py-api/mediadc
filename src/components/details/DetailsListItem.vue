@@ -266,7 +266,7 @@ export default {
 		},
 		removeTaskDetail(detail) {
 			if (this.deleteFileConfirmation) {
-				if (confirm(this.t('mediadc', 'Are you sure, you want remove this group without deleting files?'))) {
+				if (confirm(this.t('mediadc', 'Are you sure you want to remove this group without deleting files?'))) {
 					this._removeTaskDetail(detail)
 				}
 			} else {
@@ -298,12 +298,12 @@ export default {
 					}
 					this.updating = false
 				} else {
-					showError(this.t('mediadc', 'Some error occured while deleting duplicate group'))
+					showError(this.t('mediadc', 'An error occurred while deleting duplicate group'))
 					this.updating = false
 				}
 			}).catch(err => {
 				console.debug(err)
-				showError(this.t('mediadc', 'Some error occured while deleting duplicate group'))
+				showError(this.t('mediadc', 'An error occurred while deleting duplicate group'))
 				this.updating = false
 			})
 		},

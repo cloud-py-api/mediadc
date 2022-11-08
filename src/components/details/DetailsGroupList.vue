@@ -53,7 +53,7 @@
 					<ActionButton v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
 						{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
 					</ActionButton>
-					<ActionButton v-tooltip="{content: t('mediadc', 'Mark resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
+					<ActionButton v-tooltip="{content: t('mediadc', 'Mark as resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
 						{{ n('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}
 					</ActionButton>
 					<ActionButton v-tooltip="{content: n('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
@@ -246,13 +246,13 @@ export default {
 				}
 			}).catch(err => {
 				console.debug(err)
-				showError(this.t('mediadc', 'Some server error occured'))
+				showError(this.t('mediadc', 'An server error occurred'))
 				this.$emit('update:updating', false)
 			})
 		},
 		deleteCheckedFiles() {
 			if (this.allFiles.length === this.checkedFiles.length) {
-				if (confirm(this.t('mediadc', 'Are you sure, you want delete all files'))) {
+				if (confirm(this.t('mediadc', 'Are you sure you want to delete all files'))) {
 					this._deleteCheckedFiles()
 				}
 			} else {
@@ -269,12 +269,12 @@ export default {
 					this._updateDeletedFiles(res)
 				} else {
 					console.debug(res.data.errors)
-					showError(this.t('mediadc', 'Some server error occured. Files not deleted'))
+					showError(this.t('mediadc', 'A server error occurred. Files not deleted'))
 					this.$emit('update:updating', false)
 				}
 			}).catch(err => {
 				console.debug(err)
-				showError(this.t('mediadc', 'Some server error occured'))
+				showError(this.t('mediadc', 'A server error occurred'))
 				this.$emit('update:updating', false)
 			})
 		},

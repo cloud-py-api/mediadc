@@ -135,7 +135,7 @@ const actions = {
 			return res
 		}).catch(err => {
 			console.debug(err)
-			showError(t('mediadc', 'Some error occured while terminating task'))
+			showError(t('mediadc', 'Some error occurred while terminating task'))
 		})
 	},
 
@@ -155,7 +155,7 @@ const actions = {
 			return res
 		}).catch(err => {
 			console.debug(err)
-			showError(t('mediadc', 'Some error occured while deleting task'))
+			showError(t('mediadc', 'Some error occurred while deleting task'))
 		})
 	},
 
@@ -215,12 +215,12 @@ const actions = {
 			} else if (res.data.limit) {
 				showWarning(t('mediadc', 'Running tasks limit exceed. Try again later.'))
 			} else {
-				showWarning(t('medaidc', 'Some error occured while running Collector Task. Try again.'))
+				showWarning(t('medaidc', 'Some error occurred while running Collector Task. Try again.'))
 			}
 			return res
 		}).catch(err => {
 			console.debug(err)
-			showError(t('mediadc', 'Some error occured while running Collector Task. Try again.'))
+			showError(t('mediadc', 'Some error occurred while running Collector Task. Try again.'))
 		})
 	},
 }
