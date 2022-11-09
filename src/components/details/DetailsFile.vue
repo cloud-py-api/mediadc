@@ -280,7 +280,7 @@ export default {
 				}
 			}).catch(err => {
 				console.debug(err)
-				showError(this.t('mediadc', 'An server error occurred'))
+				showError(this.t('mediadc', 'A server error occurred'))
 				this.updating = false
 			})
 		},
