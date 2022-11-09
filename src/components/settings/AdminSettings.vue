@@ -28,8 +28,8 @@
 			{{ t('mediadc', 'MediaDC settings') }}
 		</h2>
 		<div v-if="settings.length > 0" class="settings">
-			<NcSettingsSection :title="mappedSettings.hashing_algorithm.display_name"
-				:description="mappedSettings.hashing_algorithm.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.hashing_algorithm.display_name)"
+				:description="t('mediadc', mappedSettings.hashing_algorithm.description)">
 				<select v-if="algorithms.length > 0"
 					id="hashing_algorithm"
 					v-model="hashing_algorithm"
@@ -48,8 +48,8 @@
 					</a>
 				</div>
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.similarity_threshold.display_name"
-				:description="mappedSettings.similarity_threshold.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.similarity_threshold.display_name)"
+				:description="t('mediadc', mappedSettings.similarity_threshold.description)">
 				<input id="similarity_threshold"
 					v-model="mappedSettings.similarity_threshold.value"
 					type="number"
@@ -58,8 +58,8 @@
 					max="100"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.hash_size.display_name"
-				:description="mappedSettings.hash_size.description">
+			<NcSettingsSection :title="t('mediadc',mappedSettings.hash_size.display_name)"
+				:description="t('mediadc', mappedSettings.hash_size.description)">
 				<select id="hash_size"
 					v-model.number="hash_size"
 					name="hash_size"
@@ -69,8 +69,8 @@
 					</option>
 				</select>
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.exclude_list.display_name"
-				:description="mappedSettings.exclude_list.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.exclude_list.display_name)"
+				:description="t('mediadc', mappedSettings.exclude_list.description)">
 				<template #default>
 					<ul v-if="customExcludeList.length > 0" style="width: 100%; max-width: 350px; max-height: 290px; overflow-y: scroll;">
 						<NcListItem v-for="(mask, index) in customExcludeList"
@@ -128,8 +128,8 @@
 					</div>
 				</template>
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.python_limit.display_name"
-				:description="mappedSettings.python_limit.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.python_limit.display_name)"
+				:description="t('mediadc', mappedSettings.python_limit.description)">
 				<input id="python_limit"
 					v-model.number="mappedSettings.python_limit.value"
 					type="number"
@@ -138,16 +138,16 @@
 					max="10"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.python_command.display_name"
-				:description="mappedSettings.python_command.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.python_command.display_name)"
+				:description="t('mediadc', mappedSettings.python_command.description)">
 				<input id="python_command"
 					v-model="mappedSettings.python_command.value"
 					type="text"
 					name="python_command"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.remote_filesize_limit.display_name"
-				:description="mappedSettings.remote_filesize_limit.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.remote_filesize_limit.display_name)"
+				:description="t('mediadc', mappedSettings.remote_filesize_limit.description)">
 				<input id="remote_filesize_limit"
 					v-model="remote_filesize_limit"
 					type="number"
@@ -157,14 +157,14 @@
 					@input="updateRemoteFilesizeLimit"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.use_php_path_from_settings.display_name"
-				:description="mappedSettings.use_php_path_from_settings.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.use_php_path_from_settings.display_name)"
+				:description="t('mediadc', mappedSettings.use_php_path_from_settings.description)">
 				<NcCheckboxRadioSwitch :checked.sync="usePhpPathFromSettings" @update:checked="updateUsePhpPathFromSettings">
 					{{ t('mediadc', 'Use PHP path from settings') }}
 				</NcCheckboxRadioSwitch>
 			</NcSettingsSection>
-			<NcSettingsSection :title="mappedSettings.php_path.display_name"
-				:description="mappedSettings.php_path.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.php_path.display_name)"
+				:description="t('mediadc', mappedSettings.php_path.description)">
 				<input id="php_path"
 					v-model="mappedSettings.php_path.value"
 					type="text"

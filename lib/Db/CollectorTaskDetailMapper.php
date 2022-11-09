@@ -28,23 +28,20 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Db;
 
-use Exception;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\AppFramework\Db\Entity;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
-use Psr\Log\LoggerInterface;
+
 
 class CollectorTaskDetailMapper extends QBMapper
 {
 
-	public function __construct(IDBConnection $db, LoggerInterface $logger)
+	public function __construct(IDBConnection $db)
 	{
 		parent::__construct($db, Application::APP_ID . '_tasks_details');
-
-		$this->logger = $logger;
 	}
 
 	/**
@@ -100,6 +97,87 @@ class CollectorTaskDetailMapper extends QBMapper
 		return $this->findEntities($qb);
 	}
 
+	public function findByGroupId(int $taskId, int $groupId, int $fileid): Entity
+	{
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from($this->tableName, 'mdc_t_d')
+			->where($qb->expr()->eq('mdc_t_d.task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('mdc_t_d.group_id', $qb->createNamedParameter($groupId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('mdc_t_d.fileid', $qb->createNamedParameter($fileid, IQueryBuilder::PARAM_INT)))
+			->orderBy('mdc_t_d.group_id', 'ASC');
+		return $this->findEntity($qb);
+	}
+
+	public function findAllByGroupId(int $taskId, int $groupId): array
+	{
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(
+			'mdc_t_d.fileid',
+		)
+			->from($this->tableName, 'mdc_t_d')
+			->where($qb->expr()->eq('mdc_t_d.task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('mdc_t_d.group_id', $qb->createNamedParameter($groupId, IQueryBuilder::PARAM_INT)))
+			->orderBy('mdc_t_d.group_id', 'ASC');
+		return array_map(function ($row) {
+			return intval($row['fileid']);
+		}, $qb->executeQuery()->fetchAll());
+	}
+
+	/**
+	 * @param int $taskId
+	 * @param int $limit
+	 * @param int $offset
+	 * 
+	 * @return array
+	 */
+	public function findAllByIdNew(int $taskId, int $limit = null, int $offset = null): array
+	{
+		$qb = $this->db->getQueryBuilder();
+		$platform = $this->db->getDatabasePlatform()->getName();
+		if ($platform === 'mysql') {
+			$grouppedFileIdsFunction = $qb->createFunction('GROUP_CONCAT(mdc_t_d.fileid SEPARATOR \',\') as files');
+			$grouppedFilesSizesFunction = $qb->createFunction('GROUP_CONCAT(ocf.size SEPARATOR \',\') as filessizes');
+		} else if ($platform === 'postgresql') {
+			$grouppedFileIdsFunction = $qb->createFunction('string_agg(mdc_t_d.fileid, \',\') as files');
+			$grouppedFilesSizesFunction = $qb->createFunction('string_agg(ocf.size, \',\') as filessizes');
+		}
+		$qb->select(
+			'mdc_t_d.task_id',
+			'mdc_t_d.group_id',
+			$grouppedFileIdsFunction,
+			$grouppedFilesSizesFunction,
+		)
+			->from($this->tableName, 'mdc_t_d')
+			->innerJoin('mdc_t_d', 'filecache', 'ocf', 'ocf.fileid=mdc_t_d.fileid')
+			->groupBy('mdc_t_d.task_id', 'mdc_t_d.group_id')
+			->having($qb->expr()->eq('mdc_t_d.task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+			->orderBy('mdc_t_d.group_id', 'ASC')
+			->setMaxResults($limit)
+			->setFirstResult($offset);
+		return $qb->executeQuery()->fetchAll();
+	}
+
+	public function getDetailsTotals(int $taskId, int $limit = null, int $offset = null)
+	{
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(
+			$qb->createFunction('COUNT(ocf.fileid) as filestotal'),
+			$qb->createFunction('SUM(ocf.size) as filessize'),
+		)
+			->from($this->tableName, 'mdc_t_d')
+			->innerJoin('mdc_t_d', 'filecache', 'ocf', 'ocf.fileid=mdc_t_d.fileid')
+			->groupBy('mdc_t_d.task_id', 'mdc_t_d.group_id')
+			->having($qb->expr()->eq('mdc_t_d.task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+			->setMaxResults($limit)
+			->setFirstResult($offset);
+		return array_reduce($qb->executeQuery()->fetchAll(), function ($carry, $row) {
+			$carry['filestotal'] += $row['filestotal'];
+			$carry['filessize'] += $row['filessize'];
+			return $carry;
+		}, ['filestotal' => 0, 'filessize' => 0]);
+	}
+
 	/**
 	 * @param int $taskId
 	 * 
@@ -111,6 +189,27 @@ class CollectorTaskDetailMapper extends QBMapper
 		$result = $qb->delete($this->tableName)->where(
 			$qb->expr()->eq('task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT))
 		)->executeStatement();
+		return $result;
+	}
+
+	public function deleteDetailGroup(int $taskId, int $groupId)
+	{
+		$qb = $this->db->getQueryBuilder();
+		$result = $qb->delete($this->tableName)
+		->where($qb->expr()->eq('task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+		->andWhere($qb->expr()->eq('group_id', $qb->createNamedParameter($groupId, IQueryBuilder::PARAM_INT)))
+		->executeStatement();
+		return $result;
+	}
+
+	public function deleteGroupFiles(int $taskId, int $groupId, array $fileids)
+	{
+		$qb = $this->db->getQueryBuilder();
+		$result = $qb->delete($this->tableName)
+		->where($qb->expr()->eq('task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+		->andWhere($qb->expr()->eq('group_id', $qb->createNamedParameter($groupId, IQueryBuilder::PARAM_INT)))
+		->andWhere($qb->expr()->in('fileid', $qb->createNamedParameter($fileids, IQueryBuilder::PARAM_INT_ARRAY)))
+		->executeStatement();
 		return $result;
 	}
 }

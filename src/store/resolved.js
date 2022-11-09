@@ -42,37 +42,92 @@ const state = {
 }
 
 const mutations = {
+
+	/**
+	 * Set list of resolved photos
+	 *
+	 * @param {object} state the store data
+	 * @param {Array} photos list of resolved photos
+	 */
 	setResolvedPhotos(state, photos) {
 		state[state.selectedType].data = photos
 	},
+
+	/**
+	 * Set list of resolved videos
+	 *
+	 * @param {object} state the store data
+	 * @param {Array} videos list of revolved videos
+	 */
 	setResolvedVideos(state, videos) {
 		state[state.selectedType].data = videos
 	},
+
+	/**
+	 * Set type of list to show
+	 *
+	 * @param {object} state the store data
+	 * @param {string} selectedType type of media to show
+	 */
 	setSelectedType(state, selectedType) {
 		if (['photos', 'videos'].includes(selectedType)) {
 			state.selectedType = selectedType
 		}
 	},
+
+	/**
+	 * Set current page number
+	 *
+	 * @param {object} state the store data
+	 * @param {number} value page number
+	 */
 	updatePage(state, value) {
 		state[state.selectedType].page = value
 	},
 }
 
 const getters = {
-	resolved: state => {
-		if (state.selectedType === 'photos') {
-			return state.photos.data
-		} else if (state.selectedType === 'videos') {
-			return state.videos.data
-		}
-	},
+	/**
+	 * Returns current list of selectedType
+	 *
+	 * @param {object} state the store data
+	 * @return {Array} list of resolved photos or videos
+	 */
+	resolved: state => ['photos', 'videos'].includes(state.selectedType) ? state[state.selectedType].data : null,
+
+	/**
+	 * Returns current pagination page within selected type
+	 *
+	 * @param {object} state the store data
+	 * @return {number}
+	 */
 	page: state => state[state.selectedType].page,
+
+	/**
+	 * Returns page size (items per page)
+	 *
+	 * @param {object} state the store data
+	 * @return {number}
+	 */
 	pageSize: state => state.pageSize,
+
+	/**
+	 * Return current selected type of resolved list (photos or videos)
+	 *
+	 * @param {object} state the store data
+	 * @return {Array}
+	 */
 	selectedType: state => state.selectedType,
-	resolvedStatus: state => state.status,
 }
 
 const actions = {
+
+	/**
+	 * Retrieve and commit list of selected type of resolved items
+	 *
+	 * @param {object} context the store object
+	 * @return {Promise<object>}
+	 */
 	async getResolved(context) {
 		return axios.get(generateUrl(`/apps/mediadc/api/v1/resolved?type=${context.state.selectedType}&limit=${context.state.pageSize}&offset=${context.state[context.state.selectedType].page * 10}`)).then(res => {
 			if (res.data.success) {
@@ -90,6 +145,14 @@ const actions = {
 			console.debug(err)
 		})
 	},
+
+	/**
+	 * Perform resolveFile request (mark or unmark resolved)
+	 *
+	 * @param {object} context the store object
+	 * @param {object} params method params
+	 * @return {Promise<object>}
+	 */
 	async resolveFile(context, params) {
 		return axios.post(generateUrl(`/apps/mediadc/api/v1/resolved/mark/${params.fileid}`), { type: context.state.selectedType, resolved: params.resolved }).then(res => {
 			return res

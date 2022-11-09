@@ -27,7 +27,10 @@
 		<div class="filters">
 			<div class="sorting">
 				{{ t('mediadc', 'Files size sorting') }}
-				<NcButton type="tertiary" style="margin: 0 10px;" @click="updateFileSorting">
+				<NcButton type="tertiary"
+					:aria-label="t('mediadc', 'Toggle files size sorting')"
+					style="margin: 0 10px;"
+					@click="updateFileSorting">
 					<template #icon>
 						<span :class="filesAscending ? 'icon-triangle-s sorting-group-files-btn' : 'icon-triangle-n sorting-group-files-btn'" />
 					</template>
@@ -50,7 +53,7 @@
 					<NcActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}" icon="icon-checkmark" @click="selectAllFiles">
 						{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
 					</NcActionButton>
-					<NcActionButton v-if="JSON.parse(detail.group_files_ids).length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
+					<NcActionButton v-if="detail.files.length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
 						{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
 					</NcActionButton>
 					<NcActionButton v-tooltip="{content: t('mediadc', 'Mark resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
@@ -154,7 +157,6 @@ export default {
 	computed: {
 		...mapGetters([
 			'detailsGridSize',
-			'deleteFileConfirmation',
 			'groupItemsPerPage',
 			'details',
 		]),
@@ -219,7 +221,7 @@ export default {
 		},
 		removeCheckedFiles() {
 			this.$emit('update:updating', true)
-			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/remove`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.group_id}/remove`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
 				if (res.data.success) {
 					const allFiles = this.allFiles
 					if ((this.allFiles.length - this.checkedFiles.length) <= 1) {
@@ -261,9 +263,10 @@ export default {
 		},
 		_deleteCheckedFiles() {
 			this.$emit('update:updating', true)
-			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/delete`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.group_id}/delete`), { fileIds: this.checkedFiles.map(f => f.fileid) }).then(res => {
 				if (res.data.success) {
 					this._updateDeletedFiles(res)
+					this.$store.commit('setTask', res.data.task)
 				} else if (!res.data.success && res.data.deletedFileIds.length > 0) {
 					showWarning(this.t('mediadc', 'Not all files deleted'))
 					this._updateDeletedFiles(res)

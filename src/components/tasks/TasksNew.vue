@@ -37,6 +37,7 @@
 							</span>
 							<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 								type="tertiary"
+								:aria-label="t('mediadc', 'Remove selected target directory')"
 								@click="removeTargetDirectory(fileid)">
 								<template #icon>
 									<span class="icon-delete" />
@@ -69,6 +70,7 @@
 							</span>
 							<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 								type="tertiary"
+								:aria-label="t('mediadc', 'Remove selected exclude directory')"
 								@click="removeExcludeDirectory(fileid)">
 								<template #icon>
 									<span class="icon-delete" />
@@ -99,6 +101,7 @@
 						<span>{{ mask }}</span>
 						<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 							type="tertiary"
+							:aria-label="t('mediadc', 'Remove selected custom exclude mask')"
 							@click="deleteCustomMask(mask)">
 							<template #icon>
 								<span class="icon-delete" />
@@ -118,6 +121,7 @@
 						@keyup.esc="cancelAddingCustomMask">
 					<NcButton v-tooltip="t('mediadc', 'Confirm')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Confirm adding of the custom exclude mask')"
 						@click="addCustomMask">
 						<template #icon>
 							<span class="icon-checkmark" />
@@ -125,6 +129,7 @@
 					</NcButton>
 					<NcButton v-tooltip="t('mediadc', 'Decline')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Cancel adding of the custom exclude mask')"
 						@click="cancelAddingCustomMask">
 						<template #icon>
 							<span class="icon-close" />
@@ -132,7 +137,9 @@
 					</NcButton>
 				</div>
 				<div style="display: flex; align-items: center; margin: 20px 0;">
-					<NcButton class="mediadc-button-vue" @click="addNewMask">
+					<NcButton class="mediadc-button-vue"
+						:aria-label="t('mediadc', 'Add custom exclude mask')"
+						@click="addNewMask">
 						<template #icon>
 							<PlusThick :size="16" />
 						</template>
@@ -176,7 +183,7 @@
 					{{ t('mediadc', 'Run new Task') }}
 				</template>
 				<template v-if="runningTask" #icon>
-					<span class="icon-loading" />
+					<span class="icon-loading-small" />
 				</template>
 			</NcButton>
 			<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Send notification on task finish')"

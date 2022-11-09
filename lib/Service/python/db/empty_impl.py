@@ -116,9 +116,9 @@ def store_err_video_hash(fileid: int, duration: int, mtime: int, skipped_count: 
                               f"mtime={mtime},skipped_count={skipped_count}")
 
 
-def store_task_files_group(task_id: int, group_files_ids: str) -> None:
+def store_task_files_group(task_id: int, group_id: int, file_id: int) -> None:
     """Add to table `task_details` one record with similar files."""
-    raise NotImplementedError(f"store_task_files_group:task_id={task_id},group_files_ids={group_files_ids}")
+    raise NotImplementedError(f"store_task_files_group:task_id={task_id},group_id={group_id},file_id={file_id}")
 
 
 def get_remote_filesize_limit() -> int:

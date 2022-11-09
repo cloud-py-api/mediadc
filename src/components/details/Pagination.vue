@@ -26,6 +26,7 @@
 	<div class="pagination">
 		<NcButton v-if="details.length > itemsPerPage"
 			type="tertiary"
+			:aria-label="t('mediadc', 'Previous duplicate list page')"
 			@click="prevGroupsPage">
 			<template #icon>
 				<span class="icon-view-previous pagination-button" />
@@ -35,19 +36,25 @@
 		<span v-if="details.length > itemsPerPage" style="margin-right: 5px;">{{ page + 1 }}/{{ Math.ceil(details.length / itemsPerPage) }}</span>
 		<NcButton v-if="details.length > itemsPerPage"
 			type="tertiary"
+			:aria-label="t('mediadc', 'Next duplicate list page')"
 			@click="nextGroupsPage">
 			<template #icon>
 				<span class="icon-view-next pagination-button" />
 			</template>
 		</NcButton>
 		<template v-if="details.length > itemsPerPage">
-			<select id="to_page" v-model="goToPage" name="to_page">
-				<option v-for="rPage of pagesRange" :key="rPage" :value="rPage">
-					{{ rPage + 1 }}
-				</option>
-			</select>
+			<input id="go_to_page"
+				v-model="goToPage"
+				type="number"
+				style="width: fit-content;"
+				:min="1"
+				:max="pagesRange[pagesRange.length - 1] + 1"
+				name="go_to_page"
+				:aria-label="t('mediadc', 'Page to navigate to')"
+				@keyup.enter="navigateToPage">
 			<NcButton v-tooltip="t('mediadc', 'Go to page')"
 				type="tertiary"
+				:aria-label="t('mediadc', 'Navigate to duplicate list page')"
 				@click="navigateToPage">
 				<template #icon>
 					<span class="icon-confirm" />
@@ -86,7 +93,7 @@ export default {
 	},
 	data() {
 		return {
-			goToPage: 0,
+			goToPage: 1,
 		}
 	},
 	computed: {
@@ -99,7 +106,12 @@ export default {
 	},
 	methods: {
 		navigateToPage() {
-			this.$emit('update:page', this.goToPage)
+			if (this.goToPage > this.pagesRange.length) {
+				this.goToPage = this.pagesRange.length
+			} else if (this.goToPage <= 0) {
+				this.goToPage = 1
+			}
+			this.$emit('update:page', this.goToPage - 1)
 		},
 	},
 }

@@ -15,6 +15,11 @@
       <code>Command</code>
     </UndefinedClass>
   </file>
+  <file src="lib/Command/CollectorPopulateTaskCommand.php">
+    <UndefinedClass occurrences="1">
+      <code>Command</code>
+    </UndefinedClass>
+  </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
     <UndefinedClass occurrences="1">
       <code>Command</code>
@@ -45,16 +50,22 @@
     </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Db/CollectorTaskDetailMapper.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;logger</code>
-    </UndefinedThisPropertyAssignment>
-  </file>
-  <file src="lib/Migration/AppDataInitializationStep.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;logger</code>
-    </UndefinedThisPropertyAssignment>
+    <UndefinedDocblockClass occurrences="1">
+      <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
+    <ImplementedParamTypeMismatch occurrences="1">
+      <code>$schemaClosure</code>
+    </ImplementedParamTypeMismatch>
+    <MismatchingDocblockParamType occurrences="1">
+      <code>Closure</code>
+    </MismatchingDocblockParamType>
+    <UndefinedDocblockClass occurrences="1">
+      <code>Closure</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Migration/Version0002Date20221102124949.php">
     <ImplementedParamTypeMismatch occurrences="1">
       <code>$schemaClosure</code>
     </ImplementedParamTypeMismatch>

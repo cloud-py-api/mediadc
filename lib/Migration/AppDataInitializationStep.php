@@ -31,11 +31,10 @@ namespace OCA\MediaDC\Migration;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
-use OCA\MediaDC\Service\UtilsService;
-use Psr\Log\LoggerInterface;
+use OCA\MediaDC\Migration\data\AppInitialData;
+
 
 class AppDataInitializationStep implements IRepairStep
 {
@@ -43,14 +42,13 @@ class AppDataInitializationStep implements IRepairStep
 	/** @var SettingMapper */
 	private $settingMapper;
 
-	/** @var UtilsService */
-	private $utils;
+	/** @var AppInitialData */
+	private $appInitialData;
 
-	public function __construct(SettingMapper $settingMapper, UtilsService $utils, LoggerInterface $logger)
+	public function __construct(SettingMapper $settingMapper, AppInitialData $appInitialData)
 	{
 		$this->settingMapper = $settingMapper;
-		$this->utils = $utils;
-		$this->logger = $logger;
+		$this->appInitialData = $appInitialData;
 	}
 
 	public function getName(): string
@@ -61,10 +59,9 @@ class AppDataInitializationStep implements IRepairStep
 	public function run(IOutput $output)
 	{
 		$output->startProgress(2);
-		$data_file = $this->utils->getCustomAppsDirectory() . Application::APP_ID . "/lib/Migration/data/app_data_Version0001Date20210627153636.json";
-		$app_data = json_decode(file_get_contents($data_file), true);
+		$app_data = $this->appInitialData->getAppInitialData();
 
-		if (count($this->settingMapper->findAll()) === 0) {
+		if (count($this->settingMapper->findAll()) === 0 && isset($app_data['settings'])) {
 			if (isset($app_data['settings'])) {
 				foreach ($app_data['settings'] as $setting) {
 					$this->settingMapper->insert(new Setting([
@@ -77,14 +74,15 @@ class AppDataInitializationStep implements IRepairStep
 			}
 		}
 		$output->advance(1);
-		
+
 		$this->checkForDataUpdates($app_data);
 		$output->advance(2);
 
 		$output->finishProgress();
 	}
 
-	private function checkForDataUpdates($app_data) {
+	private function checkForDataUpdates($app_data)
+	{
 		$settings = $this->settingMapper->findAll();
 		if (count($settings) > 0 && count($app_data['settings']) > count($settings)) {
 			$currentSettingsKeys = array_map(function ($setting) {
@@ -94,7 +92,7 @@ class AppDataInitializationStep implements IRepairStep
 				return $setting['name'];
 			}, $app_data['settings']);
 			$newSettings = [];
-			foreach($newSettingsKeys as $setting) {
+			foreach ($newSettingsKeys as $setting) {
 				if (!in_array($setting, $currentSettingsKeys)) {
 					array_push($newSettings, $setting);
 				}
@@ -117,7 +115,7 @@ class AppDataInitializationStep implements IRepairStep
 				return $setting['name'];
 			}, $app_data['settings']);
 			$settingsToRemove = [];
-			foreach($currentSettingsKeys as $setting) {
+			foreach ($currentSettingsKeys as $setting) {
 				if (!in_array($setting, $newSettingsKeys)) {
 					array_push($settingsToRemove, $setting);
 				}

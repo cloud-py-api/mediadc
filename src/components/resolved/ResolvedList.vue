@@ -26,26 +26,35 @@
 	<div class="resolved-list">
 		<div class="resolved-list-heading">
 			<div v-if="resolved.total_pages > 1" class="pagination pagination-desktop">
-				<NcButton type="tertiary" @click="prevResolvedPage">
+				<NcButton type="tertiary"
+					:aria-label="t('mediadc', 'Previous resolved list page')"
+					@click="prevResolvedPage">
 					<template #icon>
 						<span class="icon-view-previous pagination-button" />
 					</template>
 				</NcButton>
 				<span style="margin-left: 5px;">{{ t('mediadc', 'Page:') }}&nbsp;</span>
 				<span style="margin-right: 5px;">{{ page + 1 }}/{{ resolved.total_pages }}</span>
-				<NcButton type="tertiary" @click="nextResolvedPage">
+				<NcButton type="tertiary"
+					:aria-label="t('mediadc', 'Next resolved list page')"
+					@click="nextResolvedPage">
 					<template #icon>
 						<span class="icon-view-next pagination-button" />
 					</template>
 				</NcButton>
 				<template v-if="resolved.total_pages > 1">
-					<select id="to_page" v-model="goToPage" name="to_page">
-						<option v-for="page of pagesRange" :key="page" :value="page">
-							{{ page + 1 }}
-						</option>
-					</select>
+					<input id="go_to_page"
+						v-model="goToPage"
+						type="number"
+						style="width: fit-content;"
+						:min="1"
+						:max="pagesRange[pagesRange.length - 1] + 1"
+						name="go_to_page"
+						:aria-label="t('mediadc', 'Page to navigate to')"
+						@keyup.enter="navigateToPage">
 					<NcButton v-tooltip="t('mediadc', 'Go to page')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Navigate to resolved list page')"
 						@click="navigateToPage">
 						<template #icon>
 							<span class="icon-confirm" />
@@ -57,6 +66,7 @@
 			<NcButton v-tooltip="t('mediadc', 'Toggle media type')"
 				type="tertiary"
 				class="toggle-type-button"
+				:aria-label="t('mediadc', 'Toggle resolved list media type')"
 				@click="toggleMediaType">
 				<template #icon>
 					<span :class="selectedType === 'photos' ? 'icon-video' : 'icon-picture'" />
@@ -65,6 +75,7 @@
 			<NcButton v-tooltip="viewTooltip"
 				type="tertiary"
 				class="toggle-view-button"
+				:aria-label="t('mediadc', 'Toggle list view (list or grid)')"
 				@click="toggleListView">
 				<template #icon>
 					<span :class="listView ? 'icon-toggle-pictures' : 'icon-toggle-filelist'" />
@@ -72,26 +83,35 @@
 			</NcButton>
 		</div>
 		<div v-if="resolved.total_pages > 1" class="pagination pagination-mobile">
-			<NcButton type="tertiary" @click="prevResolvedPage">
+			<NcButton type="tertiary"
+				:aria-label="t('mediadc', 'Previous resolved list page')"
+				@click="prevResolvedPage">
 				<template #icon>
 					<span class="icon-view-previous pagination-button" />
 				</template>
 			</NcButton>
 			<span style="margin-left: 5px;">{{ t('mediadc', 'Page:') }}&nbsp;</span>
 			<span style="margin-right: 5px;">{{ page + 1 }}/{{ resolved.total_pages }}</span>
-			<NcButton type="tertiary" @click="nextResolvedPage">
+			<NcButton type="tertiary"
+				:aria-label="t('mediadc', 'Next resolved list page')"
+				@click="nextResolvedPage">
 				<template #icon>
 					<span class="icon-view-next pagination-button" />
 				</template>
 			</NcButton>
 			<template v-if="resolved.total_pages > 1">
-				<select id="to_page" v-model="goToPage" name="to_page">
-					<option v-for="page of pagesRange" :key="page" :value="page">
-						{{ page + 1 }}
-					</option>
-				</select>
+				<input id="go_to_page"
+					v-model="goToPage"
+					type="number"
+					style="width: fit-content;"
+					:min="1"
+					:max="pagesRange[pagesRange.length - 1] + 1"
+					name="go_to_page"
+					:aria-label="t('mediadc', 'Page to navigate to')"
+					@keyup.enter="navigateToPage">
 				<NcButton v-tooltip="t('mediadc', 'Go to page')"
 					type="tertiary"
+					:aria-label="t('mediadc', 'Navigate to resolved list page')"
 					@click="navigateToPage">
 					<template #icon>
 						<span class="icon-confirm" />
@@ -200,7 +220,7 @@ export default {
 		return {
 			thumbSize: 48,
 			listView: true,
-			goToPage: 0,
+			goToPage: 1,
 		}
 	},
 	computed: {
@@ -273,7 +293,12 @@ export default {
 			}
 		},
 		navigateToPage() {
-			this.$store.commit('updatePage', this.goToPage)
+			if (this.goToPage > this.pagesRange.length) {
+				this.goToPage = this.pagesRange.length
+			} else if (this.goToPage <= 0) {
+				this.goToPage = 1
+			}
+			this.$store.commit('updatePage', this.goToPage - 1)
 		},
 	},
 }

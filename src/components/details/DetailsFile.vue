@@ -76,6 +76,7 @@
 					style="margin: 0 14px 0 10px;" />
 				<NcButton v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
 					type="tertiary"
+					:aria-label="t('mediadc', 'Delete file')"
 					@click="deleteGroupFile(file)">
 					<template #icon>
 						<span class="icon-delete" />
@@ -83,6 +84,7 @@
 				</NcButton>
 				<NcButton v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
 					type="tertiary"
+					:aria-label="t('mediadc', 'Remove file (mark resolved)')"
 					@click="removeGroupFile(file)">
 					<template #icon>
 						<span class="icon-close" />
@@ -190,14 +192,14 @@ export default {
 			const filesList = this.files.map(file => ({
 				basename: file.filename,
 				fileid: file.fileid,
-				filename: file.filepath.replace(`/${getCurrentUser().uid}/files`, ''),
+				filename: file.filepath.replace(`/${getCurrentUser().uid}/files`, '').replace('files/', '/'),
 				getcontentlength: file.filesize,
 				getcontenttype: file.filemtype,
 				mime: file.filemtype,
 				size: file.filesize,
 			}))
 			OCA.Viewer.open({
-				path: file.filepath.replace(`/${getCurrentUser().uid}/files`, ''),
+				path: file.filepath.replace(`/${getCurrentUser().uid}/files`, '').replace('files/', '/'),
 				list: filesList.map(file => ({
 					...file,
 					list: filesList,
@@ -209,16 +211,20 @@ export default {
 		},
 		deleteGroupFile(file) {
 			if (this.deleteFileConfirmation) {
-				if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
-					this._deleteGroupFile(file)
-				}
+				const self = this
+				OC.dialogs.confirm(this.t('mediadc', 'Are you sure, you want delete this file?'),
+					this.t('mediadc', 'Confirm file deletion'), function(success) {
+						if (success) {
+							self._deleteGroupFile(file)
+						}
+					})
 			} else {
 				this._deleteGroupFile(file)
 			}
 		},
 		_deleteGroupFile(file) {
 			this.updating = true
-			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/${file.fileid}`))
+			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.group_id}/${file.fileid}`))
 				.then(res => {
 					if (res.data.success) {
 						const files = this.files
@@ -237,6 +243,7 @@ export default {
 						}
 						this.$emit('update:files', files)
 						emit('updateTaskInfo')
+						this.$store.commit('setTask', res.data.task)
 						emit('updateGroupFilesPagination', this.file)
 					} else if ('locked' in res.data && res.data.locked) {
 						showWarning(this.t('mediadc', 'Wait until file has been loaded before deleting it'))
@@ -257,7 +264,7 @@ export default {
 		},
 		removeGroupFile(file) {
 			this.updating = true
-			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/remove`), { fileIds: [file.fileid] }).then(res => {
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.group_id}/remove`), { fileIds: [file.fileid] }).then(res => {
 				if (res.data.success) {
 					const files = this.files
 					if (this.allFiles.length === 2) { // Remove detail when 1 file left

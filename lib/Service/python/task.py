@@ -192,10 +192,10 @@ def process(task_info: dict, forced: bool):
                 if task_type == TaskType.IMAGE:
                     process_image_task(task_settings)
                 elif task_type == TaskType.VIDEO:
-                    process_video_task(task_settings)
+                    process_video_task(task_settings, 0)
                 elif task_type == TaskType.IMAGE_VIDEO:
-                    process_image_task(task_settings)
-                    process_video_task(task_settings)
+                    group_offset = process_image_task(task_settings)
+                    process_video_task(task_settings, group_offset)
                 _taskStatus = "finished"
                 print(f"Task execution_time: {time.perf_counter() - time_start}")
                 db.finalize_task(task_info["id"])
@@ -217,7 +217,7 @@ def process_image_task(task_settings: dict):
     directories_ids = task_settings["target_dirs"]
     apply_exclude_list(db.get_paths_by_ids(directories_ids), task_settings, directories_ids)
     process_image_task_dirs(directories_ids, task_settings)
-    save_image_results(task_settings["id"])
+    return save_image_results(task_settings["id"])
 
 
 def process_image_task_dirs(directories_ids: list, task_settings: dict):
@@ -226,12 +226,12 @@ def process_image_task_dirs(directories_ids: list, task_settings: dict):
         process_image_task_dirs(process_directory_images(dir_id, task_settings), task_settings)
 
 
-def process_video_task(task_settings: dict):
+def process_video_task(task_settings: dict, group_offset: int):
     """Top Level function to process video task. As input param expects dict from `init_task_settings` function."""
     directories_ids = task_settings["target_dirs"]
     apply_exclude_list(db.get_paths_by_ids(directories_ids), task_settings, directories_ids)
     process_video_task_dirs(directories_ids, task_settings)
-    save_video_results(task_settings["id"])
+    save_video_results(task_settings["id"], group_offset)
 
 
 def process_video_task_dirs(directories_ids: list, task_settings: dict):
@@ -249,12 +249,13 @@ def process_directory_images(dir_id: int, task_settings: dict) -> list:
     fs_records = db.get_directory_data_image(
         dir_id, task_settings["mime_dir"], task_settings["mime_image"], file_mounts
     )
-    if get_ignore_flag(fs_records):
-        fs_records.clear()
     if not fs_records:
         return []
+    ignore_files = get_ignore_flag(fs_records)
     apply_exclude_list(fs_records, task_settings)
     sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
+    if ignore_files:
+        fs_records.clear()
     dc_process_images(task_settings, fs_records)
     if fs_records:
         db.increase_processed_files_count(task_settings["id"], len(fs_records))
@@ -270,12 +271,13 @@ def process_directory_videos(dir_id: int, task_settings: dict) -> list:
     fs_records = db.get_directory_data_video(
         dir_id, task_settings["mime_dir"], task_settings["mime_video"], file_mounts
     )
-    if get_ignore_flag(fs_records):
-        fs_records.clear()
     if not fs_records:
         return []
+    ignore_files = get_ignore_flag(fs_records)
     apply_exclude_list(fs_records, task_settings)
     sub_dirs = extract_sub_dirs(fs_records, task_settings["mime_dir"])
+    if ignore_files:
+        fs_records.clear()
     dc_process_videos(task_settings, fs_records)
     if fs_records:
         db.increase_processed_files_count(task_settings["id"], len(fs_records))

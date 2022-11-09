@@ -44,9 +44,8 @@ class InvalidVideo(Exception):
     """Exception for use inside `process_video_hash` function."""
 
 
-VideoGroups = {}  # {group1:[fileid1,fileid2],group2:[fileid3,fileid4]}
+VideoGroups = {}  # {group1:[(fileid1,size),(fileid2,size)],group2:[(fileid3,size),(fileid4,size)]}
 SetOfGroups = []  # hashes[ABCD+EFGH+IMGH+ZXCV,xx1+xx2+xx3+xx4]
-GroupsCount = 0  # number of elements in SetOfGroups
 Imported = False
 CHamming = False  # is hexhamming present. Changes state in dc_videos_init.
 MinVideoDuration_ms = 3000
@@ -97,31 +96,28 @@ def dc_process_videos(settings: dict, video_records: list):
             else:
                 video_record["hash"] = arr_hash_from_bytes(video_record["hash"])
         if video_record["hash"] is not None:
-            process_video_record(settings["precision_vid"], video_record["hash"], video_record["fileid"])
+            process_video_record(settings["precision_vid"], video_record)
 
 
-def process_video_record(precision: int, video_hash, fileid: int):
-    global GroupsCount
+def process_video_record(precision: int, video_record: dict):
+    video_group_number = len(VideoGroups)
     if CHamming:
-        for i in range(GroupsCount):
-            if hexhamming.check_hexstrings_within_dist(SetOfGroups[i], video_hash, precision):
-                VideoGroups[i].append(fileid)
+        for i in range(video_group_number):
+            if hexhamming.check_hexstrings_within_dist(SetOfGroups[i], video_record["hash"], precision):
+                VideoGroups[i].append((video_record["fileid"], video_record["size"]))
                 return
     else:
-        for i in range(GroupsCount):
-            if numpy.count_nonzero(SetOfGroups[i] != video_hash) <= precision:
-                VideoGroups[i].append(fileid)
+        for i in range(video_group_number):
+            if numpy.count_nonzero(SetOfGroups[i] != video_record["hash"]) <= precision:
+                VideoGroups[i].append((video_record["fileid"], video_record["size"]))
                 return
-    SetOfGroups.append(video_hash)
-    VideoGroups[GroupsCount] = [fileid]
-    GroupsCount += 1
+    SetOfGroups.append(video_record["hash"])
+    VideoGroups[video_group_number] = [(video_record["fileid"], video_record["size"])]
 
 
 def reset_videos():
-    global GroupsCount
     VideoGroups.clear()
     SetOfGroups.clear()
-    GroupsCount = 0
 
 
 def process_video_hash(algo: str, hash_size: int, file_info: dict, data_dir: str, remote_filesize_limit: int):
@@ -358,8 +354,15 @@ def remove_solo_groups():
         del VideoGroups[key]
 
 
-def save_video_results(task_id: int):
+def save_video_results(task_id: int, group_offset: int):
     remove_solo_groups()
     print("Videos: Number of groups:", len(VideoGroups))
-    for files_id in VideoGroups.values():
-        store_task_files_group(task_id, json.dumps(files_id))
+    dup_files_count = 0
+    dup_files_size = 0
+    n_group = group_offset
+    for files_id_size in VideoGroups.values():
+        dup_files_count += len(files_id_size)
+        for file_id, file_size in files_id_size:
+            dup_files_size += file_size
+            store_task_files_group(task_id, n_group, file_id)
+        n_group += 1

@@ -33,15 +33,36 @@ const state = {
 }
 
 const mutations = {
+
+	/**
+	 * Set list of settings
+	 *
+	 * @param {object} state the store data
+	 * @param {Array} settings list of settings
+	 */
 	setSettings(state, settings) {
 		state.settings = settings
 	},
+
+	/**
+	 * Set setting
+	 *
+	 * @param {object} state the store data
+	 * @param {object} setting mediadc setting
+	 */
 	setSetting(state, setting) {
 		const settingIndex = state.settings.findIndex(s => s.name === setting.name)
 		const newSettings = state.settings
 		newSettings[settingIndex] = setting
 		state.settings = newSettings
 	},
+
+	/**
+	 * Update setting object
+	 *
+	 * @param {object} state the store data
+	 * @param {object} setting mediadc setting
+	 */
 	updateSetting(state, setting) {
 		const settingIndex = state.settings.findIndex(s => s.name === setting.name)
 		if (settingIndex !== -1) {
@@ -50,28 +71,92 @@ const mutations = {
 			state.settings = settings
 		}
 	},
+
+	/**
+	 * Set size of details file grid
+	 *
+	 * @param {object} state the store data
+	 * @param {number} size grid size value
+	 */
 	setDetailsGridSize(state, size) {
 		if (state.detailsGridSize !== size) {
 			state.detailsGridSize = size
 		}
 	},
+
+	/**
+	 * Set delete file confiration flag
+	 *
+	 * @param {object} state the store data
+	 * @param {boolean} value flag value
+	 */
 	setDeleteFileConfirmation(state, value) {
 		state.deleteFileConfirmation = value
 	},
+
+	/**
+	 * Set auto open next details list group flag
+	 *
+	 * @param {object} state the store data
+	 * @param {boolean} value flag value
+	 */
 	setAutoOpenNextGroup(state, value) {
 		state.autoOpenNextGroup = value
 	},
 }
 
 const getters = {
+
+	/**
+	 * Returns list of settings
+	 *
+	 * @param {object} state the store data
+	 * @return {Array}
+	 */
 	settings: state => state.settings,
+
+	/**
+	 * Returns setting object by setting name
+	 *
+	 * @param {object} state the store data
+	 * @return {object}
+	 */
 	settingByName: state => name => state.settings.find(setting => setting.name === name),
+
+	/**
+	 * Returns details grid size setting
+	 *
+	 * @param {object} state the store data
+	 * @return {number}
+	 */
 	detailsGridSize: state => state.detailsGridSize,
+
+	/**
+	 * Returns delete file confirmation setting
+	 *
+	 * @param {object} state the store data
+	 * @return {boolean}
+	 */
 	deleteFileConfirmation: state => state.deleteFileConfirmation,
+
+	/**
+	 * Returns auto open next group setting
+	 *
+	 * @param {object} state the store data
+	 * @return {boolean}
+	 */
 	autoOpenNextGroup: state => state.autoOpenNextGroup,
 }
 
 const actions = {
+
+	/**
+	 * Retrieve and commit list of settings
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.commit the store mutations
+	 * @return {Promise<object>}
+	 */
 	async getSettings({ commit }) {
 		return axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
 			commit('setSettings', res.data)
@@ -80,6 +165,15 @@ const actions = {
 			console.debug(err)
 		})
 	},
+
+	/**
+	 * Retrieve and commit certain setting by name
+	 *
+	 * @param {object} context the store object
+	 * @param {object} context.commit the store mutations
+	 * @param {string} settingName setting name
+	 * @return {Promise<object>}
+	 */
 	async getSettingByName({ commit }, settingName) {
 		return axios.get(generateUrl(`/apps/mediadc/api/v1/settings/name/${settingName}`)).then(res => {
 			if (res.data?.success) {

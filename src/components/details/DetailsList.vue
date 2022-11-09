@@ -41,6 +41,7 @@
 					</NcCheckboxRadioSwitch>
 					<NcButton v-tooltip="t('mediadc', 'Sorting details by files count')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Sorting details by files count')"
 						@click="toggleSorting">
 						<template #icon>
 							<span :class="!sorted ? 'icon-triangle-s toggle-sorting-button' : 'icon-triangle-n toggle-sorting-button'" />
@@ -69,6 +70,7 @@
 				<div class="batch-actions" style="display: flex;">
 					<NcButton v-tooltip="t('mediadc', 'Toggle duplicate groups')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Toggle duplicate groups')"
 						style="margin-right: 10px;"
 						@click="toggleGroups">
 						<template #icon>
@@ -100,7 +102,7 @@
 							<NcActionButton v-if="checkedDetailGroups.length > 0" icon="icon-close" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
 								{{ t('mediadc', 'Uncheck selected') }}
 							</NcActionButton>
-							<NcActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group resolved'), placement: 'left'}"
+							<NcActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group as resolved'), placement: 'left'}"
 								icon="icon-delete"
 								@click="removeCheckedGroups">
 								{{ n('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
@@ -112,16 +114,16 @@
 			<div v-if="!filtered">
 				<template v-if="sortGroups">
 					<div v-for="detail in paginatedSortedDetails[page]"
-						v-show="JSON.parse(detail.group_files_ids).length > 1"
-						:key="detail.id"
+						v-show="detail.files.length > 1"
+						:key="detail.group_id"
 						class="task-details-row">
 						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
 					</div>
 				</template>
 				<template v-else>
 					<div v-for="detail in paginatedDetails[page]"
-						v-show="JSON.parse(detail.group_files_ids).length > 1"
-						:key="detail.id"
+						v-show="detail.files.length > 1"
+						:key="detail.group_id"
 						class="task-details-row">
 						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
 					</div>
@@ -130,16 +132,16 @@
 			<div v-else-if="detailsFiltered.length > 0 && filtered">
 				<template v-if="!sortGroups">
 					<div v-for="detail in paginatedDetailsFiltered[page]"
-						v-show="JSON.parse(detail.group_files_ids).length > 1"
-						:key="detail.id"
+						v-show="detail.files.length > 1"
+						:key="detail.group_id"
 						class="task-details-row">
 						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
 					</div>
 				</template>
 				<template v-else>
 					<div v-for="detail in paginatedDetailsFilteredSorted[page]"
-						v-show="JSON.parse(detail.group_files_ids).length > 1"
-						:key="detail.id"
+						v-show="detail.files.length > 1"
+						:key="detail.group_id"
 						class="task-details-row">
 						<DetailsListItem :detail="detail" :checked-detail-groups.sync="checkedDetailGroups" />
 					</div>
@@ -192,7 +194,6 @@ export default {
 			checkedDetailGroups: [],
 			batchActionsOpened: false,
 			sortGroups: true,
-			goToPage: 0,
 		}
 	},
 	computed: {
@@ -219,18 +220,18 @@ export default {
 			let a = []
 			if (!this.sortGroups) {
 				if (this.filtered) {
-					a = new Set(this.paginatedDetailsFiltered[this.page].map(d => d.id))
+					a = new Set(this.paginatedDetailsFiltered[this.page].map(d => d.group_id))
 				} else {
-					a = new Set(this.paginatedDetails[this.page].map(d => d.id))
+					a = new Set(this.paginatedDetails[this.page].map(d => d.group_id))
 				}
 			} else {
 				if (this.filtered) {
-					a = new Set(this.paginatedDetailsFilteredSorted[this.page].map(d => d.id))
+					a = new Set(this.paginatedDetailsFilteredSorted[this.page].map(d => d.group_id))
 				} else {
-					a = new Set(this.paginatedSortedDetails[this.page].map(d => d.id))
+					a = new Set(this.paginatedSortedDetails[this.page].map(d => d.group_id))
 				}
 			}
-			const b = new Set(this.checkedDetailGroups.map(d => d.id))
+			const b = new Set(this.checkedDetailGroups.map(d => d.group_id))
 			const intersect = new Set([...a].filter(i => b.has(i)))
 			return Array.from(intersect)
 		},
@@ -246,9 +247,6 @@ export default {
 		itemsPerPage(newItemsPerPage) {
 			if (this.page >= Math.ceil(this.details.length / newItemsPerPage)) {
 				this.page = Math.ceil(this.details.length / newItemsPerPage) - 1
-			}
-			if (this.goToPage >= Math.ceil(this.details.length / newItemsPerPage)) {
-				this.goToPage = Math.ceil(this.details.length / newItemsPerPage) - 1
 			}
 		},
 		details(newDetails) {
@@ -294,15 +292,15 @@ export default {
 		filterByGroupId() {
 			if (this.filterId !== null && this.filterId !== '') {
 				const singleIdRegex = /^[1-9]$/s
-				const rangeIdsRegex = /^\d+-\d+$/s
+				const rangeIdsRegex = /^\d+-\d+$/s // TODO: /(^\d+-\d+)(, ?\d+-\d+)*$/s
 				this.page = 0
 
 				if (singleIdRegex.test(this.filterId)) {
-					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.virtualId.toString().includes(this.filterId)))
+					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.group_id.toString().includes(this.filterId)))
 				} else if (rangeIdsRegex.test(this.filterId)) {
 					const beginRange = this.filterId.split('-')[0]
 					const endRange = this.filterId.split('-')[1]
-					this.$store.commit('setDetailsFiltered', this.details.filter(d => d.virtualId >= beginRange && d.virtualId <= endRange))
+					this.$store.commit('setDetailsFiltered', this.details.filter(d => Number(d.group_id) >= beginRange && Number(d.group_id) <= endRange))
 				}
 			} else {
 				this.$store.commit('setDetailsFiltered', [])
@@ -318,28 +316,31 @@ export default {
 			this.batchActionsOpened = !this.batchActionsOpened
 		},
 		removeCheckedGroups() {
-			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.task.id}/details/remove`), { taskDetailIds: this.checkedDetailGroups.map(d => d.id) }).then(res => {
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.task.id}/details/remove`), { groupIds: this.checkedDetailGroups.map(d => d.group_id) }).then(res => {
 				if (res.data.success) {
-					emit('updateTaskInfo')
-					const updatedDetails = this.details
-					for (const taskDetail of res.data.removedTaskDetails) {
-						const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === taskDetail.id)
-						this.checkedDetailGroups.splice(detailIndex, 1)
-						const removedDetailIndex = updatedDetails.findIndex(d => d.id === taskDetail.id)
+					emit('openNextDetailGroup', this.checkedDetailGroups[this.checkedDetailGroups.length - 1])
+					const updatedDetails = [...this.details]
+					for (const removedGroupId of res.data.removedGroupIds) {
+						const checkedIndex = this.checkedDetailGroups.findIndex(d => Number(d.group_id) === removedGroupId)
+						if (checkedIndex !== -1) {
+							this.checkedDetailGroups.splice(checkedIndex, 1)
+						}
+						const removedDetailIndex = updatedDetails.findIndex(d => Number(d.group_id) === removedGroupId)
 						updatedDetails.splice(removedDetailIndex, 1)
 					}
+					emit('updateTaskInfo')
 					this.$store.commit('setDetails', updatedDetails)
 					showSuccess(this.t('mediadc', 'Selected groups successfully removed'))
 				}
 			}).catch(err => {
-				showError(this.t('mediadc', 'Some server error occured'))
+				showError(this.t('mediadc', 'A server error occurred'))
 				console.debug(err)
 			})
 		},
 		_deselectAllGroups(_details) {
-			emit('deselectGroups', this.checkedDetailGroups.map(d => d.id))
+			emit('deselectGroups', this.checkedDetailGroups.map(d => d.group_id))
 			for (const detail of this.details) {
-				const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+				const detailIndex = this.checkedDetailGroups.findIndex(d => d.group_id === detail.group_id)
 				if (detailIndex !== -1) {
 					this.checkedDetailGroups.splice(detailIndex, 1)
 				}
@@ -351,7 +352,7 @@ export default {
 				this._deselectAllGroups(_details)
 			} else {
 				for (const detail of _details) {
-					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.group_id === detail.group_id)
 					if (detailIndex === -1) {
 						this.checkedDetailGroups.push(detail)
 					}
@@ -366,14 +367,14 @@ export default {
 				const groupsToDeselect = this.checkedDetailGroupsIntersect
 				emit('deselectGroups', groupsToDeselect)
 				for (const detail of groupsToDeselect) {
-					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.group_id === detail.group_id)
 					if (detailIndex !== -1) {
 						this.checkedDetailGroups.splice(detailIndex, 1)
 					}
 				}
 			} else {
 				for (const detail of _details[this.page]) {
-					const detailIndex = this.checkedDetailGroups.findIndex(d => d.id === detail.id)
+					const detailIndex = this.checkedDetailGroups.findIndex(d => d.group_id === detail.group_id)
 					if (detailIndex === -1) {
 						this.checkedDetailGroups.push(detail)
 					}
@@ -382,7 +383,7 @@ export default {
 		},
 		openNextDetailGroup(detail) {
 			if (this.autoOpenNextGroup) {
-				const detailIndex = this.details.findIndex(d => d.id === detail.id)
+				const detailIndex = this.details.findIndex(d => d.group_id === detail.group_id)
 				if (detailIndex !== -1) {
 					if (detailIndex !== this.details.length - 1) {
 						emit('openGroup', this.details[detailIndex + 1])
@@ -391,9 +392,6 @@ export default {
 					}
 				}
 			}
-		},
-		navigateToPage() {
-			this.page = this.goToPage
 		},
 		toggleGroups() {
 			const _details = (!this.filtered)

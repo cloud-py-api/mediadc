@@ -37,6 +37,7 @@
 									<span style="overflow-y: scroll; white-space: nowrap;">{{ targetDirectoriesPaths[fileid] }}</span>
 									<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 										type="tertiary"
+										:aria-label="t('mediadc', 'Remove selected target directory')"
 										@click="removeTargetDirectory(fileid)">
 										<template #icon>
 											<span class="icon-delete" />
@@ -66,6 +67,7 @@
 									<span style="overflow-y: scroll; white-space: nowrap;">{{ excludeFileIds[fileid] }}</span>
 									<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 										type="tertiary"
+										:aria-label="t('mediadc', 'Remove selected exclude directory')"
 										@click="removeExcludeDirectory(fileid)">
 										<template #icon>
 											<span class="icon-delete" />
@@ -96,6 +98,7 @@
 								<span>{{ mask }}</span>
 								<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 									type="tertiary"
+									:aria-label="t('mediadc', 'Remove selected custom exclude mask')"
 									@click="deleteCustomMask(mask)">
 									<template #icon>
 										<span class="icon-delete" />
@@ -115,6 +118,7 @@
 								@keyup.esc="cancelAddingCustomMask">
 							<NcButton v-tooltip="t('mediadc', 'Confirm')"
 								type="tertiary"
+								:aria-label="t('mediadc', 'Confirm adding of the custom exclude mask')"
 								@click="addCustomMask">
 								<template #icon>
 									<span class="icon-checkmark" />
@@ -122,6 +126,7 @@
 							</NcButton>
 							<NcButton v-tooltip="t('mediadc', 'Decline')"
 								type="tertiary"
+								:aria-label="t('mediadc', 'Cancel adding of the custom exclude mask')"
 								@click="cancelAddingCustomMask">
 								<template #icon>
 									<span class="icon-close" />
@@ -129,7 +134,9 @@
 							</NcButton>
 						</div>
 						<div style="display: flex; align-items: center; margin: 20px 0;">
-							<NcButton class="mediadc-button-vue" @click="addNewMask">
+							<NcButton class="mediadc-button-vue"
+								:aria-label="t('mediadc', 'Add custom exclude mask')"
+								@click="addNewMask">
 								<template #icon>
 									<PlusThick :size="16" />
 								</template>
@@ -166,14 +173,14 @@
 				</div>
 				<div class="create-task-actions">
 					<NcButton class="mediadc-button-vue"
-						:aria-label="t('mediadc', 'Create and Run new Task')"
+						:aria-label="t('mediadc', 'Restart Task with changed parameters')"
 						:disabled="runningTask || Object.keys(targetDirectoriesPaths).length === 0"
 						@click="restartTask">
 						<template #default>
 							{{ t('mediadc', 'Restart task') }}
 						</template>
 						<template v-if="runningTask" #icon>
-							<span class="icon-loading" />
+							<span class="icon-loading-small" />
 						</template>
 					</NcButton>
 					<NcCheckboxRadioSwitch :checked.sync="finishNotification">

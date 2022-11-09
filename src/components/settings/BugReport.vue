@@ -30,10 +30,11 @@
 		<NcButton class="mediadc-button-vue"
 			type="secondary"
 			:disabled="updating"
+			:aria-label="t('mediadc', 'Collect system info')"
 			@click="collectSystemInfo">
 			{{ t('mediadc', 'Collect system info') }}
 			<template v-if="updating" #icon>
-				<span class="icon-loading" />
+				<span class="icon-loading-small" />
 			</template>
 		</NcButton>
 		<div v-if="systemInfo" class="system-info">

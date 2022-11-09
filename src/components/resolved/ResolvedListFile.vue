@@ -71,6 +71,7 @@
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<NcButton v-tooltip="{ content: t('mediadc', 'Remove file from resolved list'), placement: 'top'}"
 				type="tertiary"
+				:aria-label="t('mediadc', 'Remove file from resolved list')"
 				@click="unresolve(file.fileid)">
 				<template #icon>
 					<span class="icon-delete" />

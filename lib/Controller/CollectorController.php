@@ -227,14 +227,11 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTaskDetail(int $taskDetailId): JSONResponse
+	public function deleteTaskDetail(int $taskId, int $groupId): JSONResponse
 	{
-		if ($taskDetailId) {
-			/** @var CollectorTask */
-			$deletedTaskDetail = $this->service->deleteTaskDetail($taskDetailId);
+		if ($taskId && $groupId) {
 			return new JSONResponse([
-				'success' => $taskDetailId === intval($deletedTaskDetail->getId()),
-				'deletedTaskDetail' => $deletedTaskDetail
+				'success' => $this->service->deleteTaskDetail($taskId, $groupId) > 0,
 			], Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
@@ -280,10 +277,10 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function getDetailGroupFilesInfo(int $taskDetailId, bool $filesizeAscending = false): JSONResponse
+	public function getDetailGroupFilesInfo(int $taskId, int $groupId, bool $filesizeAscending = false): JSONResponse
 	{
-		if ($taskDetailId) {
-			return new JSONResponse($this->service->getDetailGroupFilesInfo($taskDetailId, $filesizeAscending), Http::STATUS_OK);
+		if ($taskId) {
+			return new JSONResponse($this->service->getDetailGroupFilesInfo($taskId, $groupId, $filesizeAscending), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
@@ -294,6 +291,7 @@ class CollectorController extends Controller
 	 * @NoCSRFRequired
 	 * 
 	 * @param int $taskId
+	 * @param int $groupId
 	 */
 	public function getDetailFilesTotalSize(int $taskId): JSONResponse
 	{
@@ -308,10 +306,10 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTaskDetailFile(int $taskId, int $taskDetailId, int $fileId): JSONResponse
+	public function deleteTaskDetailFile(int $taskId, int $groupId, int $fileId): JSONResponse
 	{
-		if ($taskDetailId && $fileId) {
-			return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $taskDetailId, $fileId), Http::STATUS_OK);
+		if ($groupId && $fileId) {
+			return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $groupId, $fileId), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
@@ -323,10 +321,10 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function removeTaskDetailGroups(array $taskDetailIds): JSONResponse
+	public function removeTaskDetailGroups(int $taskId, array $groupIds): JSONResponse
 	{
-		if ($taskDetailIds) {
-			return new JSONResponse($this->service->removeTaskDetailGroups($taskDetailIds), Http::STATUS_OK);
+		if ($taskId && $groupIds) {
+			return new JSONResponse($this->service->removeTaskDetailGroups($taskId, $groupIds), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
@@ -336,10 +334,10 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTaskDetailFiles(int $taskDetailId, array $fileIds): JSONResponse
+	public function deleteTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse
 	{
-		if ($taskDetailId && $fileIds) {
-			return new JSONResponse($this->service->deleteTaskDetailFiles($taskDetailId, $fileIds), Http::STATUS_OK);
+		if ($taskId && $groupId && $fileIds) {
+			return new JSONResponse($this->service->deleteTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
@@ -349,10 +347,10 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function removeTaskDetailFiles(int $taskDetailId, array $fileIds): JSONResponse
+	public function removeTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse
 	{
-		if ($taskDetailId && $fileIds) {
-			return new JSONResponse($this->service->removeTaskDetailFiles($taskDetailId, $fileIds), Http::STATUS_OK);
+		if ($taskId && $groupId && $fileIds) {
+			return new JSONResponse($this->service->removeTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}
