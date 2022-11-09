@@ -296,7 +296,7 @@ export default {
 						}
 					}).catch(err => {
 						console.debug(err)
-						showError(this.t('mediadc', 'Some error occurred while updateing setting. Try again'))
+						showError(this.t('mediadc', 'An error occurred while updating setting. Try again'))
 					})
 				}).catch(err => {
 					console.debug(err)
