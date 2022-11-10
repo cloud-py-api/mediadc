@@ -155,7 +155,7 @@ const actions = {
 			return res
 		}).catch(err => {
 			console.debug(err)
-			showError(t('mediadc', 'Some error occurred while deleting task'))
+			showError(t('mediadc', 'An error occurred while deleting task'))
 		})
 	},
 
