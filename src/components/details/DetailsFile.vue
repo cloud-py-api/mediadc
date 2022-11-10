@@ -209,7 +209,7 @@ export default {
 		},
 		deleteGroupFile(file) {
 			if (this.deleteFileConfirmation) {
-				if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
+				if (confirm(t('mediadc', 'Are you sure you want delete this file?'))) {
 					this._deleteGroupFile(file)
 				}
 			} else {
