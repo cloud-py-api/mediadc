@@ -332,7 +332,7 @@ export default {
 					showSuccess(this.t('mediadc', 'Selected groups successfully removed'))
 				}
 			}).catch(err => {
-				showError(this.t('mediadc', 'An server error occurred'))
+				showError(this.t('mediadc', 'A server error occurred'))
 				console.debug(err)
 			})
 		},

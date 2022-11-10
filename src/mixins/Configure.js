@@ -126,7 +126,7 @@ export default {
 					if (res.data.success) {
 						showSuccess(this.t('mediadc', 'Package list successfully deleted'))
 					} else {
-						showError(this.t('mediadc', 'Some error occurred while deleting package list'))
+						showError(this.t('mediadc', 'An error occurred while deleting package list'))
 					}
 				})
 			}).catch(err => {

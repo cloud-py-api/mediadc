@@ -209,7 +209,7 @@ export default {
 		},
 		deleteGroupFile(file) {
 			if (this.deleteFileConfirmation) {
-				if (confirm(t('mediadc', 'Are you sure, you want delete this file?'))) {
+				if (confirm(t('mediadc', 'Are you sure you want delete this file?'))) {
 					this._deleteGroupFile(file)
 				}
 			} else {
@@ -280,7 +280,7 @@ export default {
 				}
 			}).catch(err => {
 				console.debug(err)
-				showError(this.t('mediadc', 'An server error occurred'))
+				showError(this.t('mediadc', 'A server error occurred'))
 				this.updating = false
 			})
 		},
