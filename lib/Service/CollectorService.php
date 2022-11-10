@@ -230,7 +230,7 @@ class CollectorService
 		} else {
 			$this->tasksMapper->update($collectorTask);
 			$this->deleteTaskDetails($taskId);
-			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
+			$this->pythonService->run('/main.py', ['-t' => $taskId], true, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
 		}
 
 		return [

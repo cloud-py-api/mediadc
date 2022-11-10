@@ -36,8 +36,8 @@
 					<span class="icon-projects" />
 				</template>
 				<template #default>
-					{{ t('mediadc', 'Duplicate group') }} #{{ detail.group_id }} ({{ detail.files.length }}
-					{{ n('mediadc', 'file', 'files', detail.files.length) }}{{ ' - ' + formatBytes(groupFilesSize) }})
+					{{ t('mediadc', 'Duplicate group') }} #{{ detail.group_id }} ({{ groupFilesTotal }}
+					{{ n('mediadc', 'file', 'files', groupFilesTotal) }}{{ ' - ' + formatBytes(groupFilesSize) }})
 					<span :class="!opened ? 'icon-triangle-s' : 'icon-triangle-n'"
 						style="display: inline-flex; margin: 0 0 0 5px;" />
 				</template>
@@ -48,7 +48,7 @@
 				</NcActionButton>
 			</NcActions>
 		</div>
-		<div v-if="opened && detail.files.length > groupItemsPerPage" class="pagination">
+		<div v-if="opened && groupFilesTotal > groupItemsPerPage" class="pagination">
 			<NcButton type="tertiary"
 				:aria-label="t('mediadc', 'Previous duplicate group files page')"
 				style="margin-right: 5px;"
@@ -58,7 +58,7 @@
 				</template>
 			</NcButton>
 			<span>{{ t('mediadc', 'Page:') }}&nbsp;</span>
-			<span>{{ page + 1 }}/{{ Math.ceil(detail.files.length / groupItemsPerPage) }}</span>
+			<span>{{ page + 1 }}/{{ Math.ceil(groupFilesTotal / groupItemsPerPage) }}</span>
 			<NcButton type="tertiary"
 				:aria-label="t('mediadc', 'Next duplicate group files page')"
 				style="margin-left: 5px;"
@@ -154,7 +154,10 @@ export default {
 			'deleteFileConfirmation',
 		]),
 		groupFilesSize() {
-			return this.detail.files.reduce((sum, file) => sum + Number(file.filesize), 0)
+			return this.allFiles.length === 0 ? this.detail.files.reduce((sum, file) => sum + Number(file.filesize), 0) : this.allFiles.reduce((sum, file) => sum + Number(file.filesize), 0)
+		},
+		groupFilesTotal() {
+			return this.allFiles.length === 0 ? this.detail.files.length : this.allFiles.length
 		},
 		pagesRange() {
 			return Array.from({ length: Math.ceil(this.detail.files.length / this.groupItemsPerPage) }, (_, i) => i)
@@ -205,9 +208,6 @@ export default {
 	beforeMount() {
 		const detailCheckedIndex = this.checkedDetailGroups.findIndex(d => d.group_id === this.detail.group_id)
 		this.checked = detailCheckedIndex !== -1
-		if (this.opened) {
-			this.loadAllFilesInfo()
-		}
 		subscribe('updateGroupFilesPagination', this.updateFilesPagination)
 		subscribe('deselectGroups', this.deselect)
 		subscribe('openGroup', this.openGroup)

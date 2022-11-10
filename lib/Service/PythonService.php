@@ -141,7 +141,7 @@ class PythonService
 			try {
 				$pythonResult = $this->run('/install.py', [
 					'--install' => $listName === '' ? 'required optional' : $listName,
-				], false, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
+				], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
 				return $this->parsePythonOutput($pythonResult);
 			} catch (\Exception $e) {
 				return [
@@ -161,7 +161,7 @@ class PythonService
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
-				$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
+				$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
 				return $this->parsePythonOutput($pythonResult);
 			} catch (\Exception $e) {
 				return [
@@ -183,7 +183,7 @@ class PythonService
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
-				$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
+				$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
 				return $this->parsePythonOutput($pythonResult);
 			} catch (\Exception $e) {
 				return [
@@ -205,7 +205,7 @@ class PythonService
 		$depsCheck = $this->checkDepsRequirements();
 		if ($depsCheck['success']) {
 			try {
-				$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->utils->getPhpInterpreter()]);
+				$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
 				return $this->parsePythonOutput($pythonResult);
 			} catch (\Exception $e) {
 				return [

@@ -50,6 +50,9 @@ class Application extends App implements IBootstrap
 
 		$this->notificationManager = \OCP\Server::get(\OCP\Notification\IManager::class);
 		$eventDispatcher = \OCP\Server::get(\OCP\EventDispatcher\IEventDispatcher::class);
+		/**
+		 * @psalm-suppress UndefinedClass
+		 */
 		$eventDispatcher->addListener(\OCA\Files\Event\LoadAdditionalScriptsEvent::class, function () {
 			\OCP\Util::addScript(self::APP_ID, Application::APP_ID . '-filesplugin');
 			\OCP\Util::addStyle(self::APP_ID, 'filesplugin');
