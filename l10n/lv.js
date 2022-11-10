@@ -18,8 +18,13 @@ OC.L10N.register(
     "Start" : "Sākt",
     "Delete" : "Dzēst",
     "Edit" : "Rediģēt",
+    "Ignored" : "Ignorēts",
+    "Owner:" : "Īpašnieks:",
     "Type" : "Tips",
     "Actions" : "Darbības",
-    "Update" : "Atjaunināt"
+    "Update" : "Atjaunināt",
+    "Scan for duplicates" : "Skenējiet dublikātus",
+    "Photos&Videos" : "Attēli un video",
+    "Some error occurred while deleting task" : "Dzēšot uzdevumu, radās kļūda"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
