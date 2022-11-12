@@ -24,7 +24,6 @@ OC.L10N.register(
     "Actions" : "Darbības",
     "Update" : "Atjaunināt",
     "Scan for duplicates" : "Skenējiet dublikātus",
-    "Photos&Videos" : "Attēli un video",
-    "Some error occurred while deleting task" : "Dzēšot uzdevumu, radās kļūda"
+    "Photos&Videos" : "Attēli un video"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

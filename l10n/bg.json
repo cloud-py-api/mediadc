@@ -223,7 +223,6 @@
     "Some error occured while deleting task" : "Възникна грешка при изтриването на задачата",
     "Task successfully started with duplicated settings!" : "Задачата е стартирана успешно с дублирани настройки!",
     "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"],
-    "An server error occurred" : "Възникна грешка на сървъра",
     "Mark as resolved without deleting" : "Отбелязване като отстранен, без изтриване",
     "Are you sure you want to delete all files" : "Сигурни ли сте, че искате да изтриете всички файлове",
     "A server error occurred. Files not deleted" : "Възникнала е грешка на сървъра. Файловете не са изтрити",
@@ -232,7 +231,6 @@
     "Create a new task or work on existing and resolve some!" : "Създаване на нова задача или работа по съществуващата и отстраняване на някоя!",
     "Some error occurred while updating settings" : "Възникна грешка при актуализиране на настройките",
     "The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?" : "Хешовете на снимките и видеоклиповете ще бъдат изчистени, преди да бъде променен алгоритъмът за хеширане.\nПродължавате ли?",
-    "Some error occurred while updateing setting. Try again" : "Възникна грешка при актуализиране на настройките. Опитайте отново",
     "Some error occurred while changing hashing algorithm" : "Възникна грешка при промяна на алгоритъма за хеширане",
     "An error occurred when updating the setting. Try again" : "Възникна грешка при актуализиране на настройката. Опитайте отново",
     "Some error occurred while updating setting. Try again" : "Възникна някаква грешка при актуализиране на настройката. Опитайте отново",
@@ -245,11 +243,9 @@
     "Python dependencies list" : "Списък на зависимостите на Python",
     "Installation failed. A server error occurred" : "Инсталирането е неуспешно. Възникна грешка на сървъра",
     "Package list installation failed. A server error occurred" : "Инсталирането на списъка с пакети е неуспешно. Възникна грешка на сървъра",
-    "Some error occurred while deleting package list" : "Възникнала е някаква грешка при изтриването на списъка с пакети",
     "Package list deleting failed. A server error occurred" : "Изтриването на списъка с пакети е неуспешно. Възникнала е грешка на сървъра",
     "Packages update failed. A server error occurred" : "Актуализирането на пакетите е неуспешно. Възникнала е грешка на сървъра",
     "Some errors occurred while checking installation" : "Възникнаха някои грешки при проверката на инсталирането",
-    "Dependencies checking failed. A server error occurred" : "Проверката на зависимостите е неуспешна. Възникна грешка на сървъра",
-    "Some error occurred while deleting task" : "Възникна някаква грешка при изтриването на задачата"
+    "Dependencies checking failed. A server error occurred" : "Проверката на зависимостите е неуспешна. Възникна грешка на сървъра"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
