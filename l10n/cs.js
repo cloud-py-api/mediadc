@@ -268,6 +268,7 @@ OC.L10N.register(
     "Some error occured while deleting task" : "Při mazání úlohy došlo k nějaké chybě",
     "Task successfully started with duplicated settings!" : "Úloha úspěšně spuštěna s duplikovanými nastaveními!",
     "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"],
+    "Are you sure you want delete this file?" : "Opravdu chcete tento soubor smazat?",
     "Mark as resolved without deleting" : "Označit jako vyřešené a nic nemazat",
     "Are you sure you want to delete all files" : "Opravdu chcete smazat veškeré soubory?",
     "A server error occurred. Files not deleted" : "Došlo k chybě na serveru. Soubory nebyly smazány",
@@ -276,6 +277,7 @@ OC.L10N.register(
     "Create a new task or work on existing and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na stávající a nějaké vyřešte!",
     "Some error occurred while updating settings" : "Při aktualizaci nastavení došlo k nějaké chybě",
     "The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?" : "Při změně algoritmu pořizování otisků (hash) fotek a videí budou už vypočítané otisky zahozeny.\nPokračovat?",
+    "An error occurred while updating setting. Try again" : "Při aktualizování nastavení došlo k chybě. Zkuste to znovu",
     "Some error occurred while changing hashing algorithm" : "Při změně algoritmu pořizování otisků došlo k nějaké chybě",
     "An error occurred when updating the setting. Try again" : "Při aktualizování nastavení došlo k chybě. Zkuste to znovu",
     "Some error occurred while updating setting. Try again" : "Při aktualizování nastavení došlo k nějaké chybě. Zkuste to znovu",
@@ -288,9 +290,11 @@ OC.L10N.register(
     "Python dependencies list" : "Seznam potřebných součástí Python",
     "Installation failed. A server error occurred" : "Instalace se nezdařila. Vyskytla se chyba na serveru",
     "Package list installation failed. A server error occurred" : "Instalace balíčků ze seznamu se nezdařila. Vyskytla se chyba na serveru",
+    "An error occurred while deleting package list" : "Při mazání seznamu balíčků došlo k chybě",
     "Package list deleting failed. A server error occurred" : "Mazání seznamu balíčků se nezdařilo – došlo k chybě na serveru",
     "Packages update failed. A server error occurred" : "Aktualizace balíčků se nezdařila – vyskytla se chyba na serveru",
     "Some errors occurred while checking installation" : "Při kontrole instalace se vyskytly nějaké chyby",
-    "Dependencies checking failed. A server error occurred" : "Kontrola potřebných součástí se nezdařila – vyskytla se chyba na serveru"
+    "Dependencies checking failed. A server error occurred" : "Kontrola potřebných součástí se nezdařila – vyskytla se chyba na serveru",
+    "An error occurred while deleting task" : "Při mazání úlohy došlo k chybě"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");
