@@ -83,8 +83,8 @@
 			</div>
 		</div>
 		<div v-else-if="!isAdmin && !installed && !loading">
-			<p>{{ t('mediadc', 'MediaDC application can be configured only by Administrator.') }}</p>
-			<p>{{ t('mediadc', 'Please, contact your cloud Administrator.') }}</p>
+			<p>{{ t('mediadc', 'MediaDC application can be configured only by administration.') }}</p>
+			<p>{{ t('mediadc', 'Please contact your cloud administration.') }}</p>
 		</div>
 		<div v-else>
 			<NcButton v-if="installed" class="mediadc-button-vue" @click="finishConfiguration">
@@ -107,7 +107,7 @@
 					<div v-show="updating" class="action-blackout">
 						<span class="icon-loading" />
 					</div>
-					<caption>{{ t('mediadc', 'Python dependecies list') }}</caption>
+					<caption>{{ t('mediadc', 'Python dependencies list') }}</caption>
 					<thead>
 						<tr>
 							<th><b>{{ t('mediadc', 'Type') }}</b></th>

@@ -119,7 +119,7 @@ class SettingsService
 		} catch (\Exception $e) {
 			return [
 				'success' => false,
-				'message' => 'An error occured while updating setting',
+				'message' => 'An error occurred while updating setting',
 				'setting' => $setting,
 				'error' => $e->getMessage(),
 			];
