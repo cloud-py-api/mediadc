@@ -206,7 +206,7 @@
     "Confirm task deletion" : "確認任務刪除",
     "Task successfully deleted" : "任務已刪除",
     "You are not allowed to delete this task" : "您無權刪除此任務",
-    "Owner:" : "所有者︰",
+    "Owner:" : "擁有者︰",
     "Welcome to MediaDC. You're almost there! The last setup step - installation of Python dependencies." : "歡迎來到 MediaDC。 你快完成了！ 最後一個設置步驟 - 安裝 Python 依賴項。",
     "Here you can run automatic installation of Python MediaDC dependencies." : "在這裡，您可以運行 Python MediaDC 依賴項的自動安裝。",
     "This may take a few minutes (depending on your system config)." : "這可能需要幾分鐘（取決於您的系統配置）。",

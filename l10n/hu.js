@@ -25,6 +25,7 @@ OC.L10N.register(
     "Copy to clipboard" : "Másolás a vágólapra",
     "Copied to clipboard" : "Vágólapra másolva",
     "Edit task" : "Feladat szerkesztése",
+    "Not selected" : "Nincs kiválasztva",
     "Select" : "Kiválasztás",
     "Photos" : "Fényképek",
     "Videos" : "Videók",
