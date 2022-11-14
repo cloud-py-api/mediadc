@@ -56,9 +56,14 @@ class Version0002Date20221102124949 extends SimpleMigrationStep
 		if (!$tasksDetailsTable->hasColumn('group_id')) {
 			$tasksDetailsTable->addColumn('group_id', 'bigint', [
 				'notnull' => true,
+				'default' => 0,
 			]);
+		}
+
+		if (!$tasksDetailsTable->hasColumn('fileid')) {
 			$tasksDetailsTable->addColumn('fileid', 'bigint', [
 				'notnull' => true,
+				'default' => 0,
 			]);
 		}
 

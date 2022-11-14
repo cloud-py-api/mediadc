@@ -67,8 +67,7 @@ def increase_processed_files_count(task_id: int, count: int) -> None:
 def lock_task(task_id: int, old_updated_time: int) -> bool:
     """Look for description in `empty_impl.py` file."""
     query = f"UPDATE {get_task_table_name()} " \
-            f"SET py_pid = {os.getpid()}, finished_time = 0, updated_time = {get_time()}, errors = '', " \
-            f"duplicate_groups_total = 0, duplicate_groups_files_count = 0, duplicate_groups_total_size = 0 " \
+            f"SET py_pid = {os.getpid()}, finished_time = 0, updated_time = {get_time()}, errors = '' " \
             f"WHERE id = {task_id} AND updated_time = {old_updated_time};"
     if execute_commit(query) > 0:
         return True

@@ -76,7 +76,6 @@ class AppDataInitializationStep implements IRepairStep
 		$output->advance(1);
 
 		$this->checkForDataUpdates($app_data);
-		$output->advance(2);
 
 		$output->finishProgress();
 	}

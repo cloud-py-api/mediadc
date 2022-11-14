@@ -139,8 +139,8 @@ class CollectorTaskDetailMapper extends QBMapper
 			$grouppedFileIdsFunction = $qb->createFunction('GROUP_CONCAT(mdc_t_d.fileid SEPARATOR \',\') as files');
 			$grouppedFilesSizesFunction = $qb->createFunction('GROUP_CONCAT(ocf.size SEPARATOR \',\') as filessizes');
 		} else if ($platform === 'postgresql') {
-			$grouppedFileIdsFunction = $qb->createFunction('string_agg(mdc_t_d.fileid, \',\') as files');
-			$grouppedFilesSizesFunction = $qb->createFunction('string_agg(ocf.size, \',\') as filessizes');
+			$grouppedFileIdsFunction = $qb->createFunction('array_to_string(array_agg(mdc_t_d.fileid), \',\') as files');
+			$grouppedFilesSizesFunction = $qb->createFunction('array_to_string(array_agg(ocf.size), \',\') as filessizes');
 		}
 		$qb->select(
 			'mdc_t_d.task_id',

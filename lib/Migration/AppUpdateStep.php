@@ -97,7 +97,6 @@ class AppUpdateStep implements IRepairStep
 				}
 			}
 		}
-		$output->advance(1);
 		$output->finishProgress();
 	}
 }
