@@ -7,7 +7,6 @@ OC.L10N.register(
     "Configuration" : "Configuration",
     "Settings" : "Paramètres",
     "Select file" : "Sélectionner un fichier",
-    "Are you sure, you want delete this file?" : "Êtes-vous certain de vouloir supprimer ce fichier ?",
     "Deselect all" : "Tout désélectionner",
     "Select all" : "Tout sélectionner",
     "No matches on this page" : "Aucun résultat sur cette page",

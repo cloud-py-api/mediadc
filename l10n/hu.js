@@ -38,12 +38,10 @@ OC.L10N.register(
     "Type" : "Típus",
     "Actions" : "Műveletek",
     "Update" : "Frissítés",
-    "Dependencies checking failed. Some server error occured" : "A függőségek ellenőrzése sikertelen. Kiszolgálóhiba történt.",
     "Photos&Videos" : "Fotók és videók",
     "MediaDC Task Details" : "MediaDC – Feladat részletei",
     "MediaDC Configuration" : "MediaDC – Beállítások",
     "MediaDC Resolved files" : "MediaDC – Feloldott fájlok",
-    "Some error occured while deleting task" : "Hiba történt a feladat törlése során",
     "Task successfully started with duplicated settings!" : "A feladat sikeresen elindult a kettőzött beállításokkal."
 },
 "nplurals=2; plural=(n != 1);");
