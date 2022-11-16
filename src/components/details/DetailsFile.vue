@@ -70,24 +70,26 @@
 			<span class="owner">{{ file.fileowner }}</span>
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<div class="actions" style="display: flex;">
-				<CheckboxRadioSwitch v-tooltip="t('mediadc', 'Select file')"
+				<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Select file')"
 					class="mediadc-checkbox-only"
 					:checked.sync="checked"
 					style="margin: 0 14px 0 10px;" />
-				<Button v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
+				<NcButton v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
 					type="tertiary"
+					:aria-label="t('mediadc', 'Delete file')"
 					@click="deleteGroupFile(file)">
 					<template #icon>
 						<span class="icon-delete" />
 					</template>
-				</Button>
-				<Button v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
+				</NcButton>
+				<NcButton v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
 					type="tertiary"
+					:aria-label="t('mediadc', 'Remove file (mark resolved)')"
 					@click="removeGroupFile(file)">
 					<template #icon>
 						<span class="icon-close" />
 					</template>
-				</Button>
+				</NcButton>
 			</div>
 		</div>
 	</div>
@@ -100,8 +102,8 @@ import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import { mapGetters } from 'vuex'
 
@@ -110,8 +112,8 @@ import Formats from '../../mixins/Formats.js'
 export default {
 	name: 'DetailsFile',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		CheckboxRadioSwitch,
+		NcButton,
+		NcCheckboxRadioSwitch,
 	},
 	mixins: [Formats],
 	props: {
@@ -190,14 +192,14 @@ export default {
 			const filesList = this.files.map(file => ({
 				basename: file.filename,
 				fileid: file.fileid,
-				filename: file.filepath.replace(`/${getCurrentUser().uid}/files`, ''),
+				filename: file.filepath.replace(`/${getCurrentUser().uid}/files`, '').replace('files/', '/'),
 				getcontentlength: file.filesize,
 				getcontenttype: file.filemtype,
 				mime: file.filemtype,
 				size: file.filesize,
 			}))
 			OCA.Viewer.open({
-				path: file.filepath.replace(`/${getCurrentUser().uid}/files`, ''),
+				path: file.filepath.replace(`/${getCurrentUser().uid}/files`, '').replace('files/', '/'),
 				list: filesList.map(file => ({
 					...file,
 					list: filesList,
@@ -209,16 +211,20 @@ export default {
 		},
 		deleteGroupFile(file) {
 			if (this.deleteFileConfirmation) {
-				if (confirm(t('mediadc', 'Are you sure you want delete this file?'))) {
-					this._deleteGroupFile(file)
-				}
+				const self = this
+				OC.dialogs.confirm(this.t('mediadc', 'Are you sure you want delete this file?'),
+					this.t('mediadc', 'Confirm file deletion'), function(success) {
+						if (success) {
+							self._deleteGroupFile(file)
+						}
+					})
 			} else {
 				this._deleteGroupFile(file)
 			}
 		},
 		_deleteGroupFile(file) {
 			this.updating = true
-			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/${file.fileid}`))
+			axios.delete(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.group_id}/${file.fileid}`))
 				.then(res => {
 					if (res.data.success) {
 						const files = this.files
@@ -237,6 +243,7 @@ export default {
 						}
 						this.$emit('update:files', files)
 						emit('updateTaskInfo')
+						this.$store.commit('setTask', res.data.task)
 						emit('updateGroupFilesPagination', this.file)
 					} else if ('locked' in res.data && res.data.locked) {
 						showWarning(this.t('mediadc', 'Wait until file has been loaded before deleting it'))
@@ -257,7 +264,7 @@ export default {
 		},
 		removeGroupFile(file) {
 			this.updating = true
-			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.id}/remove`), { fileIds: [file.fileid] }).then(res => {
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.detail.task_id}/files/${this.detail.group_id}/remove`), { fileIds: [file.fileid] }).then(res => {
 				if (res.data.success) {
 					const files = this.files
 					if (this.allFiles.length === 2) { // Remove detail when 1 file left
@@ -344,7 +351,7 @@ export default {
 	border-radius: var(--border-radius-large);
 }
 
-body.theme--dark .placeholder {
+body[data-theme-dark] .placeholder {
 	background-color: var(--color-loading-dark);
 }
 

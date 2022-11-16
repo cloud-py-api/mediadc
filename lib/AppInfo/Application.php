@@ -48,10 +48,14 @@ class Application extends App implements IBootstrap
 	{
 		parent::__construct(self::APP_ID);
 
-		$this->notificationManager = \OC::$server->get(\OCP\Notification\IManager::class);
-		$eventDispatcher = \OC::$server->get(\OCP\EventDispatcher\IEventDispatcher::class);
+		$this->notificationManager = \OCP\Server::get(\OCP\Notification\IManager::class);
+		$eventDispatcher = \OCP\Server::get(\OCP\EventDispatcher\IEventDispatcher::class);
+		/**
+		 * @psalm-suppress UndefinedClass
+		 */
 		$eventDispatcher->addListener(\OCA\Files\Event\LoadAdditionalScriptsEvent::class, function () {
 			\OCP\Util::addScript(self::APP_ID, Application::APP_ID . '-filesplugin');
+			\OCP\Util::addStyle(self::APP_ID, 'filesplugin');
 		});
 	}
 

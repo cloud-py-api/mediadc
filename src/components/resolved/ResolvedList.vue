@@ -26,83 +26,103 @@
 	<div class="resolved-list">
 		<div class="resolved-list-heading">
 			<div v-if="resolved.total_pages > 1" class="pagination pagination-desktop">
-				<Button type="tertiary" @click="prevResolvedPage">
+				<NcButton type="tertiary"
+					:aria-label="t('mediadc', 'Previous resolved list page')"
+					@click="prevResolvedPage">
 					<template #icon>
 						<span class="icon-view-previous pagination-button" />
 					</template>
-				</Button>
+				</NcButton>
 				<span style="margin-left: 5px;">{{ t('mediadc', 'Page:') }}&nbsp;</span>
 				<span style="margin-right: 5px;">{{ page + 1 }}/{{ resolved.total_pages }}</span>
-				<Button type="tertiary" @click="nextResolvedPage">
+				<NcButton type="tertiary"
+					:aria-label="t('mediadc', 'Next resolved list page')"
+					@click="nextResolvedPage">
 					<template #icon>
 						<span class="icon-view-next pagination-button" />
 					</template>
-				</Button>
+				</NcButton>
 				<template v-if="resolved.total_pages > 1">
-					<select id="to_page" v-model="goToPage" name="to_page">
-						<option v-for="page of pagesRange" :key="page" :value="page">
-							{{ page + 1 }}
-						</option>
-					</select>
-					<Button v-tooltip="t('mediadc', 'Go to page')"
+					<input id="go_to_page"
+						v-model="goToPage"
+						type="number"
+						style="width: fit-content;"
+						:min="1"
+						:max="pagesRange[pagesRange.length - 1] + 1"
+						name="go_to_page"
+						:aria-label="t('mediadc', 'Page to navigate to')"
+						@keyup.enter="navigateToPage">
+					<NcButton v-tooltip="t('mediadc', 'Go to page')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Navigate to resolved list page')"
 						@click="navigateToPage">
 						<template #icon>
 							<span class="icon-confirm" />
 						</template>
-					</Button>
+					</NcButton>
 				</template>
 			</div>
 			<h2>{{ t('mediadc', 'Resolved list') }} ({{ resolved.total_items }} {{ n('mediadc', 'file', 'files', resolved.total_items) }})</h2>
-			<Button v-tooltip="t('mediadc', 'Toggle media type')"
+			<NcButton v-tooltip="t('mediadc', 'Toggle media type')"
 				type="tertiary"
 				class="toggle-type-button"
+				:aria-label="t('mediadc', 'Toggle resolved list media type')"
 				@click="toggleMediaType">
 				<template #icon>
 					<span :class="selectedType === 'photos' ? 'icon-video' : 'icon-picture'" />
 				</template>
-			</Button>
-			<Button v-tooltip="viewTooltip"
+			</NcButton>
+			<NcButton v-tooltip="viewTooltip"
 				type="tertiary"
 				class="toggle-view-button"
+				:aria-label="t('mediadc', 'Toggle list view (list or grid)')"
 				@click="toggleListView">
 				<template #icon>
 					<span :class="listView ? 'icon-toggle-pictures' : 'icon-toggle-filelist'" />
 				</template>
-			</Button>
+			</NcButton>
 		</div>
 		<div v-if="resolved.total_pages > 1" class="pagination pagination-mobile">
-			<Button type="tertiary" @click="prevResolvedPage">
+			<NcButton type="tertiary"
+				:aria-label="t('mediadc', 'Previous resolved list page')"
+				@click="prevResolvedPage">
 				<template #icon>
 					<span class="icon-view-previous pagination-button" />
 				</template>
-			</Button>
+			</NcButton>
 			<span style="margin-left: 5px;">{{ t('mediadc', 'Page:') }}&nbsp;</span>
 			<span style="margin-right: 5px;">{{ page + 1 }}/{{ resolved.total_pages }}</span>
-			<Button type="tertiary" @click="nextResolvedPage">
+			<NcButton type="tertiary"
+				:aria-label="t('mediadc', 'Next resolved list page')"
+				@click="nextResolvedPage">
 				<template #icon>
 					<span class="icon-view-next pagination-button" />
 				</template>
-			</Button>
+			</NcButton>
 			<template v-if="resolved.total_pages > 1">
-				<select id="to_page" v-model="goToPage" name="to_page">
-					<option v-for="page of pagesRange" :key="page" :value="page">
-						{{ page + 1 }}
-					</option>
-				</select>
-				<Button v-tooltip="t('mediadc', 'Go to page')"
+				<input id="go_to_page"
+					v-model="goToPage"
+					type="number"
+					style="width: fit-content;"
+					:min="1"
+					:max="pagesRange[pagesRange.length - 1] + 1"
+					name="go_to_page"
+					:aria-label="t('mediadc', 'Page to navigate to')"
+					@keyup.enter="navigateToPage">
+				<NcButton v-tooltip="t('mediadc', 'Go to page')"
 					type="tertiary"
+					:aria-label="t('mediadc', 'Navigate to resolved list page')"
 					@click="navigateToPage">
 					<template #icon>
 						<span class="icon-confirm" />
 					</template>
-				</Button>
+				</NcButton>
 			</template>
 		</div>
 		<Transition name="fade" appear>
 			<div v-if="listView" class="list-view">
 				<transition-group v-if="resolved.data && resolved.data.length > 0" name="fade" tag="ul">
-					<ListItem v-for="photo in resolved.data"
+					<NcListItem v-for="photo in resolved.data"
 						:key="photo.fileid"
 						:bold="true"
 						:force-display-actions="true"
@@ -117,27 +137,27 @@
 							</div>
 						</template>
 						<template #actions>
-							<ActionButton icon="icon-delete"
+							<NcActionButton icon="icon-delete"
 								:close-after-click="true"
 								@click="unresolve(photo.fileid)">
 								{{ t('mediadc', 'Remove file from resolved list') }}
-							</ActionButton>
+							</NcActionButton>
 						</template>
-					</ListItem>
+					</NcListItem>
 				</transition-group>
 				<div v-else class="empty-resolved" style="margin: 0 0 20px;">
-					<EmptyContent style="margin-top: 5vh;">
-						{{ t('mediadc', `No resolved ${selectedType} yet`) }}
+					<NcEmptyContent style="margin-top: 5vh;"
+						:title="t('mediadc', `No resolved ${selectedType} yet`)"
+						:description="t('mediadc', 'Create a new task or work on existing one and resolve some!')">
 						<template #icon>
-							<img class="empty-tasks-list-icon" style="width: 100%; height: auto;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNDM4Ljg5MSA0MzguODkxIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0MzguODkxIDQzOC44OTE7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8Zz4NCgkJCTxwYXRoIGQ9Ik0zNDcuOTY4LDU3LjUwM2gtMzkuNzA2VjM5Ljc0YzAtNS43NDctNi4yNjktOC4zNTktMTIuMDE2LTguMzU5aC0zMC44MjRjLTcuMzE0LTIwLjg5OC0yNS42LTMxLjM0Ny00Ni40OTgtMzEuMzQ3DQoJCQkJYy0yMC42NjgtMC43NzctMzkuNDY3LDExLjg5Ni00Ni40OTgsMzEuMzQ3aC0zMC4zMDJjLTUuNzQ3LDAtMTEuNDk0LDIuNjEyLTExLjQ5NCw4LjM1OXYxNy43NjNIOTAuOTIzDQoJCQkJYy0yMy41MywwLjI1MS00Mi43OCwxOC44MTMtNDMuODg2LDQyLjMxOHYyOTkuMzYzYzAsMjIuOTg4LDIwLjg5OCwzOS43MDYsNDMuODg2LDM5LjcwNmgyNTcuMDQ1DQoJCQkJYzIyLjk4OCwwLDQzLjg4Ni0xNi43MTgsNDMuODg2LTM5LjcwNlY5OS44MjJDMzkwLjc0OCw3Ni4zMTYsMzcxLjQ5OCw1Ny43NTQsMzQ3Ljk2OCw1Ny41MDN6IE0xNTEuNTI3LDUyLjI3OWgyOC43MzUNCgkJCQljNS4wMTYtMC42MTIsOS4wNDUtNC40MjgsOS45MjctOS40MDRjMy4wOTQtMTMuNDc0LDE0LjkxNS0yMy4xNDYsMjguNzM1LTIzLjUxYzEzLjY5MiwwLjQxNSwyNS4zMzUsMTAuMTE3LDI4LjIxMiwyMy41MQ0KCQkJCWMwLjkzNyw1LjE0OCw1LjIzMiw5LjAxMywxMC40NDksOS40MDRoMjkuNzh2NDEuNzk2SDE1MS41MjdWNTIuMjc5eiBNMzcwLjk1NiwzOTkuMTg1YzAsMTEuNDk0LTExLjQ5NCwxOC44MDgtMjIuOTg4LDE4LjgwOA0KCQkJCUg5MC45MjNjLTExLjQ5NCwwLTIyLjk4OC03LjMxNC0yMi45ODgtMTguODA4Vjk5LjgyMmMxLjA2Ni0xMS45NjQsMTAuOTc4LTIxLjIwMSwyMi45ODgtMjEuNDJoMzkuNzA2djI2LjY0NQ0KCQkJCWMwLjU1Miw1Ljg1NCw1LjYyMiwxMC4yMzMsMTEuNDk0LDkuOTI3aDE1NC4xMjJjNS45OCwwLjMyNywxMS4yMDktMy45OTIsMTIuMDE2LTkuOTI3Vjc4LjQwMWgzOS43MDYNCgkJCQljMTIuMDA5LDAuMjIsMjEuOTIyLDkuNDU2LDIyLjk4OCwyMS40MlYzOTkuMTg1eiIvPg0KCQkJPHBhdGggZD0iTTE3OS4yMTcsMjMzLjU2OWMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzY0LTE0LjYyOS0wLjUyMmwtMzMuNDM3LDMxLjg2OWwtMTQuMTA2LTE0LjYyOQ0KCQkJCWMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzYzLTE0LjYyOS0wLjUyMmMtNC4wNDcsNC4yNC00LjA0NywxMC45MTEsMCwxNS4xNTFsMjEuNDIsMjEuOTQzYzEuODU0LDIuMDc2LDQuNTMyLDMuMjI0LDcuMzE0LDMuMTM1DQoJCQkJYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNQ0KCQkJCUMxNzkuNjI4LDIzMy45NjIsMTc5LjQyNywyMzMuNzYxLDE3OS4yMTcsMjMzLjU2OXoiLz4NCgkJCTxwYXRoIGQ9Ik0zMjkuMTYsMjU2LjAzNEgyMDguOTk3Yy01Ljc3MSwwLTEwLjQ0OSw0LjY3OC0xMC40NDksMTAuNDQ5czQuNjc4LDEwLjQ0OSwxMC40NDksMTAuNDQ5SDMyOS4xNg0KCQkJCWM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMjU2LjAzNCwzMjkuMTYsMjU2LjAzNHoiLz4NCgkJCTxwYXRoIGQ9Ik0xNzkuMjE3LDE0OS45NzdjLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2NC0xNC42MjktMC41MjJsLTMzLjQzNywzMS44NjlsLTE0LjEwNi0xNC42MjkNCgkJCQljLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2NC0xNC42MjktMC41MjJjLTQuMDQ3LDQuMjQtNC4wNDcsMTAuOTExLDAsMTUuMTUxbDIxLjQyLDIxLjk0M2MxLjg1NCwyLjA3Niw0LjUzMiwzLjIyNCw3LjMxNCwzLjEzNQ0KCQkJCWMyLjc1Ni0wLjAzOSw1LjM4NS0xLjE2Niw3LjMxNC0zLjEzNWw0MC43NTEtMzguNjYxYzQuMDQtMy43MDYsNC4zMS05Ljk4NiwwLjYwMy0xNC4wMjUNCgkJCQlDMTc5LjYyOCwxNTAuMzcsMTc5LjQyNywxNTAuMTY5LDE3OS4yMTcsMTQ5Ljk3N3oiLz4NCgkJCTxwYXRoIGQ9Ik0zMjkuMTYsMTcyLjQ0MkgyMDguOTk3Yy01Ljc3MSwwLTEwLjQ0OSw0LjY3OC0xMC40NDksMTAuNDQ5czQuNjc4LDEwLjQ0OSwxMC40NDksMTAuNDQ5SDMyOS4xNg0KCQkJCWM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMTcyLjQ0MiwzMjkuMTYsMTcyLjQ0MnoiLz4NCgkJCTxwYXRoIGQ9Ik0xNzkuMjE3LDMxNy4xNmMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzYzLTE0LjYyOS0wLjUyMmwtMzMuNDM3LDMxLjg2OWwtMTQuMTA2LTE0LjYyOQ0KCQkJCWMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzYzLTE0LjYyOS0wLjUyMmMtNC4wNDcsNC4yNC00LjA0NywxMC45MTEsMCwxNS4xNTFsMjEuNDIsMjEuOTQzYzEuODU0LDIuMDc2LDQuNTMyLDMuMjI0LDcuMzE0LDMuMTM1DQoJCQkJYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNQ0KCQkJCUMxNzkuNjI4LDMxNy41NTQsMTc5LjQyNywzMTcuMzUzLDE3OS4yMTcsMzE3LjE2eiIvPg0KCQkJPHBhdGggZD0iTTMyOS4xNiwzMzkuNjI2SDIwOC45OTdjLTUuNzcxLDAtMTAuNDQ5LDQuNjc4LTEwLjQ0OSwxMC40NDlzNC42NzgsMTAuNDQ5LDEwLjQ0OSwxMC40NDlIMzI5LjE2DQoJCQkJYzUuNzcxLDAsMTAuNDQ5LTQuNjc4LDEwLjQ0OS0xMC40NDlTMzM0LjkzMSwzMzkuNjI2LDMyOS4xNiwzMzkuNjI2eiIvPg0KCQk8L2c+DQoJPC9nPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=">
-							<img class="empty-tasks-list-icon--dark" style="width: 100%; height: auto;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDQzOC44OTEgNDM4Ljg5MSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Zz4KCQkJPHBhdGggZD0iTTM0Ny45NjgsNTcuNTAzaC0zOS43MDZWMzkuNzRjMC01Ljc0Ny02LjI2OS04LjM1OS0xMi4wMTYtOC4zNTloLTMwLjgyNGMtNy4zMTQtMjAuODk4LTI1LjYtMzEuMzQ3LTQ2LjQ5OC0zMS4zNDcgICAgIGMtMjAuNjY4LTAuNzc3LTM5LjQ2NywxMS44OTYtNDYuNDk4LDMxLjM0N2gtMzAuMzAyYy01Ljc0NywwLTExLjQ5NCwyLjYxMi0xMS40OTQsOC4zNTl2MTcuNzYzSDkwLjkyMyAgICAgYy0yMy41MywwLjI1MS00Mi43OCwxOC44MTMtNDMuODg2LDQyLjMxOHYyOTkuMzYzYzAsMjIuOTg4LDIwLjg5OCwzOS43MDYsNDMuODg2LDM5LjcwNmgyNTcuMDQ1ICAgICBjMjIuOTg4LDAsNDMuODg2LTE2LjcxOCw0My44ODYtMzkuNzA2Vjk5LjgyMkMzOTAuNzQ4LDc2LjMxNiwzNzEuNDk4LDU3Ljc1NCwzNDcuOTY4LDU3LjUwM3ogTTE1MS41MjcsNTIuMjc5aDI4LjczNSAgICAgYzUuMDE2LTAuNjEyLDkuMDQ1LTQuNDI4LDkuOTI3LTkuNDA0YzMuMDk0LTEzLjQ3NCwxNC45MTUtMjMuMTQ2LDI4LjczNS0yMy41MWMxMy42OTIsMC40MTUsMjUuMzM1LDEwLjExNywyOC4yMTIsMjMuNTEgICAgIGMwLjkzNyw1LjE0OCw1LjIzMiw5LjAxMywxMC40NDksOS40MDRoMjkuNzh2NDEuNzk2SDE1MS41MjdWNTIuMjc5eiBNMzcwLjk1NiwzOTkuMTg1YzAsMTEuNDk0LTExLjQ5NCwxOC44MDgtMjIuOTg4LDE4LjgwOCAgICAgSDkwLjkyM2MtMTEuNDk0LDAtMjIuOTg4LTcuMzE0LTIyLjk4OC0xOC44MDhWOTkuODIyYzEuMDY2LTExLjk2NCwxMC45NzgtMjEuMjAxLDIyLjk4OC0yMS40MmgzOS43MDZ2MjYuNjQ1ICAgICBjMC41NTIsNS44NTQsNS42MjIsMTAuMjMzLDExLjQ5NCw5LjkyN2gxNTQuMTIyYzUuOTgsMC4zMjcsMTEuMjA5LTMuOTkyLDEyLjAxNi05LjkyN1Y3OC40MDFoMzkuNzA2ICAgICBjMTIuMDA5LDAuMjIsMjEuOTIyLDkuNDU2LDIyLjk4OCwyMS40MlYzOTkuMTg1eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMTc5LjIxNywyMzMuNTY5Yy0zLjkxOS00LjEzMS0xMC40MjUtNC4zNjQtMTQuNjI5LTAuNTIybC0zMy40MzcsMzEuODY5bC0xNC4xMDYtMTQuNjI5ICAgICBjLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2My0xNC42MjktMC41MjJjLTQuMDQ3LDQuMjQtNC4wNDcsMTAuOTExLDAsMTUuMTUxbDIxLjQyLDIxLjk0M2MxLjg1NCwyLjA3Niw0LjUzMiwzLjIyNCw3LjMxNCwzLjEzNSAgICAgYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNSAgICAgQzE3OS42MjgsMjMzLjk2MiwxNzkuNDI3LDIzMy43NjEsMTc5LjIxNywyMzMuNTY5eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMzI5LjE2LDI1Ni4wMzRIMjA4Ljk5N2MtNS43NzEsMC0xMC40NDksNC42NzgtMTAuNDQ5LDEwLjQ0OXM0LjY3OCwxMC40NDksMTAuNDQ5LDEwLjQ0OUgzMjkuMTYgICAgIGM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMjU2LjAzNCwzMjkuMTYsMjU2LjAzNHoiIGZpbGw9IiNmZmZmZmYiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KCQkJPHBhdGggZD0iTTE3OS4yMTcsMTQ5Ljk3N2MtMy45MTktNC4xMzEtMTAuNDI1LTQuMzY0LTE0LjYyOS0wLjUyMmwtMzMuNDM3LDMxLjg2OWwtMTQuMTA2LTE0LjYyOSAgICAgYy0zLjkxOS00LjEzMS0xMC40MjUtNC4zNjQtMTQuNjI5LTAuNTIyYy00LjA0Nyw0LjI0LTQuMDQ3LDEwLjkxMSwwLDE1LjE1MWwyMS40MiwyMS45NDNjMS44NTQsMi4wNzYsNC41MzIsMy4yMjQsNy4zMTQsMy4xMzUgICAgIGMyLjc1Ni0wLjAzOSw1LjM4NS0xLjE2Niw3LjMxNC0zLjEzNWw0MC43NTEtMzguNjYxYzQuMDQtMy43MDYsNC4zMS05Ljk4NiwwLjYwMy0xNC4wMjUgICAgIEMxNzkuNjI4LDE1MC4zNywxNzkuNDI3LDE1MC4xNjksMTc5LjIxNywxNDkuOTc3eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMzI5LjE2LDE3Mi40NDJIMjA4Ljk5N2MtNS43NzEsMC0xMC40NDksNC42NzgtMTAuNDQ5LDEwLjQ0OXM0LjY3OCwxMC40NDksMTAuNDQ5LDEwLjQ0OUgzMjkuMTYgICAgIGM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMTcyLjQ0MiwzMjkuMTYsMTcyLjQ0MnoiIGZpbGw9IiNmZmZmZmYiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KCQkJPHBhdGggZD0iTTE3OS4yMTcsMzE3LjE2Yy0zLjkxOS00LjEzMS0xMC40MjUtNC4zNjMtMTQuNjI5LTAuNTIybC0zMy40MzcsMzEuODY5bC0xNC4xMDYtMTQuNjI5ICAgICBjLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2My0xNC42MjktMC41MjJjLTQuMDQ3LDQuMjQtNC4wNDcsMTAuOTExLDAsMTUuMTUxbDIxLjQyLDIxLjk0M2MxLjg1NCwyLjA3Niw0LjUzMiwzLjIyNCw3LjMxNCwzLjEzNSAgICAgYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNSAgICAgQzE3OS42MjgsMzE3LjU1NCwxNzkuNDI3LDMxNy4zNTMsMTc5LjIxNywzMTcuMTZ6IiBmaWxsPSIjZmZmZmZmIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BhdGg+CgkJCTxwYXRoIGQ9Ik0zMjkuMTYsMzM5LjYyNkgyMDguOTk3Yy01Ljc3MSwwLTEwLjQ0OSw0LjY3OC0xMC40NDksMTAuNDQ5czQuNjc4LDEwLjQ0OSwxMC40NDksMTAuNDQ5SDMyOS4xNiAgICAgYzUuNzcxLDAsMTAuNDQ5LTQuNjc4LDEwLjQ0OS0xMC40NDlTMzM0LjkzMSwzMzkuNjI2LDMyOS4xNiwzMzkuNjI2eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCTwvZz4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+">
+							<ClipboardListOutline />
 						</template>
-						<template #desc>
-							<a :href="tasksLink">
-								{{ t('mediadc', 'Create a new task or work on existing and resolve some!') }}
-							</a>
+						<template #action>
+							<NcButton :to="{ name: 'collector' }" type="primary">
+								{{ t('mediadc', 'Create a new one!') }}
+							</NcButton>
 						</template>
-					</EmptyContent>
+					</NcEmptyContent>
 				</div>
 			</div>
 			<transition-group v-else-if="resolved.data && resolved.data.length > 0"
@@ -151,18 +171,18 @@
 				</div>
 			</transition-group>
 			<div v-else class="empty-resolved" style="margin: 0 0 20px;">
-				<EmptyContent style="margin-top: 5vh;">
-					{{ t('mediadc', `No resolved ${selectedType} yet`) }}
+				<NcEmptyContent style="margin-top: 5vh;"
+					:title="t('mediadc', `No resolved ${selectedType} yet`)"
+					:description="t('mediadc', 'Create a new task or work on existing one and resolve some!')">
 					<template #icon>
-						<img class="empty-tasks-list-icon" style="width: 100%; height: auto;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNDM4Ljg5MSA0MzguODkxIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0MzguODkxIDQzOC44OTE7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8Zz4NCgkJCTxwYXRoIGQ9Ik0zNDcuOTY4LDU3LjUwM2gtMzkuNzA2VjM5Ljc0YzAtNS43NDctNi4yNjktOC4zNTktMTIuMDE2LTguMzU5aC0zMC44MjRjLTcuMzE0LTIwLjg5OC0yNS42LTMxLjM0Ny00Ni40OTgtMzEuMzQ3DQoJCQkJYy0yMC42NjgtMC43NzctMzkuNDY3LDExLjg5Ni00Ni40OTgsMzEuMzQ3aC0zMC4zMDJjLTUuNzQ3LDAtMTEuNDk0LDIuNjEyLTExLjQ5NCw4LjM1OXYxNy43NjNIOTAuOTIzDQoJCQkJYy0yMy41MywwLjI1MS00Mi43OCwxOC44MTMtNDMuODg2LDQyLjMxOHYyOTkuMzYzYzAsMjIuOTg4LDIwLjg5OCwzOS43MDYsNDMuODg2LDM5LjcwNmgyNTcuMDQ1DQoJCQkJYzIyLjk4OCwwLDQzLjg4Ni0xNi43MTgsNDMuODg2LTM5LjcwNlY5OS44MjJDMzkwLjc0OCw3Ni4zMTYsMzcxLjQ5OCw1Ny43NTQsMzQ3Ljk2OCw1Ny41MDN6IE0xNTEuNTI3LDUyLjI3OWgyOC43MzUNCgkJCQljNS4wMTYtMC42MTIsOS4wNDUtNC40MjgsOS45MjctOS40MDRjMy4wOTQtMTMuNDc0LDE0LjkxNS0yMy4xNDYsMjguNzM1LTIzLjUxYzEzLjY5MiwwLjQxNSwyNS4zMzUsMTAuMTE3LDI4LjIxMiwyMy41MQ0KCQkJCWMwLjkzNyw1LjE0OCw1LjIzMiw5LjAxMywxMC40NDksOS40MDRoMjkuNzh2NDEuNzk2SDE1MS41MjdWNTIuMjc5eiBNMzcwLjk1NiwzOTkuMTg1YzAsMTEuNDk0LTExLjQ5NCwxOC44MDgtMjIuOTg4LDE4LjgwOA0KCQkJCUg5MC45MjNjLTExLjQ5NCwwLTIyLjk4OC03LjMxNC0yMi45ODgtMTguODA4Vjk5LjgyMmMxLjA2Ni0xMS45NjQsMTAuOTc4LTIxLjIwMSwyMi45ODgtMjEuNDJoMzkuNzA2djI2LjY0NQ0KCQkJCWMwLjU1Miw1Ljg1NCw1LjYyMiwxMC4yMzMsMTEuNDk0LDkuOTI3aDE1NC4xMjJjNS45OCwwLjMyNywxMS4yMDktMy45OTIsMTIuMDE2LTkuOTI3Vjc4LjQwMWgzOS43MDYNCgkJCQljMTIuMDA5LDAuMjIsMjEuOTIyLDkuNDU2LDIyLjk4OCwyMS40MlYzOTkuMTg1eiIvPg0KCQkJPHBhdGggZD0iTTE3OS4yMTcsMjMzLjU2OWMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzY0LTE0LjYyOS0wLjUyMmwtMzMuNDM3LDMxLjg2OWwtMTQuMTA2LTE0LjYyOQ0KCQkJCWMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzYzLTE0LjYyOS0wLjUyMmMtNC4wNDcsNC4yNC00LjA0NywxMC45MTEsMCwxNS4xNTFsMjEuNDIsMjEuOTQzYzEuODU0LDIuMDc2LDQuNTMyLDMuMjI0LDcuMzE0LDMuMTM1DQoJCQkJYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNQ0KCQkJCUMxNzkuNjI4LDIzMy45NjIsMTc5LjQyNywyMzMuNzYxLDE3OS4yMTcsMjMzLjU2OXoiLz4NCgkJCTxwYXRoIGQ9Ik0zMjkuMTYsMjU2LjAzNEgyMDguOTk3Yy01Ljc3MSwwLTEwLjQ0OSw0LjY3OC0xMC40NDksMTAuNDQ5czQuNjc4LDEwLjQ0OSwxMC40NDksMTAuNDQ5SDMyOS4xNg0KCQkJCWM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMjU2LjAzNCwzMjkuMTYsMjU2LjAzNHoiLz4NCgkJCTxwYXRoIGQ9Ik0xNzkuMjE3LDE0OS45NzdjLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2NC0xNC42MjktMC41MjJsLTMzLjQzNywzMS44NjlsLTE0LjEwNi0xNC42MjkNCgkJCQljLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2NC0xNC42MjktMC41MjJjLTQuMDQ3LDQuMjQtNC4wNDcsMTAuOTExLDAsMTUuMTUxbDIxLjQyLDIxLjk0M2MxLjg1NCwyLjA3Niw0LjUzMiwzLjIyNCw3LjMxNCwzLjEzNQ0KCQkJCWMyLjc1Ni0wLjAzOSw1LjM4NS0xLjE2Niw3LjMxNC0zLjEzNWw0MC43NTEtMzguNjYxYzQuMDQtMy43MDYsNC4zMS05Ljk4NiwwLjYwMy0xNC4wMjUNCgkJCQlDMTc5LjYyOCwxNTAuMzcsMTc5LjQyNywxNTAuMTY5LDE3OS4yMTcsMTQ5Ljk3N3oiLz4NCgkJCTxwYXRoIGQ9Ik0zMjkuMTYsMTcyLjQ0MkgyMDguOTk3Yy01Ljc3MSwwLTEwLjQ0OSw0LjY3OC0xMC40NDksMTAuNDQ5czQuNjc4LDEwLjQ0OSwxMC40NDksMTAuNDQ5SDMyOS4xNg0KCQkJCWM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMTcyLjQ0MiwzMjkuMTYsMTcyLjQ0MnoiLz4NCgkJCTxwYXRoIGQ9Ik0xNzkuMjE3LDMxNy4xNmMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzYzLTE0LjYyOS0wLjUyMmwtMzMuNDM3LDMxLjg2OWwtMTQuMTA2LTE0LjYyOQ0KCQkJCWMtMy45MTktNC4xMzEtMTAuNDI1LTQuMzYzLTE0LjYyOS0wLjUyMmMtNC4wNDcsNC4yNC00LjA0NywxMC45MTEsMCwxNS4xNTFsMjEuNDIsMjEuOTQzYzEuODU0LDIuMDc2LDQuNTMyLDMuMjI0LDcuMzE0LDMuMTM1DQoJCQkJYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNQ0KCQkJCUMxNzkuNjI4LDMxNy41NTQsMTc5LjQyNywzMTcuMzUzLDE3OS4yMTcsMzE3LjE2eiIvPg0KCQkJPHBhdGggZD0iTTMyOS4xNiwzMzkuNjI2SDIwOC45OTdjLTUuNzcxLDAtMTAuNDQ5LDQuNjc4LTEwLjQ0OSwxMC40NDlzNC42NzgsMTAuNDQ5LDEwLjQ0OSwxMC40NDlIMzI5LjE2DQoJCQkJYzUuNzcxLDAsMTAuNDQ5LTQuNjc4LDEwLjQ0OS0xMC40NDlTMzM0LjkzMSwzMzkuNjI2LDMyOS4xNiwzMzkuNjI2eiIvPg0KCQk8L2c+DQoJPC9nPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=">
-						<img class="empty-tasks-list-icon--dark" style="width: 100%; height: auto;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDQzOC44OTEgNDM4Ljg5MSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Zz4KCQkJPHBhdGggZD0iTTM0Ny45NjgsNTcuNTAzaC0zOS43MDZWMzkuNzRjMC01Ljc0Ny02LjI2OS04LjM1OS0xMi4wMTYtOC4zNTloLTMwLjgyNGMtNy4zMTQtMjAuODk4LTI1LjYtMzEuMzQ3LTQ2LjQ5OC0zMS4zNDcgICAgIGMtMjAuNjY4LTAuNzc3LTM5LjQ2NywxMS44OTYtNDYuNDk4LDMxLjM0N2gtMzAuMzAyYy01Ljc0NywwLTExLjQ5NCwyLjYxMi0xMS40OTQsOC4zNTl2MTcuNzYzSDkwLjkyMyAgICAgYy0yMy41MywwLjI1MS00Mi43OCwxOC44MTMtNDMuODg2LDQyLjMxOHYyOTkuMzYzYzAsMjIuOTg4LDIwLjg5OCwzOS43MDYsNDMuODg2LDM5LjcwNmgyNTcuMDQ1ICAgICBjMjIuOTg4LDAsNDMuODg2LTE2LjcxOCw0My44ODYtMzkuNzA2Vjk5LjgyMkMzOTAuNzQ4LDc2LjMxNiwzNzEuNDk4LDU3Ljc1NCwzNDcuOTY4LDU3LjUwM3ogTTE1MS41MjcsNTIuMjc5aDI4LjczNSAgICAgYzUuMDE2LTAuNjEyLDkuMDQ1LTQuNDI4LDkuOTI3LTkuNDA0YzMuMDk0LTEzLjQ3NCwxNC45MTUtMjMuMTQ2LDI4LjczNS0yMy41MWMxMy42OTIsMC40MTUsMjUuMzM1LDEwLjExNywyOC4yMTIsMjMuNTEgICAgIGMwLjkzNyw1LjE0OCw1LjIzMiw5LjAxMywxMC40NDksOS40MDRoMjkuNzh2NDEuNzk2SDE1MS41MjdWNTIuMjc5eiBNMzcwLjk1NiwzOTkuMTg1YzAsMTEuNDk0LTExLjQ5NCwxOC44MDgtMjIuOTg4LDE4LjgwOCAgICAgSDkwLjkyM2MtMTEuNDk0LDAtMjIuOTg4LTcuMzE0LTIyLjk4OC0xOC44MDhWOTkuODIyYzEuMDY2LTExLjk2NCwxMC45NzgtMjEuMjAxLDIyLjk4OC0yMS40MmgzOS43MDZ2MjYuNjQ1ICAgICBjMC41NTIsNS44NTQsNS42MjIsMTAuMjMzLDExLjQ5NCw5LjkyN2gxNTQuMTIyYzUuOTgsMC4zMjcsMTEuMjA5LTMuOTkyLDEyLjAxNi05LjkyN1Y3OC40MDFoMzkuNzA2ICAgICBjMTIuMDA5LDAuMjIsMjEuOTIyLDkuNDU2LDIyLjk4OCwyMS40MlYzOTkuMTg1eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMTc5LjIxNywyMzMuNTY5Yy0zLjkxOS00LjEzMS0xMC40MjUtNC4zNjQtMTQuNjI5LTAuNTIybC0zMy40MzcsMzEuODY5bC0xNC4xMDYtMTQuNjI5ICAgICBjLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2My0xNC42MjktMC41MjJjLTQuMDQ3LDQuMjQtNC4wNDcsMTAuOTExLDAsMTUuMTUxbDIxLjQyLDIxLjk0M2MxLjg1NCwyLjA3Niw0LjUzMiwzLjIyNCw3LjMxNCwzLjEzNSAgICAgYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNSAgICAgQzE3OS42MjgsMjMzLjk2MiwxNzkuNDI3LDIzMy43NjEsMTc5LjIxNywyMzMuNTY5eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMzI5LjE2LDI1Ni4wMzRIMjA4Ljk5N2MtNS43NzEsMC0xMC40NDksNC42NzgtMTAuNDQ5LDEwLjQ0OXM0LjY3OCwxMC40NDksMTAuNDQ5LDEwLjQ0OUgzMjkuMTYgICAgIGM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMjU2LjAzNCwzMjkuMTYsMjU2LjAzNHoiIGZpbGw9IiNmZmZmZmYiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KCQkJPHBhdGggZD0iTTE3OS4yMTcsMTQ5Ljk3N2MtMy45MTktNC4xMzEtMTAuNDI1LTQuMzY0LTE0LjYyOS0wLjUyMmwtMzMuNDM3LDMxLjg2OWwtMTQuMTA2LTE0LjYyOSAgICAgYy0zLjkxOS00LjEzMS0xMC40MjUtNC4zNjQtMTQuNjI5LTAuNTIyYy00LjA0Nyw0LjI0LTQuMDQ3LDEwLjkxMSwwLDE1LjE1MWwyMS40MiwyMS45NDNjMS44NTQsMi4wNzYsNC41MzIsMy4yMjQsNy4zMTQsMy4xMzUgICAgIGMyLjc1Ni0wLjAzOSw1LjM4NS0xLjE2Niw3LjMxNC0zLjEzNWw0MC43NTEtMzguNjYxYzQuMDQtMy43MDYsNC4zMS05Ljk4NiwwLjYwMy0xNC4wMjUgICAgIEMxNzkuNjI4LDE1MC4zNywxNzkuNDI3LDE1MC4xNjksMTc5LjIxNywxNDkuOTc3eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCQk8cGF0aCBkPSJNMzI5LjE2LDE3Mi40NDJIMjA4Ljk5N2MtNS43NzEsMC0xMC40NDksNC42NzgtMTAuNDQ5LDEwLjQ0OXM0LjY3OCwxMC40NDksMTAuNDQ5LDEwLjQ0OUgzMjkuMTYgICAgIGM1Ljc3MSwwLDEwLjQ0OS00LjY3OCwxMC40NDktMTAuNDQ5UzMzNC45MzEsMTcyLjQ0MiwzMjkuMTYsMTcyLjQ0MnoiIGZpbGw9IiNmZmZmZmYiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KCQkJPHBhdGggZD0iTTE3OS4yMTcsMzE3LjE2Yy0zLjkxOS00LjEzMS0xMC40MjUtNC4zNjMtMTQuNjI5LTAuNTIybC0zMy40MzcsMzEuODY5bC0xNC4xMDYtMTQuNjI5ICAgICBjLTMuOTE5LTQuMTMxLTEwLjQyNS00LjM2My0xNC42MjktMC41MjJjLTQuMDQ3LDQuMjQtNC4wNDcsMTAuOTExLDAsMTUuMTUxbDIxLjQyLDIxLjk0M2MxLjg1NCwyLjA3Niw0LjUzMiwzLjIyNCw3LjMxNCwzLjEzNSAgICAgYzIuNzU2LTAuMDM5LDUuMzg1LTEuMTY2LDcuMzE0LTMuMTM1bDQwLjc1MS0zOC42NjFjNC4wNC0zLjcwNiw0LjMxLTkuOTg2LDAuNjAzLTE0LjAyNSAgICAgQzE3OS42MjgsMzE3LjU1NCwxNzkuNDI3LDMxNy4zNTMsMTc5LjIxNywzMTcuMTZ6IiBmaWxsPSIjZmZmZmZmIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BhdGg+CgkJCTxwYXRoIGQ9Ik0zMjkuMTYsMzM5LjYyNkgyMDguOTk3Yy01Ljc3MSwwLTEwLjQ0OSw0LjY3OC0xMC40NDksMTAuNDQ5czQuNjc4LDEwLjQ0OSwxMC40NDksMTAuNDQ5SDMyOS4xNiAgICAgYzUuNzcxLDAsMTAuNDQ5LTQuNjc4LDEwLjQ0OS0xMC40NDlTMzM0LjkzMSwzMzkuNjI2LDMyOS4xNiwzMzkuNjI2eiIgZmlsbD0iI2ZmZmZmZiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPgoJCTwvZz4KCTwvZz4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+">
+						<ClipboardListOutline />
 					</template>
-					<template #desc>
-						<a :href="tasksLink">
-							{{ t('mediadc', 'Create a new task or work on existing and resolve some!') }}
-						</a>
+					<template #action>
+						<NcButton :to="{ name: 'collector' }" type="primary">
+							{{ t('mediadc', 'Create a new one!') }}
+						</NcButton>
 					</template>
-				</EmptyContent>
+				</NcEmptyContent>
 			</div>
 		</Transition>
 	</div>
@@ -175,21 +195,23 @@ import { generateUrl } from '@nextcloud/router'
 import Formats from '../../mixins/Formats.js'
 import ResolvedListFile from './ResolvedListFile.vue'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent.js'
-import ListItem from '@nextcloud/vue/dist/Components/ListItem.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import NcListItem from '@nextcloud/vue/dist/Components/NcListItem.js'
+import ClipboardListOutline from 'vue-material-design-icons/ClipboardListOutline.vue'
 
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
 	name: 'ResolvedList',
 	components: {
-		ActionButton,
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		EmptyContent,
-		ListItem,
+		NcActionButton,
+		NcButton,
+		NcEmptyContent,
+		NcListItem,
 		ResolvedListFile,
+		ClipboardListOutline,
 	},
 	mixins: [
 		Formats,
@@ -198,7 +220,7 @@ export default {
 		return {
 			thumbSize: 48,
 			listView: true,
-			goToPage: 0,
+			goToPage: 1,
 		}
 	},
 	computed: {
@@ -271,7 +293,12 @@ export default {
 			}
 		},
 		navigateToPage() {
-			this.$store.commit('updatePage', this.goToPage)
+			if (this.goToPage > this.pagesRange.length) {
+				this.goToPage = this.pagesRange.length
+			} else if (this.goToPage <= 0) {
+				this.goToPage = 1
+			}
+			this.$store.commit('updatePage', this.goToPage - 1)
 		},
 	},
 }
@@ -355,7 +382,7 @@ export default {
 }
 
 .toggle-view-button {
-	position: absolute;
+	position: absolute !important;
 	top: 50%;
 	right: 10px;
 	transform: translateY(-50%);
@@ -416,7 +443,7 @@ export default {
 	}
 
 	.toggle-view-button {
-		position: initial;
+		position: initial !important;
 		transform: none;
 	}
 

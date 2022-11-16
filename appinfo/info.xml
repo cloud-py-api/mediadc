@@ -20,7 +20,7 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
 	]]>
 	</description>
-	<version>0.1.10</version>
+	<version>0.2.0</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
@@ -37,14 +37,20 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_2.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_3.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_4.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_5.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved_1.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved_2.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved_3.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_configuration.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_2.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_3.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_filesplugin.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="21" max-version="24" />
-		<php min-version="7.3" min-int-size="64" />
+		<nextcloud min-version="25" max-version="26" />
+		<php min-version="7.4" min-int-size="64" />
 	</dependencies>
 	<settings>
 		<admin>OCA\MediaDC\Settings\AdminSettings</admin>

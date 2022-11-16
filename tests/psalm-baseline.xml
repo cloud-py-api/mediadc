@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
-  <file src="lib/BackgroundJob/CollectorCleanupJob.php">
-    <UndefinedConstant occurrences="1">
-      <code>\OCP\BackgroundJob\IJob::TIME_INSENSITIVE</code>
-    </UndefinedConstant>
-    <UndefinedMethod occurrences="1">
-      <code>setTimeSensitivity</code>
-    </UndefinedMethod>
+  <file src="lib/AppInfo/Application.php">
+    <UndefinedClass occurrences="1">
+      <code>\OCP\Server</code>
+    </UndefinedClass>
   </file>
   <file src="lib/Command/CollectorCleanupCommand.php">
     <UndefinedClass occurrences="1">
@@ -14,6 +11,11 @@
     </UndefinedClass>
   </file>
   <file src="lib/Command/CollectorFileContentsCommand.php">
+    <UndefinedClass occurrences="1">
+      <code>Command</code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Command/CollectorPopulateTaskCommand.php">
     <UndefinedClass occurrences="1">
       <code>Command</code>
     </UndefinedClass>
@@ -48,16 +50,22 @@
     </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Db/CollectorTaskDetailMapper.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;logger</code>
-    </UndefinedThisPropertyAssignment>
-  </file>
-  <file src="lib/Migration/AppDataInitializationStep.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;logger</code>
-    </UndefinedThisPropertyAssignment>
+    <UndefinedDocblockClass occurrences="1">
+      <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
+    <ImplementedParamTypeMismatch occurrences="1">
+      <code>$schemaClosure</code>
+    </ImplementedParamTypeMismatch>
+    <MismatchingDocblockParamType occurrences="1">
+      <code>Closure</code>
+    </MismatchingDocblockParamType>
+    <UndefinedDocblockClass occurrences="1">
+      <code>Closure</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Migration/Version0002Date20221102124949.php">
     <ImplementedParamTypeMismatch occurrences="1">
       <code>$schemaClosure</code>
     </ImplementedParamTypeMismatch>
@@ -111,8 +119,9 @@
     </MismatchingDocblockReturnType>
   </file>
   <file src="lib/Service/UtilsService.php">
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="2">
       <code>?DatabaseStatistics</code>
+      <code>\OCP\Server</code>
     </UndefinedClass>
     <UndefinedDocblockClass occurrences="3">
       <code>$ini</code>

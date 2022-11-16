@@ -50,10 +50,10 @@ return [
 		['name' => 'collector#index', 'url' => '/api/v1/tasks/', 'verb' => 'GET'],
 		['name' => 'collector#details', 'url' => '/api/v1/tasks/{taskId}', 'verb' => 'GET'],
 		['name' => 'collector#getTaskInfo', 'url' => '/api/v1/tasks/{taskId}/info', 'verb' => 'GET'],
-		['name' => 'collector#deleteTaskDetail', 'url' => '/api/v1/tasks/{taskId}/detail/{taskDetailId}', 'verb' => 'DELETE'],
-		['name' => 'collector#getDetailGroupFilesInfo', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/all', 'verb' => 'GET'],
+		['name' => 'collector#deleteTaskDetail', 'url' => '/api/v1/tasks/{taskId}/detail/{groupId}', 'verb' => 'DELETE'],
+		['name' => 'collector#getDetailGroupFilesInfo', 'url' => '/api/v1/tasks/{taskId}/files/{groupId}/all', 'verb' => 'GET'],
 		['name' => 'collector#getDetailFilesTotalSize', 'url' => '/api/v1/tasks/{taskId}/filestotal', 'verb' => 'GET'],
-		['name' => 'collector#deleteTaskDetailFile', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/{fileId}', 'verb' => 'DELETE'],
+		['name' => 'collector#deleteTaskDetailFile', 'url' => '/api/v1/tasks/{taskId}/files/{groupId}/{fileId}', 'verb' => 'DELETE'],
 		['name' => 'collector#deleteTask', 'url' => '/api/v1/tasks/{taskId}', 'verb' => 'DELETE'],
 		['name' => 'collector#terminateTask', 'url' => '/api/v1/tasks/{taskId}/terminate', 'verb' => 'POST'],
 		['name' => 'collector#duplicateTask', 'url' => '/api/v1/tasks/{taskId}/duplicate', 'verb' => 'POST'],
@@ -66,7 +66,7 @@ return [
 
 		// BATCH ACTIONS API
 		['name' => 'collector#removeTaskDetailGroups', 'url' => '/api/v1/tasks/{taskId}/details/remove', 'verb' => 'POST'],
-		['name' => 'collector#removeTaskDetailFiles', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/remove', 'verb' => 'POST'],
-		['name' => 'collector#deleteTaskDetailFiles', 'url' => '/api/v1/tasks/{taskId}/files/{taskDetailId}/delete', 'verb' => 'POST'],
+		['name' => 'collector#removeTaskDetailFiles', 'url' => '/api/v1/tasks/{taskId}/files/{groupId}/remove', 'verb' => 'POST'],
+		['name' => 'collector#deleteTaskDetailFiles', 'url' => '/api/v1/tasks/{taskId}/files/{groupId}/delete', 'verb' => 'POST'],
 	]
 ];

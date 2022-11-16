@@ -141,13 +141,18 @@ class UtilsService
 		if (!function_exists($function_name)) {
 			return false;
 		}
-		/** @var IniGetWrapper $ini */
-		$ini = \OC::$server->get(IniGetWrapper::class);
+		/**
+		 * @psalm-suppress UndefinedClass
+		 * @psalm-suppress UndefinedDocblockClass
+		 * @var IniGetWrapper $ini
+		 */
+		$ini = \OCP\Server::get(IniGetWrapper::class);
 		$disabled = explode(',', $ini->get('disable_functions') ?: '');
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;
 		}
+		/** @psalm-suppress UndefinedDocblockClass */
 		$disabled = explode(',', $ini->get('suhosin.executor.func.blacklist') ?: '');
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {

@@ -29,17 +29,18 @@
 			<div class="task-details-heading">
 				<h2>
 					{{ rootTitle }}
-					<Button v-if="isValidUser"
+					<NcButton v-if="isValidUser"
 						v-tooltip="{content: !collapsedStatus
 							? t('mediadc', 'Collapse task status')
 							: t('mediadc', 'Show task status'), placement: 'bottom-end'}"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Collapse task status')"
 						style="margin: 0 10px;"
 						@click="collapseTaskStatus">
 						<template #icon>
 							<span :class="!collapsedStatus ? 'icon-triangle-n' : 'icon-triangle-s'" />
 						</template>
-					</Button>
+					</NcButton>
 				</h2>
 				<Transition name="fade" appear>
 					<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
@@ -73,34 +74,34 @@
 									{{ Number(task.finished_time) > 0 ? ' - ' + parseUnixTimestamp(task.finished_time) : '' }}
 								</span>
 							</div>
-							<Actions style="margin: 0 0 0 10px;">
-								<ActionButton v-tooltip="{content: t('mediadc', 'Restart task with current params'), placement: 'left'}"
+							<NcActions style="margin: 0 0 0 10px;">
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Restart task with current params'), placement: 'left'}"
 									icon="icon-history"
 									:close-after-click="true"
 									@click="restartTask(task)">
-									{{ t('mediadc', 'Restart') }}
-								</ActionButton>
-								<ActionButton v-tooltip="{content: t('mediadc', 'Edit task params'), placement: 'left'}"
+									{{ getStatusBadge(task) === 'duplicated' ? t('mediadc', 'Start') : t('mediadc', 'Restart') }}
+								</NcActionButton>
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Edit task params'), placement: 'left'}"
 									icon="icon-rename"
 									:close-after-click="true"
 									@click="openEditTaskDialog(task)">
 									{{ t('mediadc', 'Edit') }}
-								</ActionButton>
-								<ActionButton v-tooltip="{content: t('mediadc', 'Terminate task execution'), placement: 'left'}"
+								</NcActionButton>
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Terminate task execution'), placement: 'left'}"
 									icon="icon-pause"
 									:close-after-click="true"
-									@click="terminateTask(task)">
+									@click="_terminateTask(task)">
 									{{ t('mediadc', 'Stop') }}
-								</ActionButton>
-								<ActionButton v-tooltip="{content: t('mediadc', 'Delete task'), placement: 'left'}"
+								</NcActionButton>
+								<NcActionButton v-tooltip="{content: t('mediadc', 'Delete task'), placement: 'left'}"
 									icon="icon-delete"
 									:close-after-click="true"
 									@click="deleteTask(task)">
 									{{ t('mediadc', 'Delete') }}
-								</ActionButton>
-							</Actions>
+								</NcActionButton>
+							</NcActions>
 						</div>
-						<ProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
+						<NcProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
 							size="small"
 							:error="getStatusBadge(task) === 'error'" />
 					</div>
@@ -139,14 +140,15 @@
 			<div v-if="hasErrors" class="errors">
 				<div class="errors-heading" style="display: flex; align-items: center;">
 					<h3>{{ t('mediadc', 'Task errors' ) }}</h3>
-					<Button v-tooltip="t('mediadc', 'Copy to clipboard')"
+					<NcButton v-tooltip="t('mediadc', 'Copy to clipboard')"
 						type="tertiary-no-background"
+						:aria-label="t('mediadc', 'Copy to clipboard')"
 						style="margin: 0 10px;"
 						@click="copyErrorsToClipboard">
 						<template #icon>
 							<ContentCopy :size="20" />
 						</template>
-					</Button>
+					</NcButton>
 				</div>
 				<div v-for="error in task.errors.split('\\n')" :key="error" class="error-row">
 					{{ error }}
@@ -169,10 +171,10 @@ import DetailsList from '../components/details/DetailsList.vue'
 import Formats from '../mixins/Formats.js'
 import TasksEdit from '../components/tasks/TasksEdit.vue'
 
-import Actions from '@nextcloud/vue/dist/Components/Actions.js'
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
-import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcProgressBar from '@nextcloud/vue/dist/Components/NcProgressBar.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {
@@ -180,10 +182,10 @@ export default {
 	components: {
 		DetailsList,
 		TasksEdit,
-		Actions,
-		ActionButton,
-		ProgressBar,
-		Button, // eslint-disable-line vue/no-reserved-component-names
+		NcActions,
+		NcActionButton,
+		NcProgressBar,
+		NcButton,
 		ContentCopy,
 	},
 	mixins: [
@@ -226,38 +228,51 @@ export default {
 	},
 	beforeMount() {
 		this.$emit('update:loading', true)
-		this.getTaskDetails()
+		this.tasksUpdater = setInterval(this._getTaskDetails, 3000)
+		this.getTaskDetails().then((res) => {
+			if (this.getStatusBadge(res.data.collectorTask) === 'finished' || this.getStatusBadge(res.data.collectorTask) === 'duplicated') {
+				clearInterval(this.tasksUpdater)
+			}
+		})
 		this.getTaskInfo()
 		subscribe('restartTask', this.onRestartTaskEvent)
 		subscribe('updateTaskInfo', this.getDetailFilesTotalSize)
-		this.tasksUpdater = setInterval(this.getTaskDetails, 5000)
 	},
 	beforeDestroy() {
 		clearInterval(this.tasksUpdater)
 		unsubscribe('updateTaskInfo', this.getDetailFilesTotalSize)
 		unsubscribe('restartTask', this.onRestartTaskEvent)
+		this.$store.commit('setTask', {})
+		this.$store.commit('setTaskInfo', { exclude_directories: [], target_directories: [] })
+		this.$store.commit('setDetails', [])
+		this.$store.commit('setDetailsInfo', { filestotal: 0, filessize: 0 })
 	},
 	methods: {
 		...mapActions([
 			'getTaskDetails',
 			'getTaskInfo',
 			'getDetailFilesTotalSize',
+			'terminateTask',
 		]),
-		terminateTask(task) {
+		_terminateTask(task) {
 			if (this.isValidUser) {
-				this.terminating = true
-				axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${task.id}/terminate`)).then(res => {
+				this.terminateTask(task).then(() => {
 					showSuccess(this.t('mediadc', 'Task terminated'))
-					this.terminating = false
-					this.getTaskDetails()
 				})
 			} else {
 				showWarning(this.t('mediadc', 'You are not allowed to terminate this task'))
 			}
 		},
+		_getTaskDetails() {
+			this.getTaskDetails().then(res => {
+				if (this.getStatusBadge(res.data.collectorTask) === 'finished' || this.getStatusBadge(res.data.collectorTask) === 'terminated' || this.getStatusBadge(res.data.collectorTask) === 'error') {
+					clearInterval(this.tasksUpdater)
+				}
+			})
+		},
 		restartTask(task) {
 			if (this.isValidUser) {
-				this.restarting = true
+				clearInterval(this.tasksUpdater)
 				this.getSettings().then(() => {
 					axios.post(generateUrl('/apps/mediadc/api/v1/tasks/restart'), {
 						taskId: task.id,
@@ -274,18 +289,17 @@ export default {
 							finish_notification: JSON.parse(this.task.collector_settings).finish_notification,
 						},
 					}).then(res => {
-						this.restarting = false
 						if (res.data.success) {
-							showSuccess(this.t('mediadc', 'Task successfully restarted with previous settings!'))
 							this.getTaskDetails()
-							this.$store.commit('setDetailFilesTotalSize', { taskId: this.$route.params.taskId, filestotal: 0, filessize: 0 })
+							this.$store.commit('setDetailsInfo', { filestotal: 0, filessize: 0 })
+							this.tasksUpdater = setInterval(this._getTaskDetails, 3000)
+							showSuccess(this.t('mediadc', 'Task successfully restarted with previous settings!'))
 						} else if (res.data.limit) {
 							showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 						} else {
 							showWarning(this.t('medaidc', 'Some error occurred while running Collector Task. Try again.'))
 						}
 					}).catch(err => {
-						this.restarting = false
 						console.debug(err)
 						showError('Some error occurred while running Collector Task. Try again.')
 					})
@@ -296,12 +310,18 @@ export default {
 		},
 		deleteTask(task) {
 			if (this.isValidUser) {
-				if (confirm(this.t('mediadc', 'Are sure you want to delete this task?'))) {
-					this.$store.dispatch('deleteTask', task).then(() => {
-						this.$router.push({ name: 'collector' })
-						showSuccess(this.t('mediadc', 'Task successfully deleted'))
-					})
-				}
+				const self = this
+				OC.dialogs.confirm(this.t('mediadc', 'Are sure you want to delete this task?'),
+					this.t('mediadc', 'Confirm task deletion'),
+					function(success) {
+						if (success) {
+							self.$store.dispatch('deleteTask', task).then(() => {
+								self.$router.push({ name: 'collector' })
+								showSuccess(self.t('mediadc', 'Task successfully deleted'))
+							})
+						}
+					}
+				)
 			} else {
 				showWarning(this.t('mediadc', 'You are not allowed to delete this task'))
 			}
@@ -324,7 +344,9 @@ export default {
 		onRestartTaskEvent() {
 			this.getTaskInfo()
 			this.getTaskDetails()
-			this.$store.commit('setDetailFilesTotalSize', { taskId: this.$route.params.taskId, filestotal: 0, filessize: 0 })
+			this.$store.commit('setDetailsInfo', { filestotal: 0, filessize: 0 })
+			clearInterval(this.tasksUpdater)
+			this.tasksUpdater = setInterval(this._getTaskDetails, 3000)
 		},
 		getDirOwnerToolip(dir) {
 			return `${this.t('mediadc', 'Owner:')} ${dir.fileowner}`
@@ -419,7 +441,7 @@ h2 {
 .task-info {
 	margin: 20px 0;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 10px;
+	border-radius: var(--border-radius-large);
 	padding: 10px 20px;
 	height: 100%;
 	min-height: 105px;

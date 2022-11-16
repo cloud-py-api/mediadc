@@ -69,13 +69,14 @@
 			<span class="filename" :title="file.filepath">{{ file.filename }}</span>
 			<span class="owner">{{ file.fileowner }}</span>
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
-			<Button v-tooltip="{ content: t('mediadc', 'Remove file from resolved list'), placement: 'top'}"
+			<NcButton v-tooltip="{ content: t('mediadc', 'Remove file from resolved list'), placement: 'top'}"
 				type="tertiary"
+				:aria-label="t('mediadc', 'Remove file from resolved list')"
 				@click="unresolve(file.fileid)">
 				<template #icon>
 					<span class="icon-delete" />
 				</template>
-			</Button>
+			</NcButton>
 		</div>
 	</div>
 </template>
@@ -87,12 +88,12 @@ import { mapGetters } from 'vuex'
 
 import Formats from '../../mixins/Formats.js'
 
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 export default {
 	name: 'ResolvedListFile',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
+		NcButton,
 	},
 	mixins: [Formats],
 	props: {
@@ -230,7 +231,7 @@ img {
 	border-top-right-radius: var(--border-radius-large);
 }
 
-body.theme--dark .placeholder {
+body[data-theme-dark] .placeholder {
 	background-color: var(--color-loading-dark);
 }
 

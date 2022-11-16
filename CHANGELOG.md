@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0 - 2022-11-16]
+
+This is the first release for Nextcloud 25+ (https://github.com/andrey18106/mediadc/issues/73).
+
+### Added
+
+- Added support for Nextcloud 25 version
+
+### Changed
+
+- Changed Nextcloud Vue components to the latest redesigned (NC25+)
+- Changed database schema of the task details table, so **all existing tasks needs a restart**
+
+### Fixed
+
 ## [0.1.10 - 2022-10-28]
 
 This is the last version working on Nextcloud 21-24. The next major versions would be for 25.

@@ -33,20 +33,23 @@ use OCP\AppFramework\Db\Entity;
 
 
 /**
- * Class CollectorResult
+ * Class CollectorTaskDetail
  *
  * @package OCA\MediaDC\Db
  *
  * @method int getTaskId()
- * @method string getGroupFilesIds()
- * @method void setTaskId(string $taskId)
- * @method void setGroupFilesIds(string $groupFilesIds)
+ * @method int getGroupId()
+ * @method int getFileid()
+ * @method void setTaskId(int $taskId)
+ * @method void setGroupId(int $groupId)
+ * @method void setFileid(int $fileid)
  */
 class CollectorTaskDetail extends Entity implements JsonSerializable
 {
 
 	protected $taskId;
-	protected $groupFilesIds;
+	protected $groupId;
+	protected $fileid;
 
 	/**
 	 * @param array $params
@@ -59,8 +62,11 @@ class CollectorTaskDetail extends Entity implements JsonSerializable
 		if (isset($params['taskId'])) {
 			$this->setTaskId($params['taskId']);
 		}
-		if (isset($params['groupFilesIds'])) {
-			$this->setGroupFilesIds($params['groupFilesIds']);
+		if (isset($params['groupId'])) {
+			$this->setGroupId($params['groupId']);
+		}
+		if (isset($params['fileid'])) {
+			$this->setFileid($params['filid']);
 		}
 	}
 
@@ -69,7 +75,8 @@ class CollectorTaskDetail extends Entity implements JsonSerializable
 		return [
 			'id' => $this->getId(),
 			'task_id' => $this->getTaskId(),
-			'group_files_ids' => $this->getGroupFilesIds(),
+			'group_id' => $this->getGroupId(),
+			'fileid' => $this->getFileid(),
 		];
 	}
 }

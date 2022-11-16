@@ -30,6 +30,7 @@ jobs:
           py_src:
             - 'lib/Service/python/**'
             - 'lib/Service/python/*.py'
+    if: "!contains(github.event.head_commit.message, '[tx-robot]')"
 
   linters-php:
     needs: changes
@@ -107,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          ocp-version: ['dev-master', 'dev-stable23']
+          ocp-version: ['dev-master']
     name: Psalm statis-analysis
     steps:
       - uses: actions/checkout@v3
@@ -122,7 +123,7 @@ jobs:
         run: composer i
 
       - name: Install dependencies
-        run: composer require --dev christophwurst/nextcloud:${{ matrix.ocp-version }}
+        run: composer require --dev nextcloud/ocp:${{ matrix.ocp-version }}
 
       - name: Run coding standards check
         run: composer run psalm

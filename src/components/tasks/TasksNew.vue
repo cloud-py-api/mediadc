@@ -35,13 +35,14 @@
 								style="overflow-y: scroll; white-space: nowrap;">
 								{{ targetDirectoriesPaths[fileid] }}
 							</span>
-							<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+							<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 								type="tertiary"
+								:aria-label="t('mediadc', 'Remove selected target directory')"
 								@click="removeTargetDirectory(fileid)">
 								<template #icon>
 									<span class="icon-delete" />
 								</template>
-							</Button>
+							</NcButton>
 						</div>
 					</div>
 				</div>
@@ -49,14 +50,14 @@
 					<span>{{ t('mediadc', 'Not selected') }}</span>
 				</div>
 				<br>
-				<Button class="mediadc-button-vue"
+				<NcButton class="mediadc-button-vue"
 					:aria-label="t('mediadc', 'Select target directory')"
 					@click="openDirectoriesExplorer">
 					<template #icon>
 						<PlusThick :size="16" />
 					</template>
 					{{ t('mediadc', 'Select') }}
-				</Button>
+				</NcButton>
 			</div>
 			<div class="block">
 				<h3>{{ t('mediadc', 'Exclude directories') }}</h3>
@@ -67,13 +68,14 @@
 								style="overflow-y: scroll; white-space: nowrap;">
 								{{ excludeFileIds[fileid] }}
 							</span>
-							<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+							<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 								type="tertiary"
+								:aria-label="t('mediadc', 'Remove selected exclude directory')"
 								@click="removeExcludeDirectory(fileid)">
 								<template #icon>
 									<span class="icon-delete" />
 								</template>
-							</Button>
+							</NcButton>
 						</div>
 					</div>
 				</div>
@@ -81,14 +83,14 @@
 					<span>{{ t('mediadc', 'Not selected') }}</span>
 				</div>
 				<br>
-				<Button class="mediadc-button-vue"
+				<NcButton class="mediadc-button-vue"
 					:aria-label="t('mediadc', 'Select exclude directory')"
 					@click="openExcludeExplorer">
 					<template #icon>
 						<PlusThick :size="16" />
 					</template>
 					{{ t('mediadc', 'Select') }}
-				</Button>
+				</NcButton>
 			</div>
 		</div>
 		<div class="selection-container">
@@ -97,13 +99,14 @@
 				<div v-if="customExcludeList.length > 0" class="custom-masks-list">
 					<div v-for="(mask, index) in customExcludeList" :key="index" class="custom-mask">
 						<span>{{ mask }}</span>
-						<Button v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+						<NcButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 							type="tertiary"
+							:aria-label="t('mediadc', 'Remove selected custom exclude mask')"
 							@click="deleteCustomMask(mask)">
 							<template #icon>
 								<span class="icon-delete" />
 							</template>
-						</Button>
+						</NcButton>
 					</div>
 				</div>
 				<div v-else>
@@ -116,28 +119,32 @@
 						type="text"
 						@keyup.enter="addCustomMask"
 						@keyup.esc="cancelAddingCustomMask">
-					<Button v-tooltip="t('mediadc', 'Confirm')"
+					<NcButton v-tooltip="t('mediadc', 'Confirm')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Confirm adding of the custom exclude mask')"
 						@click="addCustomMask">
 						<template #icon>
 							<span class="icon-checkmark" />
 						</template>
-					</Button>
-					<Button v-tooltip="t('mediadc', 'Decline')"
+					</NcButton>
+					<NcButton v-tooltip="t('mediadc', 'Decline')"
 						type="tertiary"
+						:aria-label="t('mediadc', 'Cancel adding of the custom exclude mask')"
 						@click="cancelAddingCustomMask">
 						<template #icon>
 							<span class="icon-close" />
 						</template>
-					</Button>
+					</NcButton>
 				</div>
 				<div style="display: flex; align-items: center; margin: 20px 0;">
-					<Button class="mediadc-button-vue" @click="addNewMask">
+					<NcButton class="mediadc-button-vue"
+						:aria-label="t('mediadc', 'Add custom exclude mask')"
+						@click="addNewMask">
 						<template #icon>
 							<PlusThick :size="16" />
 						</template>
 						<span>{{ t('mediadc', 'Add mask') }}</span>
-					</Button>
+					</NcButton>
 				</div>
 			</div>
 			<div class="block">
@@ -168,7 +175,7 @@
 			</div>
 		</div>
 		<div class="create-task-actions">
-			<Button class="mediadc-button-vue"
+			<NcButton class="mediadc-button-vue"
 				:aria-label="t('mediadc', 'Create and Run new Task')"
 				:disabled="runningTask || Object.keys(targetDirectoriesPaths).length === 0"
 				@click="runCollectorTask">
@@ -176,13 +183,13 @@
 					{{ t('mediadc', 'Run new Task') }}
 				</template>
 				<template v-if="runningTask" #icon>
-					<span class="icon-loading" />
+					<span class="icon-loading-small" />
 				</template>
-			</Button>
-			<CheckboxRadioSwitch v-tooltip="t('mediadc', 'Send notification on task finish')"
+			</NcButton>
+			<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Send notification on task finish')"
 				:checked.sync="finishNotification">
 				{{ t('mediadc', 'Finish notification') }}
-			</CheckboxRadioSwitch>
+			</NcCheckboxRadioSwitch>
 		</div>
 	</div>
 </template>
@@ -193,15 +200,15 @@ import { mapActions, mapGetters } from 'vuex'
 
 import { requestFileInfo, getFileId } from '../../utils/files.js'
 
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
 export default {
 	name: 'TasksNew',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		CheckboxRadioSwitch,
+		NcButton,
+		NcCheckboxRadioSwitch,
 		PlusThick,
 	},
 	data() {
@@ -403,7 +410,7 @@ export default {
 	max-width: 600px;
 }
 
-body.theme--dark .new-task-block {
+body[data-theme-dark] .new-task-block {
 	border-color: var(--color-border-dark);
 }
 
@@ -411,14 +418,6 @@ body.theme--dark .new-task-block {
 	.selection-container {
 		flex-wrap: wrap;
 	}
-}
-
-.target-directory, .custom-mask {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 5px 0;
-	border-bottom: 1px solid #dadada;
 }
 
 .create-task-actions {

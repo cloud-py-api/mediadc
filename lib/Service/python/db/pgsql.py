@@ -232,10 +232,10 @@ def store_err_video_hash(fileid: int, duration: int, mtime: int, skipped_count: 
     execute_commit(query)
 
 
-def store_task_files_group(task_id: int, group_files_ids: str) -> None:
+def store_task_files_group(task_id: int, group_id: int, file_id: int) -> None:
     """Look for description in `empty_impl.py` file."""
-    query = f"INSERT INTO {get_task_details_table_name()} (task_id,group_files_ids) " \
-            f"VALUES({task_id},'{group_files_ids}');"
+    query = f"INSERT INTO {get_task_details_table_name()} (task_id,group_id,fileid) " \
+            f"VALUES({task_id},{group_id},{file_id});"
     execute_commit(query)
 
 

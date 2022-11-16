@@ -5,7 +5,6 @@ Images processing functions.
 # pylint: disable=undefined-variable
 
 import io
-import json
 
 from db import (
     append_task_error,
@@ -38,10 +37,9 @@ from install import import_packages
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-ImagesGroups = {}  # {group1:[fileid1,fileid2],group2:[fileid3,fileid4]}
+ImagesGroups = {}  # {group1:[(fileid1,size),(fileid2,size)],group2:[(fileid3,size),(fileid4,size)]}
 SetOfGroups = []  # [flat_numpy_array1,flat_numpy_array2,flat_numpy_array3]
-GroupsCount = 0  # number of elements in SetOfGroups
-Imported = False  # (group_hash1,group_hash2)
+Imported = False
 CHamming = False  # is hexhamming present. Changes state in dc_images_init.
 
 
@@ -89,7 +87,7 @@ def dc_process_images(settings: dict, image_records: list):
             else:
                 image_record["hash"] = arr_hash_from_bytes(image_record["hash"])
         if image_record["hash"] is not None:
-            process_image_record(settings["precision_img"], image_record["hash"], image_record["fileid"])
+            process_image_record(settings["precision_img"], image_record)
 
 
 def process_hash(algo: str, hash_size: int, image_info: dict, data_dir: str, remote_filesize_limit: int):
@@ -122,28 +120,25 @@ def calc_hash(algo: str, hash_size: int, image_data: bytes):
     return image_hash.flatten()
 
 
-def process_image_record(precision: int, img_hash, fileid: int):
-    global GroupsCount
+def process_image_record(precision: int, image_record: dict):
+    img_group_number = len(ImagesGroups)
     if CHamming:
-        for i in range(GroupsCount):
-            if hexhamming.check_hexstrings_within_dist(SetOfGroups[i], img_hash, precision):
-                ImagesGroups[i].append(fileid)
+        for i in range(img_group_number):
+            if hexhamming.check_hexstrings_within_dist(SetOfGroups[i], image_record["hash"], precision):
+                ImagesGroups[i].append((image_record["fileid"], image_record["size"]))
                 return
     else:
-        for i in range(GroupsCount):
-            if numpy.count_nonzero(SetOfGroups[i] != img_hash) <= precision:
-                ImagesGroups[i].append(fileid)
+        for i in range(img_group_number):
+            if numpy.count_nonzero(SetOfGroups[i] != image_record["hash"]) <= precision:
+                ImagesGroups[i].append((image_record["fileid"], image_record["size"]))
                 return
-    SetOfGroups.append(img_hash)
-    ImagesGroups[GroupsCount] = [fileid]
-    GroupsCount += 1
+    SetOfGroups.append(image_record["hash"])
+    ImagesGroups[img_group_number] = [(image_record["fileid"], image_record["size"])]
 
 
 def reset_images():
-    global GroupsCount
     ImagesGroups.clear()
     SetOfGroups.clear()
-    GroupsCount = 0
 
 
 def remove_solo_groups():
@@ -155,11 +150,19 @@ def remove_solo_groups():
         del ImagesGroups[key]
 
 
-def save_image_results(task_id: int):
+def save_image_results(task_id: int) -> int:
     remove_solo_groups()
     print("Images: Number of groups:", len(ImagesGroups))
-    for files_id in ImagesGroups.values():
-        store_task_files_group(task_id, json.dumps(files_id))
+    dup_files_count = 0
+    dup_files_size = 0
+    n_group = 1
+    for files_id_size in ImagesGroups.values():
+        dup_files_count += len(files_id_size)
+        for file_id, file_size in files_id_size:
+            dup_files_size += file_size
+            store_task_files_group(task_id, n_group, file_id)
+        n_group += 1
+    return n_group
 
 
 def pil_to_hash(algo: str, hash_size: int, pil_image):

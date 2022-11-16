@@ -23,7 +23,7 @@
  -->
 
 <template>
-	<ListItem :title="listItemTitle"
+	<NcListItem :title="listItemTitle"
 		:bold="true"
 		:force-display-actions="true"
 		:to="{ name: 'collectorDetails', params: { taskId: task.id } }"
@@ -33,49 +33,49 @@
 		</template>
 		<template #subtitle>
 			{{ listItemDetails }}
-			<ProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
+			<NcProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
 				size="small"
 				:error="getStatusBadge(task) === 'error'" />
 		</template>
 		<template #actions>
-			<ActionButton icon="icon-history" :close-after-click="true" @click="restartTask(task)">
+			<NcActionButton icon="icon-history" :close-after-click="true" @click="restartTask(task)">
 				{{ getStatusBadge(task) === 'duplicated' ? t('mediadc', 'Start') : t('mediadc', 'Restart') }}
-			</ActionButton>
-			<ActionButton icon="icon-pause" :close-after-click="true" @click="terminateTask(task)">
+			</NcActionButton>
+			<NcActionButton icon="icon-pause" :close-after-click="true" @click="terminateTask(task)">
 				{{ t('mediadc', 'Stop') }}
-			</ActionButton>
-			<ActionButton v-tooltip="{content: t('mediadc', 'Create copy of the task'), placement: 'left'}"
+			</NcActionButton>
+			<NcActionButton v-tooltip="{content: t('mediadc', 'Create copy of the task'), placement: 'left'}"
 				:close-after-click="true"
 				@click="duplicateTask(task)">
 				{{ t('mediadc', 'Duplicate') }}
 				<template #icon>
 					<ContentCopy :size="16" />
 				</template>
-			</ActionButton>
-			<ActionButton icon="icon-delete" :close-after-click="true" @click="deleteTask(task)">
+			</NcActionButton>
+			<NcActionButton icon="icon-delete" :close-after-click="true" @click="deleteTask(task)">
 				{{ t('mediadc', 'Delete') }}
-			</ActionButton>
+			</NcActionButton>
 		</template>
-	</ListItem>
+	</NcListItem>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
-import ProgressBar from '@nextcloud/vue/dist/Components/ProgressBar.js'
-import ListItem from '@nextcloud/vue/dist/Components/ListItem.js'
+import NcProgressBar from '@nextcloud/vue/dist/Components/NcProgressBar.js'
+import NcListItem from '@nextcloud/vue/dist/Components/NcListItem.js'
 
 import Formats from '../../mixins/Formats.js'
 
 export default {
 	name: 'TasksListItem',
 	components: {
-		ActionButton,
+		NcActionButton,
 		ContentCopy,
-		ListItem,
-		ProgressBar,
+		NcListItem,
+		NcProgressBar,
 	},
 	mixins: [Formats],
 	props: {

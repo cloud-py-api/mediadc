@@ -41,17 +41,17 @@
 				{{ t('mediadc', 'If you have any additional questions contact us in') }} <a href="https://t.me/mediadc_support">{{ t('mediadc', 'Telegram chat') }}</a>.
 			</p>
 			<div class="installed">
-				<CheckboxRadioSwitch v-tooltip="installed
+				<NcCheckboxRadioSwitch v-tooltip="installed
 						? t('mediadc', 'Required packages installed')
 						: t('mediadc', 'Required package not installed')"
 					:checked.sync="installed"
 					style="margin: 10px auto;"
 					disabled>
 					{{ t('mediadc', 'Installed:') }} {{ installed }}
-				</CheckboxRadioSwitch>
+				</NcCheckboxRadioSwitch>
 			</div>
 			<div class="general-actions">
-				<Button class="mediadc-button-vue"
+				<NcButton class="mediadc-button-vue"
 					type="secondary"
 					:disabled="installing"
 					@click="install">
@@ -61,8 +61,8 @@
 					<template v-if="installing" #icon>
 						<span class="icon-loading" />
 					</template>
-				</Button>
-				<Button class="mediadc-button-vue"
+				</NcButton>
+				<NcButton class="mediadc-button-vue"
 					type="secondary"
 					style="margin: 0 10px"
 					:disabled="checking || installing"
@@ -73,13 +73,13 @@
 					<template v-if="checking || installing" #icon>
 						<span class="icon-loading" />
 					</template>
-				</Button>
-				<Button v-if="installed"
+				</NcButton>
+				<NcButton v-if="installed"
 					class="mediadc-button-vue"
 					type="secondary"
 					@click="finishConfiguration">
 					{{ t('mediadc', 'Install finished') }}
-				</Button>
+				</NcButton>
 			</div>
 		</div>
 		<div v-else-if="!isAdmin && !installed && !loading">
@@ -87,9 +87,9 @@
 			<p>{{ t('mediadc', 'Please contact your cloud administration.') }}</p>
 		</div>
 		<div v-else>
-			<Button v-if="installed" class="mediadc-button-vue" @click="finishConfiguration">
+			<NcButton v-if="installed" class="mediadc-button-vue" @click="finishConfiguration">
 				{{ t('mediadc', 'Go to MediaDC') }}
-			</Button>
+			</NcButton>
 		</div>
 		<div v-if="isAdmin" class="install-details">
 			<div v-if="available_algorithms && available_algorithms.length > 0 && installed"
@@ -128,22 +128,22 @@
 							</td>
 							<td>{{ not_installed_list[listName].length === 0 }}</td>
 							<td style="display: flex; align-items: center; justify-content: center;">
-								<Button class="mediadc-button-vue"
+								<NcButton class="mediadc-button-vue"
 									:disabled="Object.keys(not_installed_list[listName]).length === 0"
 									@click="installDepsList(listName)">
 									{{ t('mediadc', 'Install') }}
-								</Button>
-								<Button class="mediadc-button-vue"
+								</NcButton>
+								<NcButton class="mediadc-button-vue"
 									:disabled="Object.keys(not_installed_list[listName]).length > 0"
 									style="margin: 0 10px"
 									@click="updateDepsList(listName)">
 									{{ t('mediadc', 'Update') }}
-								</Button>
-								<Button class="mediadc-button-vue"
+								</NcButton>
+								<NcButton class="mediadc-button-vue"
 									:disabled="Object.keys(not_installed_list[listName]).length > 0"
 									@click="deleteDepsList(listName)">
 									{{ t('mediadc', 'Delete') }}
-								</Button>
+								</NcButton>
 							</td>
 						</tr>
 					</tbody>
@@ -180,14 +180,14 @@ import { getCurrentUser } from '@nextcloud/auth'
 
 import Configure from '../mixins/Configure.js'
 
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 export default {
 	name: 'Configuration',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		CheckboxRadioSwitch,
+		NcButton,
+		NcCheckboxRadioSwitch,
 	},
 	mixins: [
 		Configure,

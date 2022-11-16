@@ -28,8 +28,8 @@
 			{{ t('mediadc', 'MediaDC settings') }}
 		</h2>
 		<div v-if="settings.length > 0" class="settings">
-			<SettingsSection :title="mappedSettings.hashing_algorithm.display_name"
-				:description="mappedSettings.hashing_algorithm.description">
+			<NcSettingsSection :title="t('mediadc', mappedSettings.hashing_algorithm.display_name)"
+				:description="t('mediadc', mappedSettings.hashing_algorithm.description)">
 				<select v-if="algorithms.length > 0"
 					id="hashing_algorithm"
 					v-model="hashing_algorithm"
@@ -47,9 +47,9 @@
 						<span class="icon-external" style="margin: 0 0 0 5px;" />
 					</a>
 				</div>
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.similarity_threshold.display_name"
-				:description="mappedSettings.similarity_threshold.description">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.similarity_threshold.display_name)"
+				:description="t('mediadc', mappedSettings.similarity_threshold.description)">
 				<input id="similarity_threshold"
 					v-model="mappedSettings.similarity_threshold.value"
 					type="number"
@@ -57,9 +57,9 @@
 					min="50"
 					max="100"
 					@change="saveChanges">
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.hash_size.display_name"
-				:description="mappedSettings.hash_size.description">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc',mappedSettings.hash_size.display_name)"
+				:description="t('mediadc', mappedSettings.hash_size.description)">
 				<select id="hash_size"
 					v-model.number="hash_size"
 					name="hash_size"
@@ -68,12 +68,12 @@
 						{{ hashSize }}
 					</option>
 				</select>
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.exclude_list.display_name"
-				:description="mappedSettings.exclude_list.description">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.exclude_list.display_name)"
+				:description="t('mediadc', mappedSettings.exclude_list.description)">
 				<template #default>
 					<ul v-if="customExcludeList.length > 0" style="width: 100%; max-width: 350px; max-height: 290px; overflow-y: scroll;">
-						<ListItem v-for="(mask, index) in customExcludeList"
+						<NcListItem v-for="(mask, index) in customExcludeList"
 							:key="index"
 							:force-display-actions="true"
 							:title="mask">
@@ -81,14 +81,14 @@
 								<span class="icon-filter" />
 							</template>
 							<template #actions>
-								<ActionButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
+								<NcActionButton v-tooltip="{ content: t('mediadc', 'Remove'), placement: 'left'}"
 									icon="icon-delete"
 									:close-after-click="true"
 									@click="deleteCustomMask(mask)">
 									{{ t('mediadc', 'Remove') }}
-								</ActionButton>
+								</NcActionButton>
 							</template>
-						</ListItem>
+						</NcListItem>
 					</ul>
 					<div v-else>
 						<span>{{ t('mediadc', 'Not added') }}</span>
@@ -101,22 +101,22 @@
 								type="text"
 								@keyup.enter="addCustomMask"
 								@keyup.esc="cancelAddingCustomMask">
-							<Button v-tooltip="t('mediadc', 'Confirm')"
+							<NcButton v-tooltip="t('mediadc', 'Confirm')"
 								type="tertiary"
 								@click="addCustomMask">
 								<template #icon>
 									<span class="icon-checkmark" />
 								</template>
-							</Button>
-							<Button v-tooltip="t('mediadc', 'Decline')"
+							</NcButton>
+							<NcButton v-tooltip="t('mediadc', 'Decline')"
 								type="tertiary"
 								@click="cancelAddingCustomMask">
 								<template #icon>
 									<span class="icon-close" />
 								</template>
-							</Button>
+							</NcButton>
 						</div>
-						<Button v-if="!addingCustomMask"
+						<NcButton v-if="!addingCustomMask"
 							type="secondary"
 							class="mediadc-button-vue"
 							@click="addNewMask">
@@ -124,12 +124,12 @@
 							<template #icon>
 								<PlusThick :size="16" />
 							</template>
-						</Button>
+						</NcButton>
 					</div>
 				</template>
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.python_limit.display_name"
-				:description="mappedSettings.python_limit.description">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.python_limit.display_name)"
+				:description="t('mediadc', mappedSettings.python_limit.description)">
 				<input id="python_limit"
 					v-model.number="mappedSettings.python_limit.value"
 					type="number"
@@ -137,17 +137,17 @@
 					min="1"
 					max="10"
 					@change="saveChanges">
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.python_command.display_name"
-				:description="mappedSettings.python_command.description">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.python_command.display_name)"
+				:description="t('mediadc', mappedSettings.python_command.description)">
 				<input id="python_command"
 					v-model="mappedSettings.python_command.value"
 					type="text"
 					name="python_command"
 					@change="saveChanges">
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.remote_filesize_limit.display_name"
-				:description="mappedSettings.remote_filesize_limit.description">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.remote_filesize_limit.display_name)"
+				:description="t('mediadc', mappedSettings.remote_filesize_limit.description)">
 				<input id="remote_filesize_limit"
 					v-model="remote_filesize_limit"
 					type="number"
@@ -156,25 +156,25 @@
 					step="0.1"
 					@input="updateRemoteFilesizeLimit"
 					@change="saveChanges">
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.use_php_path_from_settings.display_name"
-				:description="mappedSettings.use_php_path_from_settings.description">
-				<CheckboxRadioSwitch :checked.sync="usePhpPathFromSettings" @update:checked="updateUsePhpPathFromSettings">
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.use_php_path_from_settings.display_name)"
+				:description="t('mediadc', mappedSettings.use_php_path_from_settings.description)">
+				<NcCheckboxRadioSwitch :checked.sync="usePhpPathFromSettings" @update:checked="updateUsePhpPathFromSettings">
 					{{ t('mediadc', 'Use PHP path from settings') }}
-				</CheckboxRadioSwitch>
-			</SettingsSection>
-			<SettingsSection :title="mappedSettings.php_path.display_name"
-				:description="mappedSettings.php_path.description">
+				</NcCheckboxRadioSwitch>
+			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.php_path.display_name)"
+				:description="t('mediadc', mappedSettings.php_path.description)">
 				<input id="php_path"
 					v-model="mappedSettings.php_path.value"
 					type="text"
 					name="php_path"
 					@change="saveChanges">
-			</SettingsSection>
+			</NcSettingsSection>
 		</div>
 		<div v-else>
-			<SettingsSection :title="t('mediadc', 'Error')">
-				<EmptyContent style="margin-top: 0;">
+			<NcSettingsSection :title="t('mediadc', 'Error')">
+				<NcEmptyContent style="margin-top: 0;">
 					{{ t('mediadc', 'Settings list is empty') }}
 					<template #icon>
 						<span class="icon-error" />
@@ -182,12 +182,12 @@
 					<template #desc>
 						{{ t('mediadc', 'Seems like database not initialized properly') }}
 					</template>
-				</EmptyContent>
-			</SettingsSection>
+				</NcEmptyContent>
+			</NcSettingsSection>
 		</div>
-		<SettingsSection :title="t('mediadc', 'Bug report')">
+		<NcSettingsSection :title="t('mediadc', 'Bug report')">
 			<BugReport />
-		</SettingsSection>
+		</NcSettingsSection>
 	</div>
 </template>
 
@@ -196,12 +196,12 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 
-import ActionButton from '@nextcloud/vue/dist/Components/ActionButton.js'
-import Button from '@nextcloud/vue/dist/Components/Button.js'
-import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent.js'
-import ListItem from '@nextcloud/vue/dist/Components/ListItem.js'
-import SettingsSection from '@nextcloud/vue/dist/Components/SettingsSection.js'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import NcListItem from '@nextcloud/vue/dist/Components/NcListItem.js'
+import NcSettingsSection from '@nextcloud/vue/dist/Components/NcSettingsSection.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
@@ -210,14 +210,14 @@ import BugReport from './BugReport.vue'
 export default {
 	name: 'AdminSettings',
 	components: {
-		ActionButton,
+		NcActionButton,
 		BugReport,
-		Button, // eslint-disable-line vue/no-reserved-component-names
-		EmptyContent,
-		ListItem,
+		NcButton,
+		NcEmptyContent,
+		NcListItem,
 		PlusThick,
-		SettingsSection,
-		CheckboxRadioSwitch,
+		NcSettingsSection,
+		NcCheckboxRadioSwitch,
 	},
 	data() {
 		return {

@@ -27,18 +27,19 @@
 		<p style="margin: 0 0 20px;">
 			{{ t('mediadc', 'Collect non sensitive system info for bug report') }}
 		</p>
-		<Button class="mediadc-button-vue"
+		<NcButton class="mediadc-button-vue"
 			type="secondary"
 			:disabled="updating"
+			:aria-label="t('mediadc', 'Collect system info')"
 			@click="collectSystemInfo">
 			{{ t('mediadc', 'Collect system info') }}
 			<template v-if="updating" #icon>
-				<span class="icon-loading" />
+				<span class="icon-loading-small" />
 			</template>
-		</button>
+		</NcButton>
 		<div v-if="systemInfo" class="system-info">
 			<h3>{{ t('mediadc', 'System info') }}</h3>
-			<Button v-if="systemInfo"
+			<NcButton v-if="systemInfo"
 				type="tertiary"
 				class="mediadc-button-vue"
 				@click="copySystemInfoToClipboard">
@@ -46,7 +47,7 @@
 				<template #icon>
 					<ContentCopy :size="16" />
 				</template>
-			</Button>
+			</NcButton>
 			<p>
 				<pre>{{ systemInfo }}</pre>
 			</p>
@@ -59,13 +60,13 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess } from '@nextcloud/dialogs'
 
-import Button from '@nextcloud/vue/dist/Components/Button.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {
 	name: 'BugReport',
 	components: {
-		Button, // eslint-disable-line vue/no-reserved-component-names
+		NcButton,
 		ContentCopy,
 	},
 	data() {
