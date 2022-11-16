@@ -1,7 +1,7 @@
 # Nextcloud MediaDC
 
 ![build](https://github.com/andrey18106/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
-![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg)
+![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg?branch=dev)
 
 [![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/andrey18106/mediadc/releases)
 
