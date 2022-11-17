@@ -262,7 +262,6 @@
     "MediaDC Configuration" : "Configuración de MediaDC",
     "MediaDC Resolved files" : "Archivos resueltos MediaDC",
     "Task successfully started with duplicated settings!" : "¡La tarea se inició de forma exitosa con parámetros duplicados!",
-    "_Test text_::_Test texts_" : ["Texto de prueba","Textos de prueba","Textos de prueba"],
-    "Create a new task or work on existing and resolve some!" : "¡Cree una tarea nueva o trabaje en las existentes y resuelva algunas!"
+    "_Test text_::_Test texts_" : ["Texto de prueba","Textos de prueba","Textos de prueba"]
 },"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

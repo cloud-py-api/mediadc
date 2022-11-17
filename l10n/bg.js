@@ -222,7 +222,6 @@ OC.L10N.register(
     "MediaDC Configuration" : "Конфигурация на MediaDC",
     "MediaDC Resolved files" : "Отстранени файлове на MediaDC",
     "Task successfully started with duplicated settings!" : "Задачата е стартирана успешно с дублирани настройки!",
-    "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"],
-    "Create a new task or work on existing and resolve some!" : "Създаване на нова задача или работа по съществуващата и отстраняване на някоя!"
+    "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"]
 },
 "nplurals=2; plural=(n != 1);");

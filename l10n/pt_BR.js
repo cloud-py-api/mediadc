@@ -195,7 +195,6 @@ OC.L10N.register(
     "MediaDC Configuration" : "Configuração do MediaDC",
     "MediaDC Resolved files" : "Arquivos resolvidos do MediaDC",
     "Task successfully started with duplicated settings!" : "Tarefa iniciada com sucesso com configurações duplicadas!",
-    "_Test text_::_Test texts_" : ["Textos de teste","Textos de teste","Textos de teste"],
-    "Create a new task or work on existing and resolve some!" : "Crie uma nova tarefa ou trabalhe em uma existente e resolva algumas!"
+    "_Test text_::_Test texts_" : ["Textos de teste","Textos de teste","Textos de teste"]
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
