@@ -84,11 +84,10 @@ class CollectorTaskNotificationCommand extends Command
 		$status = $input->getArgument(self::ARGUMENT_TASK_STATUS);
 		/** @var CollectorTask */
 		$collectorTask = $this->collectorService->getCollectorTask(intval($taskId));
-		$collectorDetails = $this->taskDetailsMapper->findAllById(intval($taskId));
+		$detailGroups = $this->collectorService->details(intval($taskId));
 		$duplicates = 0;
-		/** @var CollectorTaskDetail */
-		foreach ($collectorDetails as $detail) {
-			$duplicates += count(json_decode($detail->getGroupFilesIds()));
+		foreach ($detailGroups as $group) {
+			$duplicates += count($group['files']);
 		}
 		$notification = $this->notificationManager->createNotification();
 
@@ -98,7 +97,7 @@ class CollectorTaskNotificationCommand extends Command
 			->setObject('mediadc-task', $taskId)
 			->setSubject('mediadc-task-alert', [
 				'status' => $status,
-				'duplicate-groups' => count($collectorDetails),
+				'duplicate-groups' => count($detailGroups),
 				'duplicates' => $duplicates,
 			]);
 		$this->notificationManager->notify($notification);
