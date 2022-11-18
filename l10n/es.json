@@ -34,6 +34,7 @@
     "Select file" : "Seleccionar archivo",
     "_Delete file_::_Delete files_" : ["Eliminar archivo","Eliminar archivos","Eliminar archivos"],
     "Remove file (mark resolved)" : "Quitar archivo (marcar como resuelto)",
+    "Are you sure you want delete this file?" : "¿Está seguro de eliminar este archivo?",
     "Confirm file deletion" : "Confirmar eliminación del archivo",
     "Group successfully removed (1 file left)" : "El grupo fue exitósamente eliminado (queda 1 archivo)",
     "Wait until file has been loaded before deleting it" : "Espere a que el archivo sea cargado antes de eliminarlo",
@@ -122,6 +123,7 @@
     "Some error occurred while updating settings" : "Ocurrió algún error mientras se actualizaban las configuraciones",
     "The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?" : "Los hashes correspondientes a las fotos y videos serán limpiadas antes de cambiar el algoritmo de hash.\n¿Continuar?",
     "Hashing algorithm successfully updated" : "El algoritmo de hash fue exitósamente actualizado",
+    "An error occurred while updating setting. Try again" : "Ocurrió un error mientras se actualizaba la configuración. Intente de nuevo",
     "Some error occurred while changing hashing algorithm" : "Ocurrió algún error mientras se cambiaba el algoritmo de hash",
     "The photo and video hashes would be cleaned before changing hash size.\nContinue?" : "Los hashes correspondientes a las fotos y videos serán limpiadas antes de cambiar a el tamaño del hash.\n¿Continuar?",
     "Hash size successfully updated" : "El tamaño del hash fue exitósamente actualizado",
@@ -248,6 +250,7 @@
     "Package list installation failed" : "La instalación de la lista de paquetes falló",
     "Package list installation failed. A server error occurred" : "La instalación de la lista de paquetes falló. Ocurrió un error del servidor",
     "Package list successfully deleted" : "La lista de paquetes fue eliminada exitósamente",
+    "An error occurred while deleting package list" : "Ocurrió un error al eliminar la lista de paquetes",
     "Package list deleting failed. A server error occurred" : "La eliminación de la lista de paquetes falló. Ocurrió un error del servidor",
     "Packages successfully updated" : "Los paquetes fueron actualizados exitósamente",
     "Packages update failed. Try again." : "La actualización de paquetes falló. Intente de nuevo.",
@@ -261,6 +264,7 @@
     "MediaDC Task Details" : "Detalles de la tarea MediaDC",
     "MediaDC Configuration" : "Configuración de MediaDC",
     "MediaDC Resolved files" : "Archivos resueltos MediaDC",
+    "An error occurred while deleting task" : "Ocurrió un error al eliminar la tarea",
     "Task successfully started with duplicated settings!" : "¡La tarea se inició de forma exitosa con parámetros duplicados!",
     "_Test text_::_Test texts_" : ["Texto de prueba","Textos de prueba","Textos de prueba"]
 },"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
