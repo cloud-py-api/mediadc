@@ -148,7 +148,7 @@
 				<div v-else class="empty-resolved" style="margin: 0 0 20px;">
 					<NcEmptyContent style="margin-top: 5vh;"
 						:title="t('mediadc', `No resolved ${selectedType} yet`)"
-						:description="t('mediadc', 'Create a new task or work on existing one and resolve some!')">
+						:description="t('mediadc', 'Create a new task or work on existing ones and resolve some!')">
 						<template #icon>
 							<ClipboardListOutline />
 						</template>

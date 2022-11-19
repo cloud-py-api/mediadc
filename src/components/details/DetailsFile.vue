@@ -212,7 +212,7 @@ export default {
 		deleteGroupFile(file) {
 			if (this.deleteFileConfirmation) {
 				const self = this
-				OC.dialogs.confirm(this.t('mediadc', 'Are you sure you want delete this file?'),
+				OC.dialogs.confirm(this.t('mediadc', 'Are you sure you want to delete this file?'),
 					this.t('mediadc', 'Confirm file deletion'), function(success) {
 						if (success) {
 							self._deleteGroupFile(file)
