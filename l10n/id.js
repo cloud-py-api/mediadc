@@ -4,6 +4,7 @@ OC.L10N.register(
     "Tasks" : "Tugas",
     "Configuration" : "Konfigurasi",
     "Settings" : "Setelan",
+    "Select file" : "Pilih file",
     "Deselect all" : "Tidak ada yang dipilih",
     "Select all" : "Pilih semua",
     "Remove" : "Buang",

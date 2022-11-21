@@ -268,6 +268,8 @@ OC.L10N.register(
     "MediaDC Resolved files" : "Soubory vyřešené v MediaDC",
     "An error occurred while deleting task" : "Při mazání úlohy došlo k chybě",
     "Task successfully started with duplicated settings!" : "Úloha úspěšně spuštěna s duplikovanými nastaveními!",
-    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"]
+    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"],
+    "Are you sure you want to delete this file?" : "Opravdu chcete tento soubor smazat?",
+    "Create a new task or work on existing ones and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na nějakých stávajících a nějaké vyřešte!"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

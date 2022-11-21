@@ -267,6 +267,8 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC 已解決的檔案",
     "An error occurred while deleting task" : "刪除任務時發生了錯誤",
     "Task successfully started with duplicated settings!" : "使用重複設置成功啟動任務！",
-    "_Test text_::_Test texts_" : ["測試文本"]
+    "_Test text_::_Test texts_" : ["測試文本"],
+    "Are you sure you want to delete this file?" : "您確定要刪除這檔案嗎？",
+    "Create a new task or work on existing ones and resolve some!" : "創建一項新任務或處理現有任務以解決一些問題！"
 },
 "nplurals=1; plural=0;");

@@ -268,6 +268,8 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC çözümlenmiş dosyalar",
     "An error occurred while deleting task" : "Görev silinirken bir sorun çıktı",
     "Task successfully started with duplicated settings!" : "Görev çift ayarları ile başlatıldı!",
-    "_Test text_::_Test texts_" : ["Deneme metni","Deneme metinleri"]
+    "_Test text_::_Test texts_" : ["Deneme metni","Deneme metinleri"],
+    "Are you sure you want to delete this file?" : "Bu dosyayı silmek istediğinize emin misiniz?",
+    "Create a new task or work on existing ones and resolve some!" : "Yeni bir görev ekleyin ya da var olan görevler üzerinde çalışarak bazılarını çözümleyin!"
 },
 "nplurals=2; plural=(n > 1);");
