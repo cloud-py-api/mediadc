@@ -21,7 +21,7 @@
     "Full path to PHP interpreter for Python" : "Voller Pfad zum PHP Interpreter für Python",
     "Absolute path to the PHP executable (e.g. \"/usr/bin/php7.4\"). Can be obtained by `which php` or `which php7.4` command" : "Absoluter Pfad zur ausführbaren PHP-Datei (z. B. \"/usr/bin/php7.4\"). Kann mit dem Befehl „what php“ oder „what php7.4“ abgerufen werden",
     "Task finished alert" : "Aufgabe erledigt Meldung",
-    "Task successfully finished, found " : "Aufgabe erfrolgreich beendet, gefunden",
+    "Task successfully finished, found " : "Aufgabe erfrolgreich beendet, gefunden wurden",
     "Task finished with status \"" : "Aufgabe beendet mit dem Status \"",
     "Task finished, check out results" : "Aufgabe beendet, Ergebnisse prüfen",
     "MediaDC" : "MediaDC",
