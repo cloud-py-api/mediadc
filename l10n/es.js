@@ -268,6 +268,8 @@ OC.L10N.register(
     "MediaDC Resolved files" : "Archivos resueltos MediaDC",
     "An error occurred while deleting task" : "Ocurrió un error al eliminar la tarea",
     "Task successfully started with duplicated settings!" : "¡La tarea se inició de forma exitosa con parámetros duplicados!",
-    "_Test text_::_Test texts_" : ["Texto de prueba","Textos de prueba","Textos de prueba"]
+    "_Test text_::_Test texts_" : ["Texto de prueba","Textos de prueba","Textos de prueba"],
+    "Are you sure you want to delete this file?" : "¿Está seguro de eliminar este archivo?",
+    "Create a new task or work on existing ones and resolve some!" : "¡Cree una tarea nueva o trabaje en las existentes y resuelva algunas!"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
