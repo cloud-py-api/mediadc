@@ -31,6 +31,7 @@ namespace OCA\MediaDC\Service;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 
 class PythonService {
@@ -44,9 +45,13 @@ class PythonService {
 		SettingMapper $settingMapper,
 		IConfig $config
 	) {
-		/** @var Setting $pythonCommand */
-		$pythonCommand = $settingMapper->findByName('python_command');
-		$this->pythonCommand = $pythonCommand->getValue();
+		try {
+			/** @var Setting $pythonCommand */
+			$pythonCommand = $settingMapper->findByName('python_command');
+			$this->pythonCommand = $pythonCommand->getValue();
+		} catch (DoesNotExistException $e) {
+			$this->pythonCommand = '/usr/bin/python3';
+		}
 		$ncInstanceId = $config->getSystemValue('instanceid');
 		$ncDataFolder = $config->getSystemValue('datadirectory');
 		$this->cwd = $ncDataFolder . '/appdata_' . $ncInstanceId . '/' . Application::APP_ID . '/';
