@@ -32,10 +32,7 @@ use OCA\MediaDC\Service\CollectorService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
 
-
-class QueuedTaskJob extends QueuedJob
-{
-
+class QueuedTaskJob extends QueuedJob {
 	/** @var CollectorService */
 	private $collectorService;
 
@@ -50,8 +47,7 @@ class QueuedTaskJob extends QueuedJob
 	/**
 	 * @param array $argument
 	 */
-	protected function run($argument): void
-	{
+	protected function run($argument): void {
 		if (isset($argument['taskId'])) {
 			$taskId = $argument['taskId'];
 		}

@@ -39,10 +39,7 @@ use OCA\MediaDC\Service\SettingsService;
 use OCA\MediaDC\Service\UtilsService;
 use OCA\MediaDC\Service\VideosService;
 
-
-class SettingsController extends Controller
-{
-
+class SettingsController extends Controller {
 	/** @var SettingsService */
 	private $service;
 
@@ -76,8 +73,7 @@ class SettingsController extends Controller
 	 *
 	 * @return JSONResponse array of all settings
 	 */
-	public function index()
-	{
+	public function index() {
 		return new JSONResponse($this->service->getSettings(), Http::STATUS_OK);
 	}
 
@@ -88,8 +84,7 @@ class SettingsController extends Controller
 	 *
 	 * @return JSONResponse
 	 */
-	public function update($settings)
-	{
+	public function update($settings) {
 		return new JSONResponse($this->service->updateSettings($settings), Http::STATUS_OK);
 	}
 
@@ -100,8 +95,7 @@ class SettingsController extends Controller
 	 *
 	 * @return JSONResponse
 	 */
-	public function updateSetting($setting)
-	{
+	public function updateSetting($setting) {
 		return new JSONResponse($this->service->updateSetting($setting), Http::STATUS_OK);
 	}
 
@@ -111,8 +105,7 @@ class SettingsController extends Controller
 	 *
 	 * @param int $id
 	 */
-	public function getSettingById($id): JSONResponse
-	{
+	public function getSettingById($id): JSONResponse {
 		return new JSONResponse($this->service->getSettingById($id), Http::STATUS_OK);
 	}
 
@@ -122,8 +115,7 @@ class SettingsController extends Controller
 	 *
 	 * @param string $name
 	 */
-	public function getSettingByName($name): JSONResponse
-	{
+	public function getSettingByName($name): JSONResponse {
 		return new JSONResponse($this->service->getSettingByName($name), Http::STATUS_OK);
 	}
 
@@ -132,8 +124,7 @@ class SettingsController extends Controller
 	 *
 	 * @param string $name table name
 	 */
-	public function truncate($name): JSONResponse
-	{
+	public function truncate($name): JSONResponse {
 		if ($name === 'photos') {
 			return new JSONResponse(['rows_deleted' => $this->photosService->truncate()], Http::STATUS_OK);
 		}
@@ -153,8 +144,7 @@ class SettingsController extends Controller
 	 *
 	 * @return JSONResponse
 	 */
-	public function systemInfo(): JSONResponse
-	{
+	public function systemInfo(): JSONResponse {
 		return new JSONResponse($this->utils->getSystemInfo(), Http::STATUS_OK);
 	}
 }

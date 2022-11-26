@@ -37,10 +37,7 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 
-
-class UtilsService
-{
-
+class UtilsService {
 	/** @var IConfig */
 	private $config;
 
@@ -76,8 +73,7 @@ class UtilsService
 	 *
 	 * @return string
 	 */
-	public function getPhpInterpreter()
-	{
+	public function getPhpInterpreter() {
 		$usePhpPathFromSettings = json_decode($this->settingMapper->findByName('use_php_path_from_settings')->getValue());
 
 		if (isset($usePhpPathFromSettings) && $usePhpPathFromSettings) {
@@ -136,8 +132,7 @@ class UtilsService
 	 *
 	 * @return bool
 	 */
-	public function isFunctionEnabled($function_name)
-	{
+	public function isFunctionEnabled($function_name) {
 		if (!function_exists($function_name)) {
 			return false;
 		}
@@ -161,8 +156,7 @@ class UtilsService
 		return true;
 	}
 
-	public function getPythonVersion(): array
-	{
+	public function getPythonVersion(): array {
 		/** @var Setting */
 		$pythonCommandSetting = $this->settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommandSetting->getValue();
@@ -180,8 +174,7 @@ class UtilsService
 	 *
 	 * @return array $result
 	 */
-	public function isPythonCompatible(): array
-	{
+	public function isPythonCompatible(): array {
 		$pythonVersion = $this->getPythonVersion();
 		if (!$pythonVersion['success']) {
 			return ['success' => false, 'result_code' => $pythonVersion['result_code']];
@@ -193,7 +186,7 @@ class UtilsService
 			}
 			if ((int)$pythonVersionDigits[1] > 6) {
 				return ['success' => true, 'result_code' => $pythonVersion['result_code']];
-			} else if ((int)$pythonVersionDigits[1] === 6 && (int)$pythonVersionDigits[2] >= 8) {
+			} elseif ((int)$pythonVersionDigits[1] === 6 && (int)$pythonVersionDigits[2] >= 8) {
 				return ['success' => true, 'result_code' => $pythonVersion['result_code']];
 			}
 			if ((int)$pythonVersionDigits[2] >= 0) {
@@ -203,8 +196,27 @@ class UtilsService
 		return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 	}
 
-	public function getCustomAppsDirectory()
-	{
+	public function isMusliLinux(): bool {
+		exec('ldd --version', $output, $result_code);
+		if ($result_code == 0 && count($output) > 0 && str_contains($output[0], 'musl')) {
+			return true;
+		}
+		return false;
+	}
+
+	public function getOsArch(): string {
+		$machineType = php_uname('m');
+		if (str_contains($machineType, 'x86_64')) {
+			return 'amd64';
+		} elseif (str_contains($machineType, 'arm64')) {
+			return 'arm64';
+		} else {
+			return 'armv7';
+		}
+		return $machineType;
+	}
+
+	public function getCustomAppsDirectory() {
 		$apps_directory = $this->config->getSystemValue('apps_paths');
 		if ($apps_directory !== "" && is_array($apps_directory) && count($apps_directory) > 0) {
 			foreach ($apps_directory as $custom_apps_dir) {
@@ -220,8 +232,7 @@ class UtilsService
 		return getcwd() . '/apps/';
 	}
 
-	public function getSystemInfo(): array
-	{
+	public function getSystemInfo(): array {
 		$pythonVersion = $this->getPythonVersion();
 		$result = [
 			'nextcloud-version' => $this->config->getSystemValue('version'),
@@ -241,5 +252,54 @@ class UtilsService
 			],
 		];
 		return $result;
+	}
+
+	public function checkForSettingsUpdates($app_data) {
+		$settings = $this->settingMapper->findAll();
+		if (count($settings) > 0 && count($app_data['settings']) > count($settings)) {
+			$currentSettingsKeys = array_map(function ($setting) {
+				return $setting->getName();
+			}, $settings);
+			$newSettingsKeys = array_map(function ($setting) {
+				return $setting['name'];
+			}, $app_data['settings']);
+			$newSettings = [];
+			foreach ($newSettingsKeys as $setting) {
+				if (!in_array($setting, $currentSettingsKeys)) {
+					array_push($newSettings, $setting);
+				}
+			}
+			foreach ($app_data['settings'] as $setting) {
+				if (in_array($setting['name'], $newSettings)) {
+					$this->settingMapper->insert(new Setting([
+						'name' => $setting['name'],
+						'value' => is_array($setting['value']) ?
+							json_encode($setting['value'])
+							: str_replace('\\', '', json_encode($setting['value'])),
+						'displayName' => $setting['displayName'],
+						'description' => $setting['description']
+					]));
+				}
+			}
+		} elseif (count($settings) > 0 && count($app_data['settings']) < count($settings)) {
+			$currentSettingsKeys = array_map(function ($setting) {
+				return $setting->getName();
+			}, $settings);
+			$newSettingsKeys = array_map(function ($setting) {
+				return $setting['name'];
+			}, $app_data['settings']);
+			$settingsToRemove = [];
+			foreach ($currentSettingsKeys as $setting) {
+				if (!in_array($setting, $newSettingsKeys)) {
+					array_push($settingsToRemove, $setting);
+				}
+			}
+			foreach ($settingsToRemove as $settingName) {
+				$setting = $this->settingMapper->findByName($settingName);
+				if (isset($setting)) {
+					$this->settingMapper->delete($setting);
+				}
+			}
+		}
 	}
 }

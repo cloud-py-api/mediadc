@@ -32,29 +32,22 @@ use OCA\MediaDC\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Settings\ISettings;
 
-
-class AdminSettings implements ISettings
-{
-
-	public function __construct()
-	{
+class AdminSettings implements ISettings {
+	public function __construct() {
 	}
 
 	/**
 	 * @return TemplateResponse
 	 */
-	public function getForm()
-	{
+	public function getForm() {
 		return new TemplateResponse(Application::APP_ID, 'admin');
 	}
 
-	public function getSection()
-	{
+	public function getSection() {
 		return Application::APP_ID;
 	}
 
-	public function getPriority()
-	{
+	public function getPriority() {
 		return 50;
 	}
 }

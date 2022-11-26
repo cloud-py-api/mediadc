@@ -1,11 +1,11 @@
 name: Static analysis
 
 on:
-  pull_request:
-    branches: [main, dev]
-    types: [opened, reopened, edited]
-  push:
-    branches: [dev]
+  # pull_request:
+  #   branches: [main, dev]
+  #   types: [opened, reopened, edited, synchronize]
+  # push:
+  #   branches: [dev, main]
   workflow_dispatch:
 
 jobs:
@@ -15,12 +15,13 @@ jobs:
       php_src: ${{ steps.filter.outputs.php_src }}
       js_src: ${{ steps.filter.outputs.js_src }}
       py_src: ${{ steps.filter.outputs.py_src }}
+      appinfo_xml: ${{ steps.filter.outputs.appinfo_xml }}
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v2
       id: filter
       with:
-        base: ${{ github.ref }}
+        base: HEAD
         filters: |
           php_src:
             - '**/*.php'
@@ -30,6 +31,8 @@ jobs:
           py_src:
             - 'lib/Service/python/**'
             - 'lib/Service/python/*.py'
+          appinfo_xml:
+            - 'appinfo/info.xml'
     if: "!contains(github.event.head_commit.message, '[tx-robot]')"
 
   linters-php:
@@ -80,6 +83,22 @@ jobs:
       - name: pylint analysis
         run: cd lib/Service/python && pylint *
 
+  xml-linters:
+    needs: changes
+    if: ${{ needs.changes.outputs.appinfo_xml == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    name: appinfo/info.xml lint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download xml appinfo schema
+        run: wget https://raw.githubusercontent.com/nextcloud/appstore/master/nextcloudappstore/api/v1/release/info.xsd
+
+      - name: Lint appinfo/info.xml
+        uses: ChristophWurst/xmllint-action@v1
+        with:
+          xml-file: ./appinfo/info.xml
+          xml-schema-file: ./info.xsd
+
   security-analysis:
     needs: [changes, linters-php]
     if: ${{ needs.changes.outputs.php_src == 'true' || github.event_name == 'workflow_dispatch' }}
@@ -98,7 +117,7 @@ jobs:
           report_file: results.sarif
 
       - name: Upload Security Analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
 
@@ -108,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-          ocp-version: ['dev-master']
+          ocp-version: ['v24.0.1']
     name: Psalm statis-analysis
     steps:
       - uses: actions/checkout@v3
@@ -139,7 +158,7 @@ jobs:
         run: npm audit
 
   checks_status:
-    needs: [changes, linters-php, linters-js, linters-python, security-analysis, psalm-analysis]
+    needs: [changes, linters-php, linters-js, linters-python, security-analysis, psalm-analysis, xml-linters]
     if: ${{ always() && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure')) }}
     name: checks-status
     runs-on: ubuntu-latest

@@ -34,31 +34,41 @@ use OCP\Migration\IRepairStep;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Migration\data\AppInitialData;
+use OCA\MediaDC\Service\AppDataService;
+use OCA\MediaDC\Service\UtilsService;
 
-
-class AppDataInitializationStep implements IRepairStep
-{
-
+class AppDataInitializationStep implements IRepairStep {
 	/** @var SettingMapper */
 	private $settingMapper;
 
 	/** @var AppInitialData */
 	private $appInitialData;
 
-	public function __construct(SettingMapper $settingMapper, AppInitialData $appInitialData)
-	{
+	/** @var UtilsService */
+	private $utils;
+
+	/** @var AppDataService */
+	private $appDataService;
+
+	public function __construct(
+		SettingMapper $settingMapper,
+		AppInitialData $appInitialData,
+		UtilsService $utils,
+		AppDataService $appDataService
+	) {
 		$this->settingMapper = $settingMapper;
 		$this->appInitialData = $appInitialData;
+		$this->utils = $utils;
+		$this->appDataService = $appDataService;
 	}
 
-	public function getName(): string
-	{
-		return "Initializing MediaDC static tables data";
+	public function getName(): string {
+		return "Initializing MediaDC data";
 	}
 
-	public function run(IOutput $output)
-	{
-		$output->startProgress(2);
+	public function run(IOutput $output) {
+		$output->startProgress(4);
+		$output->advance(1, 'Filling database with initial data');
 		$app_data = $this->appInitialData->getAppInitialData();
 
 		if (count($this->settingMapper->findAll()) === 0 && isset($app_data['settings'])) {
@@ -66,65 +76,26 @@ class AppDataInitializationStep implements IRepairStep
 				foreach ($app_data['settings'] as $setting) {
 					$this->settingMapper->insert(new Setting([
 						'name' => $setting['name'],
-						'value' => is_array($setting['value']) ? json_encode($setting['value']) : str_replace('\\', '', json_encode($setting['value'])),
+						'value' => is_array($setting['value'])
+							? json_encode($setting['value'])
+							: str_replace('\\', '', json_encode($setting['value'])),
 						'displayName' => $setting['displayName'],
 						'description' => $setting['description']
 					]));
 				}
 			}
 		}
-		$output->advance(1);
 
-		$this->checkForDataUpdates($app_data);
+		$output->advance(2, 'Checking for inital data changes and syncing with database');
+		$this->utils->checkForSettingsUpdates($app_data);
+
+		$output->advance(3, 'Creating app data folders');
+		$this->appDataService->createAppDataFolder('binaries');
+		$this->appDataService->createAppDataFolder('logs');
+
+		$output->advance(4, 'Downloading app binary');
+		$this->appDataService->downloadPythonBinary();
 
 		$output->finishProgress();
-	}
-
-	private function checkForDataUpdates($app_data)
-	{
-		$settings = $this->settingMapper->findAll();
-		if (count($settings) > 0 && count($app_data['settings']) > count($settings)) {
-			$currentSettingsKeys = array_map(function ($setting) {
-				return $setting->getName();
-			}, $settings);
-			$newSettingsKeys = array_map(function ($setting) {
-				return $setting['name'];
-			}, $app_data['settings']);
-			$newSettings = [];
-			foreach ($newSettingsKeys as $setting) {
-				if (!in_array($setting, $currentSettingsKeys)) {
-					array_push($newSettings, $setting);
-				}
-			}
-			foreach ($app_data['settings'] as $setting) {
-				if (in_array($setting['name'], $newSettings)) {
-					$this->settingMapper->insert(new Setting([
-						'name' => $setting['name'],
-						'value' => is_array($setting['value']) ? json_encode($setting['value']) : str_replace('\\', '', json_encode($setting['value'])),
-						'displayName' => $setting['displayName'],
-						'description' => $setting['description']
-					]));
-				}
-			}
-		} else if (count($settings) > 0 && count($app_data['settings']) < count($settings)) {
-			$currentSettingsKeys = array_map(function ($setting) {
-				return $setting->getName();
-			}, $settings);
-			$newSettingsKeys = array_map(function ($setting) {
-				return $setting['name'];
-			}, $app_data['settings']);
-			$settingsToRemove = [];
-			foreach ($currentSettingsKeys as $setting) {
-				if (!in_array($setting, $newSettingsKeys)) {
-					array_push($settingsToRemove, $setting);
-				}
-			}
-			foreach ($settingsToRemove as $settingName) {
-				$setting = $this->settingMapper->findByName($settingName);
-				if (isset($setting)) {
-					$this->settingMapper->delete($setting);
-				}
-			}
-		}
 	}
 }

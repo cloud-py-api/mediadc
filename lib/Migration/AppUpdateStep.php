@@ -31,72 +31,40 @@ namespace OCA\MediaDC\Migration;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-use OCA\MediaDC\Db\Setting;
-use OCA\MediaDC\Service\PythonService;
-use OCA\MediaDC\Service\SettingsService;
-use Psr\Log\LoggerInterface;
+use OCA\MediaDC\Migration\data\AppInitialData;
+use OCA\MediaDC\Service\AppDataService;
+use OCA\MediaDC\Service\UtilsService;
 
+class AppUpdateStep implements IRepairStep {
+	/** @var AppInitialData */
+	private $appInitialData;
 
-class AppUpdateStep implements IRepairStep
-{
+	/** @var UtilsService */
+	private $utils;
 
-	/** @var PythonService */
-	private $pythonService;
-
-	/** @var SettingsService */
-	private $settingsService;
-
-	/** @var LoggerInterface */
-	private $logger;
+	/** @var AppDataService */
+	private $appDataService;
 
 	public function __construct(
-		PythonService $pythonService,
-		SettingsService $settingsService,
-		LoggerInterface $logger
+		AppInitialData $appInitialData,
+		UtilsService $utils,
+		AppDataService $appDataService
 	) {
-		$this->pythonService = $pythonService;
-		$this->settingsService = $settingsService;
-		$this->logger = $logger;
+		$this->appInitialData = $appInitialData;
+		$this->utils = $utils;
+		$this->appDataService = $appDataService;
 	}
 
-	public function getName(): string
-	{
-		return "Python dependencies update along with MediaDC app update";
+	public function getName(): string {
+		return "Update settings and binaries along with MediaDC";
 	}
 
-	public function run(IOutput $output)
-	{
-		$output->startProgress(1);
-		if ($this->settingsService->getSettingByName('installed')['success']) {
-			/** @var Setting */
-			$installedSetting = $this->settingsService->getSettingByName('installed')['setting'];
-			$installed = json_decode($installedSetting->getValue(), true);
-			if (isset($installed['not_installed_list'])) {
-				if (isset($installed['not_installed_list']['boost']) && count($installed['not_installed_list']['boost']) > 0) {
-					$installResult = $this->pythonService->installDependencies();
-				} else {
-					$installResult = $this->pythonService->installDependencies('required optional boost');
-				}
-				if (isset($installResult['installed']) && $installResult['installed']) {
-					$installed['not_installed_list'] = [
-						'required' => $installResult['required'],
-						'optional' => $installResult['optional'],
-						'boost' => $installResult['boost'],
-					];
-					$installed['installed_list'] = $installResult['installed_list'];
-					$installed['status'] = $installResult['installed'];
-					$installed['video_required'] = $installResult['video_required'];
-					$installed['available_algorithms'] = $installResult['available_algorithms'];
-					$installedSetting->setValue(json_encode($installed));
-					$this->settingsService->updateSetting($installedSetting);
-					if (count($installResult['errors']) > 0) {
-						$this->logger->warning('[AppUpdateStep] Python dependencies updated with some errors: ' . json_encode($installResult));
-					}
-				} else {
-					$this->logger->error('[AppUpdateStep] Python dependencies updating error: ' . json_encode($installResult));
-				}
-			}
-		}
+	public function run(IOutput $output) {
+		$output->startProgress(2);
+		$output->advance(1, 'Sync settings changes');
+		$this->utils->checkForSettingsUpdates($this->appInitialData->getAppInitialData());
+		$output->advance(2, 'Update binaries');
+		$this->appDataService->downloadPythonBinary(true);
 		$output->finishProgress();
 	}
 }

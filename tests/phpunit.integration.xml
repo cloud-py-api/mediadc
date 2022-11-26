@@ -5,7 +5,7 @@
          failOnWarning="true"
          verbose="true">
     <testsuite name="Mediadc app tests">
-        <directory suffix="Test.php">./Integration</directory>
+        <directory suffix="Test.php">Integration</directory>
     </testsuite>
 
     <coverage>

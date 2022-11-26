@@ -31,7 +31,6 @@ namespace OCA\MediaDC\Db;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
-
 /**
  * Class CollectorTaskDetail
  *
@@ -44,9 +43,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setGroupId(int $groupId)
  * @method void setFileid(int $fileid)
  */
-class CollectorTaskDetail extends Entity implements JsonSerializable
-{
-
+class CollectorTaskDetail extends Entity implements JsonSerializable {
 	protected $taskId;
 	protected $groupId;
 	protected $fileid;
@@ -54,8 +51,7 @@ class CollectorTaskDetail extends Entity implements JsonSerializable
 	/**
 	 * @param array $params
 	 */
-	public function __construct(array $params = [])
-	{
+	public function __construct(array $params = []) {
 		if (isset($params['id'])) {
 			$this->setId($params['id']);
 		}
@@ -70,8 +66,7 @@ class CollectorTaskDetail extends Entity implements JsonSerializable
 		}
 	}
 
-	public function jsonSerialize(): array
-	{
+	public function jsonSerialize(): array {
 		return [
 			'id' => $this->getId(),
 			'task_id' => $this->getTaskId(),

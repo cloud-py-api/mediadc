@@ -41,12 +41,6 @@
 						{{ algorithm }}
 					</option>
 				</select>
-				<div v-else>
-					<a :href="configurationPageLink" style="color: var(--color-error); display: inline-flex;">
-						{{ t('mediadc', 'No available algorithms. Configure application dependencies on Configuration page') }}
-						<span class="icon-external" style="margin: 0 0 0 5px;" />
-					</a>
-				</div>
 			</NcSettingsSection>
 			<NcSettingsSection :title="t('mediadc', mappedSettings.similarity_threshold.display_name)"
 				:description="t('mediadc', mappedSettings.similarity_threshold.description)">
@@ -171,6 +165,12 @@
 					name="php_path"
 					@change="saveChanges">
 			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc', mappedSettings.python_binary.display_name)"
+				:description="t('mediadc', mappedSettings.python_binary.description)">
+				<NcCheckboxRadioSwitch :checked.sync="python_binary" @update:checked="updatePythonBinary">
+					{{ t('mediadc', 'Use pre-compiled Python binaries') }}
+				</NcCheckboxRadioSwitch>
+			</NcSettingsSection>
 		</div>
 		<div v-else>
 			<NcSettingsSection :title="t('mediadc', 'Error')">
@@ -232,6 +232,7 @@ export default {
 			addingCustomMask: false,
 			hashSizeValues: [8, 16, 32, 64],
 			usePhpPathFromSettings: false,
+			python_binary: true,
 		}
 	},
 	computed: {
@@ -249,12 +250,13 @@ export default {
 				this.settings.forEach(setting => {
 					this.mappedSettings[setting.name] = setting
 				})
-				this.algorithms = JSON.parse(this.mappedSettings.installed.value).available_algorithms
+				this.algorithms = ['average', 'dhash', 'phash', 'whash']
 				this.hashing_algorithm = JSON.parse(this.mappedSettings.hashing_algorithm.value)
 				this.hash_size = this.mappedSettings.hash_size.value
 				this.customExcludeList = JSON.parse(this.mappedSettings.exclude_list.value).mask
 				this.remote_filesize_limit = this.fromBytesToGBytes(Number(this.mappedSettings.remote_filesize_limit.value))
 				this.usePhpPathFromSettings = JSON.parse(this.mappedSettings.use_php_path_from_settings.value)
+				this.python_binary = JSON.parse(this.mappedSettings.python_binary.value)
 			})
 		},
 		saveChanges() {
@@ -281,6 +283,10 @@ export default {
 		},
 		updateUsePhpPathFromSettings() {
 			this.mappedSettings.use_php_path_from_settings.value = JSON.stringify(this.usePhpPathFromSettings)
+			this.saveChanges()
+		},
+		updatePythonBinary() {
+			this.mappedSettings.python_binary.value = JSON.stringify(this.python_binary)
 			this.saveChanges()
 		},
 		updateHashingAlgorithm() {

@@ -6,7 +6,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="MediaDC app tests">
-            <directory suffix="Test.php">./Unit</directory>
+            <directory suffix="Test.php">Unit</directory>
         </testsuite>
     </testsuites>
 

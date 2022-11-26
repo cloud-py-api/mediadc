@@ -31,7 +31,6 @@ namespace OCA\MediaDC\Db;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
-
 /**
  * Class Setting
  *
@@ -46,9 +45,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setDisplayName(string $settingDisplayName)
  * @method void setDescription(string $settingDescription)
  */
-class Setting extends Entity implements JsonSerializable
-{
-
+class Setting extends Entity implements JsonSerializable {
 	protected $name;
 	protected $value;
 	protected $displayName;
@@ -57,8 +54,7 @@ class Setting extends Entity implements JsonSerializable
 	/**
 	 * @param array $params
 	 */
-	public function __construct(array $params = [])
-	{
+	public function __construct(array $params = []) {
 		if (isset($params['id'])) {
 			$this->setId($params['id']);
 		}
@@ -76,8 +72,7 @@ class Setting extends Entity implements JsonSerializable
 		}
 	}
 
-	public function jsonSerialize(): array
-	{
+	public function jsonSerialize(): array {
 		return [
 			'id' => $this->getId(),
 			'name' => $this->getName(),

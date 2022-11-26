@@ -31,27 +31,25 @@ namespace OCA\MediaDC\Service;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
+use OCP\IConfig;
 
-
-class PythonService
-{
-
+class PythonService {
 	/** @var string */
 	private $cwd;
 
 	/** @var string */
 	private $pythonCommand;
 
-	/** @var UtilsService */
-	private $utils;
-
-	public function __construct(SettingMapper $settingMapper, UtilsService $utils)
-	{
-		$this->utils = $utils;
-		/** @var Setting */
+	public function __construct(
+		SettingMapper $settingMapper,
+		IConfig $config
+	) {
+		/** @var Setting $pythonCommand */
 		$pythonCommand = $settingMapper->findByName('python_command');
 		$this->pythonCommand = $pythonCommand->getValue();
-		$this->cwd = $this->utils->getCustomAppsDirectory() . Application::APP_ID . '/lib/Service/python';
+		$ncInstanceId = $config->getSystemValue('instanceid');
+		$ncDataFolder = $config->getSystemValue('datadirectory');
+		$this->cwd = $ncDataFolder . '/appdata_' . $ncInstanceId . '/' . Application::APP_ID . '/';
 	}
 
 	/**
@@ -61,6 +59,7 @@ class PythonService
 	 * @param array $scriptParams params to script in array (`['-param1' => value1, '--param2' => value2]`)
 	 * @param boolean $nonBlocking flag that determines how to run Python script.
 	 * @param array $env env variables for python script
+	 * @param bool $binary flag to determine python binaries run or python script
 	 *
 	 * @return array|void
 	 *
@@ -68,15 +67,14 @@ class PythonService
 	 * If `$nonBlocking = false` - function will return array with the `result_code`
 	 * and `output` of the script after Python script finish executing.
 	 */
-	public function run($scriptName, $scriptParams = [], $nonBlocking = false, $env = [])
-	{
+	public function run($scriptName, $scriptParams = [], $nonBlocking = false, $env = [], $binary = false) {
 		if (count($scriptParams) > 0) {
 			$params = array_map(function ($key, $value) {
 				return $value !== '' ? "$key $value " : "$key";
 			}, array_keys($scriptParams), array_values($scriptParams));
-			$cmd = $this->pythonCommand . ' ' . $this->cwd . $scriptName . ' ' . join(' ', $params);
+			$cmd = $this->cwd . $scriptName . ' ' . join(' ', $params);
 		} else {
-			$cmd = $this->pythonCommand . ' ' .  $this->cwd . $scriptName;
+			$cmd = $this->cwd . $scriptName;
 		}
 		if (count($env) > 0) {
 			$envVariables = join(' ', array_map(function ($key, $value) {
@@ -85,8 +83,12 @@ class PythonService
 		} else {
 			$envVariables = '';
 		}
+		if (!$binary) {
+			$cmd = $this->pythonCommand . ' ' . $cmd;
+		}
 		if ($nonBlocking) {
-			exec($envVariables . 'nohup ' . $cmd . ' > /dev/null 2>&1 &');
+			$logFile = $this->cwd . 'logs/' . date('d-m-Y_H:m:s', time()) . '.log';
+			exec($envVariables . 'nohup ' . $cmd . ' > ' . $logFile . ' 2>' . $logFile . ' &');
 		} else {
 			$errors = [];
 			exec($envVariables . $cmd, $output, $result_code);
@@ -107,184 +109,9 @@ class PythonService
 				'output' => $output,
 				'result_code' => $result_code,
 				'errors' => $errors,
+				'cwd' => $this->cwd,
+				'cmd' => $envVariables . $cmd
 			];
 		}
-	}
-
-	/**
-	 * Check server requirements
-	 *
-	 * @return array check results with errors list
-	 */
-	private function checkDepsRequirements()
-	{
-		$errors = [];
-		if (!$this->utils->isFunctionEnabled('exec')) {
-			array_push($errors, '`exec` PHP function is not available.');
-		}
-		$pythonCompatible = $this->utils->isPythonCompatible();
-		if (!$pythonCompatible['success']) {
-			array_push($errors, 'Python version is lower then 3.6.8 or not available (result_code:' . $pythonCompatible['result_code'] . ')');
-		}
-		return ['success' => count($errors) === 0, 'errors' => $errors];
-	}
-
-	/**
-	 * @param string @listName
-	 *
-	 * @return array installation results list
-	 */
-	public function installDependencies($listName = '')
-	{
-		$depsCheck = $this->checkDepsRequirements();
-		if ($depsCheck['success']) {
-			try {
-				$pythonResult = $this->run('/install.py', [
-					'--install' => $listName === '' ? 'required optional' : $listName,
-				], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
-				return $this->parsePythonOutput($pythonResult);
-			} catch (\Exception $e) {
-				return [
-					'success' => false,
-					'message' => 'Some error while running the Python script',
-				];
-			}
-		}
-		return $depsCheck;
-	}
-
-	/**
-	 * @return array list of uninstalled Python packages
-	 */
-	public function checkInstallation()
-	{
-		$depsCheck = $this->checkDepsRequirements();
-		if ($depsCheck['success']) {
-			try {
-				$pythonResult = $this->run('/install.py', ['--check' => ''], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
-				return $this->parsePythonOutput($pythonResult);
-			} catch (\Exception $e) {
-				return [
-					'success' => false,
-					'message' => 'Some error while running the Python script',
-				];
-			}
-		}
-		return $depsCheck;
-	}
-
-	/**
-	 * @param array $packagesList
-	 *
-	 * @return array installed packages list after deleting
-	 */
-	public function deleteDependencies($packagesList = [])
-	{
-		$depsCheck = $this->checkDepsRequirements();
-		if ($depsCheck['success']) {
-			try {
-				$pythonResult = $this->run('/install.py', ['--delete' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
-				return $this->parsePythonOutput($pythonResult);
-			} catch (\Exception $e) {
-				return [
-					'success' => false,
-					'message' => 'Some error while running the Python script',
-				];
-			}
-		}
-		return $depsCheck;
-	}
-
-	/**
-	 * @param array $packagesList
-	 *
-	 * @return array installed packages list after deleting
-	 */
-	public function updateDependencies($packagesList = [])
-	{
-		$depsCheck = $this->checkDepsRequirements();
-		if ($depsCheck['success']) {
-			try {
-				$pythonResult = $this->run('/install.py', ['--update' => join(" ", $packagesList)], false, ['PHP_PATH' => $this->utils->getPhpInterpreter(), 'SERVER_ROOT' => \OC::$SERVERROOT]);
-				return $this->parsePythonOutput($pythonResult);
-			} catch (\Exception $e) {
-				return [
-					'success' => false,
-					'message' => 'Some error while running the Python script',
-				];
-			}
-		}
-		return $depsCheck;
-	}
-
-	/**
-	 * @param array $pythonResult
-	 *
-	 * @return array
-	 */
-	private function parsePythonOutput($pythonResult)
-	{
-		$output = $pythonResult['output'];
-		$result_code = $pythonResult['result_code'];
-
-		$required = null;
-		$video_required = null;
-		$video_required = null;
-		$optional = null;
-		$boost = null;
-		$available_algorithms = null;
-		$installed_list = null;
-		$warnings = null;
-		$errors = null;
-
-		if ($result_code === 0) {
-			if (count($output) > 0) {
-				$result = [];
-				foreach (json_decode($output[0]) as $result_key => $result_value) {
-					$result[$result_key] = $result_value;
-				}
-				if (isset($result['required'])) {
-					$required = (array)$result['required'];
-				}
-				if (isset($result['video_required'])) {
-					$video_required = (array)$result['video_required'];
-				}
-				if (isset($result['optional'])) {
-					$optional = (array)$result['optional'];
-				}
-				if (isset($result['boost'])) {
-					$boost = (array)$result['boost'];
-				}
-				if (isset($result['available_algorithms'])) {
-					$available_algorithms = $result['available_algorithms'];
-				}
-				if (isset($result['installed_list'])) {
-					$installed_list = $result['installed_list'];
-				}
-				if (isset($result['errors'])) {
-					$errors = $result['errors'];
-				}
-				if (isset($result['warnings'])) {
-					$warnings = $result['warnings'];
-				}
-			}
-		} else {
-			if (isset($pythonResult['errors'])) {
-				$errors = $pythonResult['errors'];
-			}
-		}
-
-		return [
-			'success' => $result_code === 0,
-			'installed' => $result_code === 0 && count($required) === 0,
-			'required' => $required,
-			'video_required' => $video_required,
-			'optional' => $optional,
-			'boost' => $boost,
-			'available_algorithms' => $available_algorithms,
-			'installed_list' => $installed_list,
-			'errors' => $errors,
-			'warnings' => $warnings,
-		];
 	}
 }

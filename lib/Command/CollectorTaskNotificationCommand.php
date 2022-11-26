@@ -30,8 +30,6 @@ namespace OCA\MediaDC\Command;
 
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\CollectorTask;
-use OCA\MediaDC\Db\CollectorTaskDetail;
-use OCA\MediaDC\Db\CollectorTaskDetailMapper;
 use OCA\MediaDC\Service\CollectorService;
 use OCP\IURLGenerator;
 use OCP\Notification\IManager;
@@ -40,10 +38,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
-class CollectorTaskNotificationCommand extends Command
-{
-
+class CollectorTaskNotificationCommand extends Command {
 	public const ARGUMENT_TASK_ID = 'task_id';
 	public const ARGUMENT_TASK_STATUS = 'status';
 
@@ -53,33 +48,26 @@ class CollectorTaskNotificationCommand extends Command
 	/** @var IManager */
 	private $notificationManager;
 
-	/** @var CollectorTaskDetailMapper */
-	private $taskDetailsMapper;
-
 	public function __construct(
 		CollectorService $collectorService,
-		CollectorTaskDetailMapper $taskDetailsMapper,
 		IManager $notificationManager,
 		IURLGenerator $urlGenerator
 	) {
 		parent::__construct();
 
 		$this->collectorService = $collectorService;
-		$this->taskDetailsMapper = $taskDetailsMapper;
 		$this->notificationManager = $notificationManager;
 		$this->url = $urlGenerator;
 	}
 
-	protected function configure(): void
-	{
+	protected function configure(): void {
 		$this->setName("mediadc:collector:tasks:notify");
 		$this->setDescription("Sends task finished notification to the user");
 		$this->addArgument(self::ARGUMENT_TASK_ID, InputArgument::REQUIRED);
 		$this->addArgument(self::ARGUMENT_TASK_STATUS, InputArgument::REQUIRED);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output): int
-	{
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$taskId = $input->getArgument(self::ARGUMENT_TASK_ID);
 		$status = $input->getArgument(self::ARGUMENT_TASK_STATUS);
 		/** @var CollectorTask */

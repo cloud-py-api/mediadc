@@ -166,7 +166,6 @@ import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
 import { mapActions, mapGetters } from 'vuex'
 
-import Configure from '../mixins/Configure.js'
 import DetailsList from '../components/details/DetailsList.vue'
 import Formats from '../mixins/Formats.js'
 import TasksEdit from '../components/tasks/TasksEdit.vue'
@@ -188,10 +187,7 @@ export default {
 		NcButton,
 		ContentCopy,
 	},
-	mixins: [
-		Formats,
-		Configure,
-	],
+	mixins: [Formats],
 	props: {
 		rootTitle: {
 			type: String,
@@ -233,6 +229,7 @@ export default {
 			if (this.getStatusBadge(res.data.collectorTask) === 'finished' || this.getStatusBadge(res.data.collectorTask) === 'duplicated') {
 				clearInterval(this.tasksUpdater)
 			}
+			this.$emit('update:loading', false)
 		})
 		this.getTaskInfo()
 		subscribe('restartTask', this.onRestartTaskEvent)
@@ -253,6 +250,7 @@ export default {
 			'getTaskInfo',
 			'getDetailFilesTotalSize',
 			'terminateTask',
+			'getSettings',
 		]),
 		_terminateTask(task) {
 			if (this.isValidUser) {

@@ -7,8 +7,6 @@
 	<description>
 	<![CDATA[
 
-**Python 3.6.8 or higher required**
-
 This app allows to find duplicate or similar 📸📹 photos and videos
 * **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.
 * **Large amount of supported video  formats** All that is supported by ffmpeg.
@@ -20,7 +18,7 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
 	]]>
 	</description>
-	<version>0.2.0</version>
+	<version>0.3.0-beta.1</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
@@ -37,23 +35,24 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_2.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_configuration.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_2.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_3.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_filesplugin.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="25" max-version="26" />
 		<php min-version="7.4" min-int-size="64" />
+		<nextcloud min-version="25" max-version="26" />
 	</dependencies>
-	<settings>
-		<admin>OCA\MediaDC\Settings\AdminSettings</admin>
-		<admin-section>OCA\MediaDC\Settings\AdminSection</admin-section>
-	</settings>
+	<background-jobs>
+		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
+	</background-jobs>
 	<repair-steps>
 		<install>
 			<step>OCA\MediaDC\Migration\AppDataInitializationStep</step>
 		</install>
+		<uninstall>
+			<step>OCA\MediaDC\Migration\AppDataCleanupStep</step>
+		</uninstall>
 		<pre-migration>
 			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
 		</pre-migration>
@@ -63,9 +62,10 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 		<command>OCA\MediaDC\Command\CollectorCleanupCommand</command>
 		<command>OCA\MediaDC\Command\CollectorTaskNotificationCommand</command>
 	</commands>
-	<background-jobs>
-		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
-	</background-jobs>
+	<settings>
+		<admin>OCA\MediaDC\Settings\AdminSettings</admin>
+		<admin-section>OCA\MediaDC\Settings\AdminSection</admin-section>
+	</settings>
 	<navigations>
 		<navigation>
 			<name>MediaDC</name>

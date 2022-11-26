@@ -1,0 +1,139 @@
+name: Create signature
+
+on:
+  workflow_dispatch:
+
+env:
+  APP_NAME: 'mediadc'
+
+jobs:
+  build-and-sign-app:
+    runs-on: ubuntu-latest
+    name: Build and sign app
+
+    steps:
+    - name: Checkout server
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+        repository: nextcloud/server
+        ref: ${{ matrix.server-versions }}
+
+    - uses: actions/checkout@v3
+      with:
+        path: apps/${{ env.APP_NAME }}
+
+    - name: Set up php ${{ matrix.php-versions }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.0
+        tools: phpunit
+        extensions: mbstring, iconv, fileinfo, intl, pgsql, pdo_pgsql
+        coverage: none
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+
+    - name: Build
+      working-directory: apps/${{ env.APP_NAME }}
+      run: make
+
+    - name: Install Krankerl
+      run: |
+        wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.0/krankerl_0.13.0_amd64.deb
+        sudo dpkg -i krankerl_0.13.0_amd64.deb
+
+    - name: Package app
+      working-directory: apps/${{ env.APP_NAME }}
+      run: krankerl package
+
+    - name: Unpack archive for signing
+      working-directory: apps/${{ env.APP_NAME }}/build/artifacts
+      run: |
+        tar -xzvf ${{ env.APP_NAME }}.tar.gz
+
+    - name: Prepare signature data
+      env:
+        NEXTCLOUD_APPSTORE_SIGNING_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+        NEXTCLOUD_APPSTORE_SIGNING_PUBLIC_CERT: ${{ secrets.APP_PUBLIC_CRT }}
+      run: |
+        echo "$NEXTCLOUD_APPSTORE_SIGNING_PRIVATE_KEY" > app.key
+        echo "$NEXTCLOUD_APPSTORE_SIGNING_PUBLIC_CERT" > app.crt
+
+    - name: Sign app
+      run: |
+        php occ integrity:sign-app --privateKey=app.key --certificate=app.crt --path=apps/${{ env.APP_NAME }}/build/artifacts/${{ env.APP_NAME }}
+
+    - name: Check signature
+      id: check_signature
+      uses: andstor/file-existence-action@v2
+      with:
+        files: apps/${{ env.APP_NAME }}/build/artifacts/${{ env.APP_NAME }}/appinfo/signature.json
+
+    - name: Signature checksum
+      if: steps.check_signature.outputs.files_exists == 'true'
+      id: signature_checksum
+      working-directory: apps/${{ env.APP_NAME }}
+      run: |
+        currentSignatureCheckSum=$(sha1sum appinfo/signature.json)
+        generatedSignatureCheckSum=$(sha1sum build/artifacts/${{ env.APP_NAME }}/appinfo/signature.json)
+        echo "::set-output name=currentCheckSum::$currentSignatureCheckSum"
+        echo "::set-output name=generatedCheckSum::$generatedSignatureCheckSum"
+
+    - name: Copy signature
+      if: ${{ steps.signature_checksum.outputs.currentCheckSum != steps.signature_checksum.outputs.generatedCheckSum }}
+      working-directory: apps/${{ env.APP_NAME }}
+      run: |
+        cp -f build/artifacts/${{ env.APP_NAME }}/appinfo/signature.json ./appinfo/
+
+    - uses: actions/upload-artifact@v3
+      if: steps.check_signature.outputs.files_exists == 'true'
+      with:
+        name: signature.json
+        path: apps/${{ env.APP_NAME }}/build/artifacts/${{ env.APP_NAME }}/appinfo/signature.json
+        if-no-files-found: error
+
+    # - name: Commit signature
+    #   if: steps.check_signature.outputs.files_exists == 'true'
+    #   working-directory: apps/${{ env.APP_NAME }}
+    #   run: |
+    #     git config --local user.email "github-actions[bot]@users.noreply.github.com"
+    #     git config --local user.name "github-actions[bot]"
+    #     git add appinfo/signature.json
+    #     git commit -m "Added signature"
+
+    - name: Commit signature
+      if: ${{ steps.signature_checksum.outputs.currentCheckSum != steps.signature_checksum.outputs.generatedCheckSum }}
+      working-directory: apps/${{ env.APP_NAME }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        FILE_TO_COMMIT: appinfo/signature.json
+        DESTINATION_BRANCH: ${{ github.ref }}
+      run: |
+        export TODAY=$( date -u '+%Y-%m-%d' )
+        export MESSAGE="[github-actions[bot]] Added signature.json"
+        export SHA=$( git rev-parse $DESTINATION_BRANCH:$FILE_TO_COMMIT )
+        export CONTENT=$( base64 -i $FILE_TO_COMMIT )
+        gh api --method PUT /repos/:owner/:repo/contents/$FILE_TO_COMMIT \
+          --field message="$MESSAGE" \
+          --field encoding="base64" \
+          --field content="$CONTENT" \
+          --field branch="$DESTINATION_BRANCH" \
+          --field sha="$SHA"
+
+    - name: Signature summary
+      run: |
+        if [[ steps.signature_checksum.outputs.currentCheckSum != steps.signature_checksum.outputs.generatedCheckSum ]]; then
+          echo 'signature.json changed and commited to the repository.'
+        else
+          echo 'signature.json' not changed, no need to commit.
+        fi
+
+    # - name: Push changes
+    #   if: steps.check_signature.outputs.files_exists == 'true'
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     directory: apps/${{ env.APP_NAME }}
+    #     branch: ${{ github.head_ref }}

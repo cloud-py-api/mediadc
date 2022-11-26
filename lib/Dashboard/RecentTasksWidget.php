@@ -37,10 +37,7 @@ use OCP\Util;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\CollectorService;
 
-
-class RecentTasksWidget implements IWidget
-{
-
+class RecentTasksWidget implements IWidget {
 	/** @var IL10N */
 	protected $il10n;
 
@@ -68,8 +65,7 @@ class RecentTasksWidget implements IWidget
 	 * @return string Unique id that identifies the widget, e.g. the app id
 	 * @since 20.0.0
 	 */
-	public function getId(): string
-	{
+	public function getId(): string {
 		return 'mediadc-tasks';
 	}
 
@@ -77,8 +73,7 @@ class RecentTasksWidget implements IWidget
 	 * @return string User facing title of the widget
 	 * @since 20.0.0
 	 */
-	public function getTitle(): string
-	{
+	public function getTitle(): string {
 		return $this->il10n->t('MediaDC Tasks');
 	}
 
@@ -87,8 +82,7 @@ class RecentTasksWidget implements IWidget
 	 *   in the range of 10-100, 0-9 are reserved for shipped apps
 	 * @since 20.0.0
 	 */
-	public function getOrder(): int
-	{
+	public function getOrder(): int {
 		return 10;
 	}
 
@@ -96,8 +90,7 @@ class RecentTasksWidget implements IWidget
 	 * @return string css class that displays an icon next to the widget title
 	 * @since 20.0.0
 	 */
-	public function getIconClass(): string
-	{
+	public function getIconClass(): string {
 		return 'icon-category-organization';
 	}
 
@@ -105,16 +98,14 @@ class RecentTasksWidget implements IWidget
 	 * @return string|null The absolute url to the apps own view
 	 * @since 20.0.0
 	 */
-	public function getUrl(): ?string
-	{
+	public function getUrl(): ?string {
 		return $this->urlGenerator->linkToRouteAbsolute('mediadc.page.index');
 	}
 
 	/**
 	 * Execute widget bootstrap code like loading scripts and providing initial state
 	 */
-	public function load(): void
-	{
+	public function load(): void {
 		Util::addScript(Application::APP_ID, Application::APP_ID . '-dashboard');
 		$this->initialState->provideInitialState(
 			'mediadc-recent-tasks',

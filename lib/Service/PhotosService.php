@@ -36,10 +36,7 @@ use OCP\Files\IRootFolder;
 use OCA\MediaDC\Db\Photo;
 use OCA\MediaDC\Db\PhotoMapper;
 
-
-class PhotosService
-{
-
+class PhotosService {
 	/** @var PhotoMapper */
 	private $mapper;
 
@@ -63,33 +60,27 @@ class PhotosService
 		$this->mapper = $mapper;
 	}
 
-	public function get($id): Photo
-	{
+	public function get($id): Photo {
 		return $this->mapper->find($id);
 	}
 
-	public function getAllFileids(): array
-	{
+	public function getAllFileids(): array {
 		return $this->mapper->findAllFileids();
 	}
 
-	public function canBeDeleted($fileid): bool
-	{
+	public function canBeDeleted($fileid): bool {
 		return $this->mapper->inFileCache(intval($fileid));
 	}
 
-	public function delete($photo): Photo
-	{
+	public function delete($photo): Photo {
 		return $this->mapper->delete($photo);
 	}
 
-	public function truncate(): int
-	{
+	public function truncate(): int {
 		return $this->mapper->truncate();
 	}
 
-	public function resolve(int $fileid, bool $resolved = true): int
-	{
+	public function resolve(int $fileid, bool $resolved = true): int {
 		return $this->mapper->resolve($fileid, $resolved);
 	}
 
@@ -97,11 +88,10 @@ class PhotosService
 	 * @param string $userId
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getResolvedPhotos(string $userId = '', int $limit = null, int $offset = null): array
-	{
+	public function getResolvedPhotos(string $userId = '', int $limit = null, int $offset = null): array {
 		$result = $this->mapper->findAllResolvedByUser($userId, $limit, $offset);
 		$result = array_map(function ($filecache_data) {
 			/** @var File[] $node */

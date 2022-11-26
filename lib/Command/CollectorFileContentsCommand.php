@@ -38,10 +38,7 @@ use OCP\Files\NotPermittedException;
 use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
 
-
-class CollectorFileContentsCommand extends Command
-{
-
+class CollectorFileContentsCommand extends Command {
 	public const ARGUMENT_FILE_ID = 'fileid';
 	public const ARGUMENT_USER_ID = 'userid';
 
@@ -51,24 +48,21 @@ class CollectorFileContentsCommand extends Command
 	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(IRootFolder $rootFolder, LoggerInterface $logger)
-	{
+	public function __construct(IRootFolder $rootFolder, LoggerInterface $logger) {
 		parent::__construct();
 
 		$this->rootFolder = $rootFolder;
 		$this->logger = $logger;
 	}
 
-	protected function configure(): void
-	{
+	protected function configure(): void {
 		$this->setName("mediadc:tasks:filecontents");
 		$this->setDescription("Returns file binary data");
 		$this->addArgument(self::ARGUMENT_FILE_ID, InputArgument::REQUIRED);
 		$this->addArgument(self::ARGUMENT_USER_ID, InputArgument::REQUIRED);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output): int
-	{
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$fileid = $input->getArgument(self::ARGUMENT_FILE_ID);
 		$userid = $input->getArgument(self::ARGUMENT_USER_ID);
 

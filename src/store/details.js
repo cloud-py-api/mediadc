@@ -136,7 +136,7 @@ const mutations = {
 	},
 
 	/**
-	 * Set item per details list page setting and update paginated objects
+	 * Set items per details list page setting and update paginated objects
 	 *
 	 * @param {object} state the store data
 	 * @param {number} itemsPerPage items per page setting
@@ -148,7 +148,7 @@ const mutations = {
 	},
 
 	/**
-	 * Set item per duplicate group page setting
+	 * Set items per duplicate group page setting
 	 *
 	 * @param {object} state the store data
 	 * @param {number} itemsPerPage items per page setting

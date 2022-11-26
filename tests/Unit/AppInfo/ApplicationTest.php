@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
@@ -26,15 +28,11 @@
 
 namespace OCA\MediaDC\Tests\Unit\AppInfo;
 
-use ChristophWurst\Nextcloud\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use OCA\Mediadc\AppInfo\Application;
 
-
-class ApplicationTest extends TestCase
-{
-
-	public function testConstructor()
-	{
+class ApplicationTest extends TestCase {
+	public function testConstructor() {
 		new Application();
 
 		$this->addToAssertionCount(1);

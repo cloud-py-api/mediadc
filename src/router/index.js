@@ -29,7 +29,6 @@ import Vue from 'vue'
 const Collector = () => import('../views/Collector.vue')
 const CollectorDetails = () => import('../views/CollectorDetails.vue')
 const Resolved = () => import('../views/Resolved.vue')
-const Configuration = () => import('../views/Configuration.vue')
 
 Vue.use(VueRouter)
 
@@ -53,14 +52,6 @@ export default new VueRouter({
 			props: (route) => ({
 				rootTitle: t('mediadc', 'MediaDC Task Details'),
 				taskId: route.params.taskId,
-			}),
-		},
-		{
-			path: '/configuration',
-			component: Configuration,
-			name: 'configuration',
-			props: (route) => ({
-				rootTitle: t('mediadc', 'MediaDC Configuration'),
 			}),
 		},
 		{

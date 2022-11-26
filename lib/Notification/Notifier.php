@@ -34,34 +34,27 @@ use OCP\L10N\IFactory;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
-
-class Notifier implements INotifier
-{
-
+class Notifier implements INotifier {
 	/** @var IFactory */
 	private $factory;
 
 	/** @var IURLGenerator */
 	private $url;
 
-	public function __construct(IFactory $factory, IURLGenerator $urlGenerator)
-	{
+	public function __construct(IFactory $factory, IURLGenerator $urlGenerator) {
 		$this->factory = $factory;
 		$this->url = $urlGenerator;
 	}
 
-	public function getID(): string
-	{
+	public function getID(): string {
 		return Application::APP_ID;
 	}
 
-	public function getName(): string
-	{
+	public function getName(): string {
 		return $this->factory->get(Application::APP_ID)->t('Task finished alert');
 	}
 
-	public function prepare(INotification $notification, string $languageCode): INotification
-	{
+	public function prepare(INotification $notification, string $languageCode): INotification {
 		if ($notification->getApp() !== Application::APP_ID) {
 			throw new \InvalidArgumentException();
 		}

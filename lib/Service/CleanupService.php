@@ -28,45 +28,21 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Service;
 
-use OCP\IDBConnection;
-use OCP\DB\ISchemaWrapper;
-use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Files\SimpleFS\ISimpleFolder;
 
-use OCA\MediaDC\AppInfo\Application;
+class CleanupService {
 
+	/** @var AppDataService */
+	private $appDataService;
 
-class CleanupService
-{
-
-	/** @var IDBConnection */
-	private $db;
-
-	/** @var ISchemaWrapper */
-	private $schema;
-
-	public function __construct(IDBConnection $db, ISchemaWrapper $schema)
-	{
-		$this->db = $db;
-		$this->schema = $schema;
+	public function __construct(AppDataService $appDataService) {
+		$this->appDataService = $appDataService;
 	}
 
-	public function dropAppTables()
-	{
-		$tables = array_filter($this->schema->getTableNames(), function (string $tableName) {
-			return strpos($tableName, Application::APP_ID) !== false;
-		});
-		foreach ($tables as $table) {
-			$this->db->dropTable($table);
+	public function deleteAppLogs() {
+		$appDataLogsFolder = $this->appDataService->getAppDataFolder('logs');
+		if (isset($appDataLogsFolder['folder']) && $appDataLogsFolder['folder'] instanceof ISimpleFolder) {
+			$appDataLogsFolder['folder']->delete();
 		}
-		$this->removeAppMigrations();
-	}
-
-	private function removeAppMigrations()
-	{
-		$qb = $this->db->getQueryBuilder();
-		$qb->delete('migrations')->where(
-			$qb->expr()->eq('app', $qb->createNamedParameter(Application::APP_ID, IQueryBuilder::PARAM_STR))
-		);
-		$qb->executeStatement();
 	}
 }

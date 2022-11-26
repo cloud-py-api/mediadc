@@ -26,20 +26,15 @@
 
 namespace OCA\MediaDC\Migration\data;
 
-
-class AppInitialData
-{
-
+class AppInitialData {
 	/** @var \OCP\IL10N */
 	private $l10n;
 
-	public function __construct(\OCP\IL10N $l10n)
-	{
+	public function __construct(\OCP\IL10N $l10n) {
 		$this->l10n = $l10n;
 	}
 
-	public function getAppInitialData(): array
-	{
+	public function getAppInitialData(): array {
 		return [
 			'settings' => [
 				[
@@ -76,18 +71,6 @@ class AppInitialData
 					"description" => "Global administrator's exclude list that applies to each task"
 				],
 				[
-					"name" => "installed",
-					"value" => [
-						"status" => false,
-						"installed_list" => [],
-						"not_installed_list" => [],
-						"video_required" => [],
-						"available_algorithms" => []
-					],
-					"displayName" => "MediaDC installed flag",
-					"description" => "Installation data with current MediaDC configuration"
-				],
-				[
 					"name" => "python_command",
 					"value" => "/usr/bin/python3",
 					"displayName" => "Full path to python interpreter",
@@ -110,13 +93,18 @@ class AppInitialData
 					"value" => "/usr/bin/php",
 					"displayName" => "Full path to PHP interpreter for Python",
 					"description" => "Absolute path to the PHP executable (e.g. \"/usr/bin/php7.4\"). Can be obtained by `which php` or `which php7.4` command"
-				]
+				],
+				[
+					"name" => "python_binary",
+					"value" => true,
+					"displayName" => "Use pre-compiled Python binaries",
+					"description" => "Use Python part in binary format (located in the appdata folder)"
+				],
 			]
 		];
 	}
 
-	private function _stringsForL10N(): void
-	{
+	private function _stringsForL10N(): void {
 		// TRANSLATORS MediaDC Admin settings strings for localization (Eng versions stored in the database and translated on front-end)
 		$this->l10n->t("Hashing algorithm");
 		$this->l10n->t("Hashing algorithm used by Python background script");
@@ -128,8 +116,6 @@ class AppInitialData
 		$this->l10n->t("Maximum number of python background scripts running");
 		$this->l10n->t("Exclude list");
 		$this->l10n->t("Global administrator's exclude list that applies to each task");
-		$this->l10n->t("MediaDC installed flag");
-		$this->l10n->t("Installation data with current MediaDC configuration");
 		$this->l10n->t("Full path to python interpreter");
 		$this->l10n->t("Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command.");
 		$this->l10n->t("Remote/Encrypted file size limit to process");
@@ -138,5 +124,7 @@ class AppInitialData
 		$this->l10n->t("Determine whether to use path from settings or detect it automatically (may not work with some unusual PHP install locations). Used in Python part.");
 		$this->l10n->t("Full path to PHP interpreter for Python");
 		$this->l10n->t("Absolute path to the PHP executable (e.g. \"/usr/bin/php7.4\"). Can be obtained by `which php` or `which php7.4` command");
+		$this->l10n->t("Use pre-compiled Python binaries");
+		$this->l10n->t("Use Python part in binary format (located in the appdata folder)");
 	}
 }
