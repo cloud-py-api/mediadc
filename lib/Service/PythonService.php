@@ -92,7 +92,7 @@ class PythonService {
 			$cmd = $this->pythonCommand . ' ' . $cmd;
 		}
 		if ($nonBlocking) {
-			$logFile = $this->cwd . 'logs/' . date('d-m-Y_H:m:s', time()) . '.log';
+			$logFile = $this->cwd . 'logs/' . date('d-m-Y_H:i:s', time()) . '.log';
 			exec($envVariables . 'nohup ' . $cmd . ' > ' . $logFile . ' 2>' . $logFile . ' &');
 		} else {
 			$errors = [];

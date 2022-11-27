@@ -196,6 +196,10 @@ class UtilsService {
 		return ['success' => false, 'result_code' => $pythonVersion['result_code']];
 	}
 
+	public function isSnapEnv(): bool {
+		return getenv('SNAP') !== false;
+	}
+
 	public function isMusliLinux(): bool {
 		exec('ldd --version', $output, $result_code);
 		if ($result_code == 0 && count($output) > 0 && str_contains($output[0], 'musl')) {

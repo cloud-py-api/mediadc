@@ -152,6 +152,7 @@ class CollectorService {
 				], true, [
 					'PHP_PATH' => $this->utils->getPhpInterpreter(),
 					'SERVER_ROOT' => \OC::$SERVERROOT,
+					'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
 					'LOGLEVEL' => 'DEBUG',
 					'CPA_LOGLEVEL' => 'DEBUG'
 				], true);
@@ -238,6 +239,7 @@ class CollectorService {
 				$this->pythonService->run($scriptName, ['-t' => $taskId], true, [
 					'PHP_PATH' => $this->utils->getPhpInterpreter(),
 					'SERVER_ROOT' => \OC::$SERVERROOT,
+					'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
 					'LOGLEVEL' => 'DEBUG',
 					'CPA_LOGLEVEL' => 'DEBUG'
 				], json_decode($pythonBinary->getValue()));
@@ -254,6 +256,7 @@ class CollectorService {
 			$this->pythonService->run($scriptName, ['-t' => $taskId], true, [
 				'PHP_PATH' => $this->utils->getPhpInterpreter(),
 				'SERVER_ROOT' => \OC::$SERVERROOT,
+				'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
 				'LOGLEVEL' => 'DEBUG',
 				'CPA_LOGLEVEL' => 'DEBUG'
 			], json_decode($pythonBinary->getValue()));
