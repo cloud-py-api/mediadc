@@ -272,49 +272,56 @@ class UtilsService {
 
 	public function checkForSettingsUpdates($app_data) {
 		$settings = $this->settingMapper->findAll();
-		if (count($settings) > 0 && count($app_data['settings']) > count($settings)) {
-			$currentSettingsKeys = array_map(function ($setting) {
-				return $setting->getName();
-			}, $settings);
-			$newSettingsKeys = array_map(function ($setting) {
-				return $setting['name'];
-			}, $app_data['settings']);
-			$newSettings = [];
-			foreach ($newSettingsKeys as $setting) {
-				if (!in_array($setting, $currentSettingsKeys)) {
-					array_push($newSettings, $setting);
-				}
+		if (count($settings) > 0) {
+			$this->checkForNewSettings($app_data, $settings);
+			$this->checkForDeletedSettings($app_data, $settings);
+		}
+	}
+
+	private function checkForNewSettings(array $app_data, array $settings): void {
+		$currentSettingsKeys = array_map(function ($setting) {
+			return $setting->getName();
+		}, $settings);
+		$newSettingsKeys = array_map(function ($setting) {
+			return $setting['name'];
+		}, $app_data['settings']);
+		$newSettings = [];
+		foreach ($newSettingsKeys as $setting) {
+			if (!in_array($setting, $currentSettingsKeys)) {
+				array_push($newSettings, $setting);
 			}
-			foreach ($app_data['settings'] as $setting) {
-				if (in_array($setting['name'], $newSettings)) {
-					$this->settingMapper->insert(new Setting([
-						'name' => $setting['name'],
-						'value' => is_array($setting['value']) ?
-							json_encode($setting['value'])
-							: str_replace('\\', '', json_encode($setting['value'])),
-						'displayName' => $setting['displayName'],
-						'description' => $setting['description']
-					]));
-				}
+		}
+		foreach ($app_data['settings'] as $setting) {
+			if (in_array($setting['name'], $newSettings)) {
+				$this->settingMapper->insert(new Setting([
+					'name' => $setting['name'],
+					'value' => is_array($setting['value']) ?
+						json_encode($setting['value'])
+						: str_replace('\\', '', json_encode($setting['value'])),
+					'displayName' => $setting['displayName'],
+					'description' => $setting['description']
+				]));
 			}
-		} elseif (count($settings) > 0 && count($app_data['settings']) < count($settings)) {
-			$currentSettingsKeys = array_map(function ($setting) {
-				return $setting->getName();
-			}, $settings);
-			$newSettingsKeys = array_map(function ($setting) {
-				return $setting['name'];
-			}, $app_data['settings']);
-			$settingsToRemove = [];
-			foreach ($currentSettingsKeys as $setting) {
-				if (!in_array($setting, $newSettingsKeys)) {
-					array_push($settingsToRemove, $setting);
-				}
+		}
+	}
+
+	private function checkForDeletedSettings(array $app_data, array $settings): void {
+		$currentSettingsKeys = array_map(function ($setting) {
+			return $setting->getName();
+		}, $settings);
+		$newSettingsKeys = array_map(function ($setting) {
+			return $setting['name'];
+		}, $app_data['settings']);
+		$settingsToRemove = [];
+		foreach ($currentSettingsKeys as $setting) {
+			if (!in_array($setting, $newSettingsKeys)) {
+				array_push($settingsToRemove, $setting);
 			}
-			foreach ($settingsToRemove as $settingName) {
-				$setting = $this->settingMapper->findByName($settingName);
-				if (isset($setting)) {
-					$this->settingMapper->delete($setting);
-				}
+		}
+		foreach ($settingsToRemove as $settingName) {
+			$setting = $this->settingMapper->findByName($settingName);
+			if (isset($setting)) {
+				$this->settingMapper->delete($setting);
 			}
 		}
 	}
