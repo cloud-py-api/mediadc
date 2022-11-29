@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0-beta.1 - 2022-11-30]
+
+This is the first beta release with part of Python Framework (no need of Python installation)
+
+### Added
+
+- Added automatic download of pre-compiled Python binaries with all needed packages for work
+- Added option to use Python sources and manually installed system packages (except nextcloud snap)
+instead of binaries
+
+### Changed
+
+### Fixed
+
+- Fixed MediaDC now working on snap installations
+
+### Removed
+
+- Removed Configuration page
+
 ## [0.2.0 - 2022-11-16]
 
 This is the first release for Nextcloud 25+ (https://github.com/andrey18106/mediadc/issues/73).
