@@ -151,7 +151,7 @@ class CollectorService {
 					'-t' => $createdTask->getId()
 				], true, [
 					'PHP_PATH' => $this->utils->getPhpInterpreter(),
-					'SERVER_ROOT' => \OC::$SERVERROOT,
+					'SERVER_ROOT' => !$this->utils->isSnapEnv() ? \OC::$SERVERROOT : '',
 					'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
 					'LOGLEVEL' => 'DEBUG',
 					'CPA_LOGLEVEL' => 'DEBUG'
@@ -238,7 +238,7 @@ class CollectorService {
 				$this->deleteTaskDetails($taskId);
 				$this->pythonService->run($scriptName, ['-t' => $taskId], true, [
 					'PHP_PATH' => $this->utils->getPhpInterpreter(),
-					'SERVER_ROOT' => \OC::$SERVERROOT,
+					'SERVER_ROOT' => !$this->utils->isSnapEnv() ? \OC::$SERVERROOT : '',
 					'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
 					'LOGLEVEL' => 'DEBUG',
 					'CPA_LOGLEVEL' => 'DEBUG'
@@ -255,10 +255,10 @@ class CollectorService {
 			$this->deleteTaskDetails($taskId);
 			$this->pythonService->run($scriptName, ['-t' => $taskId], true, [
 				'PHP_PATH' => $this->utils->getPhpInterpreter(),
-				'SERVER_ROOT' => \OC::$SERVERROOT,
+				'SERVER_ROOT' => !$this->utils->isSnapEnv() ? \OC::$SERVERROOT : '',
 				'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
-				'LOGLEVEL' => 'DEBUG',
-				'CPA_LOGLEVEL' => 'DEBUG'
+				'LOGLEVEL' => 'DEBUG', // Temporary for beta
+				'CPA_LOGLEVEL' => 'DEBUG' // Temporary for beta
 			], json_decode($pythonBinary->getValue()));
 		}
 
@@ -849,7 +849,7 @@ class CollectorService {
 			}
 			unset($d['filessizes']);
 			return $d;
-		}, $this->tasksDetailsMapper->findAllByIdNew($taskId, $limit, $offset));
+		}, $this->tasksDetailsMapper->findAllByIdGroupped($taskId, $limit, $offset));
 	}
 
 	/**
@@ -861,7 +861,8 @@ class CollectorService {
 	public function resolved(string $type, int $limit = null, int $offset = null) {
 		if (in_array($type, ['photos', 'videos'])) {
 			return [
-				$type => $type === 'photos' ? $this->photosService->getResolvedPhotos($this->userId, $limit, $offset)
+				$type => $type === 'photos'
+					? $this->photosService->getResolvedPhotos($this->userId, $limit, $offset)
 					: $this->videosService->getResolvedVideos($this->userId, $limit, $offset)
 			];
 		}

@@ -58,21 +58,27 @@ class PythonService {
 	}
 
 	/**
-	 * Runs Python script with given script relative path and script params
+	 * Runs Python script with given script relative path, script params and env variables
 	 *
-	 * @param string $scriptName relative path to the Python script
+	 * @param string $scriptName relative to cwd path to the Python script or binary
 	 * @param array $scriptParams params to script in array (`['-param1' => value1, '--param2' => value2]`)
-	 * @param boolean $nonBlocking flag that determines how to run Python script.
-	 * @param array $env env variables for python script
-	 * @param bool $binary flag to determine python binaries run or python script
+	 * @param boolean $nonBlocking flag that determines how to run Python script
+	 * @param array $env environment variables for python script or binary
+	 * @param bool $binary flag to determine is python binary given or a python script
 	 *
-	 * @return array|void
+	 * @return array|void output, result_code, errors
 	 *
-	 * If `$nonBlocking = true` - function will not waiting for Python script output and return `void`.
-	 * If `$nonBlocking = false` - function will return array with the `result_code`
-	 * and `output` of the script after Python script finish executing.
+	 * If `$nonBlocking = true` - function will not waiting for Python script output, return `void`.
+	 * If `$nonBlocking = false` - function will return array with the `result_code`,
+	 * `output` and `errors` of the script after Python finish executing.
 	 */
-	public function run($scriptName, $scriptParams = [], $nonBlocking = false, $env = [], $binary = false) {
+	public function run(
+			$scriptName,
+			$scriptParams = [],
+			$nonBlocking = false,
+			$env = [],
+			$binary = false
+		) {
 		if (count($scriptParams) > 0) {
 			$params = array_map(function ($key, $value) {
 				return $value !== '' ? "$key $value " : "$key";
@@ -114,8 +120,6 @@ class PythonService {
 				'output' => $output,
 				'result_code' => $result_code,
 				'errors' => $errors,
-				'cwd' => $this->cwd,
-				'cmd' => $envVariables . $cmd
 			];
 		}
 	}

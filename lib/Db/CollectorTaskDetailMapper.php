@@ -122,7 +122,7 @@ class CollectorTaskDetailMapper extends QBMapper {
 	 *
 	 * @return array
 	 */
-	public function findAllByIdNew(int $taskId, int $limit = null, int $offset = null): array {
+	public function findAllByIdGroupped(int $taskId, int $limit = null, int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$platform = $this->db->getDatabasePlatform()->getName();
 		if ($platform === 'mysql') {

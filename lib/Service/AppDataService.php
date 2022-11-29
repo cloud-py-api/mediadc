@@ -102,7 +102,7 @@ class AppDataService {
 	}
 
 	public function downloadPythonBinary(bool $update = false) {
-		$url = 'https://github.com/bigcat88/cpa_py_bundles/releases/download/0.3.0-beta/cpa_' .
+		$url = 'https://github.com/andrey18106/mediadc/releases/download/0.3.0-beta.1/cpa_' .
 			$this->getBinaryName() . '.gz';
 		$dir = $this->getAppDataFolder('binaries')['path'] . '/';
 		$file_name = 'main.gz';
@@ -114,7 +114,6 @@ class AppDataService {
 				curl_setopt_array($cURL, [
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_FILE => $fp,
-					CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
 					CURLOPT_FOLLOWLOCATION => true,
 				]);
 				curl_exec($cURL);
@@ -145,7 +144,7 @@ class AppDataService {
 		}
 	}
 
-	public function unGz($file_name): bool {
+	public function unGz(string $file_name): bool {
 		$out_file_name = $this->getAppDataFolder('binaries')['path'] . '/main';
 		$buffer_size = 4096;
 		$file_name = $this->getAppDataFolder('binaries')['path'] . '/' . $file_name;
@@ -159,7 +158,7 @@ class AppDataService {
 		return file_exists($out_file_name);
 	}
 
-	public function addChmodX($file_name): bool {
+	public function addChmodX(string $file_name): bool {
 		$file_name = $this->getAppDataFolder('binaries')['path'] . '/' .
 			str_replace('.gz', '', $file_name);
 		if (file_exists($file_name)) {
@@ -169,7 +168,7 @@ class AppDataService {
 		return false;
 	}
 
-	public function testDownloadedBinary($file_name): array {
+	public function testDownloadedBinary(string $file_name): array {
 		$result = $this->pythonService->run('binaries/' . str_replace('.gz', '', $file_name), [
 			'--info' => ''
 		], false, [

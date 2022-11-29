@@ -31,7 +31,6 @@ namespace OCA\MediaDC\Service;
 use OCP\Files\SimpleFS\ISimpleFolder;
 
 class CleanupService {
-
 	/** @var AppDataService */
 	private $appDataService;
 
@@ -41,7 +40,8 @@ class CleanupService {
 
 	public function deleteAppLogs() {
 		$appDataLogsFolder = $this->appDataService->getAppDataFolder('logs');
-		if (isset($appDataLogsFolder['folder']) && $appDataLogsFolder['folder'] instanceof ISimpleFolder) {
+		if (isset($appDataLogsFolder['folder'])
+			&& $appDataLogsFolder['folder'] instanceof ISimpleFolder) {
 			$appDataLogsFolder['folder']->delete();
 		}
 	}

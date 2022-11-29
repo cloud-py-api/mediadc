@@ -200,6 +200,19 @@ class UtilsService {
 		return getenv('SNAP') !== false;
 	}
 
+	public function isVideosSupported(): bool {
+		$result = false;
+		exec('ffmpeg -version', $output, $result_code);
+		if ($result_code === 0 && count($output) > 0 && preg_match('/version/s', $output[0], $matches)) {
+			$result = count($matches) > 0 && $matches[0] === 'version';
+		}
+		exec('ffprobe -version', $output, $result_code);
+		if ($result_code === 0 && count($output) > 0 && preg_match('/version/s', $output[0], $matches)) {
+			$result = $result && count($matches) > 0 && $matches[0] === 'version';
+		}
+		return $result;
+	}
+
 	public function isMusliLinux(): bool {
 		exec('ldd --version', $output, $result_code);
 		if ($result_code == 0 && count($output) > 0 && str_contains($output[0], 'musl')) {
@@ -240,6 +253,10 @@ class UtilsService {
 		$pythonVersion = $this->getPythonVersion();
 		$result = [
 			'nextcloud-version' => $this->config->getSystemValue('version'),
+			Application::APP_ID . '-version' => $this->appManager->getAppVersion(Application::APP_ID),
+			'is-videos-supported' => $this->isVideosSupported(),
+			'is-snap' => $this->isSnapEnv(),
+			'arch' => $this->getOsArch(),
 			'webserver' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
 			'database' => $this->databaseStatistics !== null ? $this->databaseStatistics->getDatabaseStatistics() : null,
 			'php-version' => phpversion(),
@@ -249,11 +266,6 @@ class UtilsService {
 			'os' => php_uname('s'),
 			'os-release' => php_uname('r'),
 			'machine-type' => php_uname('m'),
-			Application::APP_ID . '-version' => $this->appManager->getAppVersion(Application::APP_ID),
-			Application::APP_ID . '-settings' => [
-				'remote_filesize_limit' => $this->settingMapper->findByName('remote_filesize_limit')->getValue(),
-				'installed' => json_decode($this->settingMapper->findByName('installed')->getValue()),
-			],
 		];
 		return $result;
 	}

@@ -55,7 +55,7 @@ class AppDataFolderCommand extends Command {
 
 	protected function configure(): void {
 		$this->setName("mediadc:appdata");
-		$this->setDescription("AppData folder actions command");
+		$this->setDescription("AppData folder test actions command");
 		$this->addArgument(self::ARGUMENT_APP_DATA_ACTION, InputArgument::REQUIRED);
 		$this->addArgument(self::ARGUMENT_APP_DATA_NAME, InputArgument::REQUIRED);
 	}
@@ -64,6 +64,7 @@ class AppDataFolderCommand extends Command {
 		$output->writeln(json_encode($this->utils->isMusliLinux()));
 		$output->writeln(json_encode($this->utils->getOsArch()));
 		$output->writeln(json_encode($this->appDataService->getBinaryName()));
+		$output->writeln(json_encode($this->utils->isVideosSupported()));
 		$output->writeln(json_encode($this->appDataService->downloadPythonBinary()));
 		$action = $input->getArgument(self::ARGUMENT_APP_DATA_ACTION);
 		$name = $input->getArgument(self::ARGUMENT_APP_DATA_NAME);
