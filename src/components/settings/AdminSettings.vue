@@ -235,11 +235,6 @@ export default {
 			python_binary: true,
 		}
 	},
-	computed: {
-		configurationPageLink() {
-			return generateUrl('/apps/mediadc/configuration')
-		},
-	},
 	beforeMount() {
 		this.getSettings()
 	},

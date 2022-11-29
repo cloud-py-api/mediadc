@@ -72,17 +72,15 @@ class AppDataInitializationStep implements IRepairStep {
 		$app_data = $this->appInitialData->getAppInitialData();
 
 		if (count($this->settingMapper->findAll()) === 0 && isset($app_data['settings'])) {
-			if (isset($app_data['settings'])) {
-				foreach ($app_data['settings'] as $setting) {
-					$this->settingMapper->insert(new Setting([
-						'name' => $setting['name'],
-						'value' => is_array($setting['value'])
-							? json_encode($setting['value'])
-							: str_replace('\\', '', json_encode($setting['value'])),
-						'displayName' => $setting['displayName'],
-						'description' => $setting['description']
-					]));
-				}
+			foreach ($app_data['settings'] as $setting) {
+				$this->settingMapper->insert(new Setting([
+					'name' => $setting['name'],
+					'value' => is_array($setting['value'])
+						? json_encode($setting['value'])
+						: str_replace('\\', '', json_encode($setting['value'])),
+					'displayName' => $setting['displayName'],
+					'description' => $setting['description']
+				]));
 			}
 		}
 
@@ -94,7 +92,7 @@ class AppDataInitializationStep implements IRepairStep {
 		$this->appDataService->createAppDataFolder('logs');
 
 		$output->advance(4, 'Downloading app binary');
-		$this->appDataService->downloadPythonBinary();
+		$this->appDataService->downloadPythonBinary(false);
 
 		$output->finishProgress();
 	}

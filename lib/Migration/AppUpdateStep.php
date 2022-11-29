@@ -64,6 +64,8 @@ class AppUpdateStep implements IRepairStep {
 		$output->advance(1, 'Sync settings changes');
 		$this->utils->checkForSettingsUpdates($this->appInitialData->getAppInitialData());
 		$output->advance(2, 'Update binaries');
+		$this->appDataService->createAppDataFolder('binaries');
+		$this->appDataService->createAppDataFolder('logs');
 		$this->appDataService->downloadPythonBinary(true);
 		$output->finishProgress();
 	}

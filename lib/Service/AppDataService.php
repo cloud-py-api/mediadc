@@ -102,12 +102,15 @@ class AppDataService {
 	}
 
 	public function downloadPythonBinary(bool $update = false) {
-		$url = 'https://github.com/andrey18106/mediadc/releases/download/0.3.0-beta.1/cpa_' .
+		$url = 'https://github.com/bigcat88/cpa_py_bundles/releases/download/0.3.0-beta.1/cpa_' .
 			$this->getBinaryName() . '.gz';
-		$dir = $this->getAppDataFolder('binaries')['path'] . '/';
+		$binariesFolder = $this->getAppDataFolder('binaries');
+		if (isset($binariesFolder['success']) && $binariesFolder['success']) {
+			$dir = $this->getAppDataFolder('binaries')['path'] . '/';
+		}
 		$file_name = 'main.gz';
 		$save_file_loc = $dir . $file_name;
-		if (!file_exists($dir . str_replace('.gz', '', $file_name)) || $update) {
+		if (!file_exists($dir . str_replace('.gz', '', $file_name)) && $update) {
 			$cURL = curl_init($url);
 			$fp = fopen($save_file_loc, 'wb');
 			if ($fp) {
@@ -139,7 +142,6 @@ class AppDataService {
 				'downloaded' => true,
 				'ungzipped' => true,
 				'chmodx' => true,
-				'test' => $this->testDownloadedBinary($file_name)
 			];
 		}
 	}
