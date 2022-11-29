@@ -66,14 +66,6 @@ class AppDataServiceTest extends TestCase {
 	 * @dataProvider provideFolderNamesData
 	 */
 	public function testCreateAppDataFolder(string $folderName, bool $expected): void {
-		$this->iConfig->expects()
-			->method('getSystemValue')
-			->with('instanceid')
-			->will($this->returnValue('a1234567890b'));
-		$this->iConfig->expects()
-			->method('getSystemValue')
-			->with('datadirectory')
-			->will($this->returnValue('/var/www/html/nextcloud/data'));
 		$result = $this->appDataService->createAppDataFolder($folderName);
 		$this->assertEquals($expected, $result);
 	}
@@ -81,7 +73,7 @@ class AppDataServiceTest extends TestCase {
 	public function provideFolderNamesData() {
 		return [
 			'should create binaries app data folder' => ['binaries', true],
-			'should create local app data folder' => ['local', true],
+			'should create logs app data folder' => ['logs', true],
 			'should create python app data folder' => ['python', true]
 		];
 	}

@@ -5,25 +5,17 @@
       <code>\OCP\Server</code>
     </UndefinedClass>
   </file>
-  <file src="lib/Command/CollectorCleanupCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
-  </file>
   <file src="lib/Command/CollectorFileContentsCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
-  </file>
-  <file src="lib/Command/CollectorPopulateTaskCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
+    <MissingDependency occurrences="3">
+      <code>$this-&gt;rootFolder</code>
+      <code>IRootFolder</code>
+      <code>IRootFolder</code>
+    </MissingDependency>
   </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;url</code>
+    </UndefinedThisPropertyAssignment>
   </file>
   <file src="lib/Controller/CollectorController.php">
     <InvalidArgument occurrences="1">
@@ -76,6 +68,18 @@
       <code>Closure</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Service/AppDataService.php">
+    <UndefinedThisPropertyAssignment occurrences="2">
+      <code>$this-&gt;ncDataFolder</code>
+      <code>$this-&gt;ncInstanceId</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="4">
+      <code>$this-&gt;ncDataFolder</code>
+      <code>$this-&gt;ncDataFolder</code>
+      <code>$this-&gt;ncInstanceId</code>
+      <code>$this-&gt;ncInstanceId</code>
+    </UndefinedThisPropertyFetch>
+  </file>
   <file src="lib/Service/CollectorService.php">
     <InvalidReturnStatement occurrences="1">
       <code>$this-&gt;tasksMapper-&gt;find($taskId)</code>
@@ -119,15 +123,19 @@
     </MismatchingDocblockReturnType>
   </file>
   <file src="lib/Service/UtilsService.php">
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="1">
       <code>?DatabaseStatistics</code>
-      <code>\OCP\Server</code>
     </UndefinedClass>
     <UndefinedDocblockClass occurrences="3">
       <code>$ini</code>
       <code>$this-&gt;databaseStatistics</code>
       <code>?DatabaseStatistics</code>
     </UndefinedDocblockClass>
+    <UndefinedFunction occurrences="3">
+      <code>str_contains($machineType, 'arm64')</code>
+      <code>str_contains($machineType, 'x86_64')</code>
+      <code>str_contains($output[0], 'musl')</code>
+    </UndefinedFunction>
   </file>
   <file src="lib/Service/VideosService.php">
     <MissingDependency occurrences="1">
