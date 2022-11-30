@@ -268,6 +268,7 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC gelöste Dateien",
     "An error occurred while deleting task" : "Es ist ein Fehler beim Löschen der Aufgabe aufgetreten.",
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
-    "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
+    "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
+    "Are you sure you want to delete this file?" : "Möchtest Du wirklich diese Datei löschen?"
 },
 "nplurals=2; plural=(n != 1);");
