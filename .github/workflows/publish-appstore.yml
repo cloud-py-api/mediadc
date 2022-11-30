@@ -38,11 +38,4 @@ jobs:
     - name: Publish release in app store
       env:
         NEXTCLOUD_APPSTORE_API_TOKEN: ${{ secrets.APP_STORE_TOKEN }}
-      run: 'curl -f -X POST https://apps.nextcloud.com/api/v1/apps/releases \
-        -H "Authorization: Token $NEXTCLOUD_APPSTORE_API_TOKEN" \
-        -H "Content-Type: application/json" \
-        -d ''{\
-          "download":"''$RELEASE_URL''",\
-          "signature": "''$RELEASE_SIGNATURE''",\
-          "nightly": "''$IS_NIGHTLY''"\
-          }'''
+      run: 'curl -f -X POST https://apps.nextcloud.com/api/v1/apps/releases -H "Authorization: Token $NEXTCLOUD_APPSTORE_API_TOKEN" -H "Content-Type: application/json" -d ''{"download":"''$RELEASE_URL''","signature": "''$RELEASE_SIGNATURE''","nightly": "''$IS_NIGHTLY''"}'''
