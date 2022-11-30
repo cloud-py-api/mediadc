@@ -18,6 +18,7 @@ OC.L10N.register(
     "Copy to clipboard" : "Kopiuj do schowka",
     "Copied to clipboard" : "Kopiuj do schowka",
     "Select" : "Wybierz",
+    "Target Mime Type" : "Docelowy typ MIME",
     "Photos" : "Zdjęcia",
     "Videos" : "Filmy",
     "Start" : "Rozpocznij",

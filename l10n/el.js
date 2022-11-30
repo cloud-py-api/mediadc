@@ -1,10 +1,16 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Hashing algorithm" : "Αλγόριθμος κατακερματισμού",
+    "Hashing algorithm used by Python background script" : "Αλγόριθμος κατακερματισμού που χρησιμοποιείται από το Python script παρασκηνίου",
     "Tasks" : "Εργασίες",
     "Configuration" : "Ρύθμιση",
     "Settings" : "Ρυθμίσεις",
     "Select file" : "Επιλέξτε Αρχείο",
+    "_Delete file_::_Delete files_" : ["Διαγραφή αρχείου","Διαγραφή αρχείων"],
+    "Are you sure you want delete this file?" : "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το αρχείο;",
+    "Confirm file deletion" : "Επιβεβαίωση διαγραφής αρχείου",
+    "A server error occurred" : "Παρουσιάστηκε σφάλμα διακομιστή",
     "Deselect all" : "Αναίρεση επιλογής όλων",
     "Select all" : "Επιλογή όλων",
     "Go to page" : "Μετάβαση στη σελίδα",
