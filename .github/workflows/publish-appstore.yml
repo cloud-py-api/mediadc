@@ -17,8 +17,8 @@ jobs:
       id: release_url
       run: |
         APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
-        IS_NIGHTLY=$(echo $APP_VERSION | sed 's/alpha/true')
-        IS_NIGHTLY=$(echo $IS_NIGHTLY | sed 's/beta/true')
+        IS_NIGHTLY=$(echo $APP_VERSION | sed 's/alpha/true/')
+        IS_NIGHTLY=$(echo $IS_NIGHTLY | sed 's/beta/true/')
         REP_NAME=${{github.repository_owner}}
         RELEASE_URL=https://github.com/$REP_NAME/$APP_NAME/releases/download/v$APP_VERSION/$APP_NAME.tar.gz
         echo "::set-output name=url::${RELEASE_URL}"

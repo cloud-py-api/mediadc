@@ -19,8 +19,8 @@ jobs:
         id: get_release_info
         run: |
           APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
-          IS_NIGHTLY=$(echo $APP_VERSION | sed 's/alpha/true')
-          IS_NIGHTLY=$(echo $IS_NIGHTLY | sed 's/beta/true')
+          IS_NIGHTLY=$(echo $APP_VERSION | sed 's/alpha/true/')
+          IS_NIGHTLY=$(echo $IS_NIGHTLY | sed 's/beta/true/')
           echo "::set-output name=version::v${APP_VERSION}"
           echo "::set-output name=tag::v${APP_VERSION}"
           CHANGELOG=$(grep -oPz "(?s)##\s\[$APP_VERSION.+?(?=##\s\[|$)" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d')
