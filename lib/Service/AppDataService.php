@@ -30,6 +30,7 @@ namespace OCA\MediaDC\Service;
 
 use RuntimeException;
 use OCP\Files\IAppData;
+use OCP\App\IAppManager;
 use OCP\Files\NotPermittedException;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -39,6 +40,9 @@ use OCA\MediaDC\AppInfo\Application;
 class AppDataService {
 	/** @var IAppData */
 	private $appData;
+
+	/** @var IAppManager */
+	private $appManager;
 
 	/** @var IConfig */
 	private $config;
@@ -51,11 +55,13 @@ class AppDataService {
 
 	public function __construct(
 		IAppData $appData,
+		IAppManager $appManager,
 		IConfig $config,
 		UtilsService $utils,
 		PythonService $pythonService
 	) {
 		$this->appData = $appData;
+		$this->appManager = $appManager;
 		$this->config = $config;
 		$this->utils = $utils;
 		$this->pythonService = $pythonService;
@@ -102,8 +108,9 @@ class AppDataService {
 	}
 
 	public function downloadPythonBinary(bool $update = false) {
-		$url = 'https://github.com/bigcat88/cpa_py_bundles/releases/download/0.3.0-beta.1/cpa_' .
-			$this->getBinaryName() . '.gz';
+		$url = 'https://github.com/andrey18106/mediadc/releases/download/v' . 
+		$this->appManager->getAppVersion(Application::APP_ID)
+		. ' /cpa_' . $this->getBinaryName() . '.gz';
 		$binariesFolder = $this->getAppDataFolder('binaries');
 		if (isset($binariesFolder['success']) && $binariesFolder['success']) {
 			$dir = $this->getAppDataFolder('binaries')['path'] . '/';

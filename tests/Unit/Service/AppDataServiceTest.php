@@ -40,6 +40,9 @@ class AppDataServiceTest extends TestCase {
 	/** @var \OCP\Files\IAppData|MockObject */
 	private $iAppData;
 
+	/** @var \OCP\App\IAppManager|MockObject */
+	private $iAppManager;
+
 	/** @var \OCP\IConfig|MockObject */
 	private $iConfig;
 
@@ -51,11 +54,13 @@ class AppDataServiceTest extends TestCase {
 
 	public function setUp(): void {
 		$this->iAppData = $this->createMock(\OCP\Files\IAppData::class);
+		$this->iAppManager = $this->createMock(\OCP\App\IAppManager::class);
 		$this->iConfig = $this->createMock(\OCP\IConfig::class);
 		$this->utils = $this->createMock(\OCA\MediaDC\Service\UtilsService::class);
 		$this->pythonService = $this->createMock(\OCA\MediaDC\Service\PythonService::class);
 		$this->appDataService = new AppDataService(
 			$this->iAppData,
+			$this->iAppManager,
 			$this->iConfig,
 			$this->utils,
 			$this->pythonService
