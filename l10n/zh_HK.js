@@ -17,6 +17,7 @@ OC.L10N.register(
     "Full path to python interpreter" : "Python 解釋器的完整路徑",
     "Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command." : "Python 可執行文件的絕對路徑（例如“/usr/bin/python3”）。 這可以通過 `which python3` 命令獲得。",
     "Remote/Encrypted file size limit to process" : "要處理的遠端/加密檔案大小上限",
+    "Maximum file size for requesting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size." : "從 PHP 核心請求的最大檔案大小。當遠端 NC 實例上的檔案主機或具有加密標誌時使用。必須小於總可用 RAM 大小。",
     "Use path to PHP interpreter for Python from settings" : "從設置中使用 Python 的 PHP 解釋器的路徑",
     "Determine whether to use path from settings or detect it automatically (may not work with some unusual PHP install locations). Used in Python part." : "確定是使用設置中的路徑還是自動檢測它（可能不適用於一些不尋常的 PHP 安裝）。在 Python 部分中使用。",
     "Full path to PHP interpreter for Python" : "Python 的 PHP 解釋器的完整路徑",
