@@ -11,12 +11,12 @@ OC.L10N.register(
     "Simultaneously running tasks limit" : "Limit für gleichzeitig laufende Aufgaben",
     "Maximum number of python background scripts running" : "Maximale Anzahl von Python-Hintergrundskripts, die ausgeführt werden",
     "Exclude list" : "Ausschlussliste",
-    "Global administrator's exclude list that applies to each task" : "Ausschlussliste des globalen Administrators, die für jede Aufgabe gilt",
-    "MediaDC installed flag" : "Kennzeichnung zum installierten MediaDC",
+    "Global administrator's exclude list that applies to each task" : "Ausschlussliste der globalen Administration, die für jede Aufgabe gilt",
+    "MediaDC installed flag" : "MediaDC installiert Kennzeichnung",
     "Installation data with current MediaDC configuration" : "Installationsdaten mit aktueller MediaDC-Konfiguration",
     "Full path to python interpreter" : "Voller Pfad zum Python-Interpreter",
     "Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command." : "Absoluter Pfad zur Python Laufzeitumgebung (e.g. \"/usr/bin/python3\"). Kann mit dem `which python3` -Befehl abgerufen werden.",
-    "Remote/Encrypted file size limit to process" : "Zu verarbeitende Größenbeschränkung für entfernte/verschlüsselte Dateien",
+    "Remote/Encrypted file size limit to process" : "Größenbeschränkung für zu verarbeitende entfernte/verschlüsselte Dateien",
     "Maximum file size for requesting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size." : "Maximale Dateigröße für Anfragen vom PHP-Core. Wird verwendet, wenn Dateihosts auf einer Remote-NC-Instanz oder über ein verschlüsseltes Flag verfügen. Muss kleiner als die insgesamt verfügbare RAM-Größe sein.",
     "Use path to PHP interpreter for Python from settings" : "Verwenden Sie den Pfad zum PHP-Interpreter für Python aus den Einstellungen",
     "Determine whether to use path from settings or detect it automatically (may not work with some unusual PHP install locations). Used in Python part." : "Legen Sie fest, ob der Pfad aus den Einstellungen verwendet oder automatisch erkannt werden soll (funktioniert möglicherweise nicht mit einigen ungewöhnlichen PHP-Installationspfaden). Wird im Python-Teil verwendet.",
@@ -162,7 +162,7 @@ OC.L10N.register(
     "Photos" : "Fotos",
     "Videos" : "Videos",
     "Photos and Videos" : "Fotos und Videos",
-    "Restart Task with changed parameters" : "Task mit geänderten Parametern neu starten",
+    "Restart Task with changed parameters" : "Aufgabe mit geänderten Parametern neu starten",
     "Restart task" : "Aufgabe neustarten",
     "Finish notification" : "Beenden-Benachrichtigung",
     "Choose target directory" : "Zielverzeichnis wählen",
@@ -270,6 +270,6 @@ OC.L10N.register(
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
     "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
     "Are you sure you want to delete this file?" : "Möchten Sie wirklich diese Datei löschen?",
-    "Create a new task or work on existing ones and resolve some!" : "Eine neue Aufgabe erstellen oder an bestehenden arbeiten und diese lösen!"
+    "Create a new task or work on existing ones and resolve some!" : "Eine neue Aufgabe erstellen oder an Bestehenden arbeiten und diese erledigen!"
 },
 "nplurals=2; plural=(n != 1);");
