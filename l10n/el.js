@@ -16,6 +16,7 @@ OC.L10N.register(
     "Go to page" : "Μετάβαση στη σελίδα",
     "Change to grid view" : "Αλλαγή σε προβολή πλέγματος",
     "Change to list view" : "Αλλαγή σε προβολή λίστας",
+    "No available algorithms. Configure application dependencies on Configuration page" : "Δεν υπάρχουν διαθέσιμοι αλγόριθμοι. Διαμορφώστε τις εξαρτήσεις εφαρμογών στη σελίδα Διαμόρφωση",
     "Remove" : "Αφαίρεση",
     "Confirm" : "Επιβεβαίωση",
     "Decline" : "Απόρριψη",
@@ -30,6 +31,7 @@ OC.L10N.register(
     "Edit" : "Επεξεργασία",
     "Delete task" : "Διαγραφή εργασίας",
     "Install" : "Εγκατάσταση",
+    "Available algorithms: " : "Διαθέσιμοι αλγόριθμοι:",
     "Type" : "Τύπος",
     "Actions" : "Ενέργειες",
     "Update" : "Ενημέρωση"
