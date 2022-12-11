@@ -22,6 +22,7 @@ OC.L10N.register(
     "Delete" : "삭제",
     "Edit" : "편집",
     "Install" : "설치",
+    "Please contact your cloud administration." : "클라우드의 관리자에게 문의하십시오.",
     "Type" : "종류",
     "Actions" : "동작",
     "Update" : "업데이트"
