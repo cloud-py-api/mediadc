@@ -34,8 +34,20 @@ class CleanupService {
 	/** @var AppDataService */
 	private $appDataService;
 
-	public function __construct(AppDataService $appDataService) {
+	/** @var PhotosService */
+	private $photosService;
+
+	/** @var VideosService */
+	private $videosService;
+
+	public function __construct(
+		AppDataService $appDataService,
+		PhotosService $photosService,
+		VideosService $videosService
+	) {
 		$this->appDataService = $appDataService;
+		$this->photosService = $photosService;
+		$this->videosService = $videosService;
 	}
 
 	public function deleteAppLogs() {
@@ -44,5 +56,37 @@ class CleanupService {
 			&& $appDataLogsFolder['folder'] instanceof ISimpleFolder) {
 			$appDataLogsFolder['folder']->delete();
 		}
+	}
+
+	/**
+	 * Clean up Collector job (remove deleted photos&vidoes hashes from database)
+	 *
+	 * @return array Collector cleanup job results
+	 */
+	public function cleanup(): array {
+		$this->logger->info('[' . self::class . '] cleanup job executed.');
+		$photos = $this->photosService->getAllFileids();
+		$photosDeleted = 0;
+		foreach ($photos as $photo) {
+			if ($this->photosService->canBeDeleted($photo->getFileid())) {
+				$this->photosService->delete($photo);
+				$photosDeleted += 1;
+			}
+		}
+		$videosDeleted = 0;
+		$videos = $this->videosService->getAllFileids();
+		foreach ($videos as $video) {
+			if ($this->videosService->canBeDeleted($video->getFileid())) {
+				$this->videosService->delete($video);
+				$videosDeleted += 1;
+			}
+		}
+		$result = [
+			'photosDeleted' => $photosDeleted,
+			'videosDeleted' => $videosDeleted
+		];
+		$this->logger->info('[' . self::class . '] cleanup job finished. Results: '
+			. json_encode($result));
+		return $result;
 	}
 }

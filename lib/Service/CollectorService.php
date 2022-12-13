@@ -40,6 +40,9 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\IPreview;
 
+use OCA\Cloud_Py_API\Service\PythonService;
+use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
+use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Db\CollectorTask;
@@ -67,8 +70,8 @@ class CollectorService {
 	/** @var PythonService */
 	private $pythonService;
 
-	/** @var UtilsService */
-	private $utils;
+	/** @var CPAUtilsService */
+	private $cpaUtils;
 
 	/** @var PhotosService */
 	private $photosService;
@@ -108,7 +111,7 @@ class CollectorService {
 		VideosService $videosService,
 		IJobList $jobList,
 		IPreview $previewManager,
-		UtilsService $utils
+		CPAUtilsService $cpaUtils
 	) {
 		if ($userId !== null) {
 			$this->userId = $userId;
@@ -117,7 +120,7 @@ class CollectorService {
 		$this->settingsMapper = $settingsMapper;
 		$this->tasksMapper = $tasksMapper;
 		$this->tasksDetailsMapper = $tasksDetailsMapper;
-		$this->utils = $utils;
+		$this->cpaUtils = $cpaUtils;
 		$this->pythonService = $pythonService;
 		$this->logger = $logger;
 		$this->photosService = $photosService;
@@ -147,15 +150,21 @@ class CollectorService {
 				} else {
 					$scriptName = 'python/main.py';
 				}
-				$this->pythonService->run($scriptName, [
-					'-t' => $createdTask->getId()
-				], true, [
-					'PHP_PATH' => $this->utils->getPhpInterpreter(),
-					'SERVER_ROOT' => !$this->utils->isSnapEnv() ? \OC::$SERVERROOT : '',
-					'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
-					'LOGLEVEL' => 'DEBUG',
-					'CPA_LOGLEVEL' => 'DEBUG'
-				], true);
+				if ($this->cpaUtils->isFunctionEnabled('exec')) {
+					$this->pythonService->run(Application::APP_ID, $scriptName, [
+						'-t' => $createdTask->getId()
+					], true, [
+						'PHP_PATH' => $this->cpaUtils->getPhpInterpreter(),
+						'SERVER_ROOT' => !$this->cpaUtils->isSnapEnv() ? \OC::$SERVERROOT : '',
+						'IS_SNAP_ENV' => $this->cpaUtils->isSnapEnv(),
+						'USER_ID' => $this->userId,
+						'LOGLEVEL' => $this->cpaUtils->getNCLogLevel(),
+						'CPA_LOGLEVEL' => $this->cpaUtils->getCpaLogLevel()
+					], true);
+				} else {
+					$this->logger->error('[' . self::class . '] Task run error: PHP `exec` function is not available');
+					return ['success' => false, 'php_exec_not_enabled' => true];
+				}
 			} else {
 				return ['success' => $createdTask !== null, 'empty' => true];
 			}
@@ -236,13 +245,20 @@ class CollectorService {
 				&& count($processesRunning) < (int)$pyLimitSetting->getValue() && !$empty) {
 				$collectorTask = $this->tasksMapper->update($collectorTask);
 				$this->deleteTaskDetails($taskId);
-				$this->pythonService->run($scriptName, ['-t' => $taskId], true, [
-					'PHP_PATH' => $this->utils->getPhpInterpreter(),
-					'SERVER_ROOT' => !$this->utils->isSnapEnv() ? \OC::$SERVERROOT : '',
-					'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
-					'LOGLEVEL' => 'DEBUG',
-					'CPA_LOGLEVEL' => 'DEBUG'
-				], json_decode($pythonBinary->getValue()));
+				if ($this->cpaUtils->isFunctionEnabled('exec')) {
+					$this->pythonService->run(Application::APP_ID,
+						$scriptName, ['-t' => $taskId], true, [
+							'PHP_PATH' => $this->cpaUtils->getPhpInterpreter(),
+							'SERVER_ROOT' => !$this->cpaUtils->isSnapEnv() ? \OC::$SERVERROOT : '',
+							'IS_SNAP_ENV' => $this->cpaUtils->isSnapEnv(),
+							'USER_ID' => $this->userId,
+							'LOGLEVEL' => $this->cpaUtils->getNCLogLevel(),
+							'CPA_LOGLEVEL' => $this->cpaUtils->getCpaLogLevel()
+						], json_decode($pythonBinary->getValue()));
+				} else {
+					$this->logger->error('[' . self::class . '] Task run error: PHP `exec` function is not available');
+					return ['success' => false, 'php_exec_not_enabled' => true];
+				}
 			} elseif ($empty) {
 				return ['success' => false, 'empty' => $empty];
 			} else {
@@ -253,13 +269,20 @@ class CollectorService {
 		} else {
 			$this->tasksMapper->update($collectorTask);
 			$this->deleteTaskDetails($taskId);
-			$this->pythonService->run($scriptName, ['-t' => $taskId], true, [
-				'PHP_PATH' => $this->utils->getPhpInterpreter(),
-				'SERVER_ROOT' => !$this->utils->isSnapEnv() ? \OC::$SERVERROOT : '',
-				'IS_SNAP_ENV' => $this->utils->isSnapEnv(),
-				'LOGLEVEL' => 'DEBUG', // Temporary for beta
-				'CPA_LOGLEVEL' => 'DEBUG' // Temporary for beta
-			], json_decode($pythonBinary->getValue()));
+			if ($this->cpaUtils->isFunctionEnabled('exec')) {
+				$this->pythonService->run(Application::APP_ID,
+					$scriptName, ['-t' => $taskId], true, [
+						'PHP_PATH' => $this->cpaUtils->getPhpInterpreter(),
+						'SERVER_ROOT' => !$this->cpaUtils->isSnapEnv() ? \OC::$SERVERROOT : '',
+						'IS_SNAP_ENV' => $this->cpaUtils->isSnapEnv(),
+						'USER_ID' => $this->userId,
+						'LOGLEVEL' => $this->cpaUtils->getNCLogLevel(),
+						'CPA_LOGLEVEL' => $this->cpaUtils->getCpaLogLevel()
+					], json_decode($pythonBinary->getValue()));
+			} else {
+				$this->logger->error('[' . self::class . '] Task run error: PHP `exec` function is not available');
+				return ['success' => false, 'php_exec_not_enabled' => true];
+			}
 		}
 
 		return [
@@ -422,38 +445,6 @@ class CollectorService {
 			]);
 		}
 		return $createdTask;
-	}
-
-	/**
-	 * Clean up Collector job (remove deleted photos&vidoes hashes from database)
-	 *
-	 * @return array Collector cleanup job results
-	 */
-	public function cleanup(): array {
-		$this->logger->info('[' . self::class . '] cleanup job executed.');
-		$photos = $this->photosService->getAllFileids();
-		$photosDeleted = 0;
-		foreach ($photos as $photo) {
-			if ($this->photosService->canBeDeleted($photo->getFileid())) {
-				$this->photosService->delete($photo);
-				$photosDeleted += 1;
-			}
-		}
-		$videosDeleted = 0;
-		$videos = $this->videosService->getAllFileids();
-		foreach ($videos as $video) {
-			if ($this->videosService->canBeDeleted($video->getFileid())) {
-				$this->videosService->delete($video);
-				$videosDeleted += 1;
-			}
-		}
-		$result = [
-			'photosDeleted' => $photosDeleted,
-			'videosDeleted' => $videosDeleted
-		];
-		$this->logger->info('[' . self::class . '] cleanup job finished. Results: '
-			. json_encode($result));
-		return $result;
 	}
 
 	/**

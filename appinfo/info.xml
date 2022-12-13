@@ -18,7 +18,7 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
 	]]>
 	</description>
-	<version>0.3.0-beta.1</version>
+	<version>0.3.0-beta.2</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
@@ -53,9 +53,9 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 		<uninstall>
 			<step>OCA\MediaDC\Migration\AppDataCleanupStep</step>
 		</uninstall>
-		<pre-migration>
+		<post-migration>
 			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
-		</pre-migration>
+		</post-migration>
 	</repair-steps>
 	<commands>
 		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>

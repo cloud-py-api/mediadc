@@ -70,11 +70,11 @@
 			<span class="owner">{{ file.fileowner }}</span>
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<div class="actions" style="display: flex;">
-				<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Select file')"
+				<NcCheckboxRadioSwitch v-tooltip="{ content: t('mediadc', 'Select file'), placement: 'top' }"
 					class="mediadc-checkbox-only"
 					:checked.sync="checked"
 					style="margin: 0 14px 0 10px;" />
-				<NcButton v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top'}"
+				<NcButton v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top' }"
 					type="tertiary"
 					:aria-label="t('mediadc', 'Delete file')"
 					@click="deleteGroupFile(file)">
@@ -82,7 +82,7 @@
 						<span class="icon-delete" />
 					</template>
 				</NcButton>
-				<NcButton v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top'}"
+				<NcButton v-tooltip="{ content: t('mediadc', 'Remove file (mark resolved)'), placement: 'top' }"
 					type="tertiary"
 					:aria-label="t('mediadc', 'Remove file (mark resolved)')"
 					@click="removeGroupFile(file)">
@@ -103,6 +103,8 @@ import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import { mapGetters } from 'vuex'

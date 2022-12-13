@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
+import { getFilePickerBuilder, showWarning, showSuccess, showError } from '@nextcloud/dialogs'
 import { mapActions, mapGetters } from 'vuex'
 
 import { requestFileInfo, getFileId } from '../../utils/files.js'
@@ -339,6 +339,8 @@ export default {
 					showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
 				} else if (res.data.empty) {
 					showWarning(this.n('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', this.targetDirectoriesIds.length))
+				} else if (res.data.php_exec_not_enabled) {
+					showError(t('mediadc', 'Task run error: PHP `exec` function is not enabled'))
 				} else {
 					showWarning(t('medaidc', 'Some error occurred while running Collector Task. Try again.'))
 				}

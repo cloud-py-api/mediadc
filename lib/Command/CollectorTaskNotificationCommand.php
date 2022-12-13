@@ -28,9 +28,6 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Command;
 
-use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Db\CollectorTask;
-use OCA\MediaDC\Service\CollectorService;
 use OCP\IURLGenerator;
 use OCP\Notification\IManager;
 use Symfony\Component\Console\Command\Command;
@@ -38,24 +35,34 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Db\CollectorTask;
+use OCA\MediaDC\Db\CollectorTaskDetailMapper;
+use OCA\MediaDC\Db\CollectorTaskMapper;
+
 class CollectorTaskNotificationCommand extends Command {
 	public const ARGUMENT_TASK_ID = 'task_id';
 	public const ARGUMENT_TASK_STATUS = 'status';
 
-	/** @var CollectorService */
-	private $collectorService;
+	/** @var CollectorTaskMapper */
+	private $tasksMapper;
+
+	/** @var CollectorTaskDetailMapper */
+	private $tasksDetailsMapper;
 
 	/** @var IManager */
 	private $notificationManager;
 
 	public function __construct(
-		CollectorService $collectorService,
+		CollectorTaskMapper $tasksMapper,
+		CollectorTaskDetailMapper $tasksDetailsMapper,
 		IManager $notificationManager,
 		IURLGenerator $urlGenerator
 	) {
 		parent::__construct();
 
-		$this->collectorService = $collectorService;
+		$this->tasksMapper = $tasksMapper;
+		$this->tasksDetailsMapper = $tasksDetailsMapper;
 		$this->notificationManager = $notificationManager;
 		$this->url = $urlGenerator;
 	}
@@ -71,8 +78,20 @@ class CollectorTaskNotificationCommand extends Command {
 		$taskId = $input->getArgument(self::ARGUMENT_TASK_ID);
 		$status = $input->getArgument(self::ARGUMENT_TASK_STATUS);
 		/** @var CollectorTask */
-		$collectorTask = $this->collectorService->getCollectorTask(intval($taskId));
-		$detailGroups = $this->collectorService->details(intval($taskId));
+		$collectorTask = $this->tasksMapper->find(intval($taskId));
+		$detailGroups = array_map(function ($d) {
+			$d['files'] = explode(',', $d['files']);
+			$d['filessizes'] = explode(',', $d['filessizes']);
+			for ($i = 0; $i < count($d['files']); $i++) {
+				$fileid = $d['files'][$i];
+				$d['files'][$i] = [
+					'fileid' => intval($fileid),
+					'filesize' => intval($d['filessizes'][$i])
+				];
+			}
+			unset($d['filessizes']);
+			return $d;
+		}, $this->tasksDetailsMapper->findAllByIdGroupped($taskId));
 		$duplicates = 0;
 		foreach ($detailGroups as $group) {
 			$duplicates += count($group['files']);

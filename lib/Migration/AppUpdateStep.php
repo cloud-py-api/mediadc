@@ -31,27 +31,30 @@ namespace OCA\MediaDC\Migration;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
+use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
+
 use OCA\MediaDC\Migration\data\AppInitialData;
+use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\AppDataService;
 use OCA\MediaDC\Service\UtilsService;
 
 class AppUpdateStep implements IRepairStep {
-	/** @var AppInitialData */
-	private $appInitialData;
-
 	/** @var UtilsService */
 	private $utils;
+
+	/** @var CPAUtilsService */
+	private $cpaUtils;
 
 	/** @var AppDataService */
 	private $appDataService;
 
 	public function __construct(
-		AppInitialData $appInitialData,
 		UtilsService $utils,
+		CPAUtilsService $cpaUtils,
 		AppDataService $appDataService
 	) {
-		$this->appInitialData = $appInitialData;
 		$this->utils = $utils;
+		$this->cpaUtils = $cpaUtils;
 		$this->appDataService = $appDataService;
 	}
 
@@ -62,11 +65,17 @@ class AppUpdateStep implements IRepairStep {
 	public function run(IOutput $output) {
 		$output->startProgress(2);
 		$output->advance(1, 'Sync settings changes');
-		$this->utils->checkForSettingsUpdates($this->appInitialData->getAppInitialData());
-		$output->advance(2, 'Update binaries');
+		$this->utils->checkForSettingsUpdates(AppInitialData::$APP_INITIAL_DATA);
+		$output->advance(1, 'Update binaries (downloading pre-compiled binaries for this release)');
+		$output->warning('This step may take some time');
 		$this->appDataService->createAppDataFolder('binaries');
 		$this->appDataService->createAppDataFolder('logs');
-		$this->appDataService->downloadPythonBinary(true);
+		$url = 'https://github.com/andrey18106/mediadc/releases/download/v'
+			. $this->appManager->getAppVersion(Application::APP_ID)
+			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
+		$this->cpaUtils->downloadPythonBinary(
+			$url, $this->appDataService->getAppDataFolder('binaries')
+		);
 		$output->finishProgress();
 	}
 }

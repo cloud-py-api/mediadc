@@ -294,6 +294,10 @@ export default {
 							showSuccess(this.t('mediadc', 'Task successfully restarted with previous settings!'))
 						} else if (res.data.limit) {
 							showWarning(this.t('mediadc', 'Running tasks limit exceed. Try again later.'))
+						} else if (res.data.empty) {
+							showWarning(this.n('mediadc', 'Target folder has no files or all of them excluded', 'Target folders have no files or all of them excluded', task.target_directory_ids.length))
+						} else if (res.data.php_exec_not_enabled) {
+							showError(t('mediadc', 'Task run error: PHP `exec` function is not enabled'))
 						} else {
 							showWarning(this.t('medaidc', 'Some error occurred while running Collector Task. Try again.'))
 						}

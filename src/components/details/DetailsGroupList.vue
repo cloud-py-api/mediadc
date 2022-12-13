@@ -50,16 +50,24 @@
 			<div v-if="checkedFiles.length > 0" class="batch-editing">
 				{{ n('mediadc', 'Batch actions for %n file', 'Batch actions for %n files', checkedFiles.length) }}
 				<NcActions placement="left" style="margin-left: 5px;">
-					<NcActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}" icon="icon-checkmark" @click="selectAllFiles">
+					<NcActionButton v-tooltip="{content: t('mediadc', 'Select all files in a group'), placement: 'left'}"
+						icon="icon-checkmark"
+						@click="selectAllFiles">
 						{{ checkedFiles.length === allFiles.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
 					</NcActionButton>
-					<NcActionButton v-if="detail.files.length > groupItemsPerPage" icon="icon-checkmark" @click="selectAllFilesOnPage">
+					<NcActionButton v-if="detail.files.length > groupItemsPerPage"
+						icon="icon-checkmark"
+						@click="selectAllFilesOnPage">
 						{{ checkedFilesIntersect.length === files.length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
 					</NcActionButton>
-					<NcActionButton v-tooltip="{content: t('mediadc', 'Mark as resolved without deleting'), placement: 'left'}" icon="icon-close" @click="removeCheckedFiles">
+					<NcActionButton v-tooltip="{content: t('mediadc', 'Mark as resolved without deleting'), placement: 'left'}"
+						icon="icon-close"
+						@click="removeCheckedFiles">
 						{{ n('mediadc', 'Remove file', 'Remove files', checkedFiles.length) }}
 					</NcActionButton>
-					<NcActionButton v-tooltip="{content: n('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}" icon="icon-delete" @click="deleteCheckedFiles">
+					<NcActionButton v-tooltip="{content: n('mediadc', 'Delete selected file', 'Delete selected files', checkedFiles.length), placement: 'left'}"
+						icon="icon-delete"
+						@click="deleteCheckedFiles">
 						{{ n('mediadc', 'Delete file', 'Delete files', checkedFiles.length) }}
 					</NcActionButton>
 				</NcActions>

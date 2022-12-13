@@ -29,11 +29,11 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Service;
 
 use RuntimeException;
-use OCP\Files\IAppData;
 use OCP\App\IAppManager;
+use OCP\Files\IAppData;
+use OCP\IConfig;
 use OCP\Files\NotPermittedException;
 use OCP\Files\NotFoundException;
-use OCP\IConfig;
 
 use OCA\MediaDC\AppInfo\Application;
 
@@ -41,34 +41,34 @@ class AppDataService {
 	/** @var IAppData */
 	private $appData;
 
-	/** @var IAppManager */
-	private $appManager;
-
 	/** @var IConfig */
 	private $config;
 
-	/** @var UtilsService */
-	private $utils;
+	/** @var string */
+	private $ncInstanceId;
 
-	/** @var PythonService */
-	private $pythonService;
+	/** @var string */
+	private $ncDataFolder;
 
 	public function __construct(
 		IAppData $appData,
 		IAppManager $appManager,
-		IConfig $config,
-		UtilsService $utils,
-		PythonService $pythonService
+		IConfig $config
 	) {
 		$this->appData = $appData;
 		$this->appManager = $appManager;
 		$this->config = $config;
-		$this->utils = $utils;
-		$this->pythonService = $pythonService;
 		$this->ncInstanceId = $this->config->getSystemValue('instanceid');
 		$this->ncDataFolder = $this->config->getSystemValue('datadirectory');
 	}
 
+	/**
+	 * Create appdata folder if not exists
+	 *
+	 * @param string $folderName target appdata folder
+	 *
+	 * @return bool `false` on permition error
+	 */
 	public function createAppDataFolder(string $folderName): bool {
 		$appDataFolder = $this->ncDataFolder . '/appdata_' . $this->ncInstanceId . '/'
 			. Application::APP_ID . '/' . $folderName;
@@ -86,7 +86,7 @@ class AppDataService {
 	/**
 	 * Get app's appdata folder
 	 *
-	 * @param string $folderName
+	 * @param string $folderName target appdata folder
 	 *
 	 * @return array
 	 */
@@ -100,102 +100,9 @@ class AppDataService {
 				'folder' => $folder,
 				'folderName' => $folder->getName(),
 				'path' => $appDataFolderPath,
-				'ls' => json_encode($folder->getDirectoryListing()),
 			];
 		} catch (NotFoundException | RuntimeException $e) {
 			return ['success' => file_exists($appDataFolderPath), 'error' => $e->getMessage()];
 		}
-	}
-
-	public function downloadPythonBinary(bool $update = false) {
-		$url = 'https://github.com/andrey18106/mediadc/releases/download/v' . 
-		$this->appManager->getAppVersion(Application::APP_ID)
-		. ' /cpa_' . $this->getBinaryName() . '.gz';
-		$binariesFolder = $this->getAppDataFolder('binaries');
-		if (isset($binariesFolder['success']) && $binariesFolder['success']) {
-			$dir = $this->getAppDataFolder('binaries')['path'] . '/';
-		}
-		$file_name = 'main.gz';
-		$save_file_loc = $dir . $file_name;
-		if (!file_exists($dir . str_replace('.gz', '', $file_name)) && $update) {
-			$cURL = curl_init($url);
-			$fp = fopen($save_file_loc, 'wb');
-			if ($fp) {
-				curl_setopt_array($cURL, [
-					CURLOPT_RETURNTRANSFER => true,
-					CURLOPT_FILE => $fp,
-					CURLOPT_FOLLOWLOCATION => true,
-				]);
-				curl_exec($cURL);
-				curl_close($cURL);
-				fclose($fp);
-				$ungzipped = $this->unGz($file_name);
-				$chmodx = $this->addChmodX($file_name);
-				$test = $this->testDownloadedBinary($file_name);
-				unlink($save_file_loc);
-				return [
-					'downloaded' => file_exists($save_file_loc),
-					'ungzipped' => $ungzipped,
-					'chmodx' => $chmodx,
-					'test' => $test
-				];
-			}
-		}
-		if (!file_exists($dir . str_replace('.gz', '', $file_name))) {
-			return ['success' => false, 'file' => $save_file_loc];
-		} else {
-			return [
-				'success' => true,
-				'downloaded' => true,
-				'ungzipped' => true,
-				'chmodx' => true,
-			];
-		}
-	}
-
-	public function unGz(string $file_name): bool {
-		$out_file_name = $this->getAppDataFolder('binaries')['path'] . '/main';
-		$buffer_size = 4096;
-		$file_name = $this->getAppDataFolder('binaries')['path'] . '/' . $file_name;
-		$gz_file = gzopen($file_name, 'rb');
-		$out_file = fopen($out_file_name, 'wb');
-		while (!gzeof($gz_file)) {
-			fwrite($out_file, gzread($gz_file, $buffer_size));
-		}
-		fclose($out_file);
-		gzclose($gz_file);
-		return file_exists($out_file_name);
-	}
-
-	public function addChmodX(string $file_name): bool {
-		$file_name = $this->getAppDataFolder('binaries')['path'] . '/' .
-			str_replace('.gz', '', $file_name);
-		if (file_exists($file_name)) {
-			exec('chmod +x ' . $file_name, $output, $result_code);
-			return $result_code === 0;
-		}
-		return false;
-	}
-
-	public function testDownloadedBinary(string $file_name): array {
-		$result = $this->pythonService->run('binaries/' . str_replace('.gz', '', $file_name), [
-			'--info' => ''
-		], false, [
-			'PHP_PATH' => $this->utils->getPhpInterpreter(),
-			'SERVER_ROOT' => \OC::$SERVERROOT,
-		], true);
-		return [
-			'success' => $result['result_code'] === 0,
-			'result' => $result,
-		];
-	}
-
-	public function getBinaryName(): string {
-		if (!$this->utils->isMusliLinux()) {
-			$binaryName = 'manylinux_' . $this->utils->getOsArch();
-		} else {
-			$binaryName = 'musllinux_' . $this->utils->getOsArch();
-		}
-		return $binaryName;
 	}
 }

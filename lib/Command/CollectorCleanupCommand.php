@@ -29,19 +29,19 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Command;
 
 use Exception;
-use OCA\MediaDC\Service\CollectorService;
+use OCA\MediaDC\Service\CleanupService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CollectorCleanupCommand extends Command {
-	/** @var CollectorService */
-	private $collectorService;
+	/** @var CleanupService */
+	private $cleanupService;
 
-	public function __construct(CollectorService $collectorService) {
+	public function __construct(CleanupService $cleanupService) {
 		parent::__construct();
 
-		$this->collectorService = $collectorService;
+		$this->cleanupService = $cleanupService;
 	}
 
 	protected function configure(): void {
@@ -51,7 +51,7 @@ class CollectorCleanupCommand extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		try {
-			$result = $this->collectorService->cleanup();
+			$result = $this->cleanupService->cleanup();
 			$output->writeln("Collector cleanup result:");
 			$output->writeln("Deleted photos: " . $result['photosDeleted']);
 			$output->writeln("Deleted videos: " . $result['videosDeleted']);
