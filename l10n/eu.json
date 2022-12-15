@@ -34,7 +34,6 @@
     "Select file" : "Hautatu fitxategia",
     "_Delete file_::_Delete files_" : ["Ezabatu fitxategiaa","Ezabatu fitxategiak"],
     "Remove file (mark resolved)" : "Kendu fitxategia (marka ebatzita)",
-    "Are you sure you want delete this file?" : "Ziur fitxategi hau ezabatu nahi duzula?",
     "Confirm file deletion" : "Berretsi fitxategia ezabatzea",
     "Group successfully removed (1 file left)" : "Taldea behar bezala kendu da (fitxategi bat geratzen da)",
     "Wait until file has been loaded before deleting it" : "Itxaron fitxategia kargatu arte ezabatu aurretik",

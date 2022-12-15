@@ -6,7 +6,6 @@
     "Settings" : "Ρυθμίσεις",
     "Select file" : "Επιλέξτε Αρχείο",
     "_Delete file_::_Delete files_" : ["Διαγραφή αρχείου","Διαγραφή αρχείων"],
-    "Are you sure you want delete this file?" : "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το αρχείο;",
     "Confirm file deletion" : "Επιβεβαίωση διαγραφής αρχείου",
     "A server error occurred" : "Παρουσιάστηκε σφάλμα διακομιστή",
     "Deselect all" : "Αναίρεση επιλογής όλων",

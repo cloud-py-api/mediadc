@@ -31,7 +31,6 @@ OC.L10N.register(
     "Select file" : "Selecione o arquivo",
     "_Delete file_::_Delete files_" : ["Deletar arquivos","Deletar arquivos","Deletar arquivo"],
     "Remove file (mark resolved)" : "Remover arquivo (marcar resolvido)",
-    "Are you sure you want delete this file?" : "Você tem certeza que quer remover este arquivo?",
     "Confirm file deletion" : "Confirme remoção do arquivo",
     "Group successfully removed (1 file left)" : "Grupo removido com sucesso (1 arquivo restante)",
     "Wait until file has been loaded before deleting it" : "Aguarde até que o arquivo seja carregado antes de excluí-lo",

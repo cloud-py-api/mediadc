@@ -36,7 +36,7 @@ OC.L10N.register(
     "Select file" : "Dosyayı seç",
     "_Delete file_::_Delete files_" : ["Dosyayı sil","Dosyaları sil"],
     "Remove file (mark resolved)" : "Dosyayı kaldır (çözümlenmiş olarak işaretle)",
-    "Are you sure you want delete this file?" : "Bu dosyayı silmek istediğinize emin misiniz?",
+    "Are you sure you want to delete this file?" : "Bu dosyayı silmek istediğinize emin misiniz?",
     "Confirm file deletion" : "Dosya silmeyi onayla",
     "Group successfully removed (1 file left)" : "Grup kaldırıldı (1 dosya kaldı)",
     "Wait until file has been loaded before deleting it" : "Dosyayı silmeden önce yüklenmesini bekleyin",
@@ -105,8 +105,9 @@ OC.L10N.register(
     "Toggle resolved list media type" : "Çözümlenmişler listesi ortam türünü değiştir",
     "Toggle list view (list or grid)" : "Liste görünümünü değiştir (liste ya da tablo)",
     "Remove file from resolved list" : "Dosyayı çözümlenmişler listesinden kaldır",
-    "Create a new task or work on existing one and resolve some!" : "Yeni bir görev ekleyin ya da var olan bir görev üzerinde çalışın ve bazılarını çözümleyin!",
+    "Create a new task or work on existing ones and resolve some!" : "Yeni bir görev ekleyin ya da var olan görevler üzerinde çalışarak bazılarını çözümleyin!",
     "Create a new one!" : "Yeni ekleyin!",
+    "Create a new task or work on existing one and resolve some!" : "Yeni bir görev ekleyin ya da var olan bir görev üzerinde çalışın ve bazılarını çözümleyin!",
     "Change to grid view" : "Tablo görünümüne geç",
     "Change to list view" : "Liste görünümüne geç",
     "No resolved ${selectedType} yet" : "Henüz çözümlenmiş bir ${selectedType} yok",
@@ -268,8 +269,6 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC çözümlenmiş dosyalar",
     "An error occurred while deleting task" : "Görev silinirken bir sorun çıktı",
     "Task successfully started with duplicated settings!" : "Görev çift ayarları ile başlatıldı!",
-    "_Test text_::_Test texts_" : ["Deneme metni","Deneme metinleri"],
-    "Are you sure you want to delete this file?" : "Bu dosyayı silmek istediğinize emin misiniz?",
-    "Create a new task or work on existing ones and resolve some!" : "Yeni bir görev ekleyin ya da var olan görevler üzerinde çalışarak bazılarını çözümleyin!"
+    "_Test text_::_Test texts_" : ["Deneme metni","Deneme metinleri"]
 },
 "nplurals=2; plural=(n > 1);");

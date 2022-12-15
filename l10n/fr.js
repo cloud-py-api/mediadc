@@ -9,6 +9,7 @@ OC.L10N.register(
     "Settings" : "Paramètres",
     "Select file" : "Sélectionner un fichier",
     "_Delete file_::_Delete files_" : ["Effacer le fichier ","Effacer les fichiers","Effacer les fichiers"],
+    "Are you sure you want to delete this file?" : "Êtes-vous certain de vouloir supprimer ce fichier ?",
     "Confirm file deletion" : "Confirmer la suppression du fichier",
     "Not enough permissions to delete the file" : "Vous n'êtes pas autorisés à supprimer le fichier",
     "An error occurred while deleting the file" : "Une erreur est survenue lors de la suppression du fichier",
@@ -93,7 +94,6 @@ OC.L10N.register(
     "Update" : "Mise à jour",
     "Installation successfully finished" : "Installation terminée avec succès",
     "Photos&Videos" : "Photos&Vidéos",
-    "_Test text_::_Test texts_" : ["Texte de test","Textes de test","Textes de test"],
-    "Are you sure you want to delete this file?" : "Êtes-vous certain de vouloir supprimer ce fichier ?"
+    "_Test text_::_Test texts_" : ["Texte de test","Textes de test","Textes de test"]
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
