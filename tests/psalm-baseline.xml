@@ -18,9 +18,6 @@
     </MissingDependency>
   </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
-    <InvalidArgument occurrences="1">
-      <code>$taskId</code>
-    </InvalidArgument>
     <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;url</code>
     </UndefinedThisPropertyAssignment>
@@ -40,9 +37,6 @@
     <InvalidReturnType occurrences="1">
       <code>JSONResponse</code>
     </InvalidReturnType>
-    <UndefinedMethod occurrences="1">
-      <code>getSystemInfo</code>
-    </UndefinedMethod>
   </file>
   <file src="lib/Dashboard/RecentTasksWidget.php">
     <UndefinedThisPropertyAssignment occurrences="1">

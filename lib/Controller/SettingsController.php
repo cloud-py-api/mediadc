@@ -33,10 +33,11 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 
+use OCA\Cloud_Py_API\Service\UtilsService;
+
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\PhotosService;
 use OCA\MediaDC\Service\SettingsService;
-use OCA\MediaDC\Service\UtilsService;
 use OCA\MediaDC\Service\VideosService;
 
 class SettingsController extends Controller {
@@ -50,21 +51,21 @@ class SettingsController extends Controller {
 	private $videosService;
 
 	/** @var UtilsService */
-	private $utils;
+	private $cpaUtils;
 
 	public function __construct(
 		IRequest $request,
 		SettingsService $service,
 		PhotosService $photosService,
 		VideosService $videosService,
-		UtilsService $utils
+		UtilsService $cpaUtils
 	) {
 		parent::__construct(Application::APP_ID, $request);
 
 		$this->service = $service;
 		$this->photosService = $photosService;
 		$this->videosService = $videosService;
-		$this->utils = $utils;
+		$this->cpaUtils = $cpaUtils;
 	}
 
 	/**
@@ -145,6 +146,6 @@ class SettingsController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function systemInfo(): JSONResponse {
-		return new JSONResponse($this->utils->getSystemInfo(), Http::STATUS_OK);
+		return new JSONResponse($this->cpaUtils->getSystemInfo(Application::APP_ID), Http::STATUS_OK);
 	}
 }
