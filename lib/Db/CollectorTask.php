@@ -31,7 +31,6 @@ namespace OCA\MediaDC\Db;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
-
 /**
  * Class CollectorTask
  *
@@ -68,9 +67,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setPyPid(int $pyPid)
  * @method void setErrors(string $errors)
  */
-class CollectorTask extends Entity implements JsonSerializable
-{
-
+class CollectorTask extends Entity implements JsonSerializable {
 	protected $type;
 	protected $owner;
 	protected $targetDirectoryIds;
@@ -88,8 +85,7 @@ class CollectorTask extends Entity implements JsonSerializable
 	protected $errors;
 
 
-	public function __construct(array $params = [])
-	{
+	public function __construct(array $params = []) {
 		if (isset($params['id'])) {
 			$this->setId($params['id']);
 		}
@@ -140,8 +136,7 @@ class CollectorTask extends Entity implements JsonSerializable
 		}
 	}
 
-	public function jsonSerialize(): array
-	{
+	public function jsonSerialize(): array {
 		return [
 			'id' => $this->getId(),
 			'type' => $this->getType(),

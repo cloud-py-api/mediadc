@@ -5,25 +5,22 @@
       <code>\OCP\Server</code>
     </UndefinedClass>
   </file>
-  <file src="lib/Command/CollectorCleanupCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
+  <file src="lib/BackgroundJob/CollectorCleanupJob.php">
+    <UndefinedMethod occurrences="1">
+      <code>cleanup</code>
+    </UndefinedMethod>
   </file>
   <file src="lib/Command/CollectorFileContentsCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
-  </file>
-  <file src="lib/Command/CollectorPopulateTaskCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
+    <MissingDependency occurrences="3">
+      <code>$this-&gt;rootFolder</code>
+      <code>IRootFolder</code>
+      <code>IRootFolder</code>
+    </MissingDependency>
   </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
-    <UndefinedClass occurrences="1">
-      <code>Command</code>
-    </UndefinedClass>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;url</code>
+    </UndefinedThisPropertyAssignment>
   </file>
   <file src="lib/Controller/CollectorController.php">
     <InvalidArgument occurrences="1">
@@ -40,6 +37,13 @@
     <InvalidReturnType occurrences="1">
       <code>JSONResponse</code>
     </InvalidReturnType>
+    <UndefinedClass occurrences="1">
+      <code>UtilsService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="2">
+      <code>$this-&gt;cpaUtils</code>
+      <code>UtilsService</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Dashboard/RecentTasksWidget.php">
     <UndefinedThisPropertyAssignment occurrences="1">
@@ -53,6 +57,29 @@
     <UndefinedDocblockClass occurrences="1">
       <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
     </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Migration/AppDataInitializationStep.php">
+    <UndefinedClass occurrences="1">
+      <code>CPAUtilsService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>CPAUtilsService</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Migration/AppUpdateStep.php">
+    <UndefinedClass occurrences="1">
+      <code>CPAUtilsService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>CPAUtilsService</code>
+    </UndefinedDocblockClass>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;appManager</code>
+    </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
     <ImplementedParamTypeMismatch occurrences="1">
@@ -76,6 +103,16 @@
       <code>Closure</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="lib/Service/AppDataService.php">
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;appManager</code>
+    </UndefinedThisPropertyAssignment>
+  </file>
+  <file src="lib/Service/CleanupService.php">
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;logger</code>
+    </UndefinedThisPropertyFetch>
+  </file>
   <file src="lib/Service/CollectorService.php">
     <InvalidReturnStatement occurrences="1">
       <code>$this-&gt;tasksMapper-&gt;find($taskId)</code>
@@ -97,10 +134,37 @@
     <TypeDoesNotContainType occurrences="1">
       <code>count($params) === 0</code>
     </TypeDoesNotContainType>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="4">
+      <code>CPAUtilsService</code>
+      <code>PythonService</code>
       <code>SharedStorage</code>
       <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
     </UndefinedClass>
+    <UndefinedDocblockClass occurrences="23">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;pythonService</code>
+      <code>$this-&gt;pythonService</code>
+      <code>$this-&gt;pythonService</code>
+      <code>CPAUtilsService</code>
+      <code>PythonService</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/PhotosService.php">
     <MissingDependency occurrences="1">
@@ -117,17 +181,6 @@
     <MismatchingDocblockReturnType occurrences="1">
       <code>\OCA\MediaDC\Db\Setting|array</code>
     </MismatchingDocblockReturnType>
-  </file>
-  <file src="lib/Service/UtilsService.php">
-    <UndefinedClass occurrences="2">
-      <code>?DatabaseStatistics</code>
-      <code>\OCP\Server</code>
-    </UndefinedClass>
-    <UndefinedDocblockClass occurrences="3">
-      <code>$ini</code>
-      <code>$this-&gt;databaseStatistics</code>
-      <code>?DatabaseStatistics</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/VideosService.php">
     <MissingDependency occurrences="1">

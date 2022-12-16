@@ -15,10 +15,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: generate-binaries-2.yml
+          workflow_conclusion: ""
+
       - name: Get release info
         id: get_release_info
         run: |
           APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
+          IS_NIGHTLY=$(if [[ $APP_VERSION == *"beta"* ]]; then echo "true"; else echo "false"; fi)
           echo "::set-output name=version::v${APP_VERSION}"
           echo "::set-output name=tag::v${APP_VERSION}"
           CHANGELOG=$(grep -oPz "(?s)##\s\[$APP_VERSION.+?(?=##\s\[|$)" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d')
@@ -30,11 +38,12 @@ jobs:
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          echo "IS_NIGHTLY=$IS_NIGHTLY" >> $GITHUB_ENV
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
 
       - name: Build
         run: make
@@ -47,20 +56,60 @@ jobs:
       - name: Package app
         run: krankerl package
 
-      - uses: actions/upload-artifact@v2
+      - name: Get nextcloud-min-version from appinfo
+        id: appinfo
+        uses: skjnldsv/xpath-action@master
         with:
-          name: tarball
-          path: build/artifacts/${{ env.APP_NAME }}.tar.gz
-          if-no-files-found: error
+          filename: ${{ env.APP_NAME }}/appinfo/info.xml
+          expression: "//info//dependencies//nextcloud/@min-version"
+
+      - name: Cache nextcloud server
+        id: nextcloud_setup
+        uses: actions/cache@v3
+        with:
+          path: nextcloud-${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}.zip
+          key: ${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+
+      - name: Download nextcloud ${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
+        continue-on-error: true
+        id: server-checkout
+        run: |
+          NCVERSION=${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+          wget --quiet https://download.nextcloud.com/server/releases/latest-$NCVERSION.zip
+          unzip latest-$NCVERSION.zip
+
+      - name: Checkout server master fallback
+        uses: actions/checkout@v3
+        if: ${{ steps.server-checkout.outcome != 'success' }}
+        with:
+          repository: nextcloud/server
+          path: nextcloud
+
+      - name: Sign app
+        run: |
+          # Extracting release
+          cd ${{ env.APP_NAME }}/build/artifacts
+          tar -xvf ${{ env.APP_NAME }}.tar.gz
+          cd ../../../
+          # Setting up keys
+          echo "${{ secrets.APP_PRIVATE_KEY }}" > ${{ env.APP_NAME }}.key
+          echo "${{ secrets.APP_PUBLIC_CRT }}" > ${{ env.APP_NAME.key }}
+          # Signing
+          php nextcloud/occ integrity:sign-app --privateKey=../${{ env.APP_NAME }}.key --certificate=../${{ env.APP_NAME }}.crt --path=../${{ env.APP_NAME }}/build/artifacts/${{ env.APP_NAME }}
+          # Rebuilding archive
+          cd ${{ env.APP_NAME }}/build/artifacts
+          tar -zcvf ${{ env.APP_NAME }}.tar.gz ${{ env.APP_NAME }}
 
       - name: Create release draft
         uses: ncipollo/release-action@v1.10.0
         with:
           name: ${{ steps.get_release_info.outputs.version }}
           tag: ${{ steps.get_release_info.outputs.tag }}
+          prerelease: ${{ env.IS_NIGHTLY }}
           commit: ${{ github.ref }}
           draft: true
           body: ${{ env.CHANGELOG }}
-          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz"
+          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz,cp_binaries/*"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true

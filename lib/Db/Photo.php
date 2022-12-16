@@ -31,7 +31,6 @@ namespace OCA\MediaDC\Db;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
-
 /**
  * Class MediaDCPhoto
  *
@@ -46,9 +45,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setMtime(int $mtime)
  * @method void setSkipped(int $skipped)
  */
-class Photo extends Entity implements JsonSerializable
-{
-
+class Photo extends Entity implements JsonSerializable {
 	protected $fileid;
 	protected $hash;
 	protected $mtime;
@@ -57,8 +54,7 @@ class Photo extends Entity implements JsonSerializable
 	/**
 	 * @param array $params
 	 */
-	public function __construct(array $params = [])
-	{
+	public function __construct(array $params = []) {
 		if (isset($params['id'])) {
 			$this->setId($params['id']);
 		}
@@ -76,8 +72,7 @@ class Photo extends Entity implements JsonSerializable
 		}
 	}
 
-	public function jsonSerialize(): array
-	{
+	public function jsonSerialize(): array {
 		return [
 			'id' => $this->getId(),
 			'fileid' => $this->getFileid(),

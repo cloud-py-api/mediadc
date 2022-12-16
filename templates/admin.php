@@ -24,8 +24,8 @@
  *
  */
 
-script(\OCA\MediaDC\AppInfo\Application::APP_ID, 'mediadc-settings');
-style(\OCA\MediaDC\AppInfo\Application::APP_ID, 'style');
+\OCP\Util::addScript(\OCA\MediaDC\AppInfo\Application::APP_ID, 'mediadc-settings');
+\OCP\Util::addStyle(\OCA\MediaDC\AppInfo\Application::APP_ID, 'style');
 
 ?>
 

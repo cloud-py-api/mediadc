@@ -33,27 +33,22 @@ use OCP\Migration\IRepairStep;
 
 use OCA\MediaDC\Service\CleanupService;
 
-
-class AppDataCleanupStep implements IRepairStep
-{
-
+class AppDataCleanupStep implements IRepairStep {
 	/** @var CleanupService */
 	private $cleanupService;
 
-	public function __construct(CleanupService $cleanupService)
-	{
+	public function __construct(CleanupService $cleanupService) {
 		$this->cleanupService = $cleanupService;
 	}
 
-	public function getName(): string
-	{
+	public function getName(): string {
 		return "Cleanup MediaDC static tables data";
 	}
 
-	public function run(IOutput $output)
-	{
+	public function run(IOutput $output) {
 		$output->startProgress(1);
-		$this->cleanupService->dropAppTables();
+		// $this->cleanupService->dropAppTables();
+		$this->cleanupService->deleteAppLogs();
 		$output->advance(1);
 		$output->finishProgress();
 	}

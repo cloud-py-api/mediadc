@@ -39,9 +39,7 @@ use OCP\Util;
 
 use OCA\MediaDC\AppInfo\Application;
 
-class PageController extends Controller
-{
-
+class PageController extends Controller {
 	/** @var IEventDispatcher */
 	private $eventDispatcher;
 
@@ -61,8 +59,7 @@ class PageController extends Controller
 	 *
 	 * @return TemplateResponse
 	 */
-	public function index(): TemplateResponse
-	{
+	public function index(): TemplateResponse {
 		$this->eventDispatcher->dispatchTyped(new LoadSidebar());
 		$this->eventDispatcher->dispatchTyped(new LoadViewer());
 

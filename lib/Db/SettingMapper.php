@@ -35,25 +35,20 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
 
-
-class SettingMapper extends QBMapper
-{
-
-	public function __construct(IDBConnection $db)
-	{
+class SettingMapper extends QBMapper {
+	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_settings');
 	}
 
 	/**
 	 * @param int $id
-	 * 
+	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
-	 * 
+	 *
 	 * @return \OCA\MediaDC\Db\Setting
 	 */
-	public function find(int $id): Entity
-	{
+	public function find(int $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -63,8 +58,7 @@ class SettingMapper extends QBMapper
 		return $this->findEntity($qb);
 	}
 
-	public function findAll(int $limit = null, int $offset = null): array
-	{
+	public function findAll(int $limit = null, int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -75,14 +69,13 @@ class SettingMapper extends QBMapper
 
 	/**
 	 * @param string $name
-	 * 
+	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
-	 * 
+	 *
 	 * @return \OCA\MediaDC\Db\Setting
 	 */
-	public function findByName(string $name): Entity
-	{
+	public function findByName(string $name): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)

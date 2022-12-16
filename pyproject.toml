@@ -1,0 +1,54 @@
+[tool.coverage.run]
+cover_pylib = true
+include = ["*/python/*"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "DeprecationWarning",
+    "DEPRECATED"
+]
+
+[tool.black]
+line-length = 120
+target-versions = ["py39"]
+preview = true
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint]
+master.py-version = "3.9"
+master.unsafe-load-any-extension = "yes"
+design.max-attributes = 9
+design.max-locals = 16
+design.max-returns = 8
+design.max-args = 6
+basic.good-names = [
+    "a", "b", "c", "d", "e", "f", "i", "j", "k", "v", "h", "s",
+    "ex", "_", "fp", "im",
+]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "line-too-long",
+]
+
+[tool.mypy]
+ignore_missing_imports = false
+warn_no_return = true
+strict_optional = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

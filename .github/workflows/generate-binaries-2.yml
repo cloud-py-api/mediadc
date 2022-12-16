@@ -1,0 +1,12 @@
+name: Generate Binaries-2
+
+on:
+  workflow_run:
+    workflows: [ Generate Binaries-1 ]
+    types:
+      - completed
+
+jobs:
+  call-final-workflow-in-bundler-repo:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: cloud-py-api/py_bundler/.github/workflows/generate-binaries-final.yml@main

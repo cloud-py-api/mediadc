@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
  *
@@ -38,13 +41,6 @@ return [
 		['name' => 'settings#updateSetting', 'url' => '/api/v1/settings/name/{name}', 'verb' => 'PUT'],
 		['name' => 'settings#truncate', 'url' => '/api/v1/settings/truncate/{name}', 'verb' => 'POST'],
 		['name' => 'settings#systemInfo', 'url' => '/api/v1/system-info', 'verb' => 'GET'],
-
-		// Python API
-		['name' => 'python#check', 'url' => '/api/v1/python/check', 'verb' => 'GET'],
-		['name' => 'python#install', 'url' => '/api/v1/python/install', 'verb' => 'GET'],
-		['name' => 'python#installDepsList', 'url' => '/api/v1/python/install', 'verb' => 'POST'],
-		['name' => 'python#updateDepsList', 'url' => '/api/v1/python/update', 'verb' => 'POST'],
-		['name' => 'python#deleteDepsList', 'url' => '/api/v1/python/delete', 'verb' => 'POST'],
 
 		// COLLECTOR API
 		['name' => 'collector#index', 'url' => '/api/v1/tasks/', 'verb' => 'GET'],

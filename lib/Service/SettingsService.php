@@ -33,23 +33,18 @@ use OCA\MediaDC\Db\SettingMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
-
-class SettingsService
-{
-
+class SettingsService {
 	/** @var SettingMapper */
 	private $mapper;
 
-	public function __construct(SettingMapper $settingMapper)
-	{
+	public function __construct(SettingMapper $settingMapper) {
 		$this->mapper = $settingMapper;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getSettings()
-	{
+	public function getSettings() {
 		return $this->mapper->findAll();
 	}
 
@@ -58,8 +53,7 @@ class SettingsService
 	 *
 	 * @return \OCA\MediaDC\Db\Setting|array
 	 */
-	public function getSettingById($id): ?Setting
-	{
+	public function getSettingById($id): ?Setting {
 		try {
 			return $this->mapper->find($id);
 		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
@@ -75,8 +69,7 @@ class SettingsService
 	 *
 	 * @return array
 	 */
-	public function getSettingByName($name)
-	{
+	public function getSettingByName($name) {
 		try {
 			return [
 				'success' => true,
@@ -95,8 +88,7 @@ class SettingsService
 	 *
 	 * @return array
 	 */
-	public function updateSetting($setting)
-	{
+	public function updateSetting($setting) {
 		try {
 			if ($setting instanceof Setting) {
 				$updatedSetting = $this->mapper->update($setting);
@@ -131,8 +123,7 @@ class SettingsService
 	 *
 	 * @return array
 	 */
-	public function updateSettings($settings)
-	{
+	public function updateSettings($settings) {
 		$updated = [];
 		foreach ($settings as $setting) {
 			array_push($updated, $this->mapper->update(new Setting([

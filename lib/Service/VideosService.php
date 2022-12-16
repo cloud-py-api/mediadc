@@ -35,9 +35,7 @@ use OCP\Files\IRootFolder;
 use OCA\MediaDC\Db\Video;
 use OCA\MediaDC\Db\VideoMapper;
 
-class VideosService
-{
-
+class VideosService {
 	/** @var VideoMapper */
 	private $mapper;
 
@@ -61,33 +59,27 @@ class VideosService
 		$this->mapper = $mapper;
 	}
 
-	public function get($id): Video
-	{
+	public function get($id): Video {
 		return $this->mapper->find($id);
 	}
 
-	public function getAllFileids(): array
-	{
+	public function getAllFileids(): array {
 		return $this->mapper->findAllFileids();
 	}
 
-	public function canBeDeleted($fileid): bool
-	{
+	public function canBeDeleted($fileid): bool {
 		return $this->mapper->inFileCache(intval($fileid));
 	}
 
-	public function delete($video): Video
-	{
+	public function delete($video): Video {
 		return $this->mapper->delete($video);
 	}
 
-	public function truncate(): int
-	{
+	public function truncate(): int {
 		return $this->mapper->truncate();
 	}
 
-	public function resolve(int $fileid, bool $resolved = true): int
-	{
+	public function resolve(int $fileid, bool $resolved = true): int {
 		return $this->mapper->resolve($fileid, $resolved);
 	}
 
@@ -95,11 +87,10 @@ class VideosService
 	 * @param string $userId
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getResolvedVideos(string $userId = '', int $limit = null, int $offset = null): array
-	{
+	public function getResolvedVideos(string $userId = '', int $limit = null, int $offset = null): array {
 		$result = $this->mapper->findAllResolvedByUser($userId, $limit, $offset);
 		$result = array_map(function ($filecache_data) {
 			/** @var File[] $node */

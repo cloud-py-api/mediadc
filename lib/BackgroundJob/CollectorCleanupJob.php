@@ -32,10 +32,7 @@ use OCA\MediaDC\Service\CollectorService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 
-
-class CollectorCleanupJob extends TimedJob
-{
-
+class CollectorCleanupJob extends TimedJob {
 	/** @var CollectorService */
 	private $collectorService;
 
@@ -56,8 +53,7 @@ class CollectorCleanupJob extends TimedJob
 	 *
 	 * @return void
 	 */
-	protected function run($argument)
-	{
+	protected function run($argument) {
 		$this->collectorService->cleanup();
 	}
 }

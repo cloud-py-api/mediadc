@@ -37,15 +37,11 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\CollectorTask;
 use OCA\MediaDC\Service\CollectorService;
 
-
-class CollectorController extends Controller
-{
-
+class CollectorController extends Controller {
 	/** @var CollectorService */
 	private $service;
 
-	public function __construct(IRequest $request, CollectorService $service)
-	{
+	public function __construct(IRequest $request, CollectorService $service) {
 		parent::__construct(Application::APP_ID, $request);
 
 		$this->service = $service;
@@ -57,8 +53,7 @@ class CollectorController extends Controller
 	 *
 	 * @param bool $recent
 	 */
-	public function index(bool $recent = false): JSONResponse
-	{
+	public function index(bool $recent = false): JSONResponse {
 		if ($recent) {
 			return new JSONResponse($this->service->getUserRecentTasks(), Http::STATUS_OK);
 		}
@@ -73,8 +68,7 @@ class CollectorController extends Controller
 	 * @param int $limit
 	 * @param int $offset
 	 */
-	public function resolved(string $type, int $limit = null, int $offset = null): JSONResponse
-	{
+	public function resolved(string $type, int $limit = null, int $offset = null): JSONResponse {
 		return new JSONResponse([
 			'success' => true,
 			'resolved' => $this->service->resolved($type, $limit, $offset)
@@ -89,8 +83,7 @@ class CollectorController extends Controller
 	 * @param int $fileid
 	 * @param bool $resolved
 	 */
-	public function markResolved(string $type, int $fileId, bool $resolved = true): JSONResponse
-	{
+	public function markResolved(string $type, int $fileId, bool $resolved = true): JSONResponse {
 		return new JSONResponse($this->service->markResolved($type, $fileId, $resolved), Http::STATUS_OK);
 	}
 
@@ -102,8 +95,7 @@ class CollectorController extends Controller
 	 * @param string $excludeList
 	 * @param string $collectorSettings
 	 */
-	public function runTask($targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse
-	{
+	public function runTask($targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse {
 		if ($targetDirectoryIds !== null && $excludeList !== null && $collectorSettings !== null) {
 			$params = [
 				'targetDirectoryIds' => json_decode($targetDirectoryIds),
@@ -128,8 +120,7 @@ class CollectorController extends Controller
 	 * @param string $excludeList
 	 * @param string $collectorSettings
 	 */
-	public function restartTask($taskId, $targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse
-	{
+	public function restartTask($taskId, $targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse {
 		if (
 			$taskId !== null && $targetDirectoryIds !== null
 			&& $excludeList !== null && $collectorSettings !== null
@@ -152,14 +143,13 @@ class CollectorController extends Controller
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param int $taskId
 	 * @param int $limit
 	 * @param int $page
 	 * @param array $filter
 	 */
-	public function details(int $taskId, int $limit = null, int $page = null, array $filter = []): JSONResponse
-	{
+	public function details(int $taskId, int $limit = null, int $page = null, array $filter = []): JSONResponse {
 		if ($taskId) {
 			/** @var CollectorTask */
 			$collectorTask = $this->service->getCollectorTask($taskId);
@@ -187,8 +177,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function getTaskInfo(int $taskId): JSONResponse
-	{
+	public function getTaskInfo(int $taskId): JSONResponse {
 		if ($taskId) {
 			/** @var CollectorTask */
 			$collectorTask = $this->service->getCollectorTask($taskId);
@@ -208,8 +197,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTask(int $taskId): JSONResponse
-	{
+	public function deleteTask(int $taskId): JSONResponse {
 		if ($taskId) {
 			/** @var CollectorTask */
 			$deletedTask = $this->service->delete($taskId);
@@ -227,8 +215,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTaskDetail(int $taskId, int $groupId): JSONResponse
-	{
+	public function deleteTaskDetail(int $taskId, int $groupId): JSONResponse {
 		if ($taskId && $groupId) {
 			return new JSONResponse([
 				'success' => $this->service->deleteTaskDetail($taskId, $groupId) > 0,
@@ -242,8 +229,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function terminateTask(int $taskId): JSONResponse
-	{
+	public function terminateTask(int $taskId): JSONResponse {
 		if ($taskId) {
 			/** @var CollectorTask */
 			$terminatedTask = $this->service->terminate($taskId);
@@ -261,8 +247,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function duplicateTask(int $taskId): JSONResponse
-	{
+	public function duplicateTask(int $taskId): JSONResponse {
 		if ($taskId) {
 			$duplicatedTask = $this->service->duplicate($taskId);
 			return new JSONResponse([
@@ -277,8 +262,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function getDetailGroupFilesInfo(int $taskId, int $groupId, bool $filesizeAscending = false): JSONResponse
-	{
+	public function getDetailGroupFilesInfo(int $taskId, int $groupId, bool $filesizeAscending = false): JSONResponse {
 		if ($taskId) {
 			return new JSONResponse($this->service->getDetailGroupFilesInfo($taskId, $groupId, $filesizeAscending), Http::STATUS_OK);
 		} else {
@@ -289,12 +273,11 @@ class CollectorController extends Controller
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * 
+	 *
 	 * @param int $taskId
 	 * @param int $groupId
 	 */
-	public function getDetailFilesTotalSize(int $taskId): JSONResponse
-	{
+	public function getDetailFilesTotalSize(int $taskId): JSONResponse {
 		if ($taskId) {
 			return new JSONResponse($this->service->getDetailFilesTotalSize(intval($taskId)), Http::STATUS_OK);
 		} else {
@@ -306,8 +289,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTaskDetailFile(int $taskId, int $groupId, int $fileId): JSONResponse
-	{
+	public function deleteTaskDetailFile(int $taskId, int $groupId, int $fileId): JSONResponse {
 		if ($groupId && $fileId) {
 			return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $groupId, $fileId), Http::STATUS_OK);
 		} else {
@@ -321,8 +303,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function removeTaskDetailGroups(int $taskId, array $groupIds): JSONResponse
-	{
+	public function removeTaskDetailGroups(int $taskId, array $groupIds): JSONResponse {
 		if ($taskId && $groupIds) {
 			return new JSONResponse($this->service->removeTaskDetailGroups($taskId, $groupIds), Http::STATUS_OK);
 		} else {
@@ -334,8 +315,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function deleteTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse
-	{
+	public function deleteTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse {
 		if ($taskId && $groupId && $fileIds) {
 			return new JSONResponse($this->service->deleteTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
 		} else {
@@ -347,8 +327,7 @@ class CollectorController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function removeTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse
-	{
+	public function removeTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse {
 		if ($taskId && $groupId && $fileIds) {
 			return new JSONResponse($this->service->removeTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
 		} else {

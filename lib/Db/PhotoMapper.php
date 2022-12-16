@@ -36,25 +36,20 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
 
-
-class PhotoMapper extends QBMapper
-{
-
-	public function __construct(IDBConnection $db)
-	{
+class PhotoMapper extends QBMapper {
+	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_photos');
 	}
 
 	/**
 	 * @param int $id
-	 * 
+	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
-	 * 
+	 *
 	 * @return \OCA\MediaDC\Db\Photo
 	 */
-	public function find(int $id): Entity
-	{
+	public function find(int $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -64,8 +59,7 @@ class PhotoMapper extends QBMapper
 		return $this->findEntity($qb);
 	}
 
-	public function findAllFileids(int $limit = null, int $offset = null): array
-	{
+	public function findAllFileids(int $limit = null, int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.id', 't.fileid')
 			->from($this->tableName, 't')
@@ -76,13 +70,12 @@ class PhotoMapper extends QBMapper
 
 	/**
 	 * Check if file exists in filecache
-	 * 
+	 *
 	 * @param int $fileid
-	 * 
+	 *
 	 * @return bool
 	 */
-	public function inFileCache(int $fileid): bool
-	{
+	public function inFileCache(int $fileid): bool {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.fileid')->from('filecache', 't')->where(
 			$qb->expr()->eq('fileid', $qb->createNamedParameter($fileid, IQueryBuilder::PARAM_INT))
@@ -95,13 +88,11 @@ class PhotoMapper extends QBMapper
 		}
 	}
 
-	public function truncate(): int
-	{
+	public function truncate(): int {
 		return $this->db->getQueryBuilder()->delete($this->tableName)->executeStatement();
 	}
 
-	public function resolve(int $fileid, bool $resolved = true): int
-	{
+	public function resolve(int $fileid, bool $resolved = true): int {
 		$qb = $this->db->getQueryBuilder();
 		$qb->update($this->tableName)
 			->set('skipped', $qb->createNamedParameter($resolved ? 100 : 0, IQueryBuilder::PARAM_INT))
@@ -117,11 +108,10 @@ class PhotoMapper extends QBMapper
 	 * @param string $userId
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
-	public function findAllResolvedByUser(string $userId, int $limit = null, int $offset = null)
-	{
+	public function findAllResolvedByUser(string $userId, int $limit = null, int $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(
 			'ocf.fileid',

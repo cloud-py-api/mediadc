@@ -23,5 +23,5 @@
  */
 
 .action-mediadcscan img {
-    filter: var(--background-invert-if-dark);
+	filter: var(--background-invert-if-dark);
 }

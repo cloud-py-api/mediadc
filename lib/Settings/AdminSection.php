@@ -33,39 +33,31 @@ use OCA\MediaDC\AppInfo\Application;
 use OCP\IL10N;
 use OCP\Settings\IIconSection;
 
-
-class AdminSection implements IIconSection
-{
-
+class AdminSection implements IIconSection {
 	/** @var IL10N */
 	private $l;
 
 	/** @var UrlGenerator */
 	private $urlGenerator;
 
-	public function __construct(IL10N $l, URLGenerator $urlGenerator)
-	{
+	public function __construct(IL10N $l, URLGenerator $urlGenerator) {
 		$this->l = $l;
 		$this->urlGenerator = $urlGenerator;
 	}
 
-	public function getId()
-	{
+	public function getId() {
 		return Application::APP_ID;
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return $this->l->t('MediaDC');
 	}
 
-	public function getPriority()
-	{
+	public function getPriority() {
 		return 50;
 	}
 
-	public function getIcon()
-	{
+	public function getIcon() {
 		return $this->urlGenerator->imagePath(Application::APP_ID, 'settings.svg');
 	}
 }

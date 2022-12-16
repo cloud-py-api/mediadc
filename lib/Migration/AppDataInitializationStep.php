@@ -28,103 +28,89 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
+use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
+use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
+
+use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 use OCA\MediaDC\Migration\data\AppInitialData;
+use OCA\MediaDC\Service\AppDataService;
+use OCA\MediaDC\Service\UtilsService;
 
-
-class AppDataInitializationStep implements IRepairStep
-{
+class AppDataInitializationStep implements IRepairStep {
+	/** @var IAppManager */
+	private $appManager;
 
 	/** @var SettingMapper */
 	private $settingMapper;
 
-	/** @var AppInitialData */
-	private $appInitialData;
+	/** @var UtilsService */
+	private $utils;
 
-	public function __construct(SettingMapper $settingMapper, AppInitialData $appInitialData)
-	{
+	/** @var CPAUtilsService */
+	private $cpaUtils;
+
+	/** @var AppDataService */
+	private $appDataService;
+
+	public function __construct(
+		IAppManager $appManager,
+		SettingMapper $settingMapper,
+		AppInitialData $appInitialData,
+		UtilsService $utils,
+		CPAUtilsService $cpaUtils,
+		AppDataService $appDataService
+	) {
+		$this->appManager = $appManager;
 		$this->settingMapper = $settingMapper;
 		$this->appInitialData = $appInitialData;
+		$this->utils = $utils;
+		$this->cpaUtils = $cpaUtils;
+		$this->appDataService = $appDataService;
 	}
 
-	public function getName(): string
-	{
-		return "Initializing MediaDC static tables data";
+	public function getName(): string {
+		return "Initializing MediaDC data";
 	}
 
-	public function run(IOutput $output)
-	{
-		$output->startProgress(2);
-		$app_data = $this->appInitialData->getAppInitialData();
+	public function run(IOutput $output) {
+		$output->startProgress(4);
+		$output->advance(1, 'Filling database with initial data');
+		$app_data = AppInitialData::$APP_INITIAL_DATA;
 
 		if (count($this->settingMapper->findAll()) === 0 && isset($app_data['settings'])) {
-			if (isset($app_data['settings'])) {
-				foreach ($app_data['settings'] as $setting) {
-					$this->settingMapper->insert(new Setting([
-						'name' => $setting['name'],
-						'value' => is_array($setting['value']) ? json_encode($setting['value']) : str_replace('\\', '', json_encode($setting['value'])),
-						'displayName' => $setting['displayName'],
-						'description' => $setting['description']
-					]));
-				}
+			foreach ($app_data['settings'] as $setting) {
+				$this->settingMapper->insert(new Setting([
+					'name' => $setting['name'],
+					'value' => is_array($setting['value'])
+						? json_encode($setting['value'])
+						: str_replace('\\', '', json_encode($setting['value'])),
+					'displayName' => $setting['displayName'],
+					'description' => $setting['description']
+				]));
 			}
 		}
-		$output->advance(1);
 
-		$this->checkForDataUpdates($app_data);
+		$output->advance(1, 'Checking for inital data changes and syncing with database');
+		$this->utils->checkForSettingsUpdates($app_data);
+
+		$output->advance(1, 'Creating app data folders');
+		$this->appDataService->createAppDataFolder('binaries');
+		$this->appDataService->createAppDataFolder('logs');
+
+		$output->advance(1, 'Downloading app binary');
+		$output->warning('This step may take some time');
+		$url = 'https://github.com/andrey18106/mediadc/releases/download/v'
+			. $this->appManager->getAppVersion(Application::APP_ID)
+			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
+		$this->cpaUtils->downloadPythonBinary(
+			$url, $this->appDataService->getAppDataFolder('binaries')
+		);
 
 		$output->finishProgress();
-	}
-
-	private function checkForDataUpdates($app_data)
-	{
-		$settings = $this->settingMapper->findAll();
-		if (count($settings) > 0 && count($app_data['settings']) > count($settings)) {
-			$currentSettingsKeys = array_map(function ($setting) {
-				return $setting->getName();
-			}, $settings);
-			$newSettingsKeys = array_map(function ($setting) {
-				return $setting['name'];
-			}, $app_data['settings']);
-			$newSettings = [];
-			foreach ($newSettingsKeys as $setting) {
-				if (!in_array($setting, $currentSettingsKeys)) {
-					array_push($newSettings, $setting);
-				}
-			}
-			foreach ($app_data['settings'] as $setting) {
-				if (in_array($setting['name'], $newSettings)) {
-					$this->settingMapper->insert(new Setting([
-						'name' => $setting['name'],
-						'value' => is_array($setting['value']) ? json_encode($setting['value']) : str_replace('\\', '', json_encode($setting['value'])),
-						'displayName' => $setting['displayName'],
-						'description' => $setting['description']
-					]));
-				}
-			}
-		} else if (count($settings) > 0 && count($app_data['settings']) < count($settings)) {
-			$currentSettingsKeys = array_map(function ($setting) {
-				return $setting->getName();
-			}, $settings);
-			$newSettingsKeys = array_map(function ($setting) {
-				return $setting['name'];
-			}, $app_data['settings']);
-			$settingsToRemove = [];
-			foreach ($currentSettingsKeys as $setting) {
-				if (!in_array($setting, $newSettingsKeys)) {
-					array_push($settingsToRemove, $setting);
-				}
-			}
-			foreach ($settingsToRemove as $settingName) {
-				$setting = $this->settingMapper->findByName($settingName);
-				if (isset($setting)) {
-					$this->settingMapper->delete($setting);
-				}
-			}
-		}
 	}
 }

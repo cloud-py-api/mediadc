@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import Configure from '../mixins/Configure.js'
 import TasksNew from '../components/tasks/TasksNew.vue'
 import TasksList from '../components/tasks/TasksList.vue'
 
@@ -52,9 +51,6 @@ export default {
 		TasksNew,
 		TasksList,
 	},
-	mixins: [
-		Configure,
-	],
 	props: {
 		rootTitle: {
 			type: String,
@@ -72,7 +68,9 @@ export default {
 	},
 	beforeMount() {
 		this.$store.dispatch('getTasks', true).then(() => {
-			this.$emit('update:loading', false)
+			this.$store.dispatch('getSettings').then(() => {
+				this.$emit('update:loading', false)
+			})
 		})
 	},
 }

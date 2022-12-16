@@ -28,75 +28,60 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
+use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-use OCA\MediaDC\Db\Setting;
-use OCA\MediaDC\Service\PythonService;
-use OCA\MediaDC\Service\SettingsService;
-use Psr\Log\LoggerInterface;
+use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
 
+use OCA\MediaDC\Migration\data\AppInitialData;
+use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Service\AppDataService;
+use OCA\MediaDC\Service\UtilsService;
 
-class AppUpdateStep implements IRepairStep
-{
+class AppUpdateStep implements IRepairStep {
+	/** @var IAppManager */
+	private $appManager;
 
-	/** @var PythonService */
-	private $pythonService;
+	/** @var UtilsService */
+	private $utils;
 
-	/** @var SettingsService */
-	private $settingsService;
+	/** @var CPAUtilsService */
+	private $cpaUtils;
 
-	/** @var LoggerInterface */
-	private $logger;
+	/** @var AppDataService */
+	private $appDataService;
 
 	public function __construct(
-		PythonService $pythonService,
-		SettingsService $settingsService,
-		LoggerInterface $logger
+		IAppManager $appManager,
+		UtilsService $utils,
+		CPAUtilsService $cpaUtils,
+		AppDataService $appDataService
 	) {
-		$this->pythonService = $pythonService;
-		$this->settingsService = $settingsService;
-		$this->logger = $logger;
+		$this->appManager = $appManager;
+		$this->utils = $utils;
+		$this->cpaUtils = $cpaUtils;
+		$this->appDataService = $appDataService;
 	}
 
-	public function getName(): string
-	{
-		return "Python dependencies update along with MediaDC app update";
+	public function getName(): string {
+		return "Update settings and binaries along with MediaDC";
 	}
 
-	public function run(IOutput $output)
-	{
-		$output->startProgress(1);
-		if ($this->settingsService->getSettingByName('installed')['success']) {
-			/** @var Setting */
-			$installedSetting = $this->settingsService->getSettingByName('installed')['setting'];
-			$installed = json_decode($installedSetting->getValue(), true);
-			if (isset($installed['not_installed_list'])) {
-				if (isset($installed['not_installed_list']['boost']) && count($installed['not_installed_list']['boost']) > 0) {
-					$installResult = $this->pythonService->installDependencies();
-				} else {
-					$installResult = $this->pythonService->installDependencies('required optional boost');
-				}
-				if (isset($installResult['installed']) && $installResult['installed']) {
-					$installed['not_installed_list'] = [
-						'required' => $installResult['required'],
-						'optional' => $installResult['optional'],
-						'boost' => $installResult['boost'],
-					];
-					$installed['installed_list'] = $installResult['installed_list'];
-					$installed['status'] = $installResult['installed'];
-					$installed['video_required'] = $installResult['video_required'];
-					$installed['available_algorithms'] = $installResult['available_algorithms'];
-					$installedSetting->setValue(json_encode($installed));
-					$this->settingsService->updateSetting($installedSetting);
-					if (count($installResult['errors']) > 0) {
-						$this->logger->warning('[AppUpdateStep] Python dependencies updated with some errors: ' . json_encode($installResult));
-					}
-				} else {
-					$this->logger->error('[AppUpdateStep] Python dependencies updating error: ' . json_encode($installResult));
-				}
-			}
-		}
+	public function run(IOutput $output) {
+		$output->startProgress(2);
+		$output->advance(1, 'Sync settings changes');
+		$this->utils->checkForSettingsUpdates(AppInitialData::$APP_INITIAL_DATA);
+		$output->advance(1, 'Update binaries (downloading pre-compiled binaries for this release)');
+		$output->warning('This step may take some time');
+		$this->appDataService->createAppDataFolder('binaries');
+		$this->appDataService->createAppDataFolder('logs');
+		$url = 'https://github.com/andrey18106/mediadc/releases/download/v'
+			. $this->appManager->getAppVersion(Application::APP_ID)
+			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
+		$this->cpaUtils->downloadPythonBinary(
+			$url, $this->appDataService->getAppDataFolder('binaries'), 'main', true
+		);
 		$output->finishProgress();
 	}
 }

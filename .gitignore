@@ -17,7 +17,8 @@ yarn-error.log*
 build/
 coverage/
 vendor
-.php_cs.cache
+.php-cs-fixer.cache
+.phpunit.result.cache
 
 __pycache__
 local

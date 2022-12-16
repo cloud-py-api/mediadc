@@ -36,12 +36,8 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 
 use OCA\MediaDC\AppInfo\Application;
 
-
-class VideoMapper extends QBMapper
-{
-
-	public function __construct(IDBConnection $db)
-	{
+class VideoMapper extends QBMapper {
+	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_videos');
 	}
 
@@ -49,8 +45,7 @@ class VideoMapper extends QBMapper
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id): Entity
-	{
+	public function find(int $id): Entity {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -63,11 +58,10 @@ class VideoMapper extends QBMapper
 	/**
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
-	public function findAllFileids(int $limit = null, int $offset = null): array
-	{
+	public function findAllFileids(int $limit = null, int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.id', 't.fileid')
 			->from($this->tableName, 't')
@@ -76,8 +70,7 @@ class VideoMapper extends QBMapper
 		return $this->findEntities($qb);
 	}
 
-	public function inFileCache(int $fileid): bool
-	{
+	public function inFileCache(int $fileid): bool {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.fileid')->from('filecache', 't')->where(
 			$qb->expr()->eq('fileid', $qb->createNamedParameter($fileid, IQueryBuilder::PARAM_INT))
@@ -90,13 +83,11 @@ class VideoMapper extends QBMapper
 		}
 	}
 
-	public function truncate(): int
-	{
+	public function truncate(): int {
 		return $this->db->getQueryBuilder()->delete($this->tableName)->executeStatement();
 	}
 
-	public function resolve(int $fileid, bool $resolved = true): int
-	{
+	public function resolve(int $fileid, bool $resolved = true): int {
 		$qb = $this->db->getQueryBuilder();
 		$qb->update($this->tableName)
 			->set('skipped', $qb->createNamedParameter($resolved ? 100 : 0, IQueryBuilder::PARAM_INT))
@@ -112,11 +103,10 @@ class VideoMapper extends QBMapper
 	 * @param string $userId
 	 * @param int $limit
 	 * @param int $offset
-	 * 
+	 *
 	 * @return array
 	 */
-	public function findAllResolvedByUser(string $userId, int $limit = null, int $offset = null)
-	{
+	public function findAllResolvedByUser(string $userId, int $limit = null, int $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(
 			'ocf.fileid',
