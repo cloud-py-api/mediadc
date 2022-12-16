@@ -21,6 +21,10 @@ on:
       - 'tests/javascript/**'
   workflow_dispatch:
 
+env:
+  APP_NAME: mediadc
+  CPA_NAME: cloud_py_api
+
 jobs:
   xml-lint:
     runs-on: ubuntu-latest
@@ -83,11 +87,28 @@ jobs:
     strategy:
       matrix:
         php-versions: ["7.4", "8.0", "8.1"]
-        ocp-version: ['v24.0.1']
     name: php-psalm-analysis
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout server
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          repository: nextcloud/server
+          ref: ${{ matrix.server-versions }}
+
+      - name: Checkout ${{ env.APP_NAME }} app
+        uses: actions/checkout@v3
+        with:
+          path: apps/${{ env.APP_NAME }}
+
+      - name: Checkout ${{ env.CPA_NAME }} app
+        uses: actions/checkout@v3
+        if: ${{ steps.server-checkout.outcome != 'success' }}
+        with:
+          repository: cloud-py-api/${{ env.CPA_NAME }}
+          path: apps/${{ env.CPA_NAME }}
+
       - name: Set up php ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
         with:
@@ -95,12 +116,11 @@ jobs:
           coverage: none
 
       - name: Install dependencies
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer i
 
-      - name: Install nextcloud/ocp
-        run: composer require --dev nextcloud/ocp:${{ matrix.ocp-version }}
-
       - name: Run coding standards check
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer run psalm
 
   php-security-analysis:

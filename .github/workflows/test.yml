@@ -52,7 +52,7 @@ jobs:
           repository: nextcloud/server
           ref: ${{ matrix.server-versions }}
 
-      - name: Checkout  ${{ env.APP_NAME }} app
+      - name: Checkout ${{ env.APP_NAME }} app
         uses: actions/checkout@v3
         with:
           path: apps/${{ env.APP_NAME }}

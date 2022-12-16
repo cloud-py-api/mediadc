@@ -49,15 +49,15 @@ Quick start guide and further information in our [Wiki](https://github.com/andre
 		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
 	</background-jobs>
 	<repair-steps>
+		<post-migration>
+			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
+		</post-migration>
 		<install>
 			<step>OCA\MediaDC\Migration\AppDataInitializationStep</step>
 		</install>
 		<uninstall>
 			<step>OCA\MediaDC\Migration\AppDataCleanupStep</step>
 		</uninstall>
-		<post-migration>
-			<step>OCA\MediaDC\Migration\AppUpdateStep</step>
-		</post-migration>
 	</repair-steps>
 	<commands>
 		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>
