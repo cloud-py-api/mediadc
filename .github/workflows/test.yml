@@ -64,13 +64,13 @@ jobs:
       - name: Checkout ${{ env.APP_NAME }} app
         uses: actions/checkout@v3
         with:
-          path: apps/${{ env.APP_NAME }}
+          path: nextcloud/apps/${{ env.APP_NAME }}
 
       - name: Checkout ${{ env.CPA_NAME }} app
         uses: actions/checkout@v3
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
-          path: apps/${{ env.CPA_NAME }}
+          path: nextcloud/apps/${{ env.CPA_NAME }}
 
       - name: Set up php ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
@@ -81,7 +81,7 @@ jobs:
           coverage: none
 
       - name: Set up PHPUnit
-        working-directory: apps/${{ env.APP_NAME }}
+        working-directory: nextcloud/apps/${{ env.APP_NAME }}
         run: composer i
 
       - name: Set up Nextcloud
@@ -97,7 +97,7 @@ jobs:
         id: check_phpunit
         uses: andstor/file-existence-action@v2
         with:
-          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
+          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
 
       - name: Run Nextcloud
         run: php -S localhost:8080 &
@@ -105,19 +105,19 @@ jobs:
       - name: PHPUnit
         # Only run if phpunit config file exists
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        working-directory: apps/${{ env.APP_NAME }}
+        working-directory: nextcloud/apps/${{ env.APP_NAME }}
         run: ./vendor/phpunit/phpunit/phpunit -c ${{ env.PHPUNIT_CONFIG }}
 
       - name: Check PHPUnit integration config file existence
         id: check_integration
         uses: andstor/file-existence-action@v2
         with:
-          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
+          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
       - name: PHPUnit integration
         # Only run if phpunit integration config file exists
         if: steps.check_integration.outputs.files_exists == 'true'
-        working-directory: apps/${{ env.APP_NAME }}
+        working-directory: nextcloud/apps/${{ env.APP_NAME }}
         run: ./vendor/phpunit/phpunit/phpunit -c ${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
   phpunit-pgsql:
@@ -159,14 +159,14 @@ jobs:
       - name: Checkout app
         uses: actions/checkout@v3
         with:
-          path: apps/${{ env.APP_NAME }}
+          path: nextcloud/apps/${{ env.APP_NAME }}
 
       - name: Checkout ${{ env.CPA_NAME }} app
         uses: actions/checkout@v3
         if: ${{ steps.server-checkout.outcome != 'success' }}
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
-          path: apps/${{ env.CPA_NAME }}
+          path: nextcloud/apps/${{ env.CPA_NAME }}
 
       - name: Set up php ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
@@ -177,7 +177,7 @@ jobs:
           coverage: none
 
       - name: Set up PHPUnit
-        working-directory: apps/${{ env.APP_NAME }}
+        working-directory: nextcloud/apps/${{ env.APP_NAME }}
         run: composer i
 
       - name: Set up Nextcloud
@@ -193,19 +193,19 @@ jobs:
         id: check_phpunit
         uses: andstor/file-existence-action@v2
         with:
-          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
+          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
 
       - name: PHPUnit
         # Only run if phpunit config file exists
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        working-directory: apps/${{ env.APP_NAME }}
+        working-directory: nextcloud/apps/${{ env.APP_NAME }}
         run: ./vendor/phpunit/phpunit/phpunit -c ${{ env.PHPUNIT_CONFIG }}
 
       - name: Check PHPUnit integration config file existence
         id: check_integration
         uses: andstor/file-existence-action@v2
         with:
-          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
+          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
       - name: Run Nextcloud
         # Only run if phpunit integration config file exists
@@ -215,7 +215,7 @@ jobs:
       - name: PHPUnit integration
         # Only run if phpunit integration config file exists
         if: steps.check_integration.outputs.files_exists == 'true'
-        working-directory: apps/${{ env.APP_NAME }}
+        working-directory: nextcloud/apps/${{ env.APP_NAME }}
         run: ./vendor/phpunit/phpunit/phpunit -c ${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
   phpunit-summary:
