@@ -58,7 +58,7 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(RecentTasksWidget::class);
-		$this->notificationManager->registerNotifierService(\OCA\MediaDC\Notification\Notifier::class);
+		$context->registerNotifierService(\OCA\MediaDC\Notification\Notifier::class);
 	}
 
 	public function boot(IBootContext $context): void {
