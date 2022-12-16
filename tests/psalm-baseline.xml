@@ -37,6 +37,13 @@
     <InvalidReturnType occurrences="1">
       <code>JSONResponse</code>
     </InvalidReturnType>
+    <UndefinedClass occurrences="1">
+      <code>UtilsService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="2">
+      <code>$this-&gt;cpaUtils</code>
+      <code>UtilsService</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Dashboard/RecentTasksWidget.php">
     <UndefinedThisPropertyAssignment occurrences="1">
@@ -52,11 +59,24 @@
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/AppDataInitializationStep.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;appInitialData</code>
-    </UndefinedThisPropertyAssignment>
+    <UndefinedClass occurrences="1">
+      <code>CPAUtilsService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>CPAUtilsService</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/AppUpdateStep.php">
+    <UndefinedClass occurrences="1">
+      <code>CPAUtilsService</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="3">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>CPAUtilsService</code>
+    </UndefinedDocblockClass>
     <UndefinedThisPropertyFetch occurrences="1">
       <code>$this-&gt;appManager</code>
     </UndefinedThisPropertyFetch>
@@ -114,10 +134,37 @@
     <TypeDoesNotContainType occurrences="1">
       <code>count($params) === 0</code>
     </TypeDoesNotContainType>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="4">
+      <code>CPAUtilsService</code>
+      <code>PythonService</code>
       <code>SharedStorage</code>
       <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
     </UndefinedClass>
+    <UndefinedDocblockClass occurrences="23">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;pythonService</code>
+      <code>$this-&gt;pythonService</code>
+      <code>$this-&gt;pythonService</code>
+      <code>CPAUtilsService</code>
+      <code>PythonService</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/PhotosService.php">
     <MissingDependency occurrences="1">

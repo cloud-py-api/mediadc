@@ -11,12 +11,10 @@
 		<directory name="lib" />
 		<ignoreFiles>
 			<directory name="vendor" />
-			<directory name="../cloud_py_api" />
 		</ignoreFiles>
 	</projectFiles>
 	<extraFiles>
 		<directory name="vendor" />
-		<directory name="../cloud_py_api" />
 	</extraFiles>
 	<issueHandlers>
 		<UndefinedClass>
