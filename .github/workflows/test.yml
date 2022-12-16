@@ -68,7 +68,6 @@ jobs:
 
       - name: Checkout ${{ env.CPA_NAME }} app
         uses: actions/checkout@v3
-        if: ${{ steps.server-checkout.outcome != 'success' }}
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
           path: apps/${{ env.CPA_NAME }}
