@@ -14,10 +14,22 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 * **Large amount of supported video  formats** All that is supported by ffmpeg.
 * **Flexible config** Set your precision level for comparing, choose algo that suits for you most.
 * **Quick rescan** Once file was scanned, hash will be saved, and used for other scans.
-* **External Storages support** [in progress] Search everywhere among all files available to the user.
+* **External Storages support** Search everywhere among all files available to the user.
 * **Save your time and cloud space** The title says all...
 
 Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
+
+### Support
+
+You can support us in several ways:
+
+- ⭐ Star our work (it really motivates)
+- ❗ Create an Issue or feature request (bring to us an excellent idea)
+- 💁 Resolve some Issue or create a Pull Request (contribute to this project)
+- 🪙 Donate with any amount with one of the links below (fund this project)
+
+[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ)
+[![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/cloud_py_api/donate)
 	]]>
 	</description>
 	<version>0.3.0</version>
