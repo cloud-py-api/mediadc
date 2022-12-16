@@ -33,7 +33,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["7.4", "8.0"]
-        server-versions: ['master']
+        server-versions: ['25.0.2']
 
     services:
       mysql:
@@ -45,12 +45,21 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
-      - name: Checkout server
-        uses: actions/checkout@v3
+      - name: Cache nextcloud server
+        id: nextcloud_setup
+        uses: actions/cache@v3
         with:
-          submodules: true
-          repository: nextcloud/server
-          ref: ${{ matrix.server-versions }}
+          path: nextcloud-${{ matrix.server-versions }}.zip
+          key: ${{ matrix.server-versions }}
+
+      - name: Download nextcloud ${{ matrix.server-versions }}
+        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
+        continue-on-error: true
+        id: server-checkout
+        run: |
+          NCVERSION=${{ matrix.server-versions }}
+          wget --quiet https://download.nextcloud.com/server/releases/latest-$NCVERSION.zip
+          unzip latest-$NCVERSION.zip
 
       - name: Checkout ${{ env.APP_NAME }} app
         uses: actions/checkout@v3
@@ -118,7 +127,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["8.0"]
-        server-versions: ["master"]
+        server-versions: ['25.0.2']
 
     services:
       postgres:
@@ -132,12 +141,21 @@ jobs:
         options: --health-cmd pg_isready --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
-      - name: Checkout server
-        uses: actions/checkout@v3
+      - name: Cache nextcloud server
+        id: nextcloud_setup
+        uses: actions/cache@v3
         with:
-          submodules: true
-          repository: nextcloud/server
-          ref: ${{ matrix.server-versions }}
+          path: nextcloud-${{ matrix.server-versions }}.zip
+          key: ${{ matrix.server-versions }}
+
+      - name: Download nextcloud ${{ matrix.server-versions }}
+        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
+        continue-on-error: true
+        id: server-checkout
+        run: |
+          NCVERSION=${{ matrix.server-versions }}
+          wget --quiet https://download.nextcloud.com/server/releases/latest-$NCVERSION.zip
+          unzip latest-$NCVERSION.zip
 
       - name: Checkout app
         uses: actions/checkout@v3

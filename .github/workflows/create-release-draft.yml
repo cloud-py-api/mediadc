@@ -63,7 +63,15 @@ jobs:
           filename: ${{ env.APP_NAME }}/appinfo/info.xml
           expression: "//info//dependencies//nextcloud/@min-version"
 
-      - name: Checkout server ${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+      - name: Cache nextcloud server
+        id: nextcloud_setup
+        uses: actions/cache@v3
+        with:
+          path: nextcloud-${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}.zip
+          key: ${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+
+      - name: Download nextcloud ${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
         continue-on-error: true
         id: server-checkout
         run: |
