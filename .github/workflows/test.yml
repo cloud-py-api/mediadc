@@ -88,7 +88,7 @@ jobs:
         env:
           DB_PORT: 4444
         run: |
-          mkdir data
+          mkdir nextcloud/data
           php nextcloud/occ maintenance:install --verbose --database=mysql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
           php nextcloud/occ app:enable ${{ env.CPA_NAME }}
           php nextcloud/occ app:enable ${{ env.APP_NAME }}
