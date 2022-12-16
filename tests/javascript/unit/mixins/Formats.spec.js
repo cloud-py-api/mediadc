@@ -55,7 +55,7 @@ describe('mixins/Formats test', () => {
 	})
 
 	it('should return formatted time', () => {
-		expect(wrapper.vm.parseUnixTimestamp(task.created_time)).toBe('2022-10-02 13:31:14')
+		expect(wrapper.vm.parseUnixTimestamp(task.created_time)).toBe('2022-10-02 10:31:14')
 	})
 
 	it('should return task status', () => {
