@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
+use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -39,6 +40,9 @@ use OCA\MediaDC\Service\AppDataService;
 use OCA\MediaDC\Service\UtilsService;
 
 class AppUpdateStep implements IRepairStep {
+	/** @var IAppManager */
+	private $appManager;
+
 	/** @var UtilsService */
 	private $utils;
 
@@ -49,10 +53,12 @@ class AppUpdateStep implements IRepairStep {
 	private $appDataService;
 
 	public function __construct(
+		IAppManager $appManager,
 		UtilsService $utils,
 		CPAUtilsService $cpaUtils,
 		AppDataService $appDataService
 	) {
+		$this->appManager = $appManager;
 		$this->utils = $utils;
 		$this->cpaUtils = $cpaUtils;
 		$this->appDataService = $appDataService;
