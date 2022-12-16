@@ -1,6 +1,9 @@
 OC.L10N.register(
     "mediadc",
     {
+    "MediaDC Tasks" : "MediaDC-uppgifter",
+    "Hashing algorithm" : "Hashing-algorithm",
+    "Hash size" : "Hashstorlek",
     "Tasks" : "Uppgifter",
     "Configuration" : "Inställningar",
     "Settings" : "Inställningar",

@@ -34,7 +34,7 @@
     "Select file" : "Избор на файл",
     "_Delete file_::_Delete files_" : ["Изтриване на файлове","Изтриване на файлове"],
     "Remove file (mark resolved)" : "Премахване на файл (маркиране като отстранен)",
-    "Are you sure you want delete this file?" : "Сигурни ли сте, че искате да изтриете този файл?",
+    "Are you sure you want to delete this file?" : "Сигурни ли сте, че искате да изтриете този файл?",
     "Confirm file deletion" : "Потвърждаване на изтриването на файла",
     "Group successfully removed (1 file left)" : "Групата е премахната успешно (остава 1 файл)",
     "Wait until file has been loaded before deleting it" : " Преди изтриване на файл изчакайте, докато  бъде зареден",
@@ -103,8 +103,9 @@
     "Toggle resolved list media type" : "Превключване на медийния тип на списък с разрешени",
     "Toggle list view (list or grid)" : "Превключване на изгледа на списъка (списък или решетка)",
     "Remove file from resolved list" : "Премахване на файл от списъка с отстранените",
-    "Create a new task or work on existing one and resolve some!" : "Създаване на нова задача или работа по съществуваща такава и отстраняване на някоя!",
+    "Create a new task or work on existing ones and resolve some!" : "Създаване на нова задача или работа по съществуващите и отстраняване на някои!",
     "Create a new one!" : "Създайте нова!",
+    "Create a new task or work on existing one and resolve some!" : "Създаване на нова задача или работа по съществуваща такава и отстраняване на някоя!",
     "Change to grid view" : "Промяна към изглед на мрежа",
     "Change to list view" : "Промяна към изглед на списък",
     "No resolved ${selectedType} yet" : "Все още няма отстранени ${selectedType}",
@@ -266,8 +267,6 @@
     "MediaDC Resolved files" : "Отстранени файлове на MediaDC",
     "An error occurred while deleting task" : "Възникна грешка при изтриването на задача",
     "Task successfully started with duplicated settings!" : "Задачата е стартирана успешно с дублирани настройки!",
-    "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"],
-    "Are you sure you want to delete this file?" : "Сигурни ли сте, че искате да изтриете този файл?",
-    "Create a new task or work on existing ones and resolve some!" : "Създаване на нова задача или работа по съществуващите и отстраняване на някои!"
+    "_Test text_::_Test texts_" : ["Тестови текстове","Тестови текстове"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

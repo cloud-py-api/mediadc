@@ -17,6 +17,7 @@ OC.L10N.register(
     "Full path to python interpreter" : "Python 解釋器的完整路徑",
     "Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command." : "Python 可執行文件的絕對路徑（例如“/usr/bin/python3”）。 這可以通過 `which python3` 命令獲得。",
     "Remote/Encrypted file size limit to process" : "要處理的遠端/加密檔案大小上限",
+    "Maximum file size for requesting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size." : "從 PHP 核心請求的最大檔案大小。當遠端 NC 實例上的檔案主機或具有加密標誌時使用。必須小於總可用 RAM 大小。",
     "Use path to PHP interpreter for Python from settings" : "從設置中使用 Python 的 PHP 解釋器的路徑",
     "Determine whether to use path from settings or detect it automatically (may not work with some unusual PHP install locations). Used in Python part." : "確定是使用設置中的路徑還是自動檢測它（可能不適用於一些不尋常的 PHP 安裝）。在 Python 部分中使用。",
     "Full path to PHP interpreter for Python" : "Python 的 PHP 解釋器的完整路徑",
@@ -35,7 +36,7 @@ OC.L10N.register(
     "Select file" : "選擇檔案",
     "_Delete file_::_Delete files_" : ["刪除檔案"],
     "Remove file (mark resolved)" : "刪除檔案（標記為已解決）",
-    "Are you sure you want delete this file?" : "您確定要刪除此檔案？",
+    "Are you sure you want to delete this file?" : "您確定要刪除這檔案嗎？",
     "Confirm file deletion" : "確認檔案刪除",
     "Group successfully removed (1 file left)" : "群組已成功移除（剩餘 1 個檔案）",
     "Wait until file has been loaded before deleting it" : "等到檔案加載完畢再刪除",
@@ -104,8 +105,9 @@ OC.L10N.register(
     "Toggle resolved list media type" : "切換已解決的清單媒體類型",
     "Toggle list view (list or grid)" : "切換清單檢視（清單或網格）",
     "Remove file from resolved list" : "從已解決的清單移除檔案",
-    "Create a new task or work on existing one and resolve some!" : "創建一項新任務或處理現有任務以解決一些問題！",
+    "Create a new task or work on existing ones and resolve some!" : "創建一項新任務或處理現有任務以解決一些問題！",
     "Create a new one!" : "創建一個新的！",
+    "Create a new task or work on existing one and resolve some!" : "創建一項新任務或處理現有任務以解決一些問題！",
     "Change to grid view" : "切換至網格檢視",
     "Change to list view" : "切換到列表視圖",
     "No resolved ${selectedType} yet" : "還沒有解決的${selectedType}",
@@ -267,8 +269,6 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC 已解決的檔案",
     "An error occurred while deleting task" : "刪除任務時發生了錯誤",
     "Task successfully started with duplicated settings!" : "使用重複設置成功啟動任務！",
-    "_Test text_::_Test texts_" : ["測試文本"],
-    "Are you sure you want to delete this file?" : "您確定要刪除這檔案嗎？",
-    "Create a new task or work on existing ones and resolve some!" : "創建一項新任務或處理現有任務以解決一些問題！"
+    "_Test text_::_Test texts_" : ["測試文本"]
 },
 "nplurals=1; plural=0;");

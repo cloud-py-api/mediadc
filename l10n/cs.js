@@ -36,7 +36,7 @@ OC.L10N.register(
     "Select file" : "Vybrat soubor",
     "_Delete file_::_Delete files_" : ["Smazat soubor","Smazat soubory","Smazat soubory","Smazat soubory"],
     "Remove file (mark resolved)" : "Odebrat soubor (označit jako vyřešené)",
-    "Are you sure you want delete this file?" : "Opravdu chcete tento soubor smazat?",
+    "Are you sure you want to delete this file?" : "Opravdu chcete tento soubor smazat?",
     "Confirm file deletion" : "Potvrdit smazání souboru",
     "Group successfully removed (1 file left)" : "Skupina úspěšně odebrána (zbývá jeden soubor)",
     "Wait until file has been loaded before deleting it" : "Vyčkejte, soubor bude možné smazat až po dokončení jeho nahrávání",
@@ -105,8 +105,9 @@ OC.L10N.register(
     "Toggle resolved list media type" : "Přepnout typ média seznamu vyřešených",
     "Toggle list view (list or grid)" : "Přepnout mezi zobrazením v seznamu a mřížce",
     "Remove file from resolved list" : "Odebrat soubor ze seznamu vyřešených",
-    "Create a new task or work on existing one and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na nějaké stávající a nějaké vyřešte!",
+    "Create a new task or work on existing ones and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na nějakých stávajících a nějaké vyřešte!",
     "Create a new one!" : "Vytvořte novou!",
+    "Create a new task or work on existing one and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na nějaké stávající a nějaké vyřešte!",
     "Change to grid view" : "Přepnout na zobrazení v mřížce",
     "Change to list view" : "Přepnout do zobrazení v seznamu",
     "No resolved ${selectedType} yet" : "Zatím žádné vyřešené ${selectedType}",
@@ -268,8 +269,6 @@ OC.L10N.register(
     "MediaDC Resolved files" : "Soubory vyřešené v MediaDC",
     "An error occurred while deleting task" : "Při mazání úlohy došlo k chybě",
     "Task successfully started with duplicated settings!" : "Úloha úspěšně spuštěna s duplikovanými nastaveními!",
-    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"],
-    "Are you sure you want to delete this file?" : "Opravdu chcete tento soubor smazat?",
-    "Create a new task or work on existing ones and resolve some!" : "Vytvořte novou úlohu nebo zapracujte na nějakých stávajících a nějaké vyřešte!"
+    "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"]
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

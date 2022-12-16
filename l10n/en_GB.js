@@ -36,7 +36,7 @@ OC.L10N.register(
     "Select file" : "Select file",
     "_Delete file_::_Delete files_" : ["Delete file","Delete files"],
     "Remove file (mark resolved)" : "Remove file (mark resolved)",
-    "Are you sure you want delete this file?" : "Are you sure you want delete this file?",
+    "Are you sure you want to delete this file?" : "Are you sure you want to delete this file?",
     "Confirm file deletion" : "Confirm file deletion",
     "Group successfully removed (1 file left)" : "Group successfully removed (1 file left)",
     "Wait until file has been loaded before deleting it" : "Wait until file has been loaded before deleting it",
@@ -105,8 +105,9 @@ OC.L10N.register(
     "Toggle resolved list media type" : "Toggle resolved list media type",
     "Toggle list view (list or grid)" : "Toggle list view (list or grid)",
     "Remove file from resolved list" : "Remove file from resolved list",
-    "Create a new task or work on existing one and resolve some!" : "Create a new task or work on existing one and resolve some!",
+    "Create a new task or work on existing ones and resolve some!" : "Create a new task or work on existing ones and resolve some!",
     "Create a new one!" : "Create a new one!",
+    "Create a new task or work on existing one and resolve some!" : "Create a new task or work on existing one and resolve some!",
     "Change to grid view" : "Change to grid view",
     "Change to list view" : "Change to list view",
     "No resolved ${selectedType} yet" : "No resolved ${selectedType} yet",
@@ -268,8 +269,6 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC Resolved files",
     "An error occurred while deleting task" : "An error occurred while deleting task",
     "Task successfully started with duplicated settings!" : "Task successfully started with duplicated settings!",
-    "_Test text_::_Test texts_" : ["Test text","Test texts"],
-    "Are you sure you want to delete this file?" : "Are you sure you want to delete this file?",
-    "Create a new task or work on existing ones and resolve some!" : "Create a new task or work on existing ones and resolve some!"
+    "_Test text_::_Test texts_" : ["Test text","Test texts"]
 },
 "nplurals=2; plural=(n != 1);");

@@ -36,7 +36,7 @@ OC.L10N.register(
     "Select file" : "Datei auswählen",
     "_Delete file_::_Delete files_" : ["Datei löschen","Dateien löschen"],
     "Remove file (mark resolved)" : "Datei entfernen (Als gelöst markieren)",
-    "Are you sure you want delete this file?" : "Soll diese Datei wirklich gelöscht werden?",
+    "Are you sure you want to delete this file?" : "Möchtest du wirklich diese Datei löschen?",
     "Confirm file deletion" : "Bestätige das Löschen der Datei.",
     "Group successfully removed (1 file left)" : "Gruppe erfolgreich gelöscht (1 Datei verbleibt)",
     "Wait until file has been loaded before deleting it" : "Warten bis die Datei geladen ist, bevor sie gelöscht wird.",
@@ -105,8 +105,8 @@ OC.L10N.register(
     "Toggle resolved list media type" : "Medientyp der gelösten Liste umschalten",
     "Toggle list view (list or grid)" : "Listenansicht umschalten (Liste oder Raster)",
     "Remove file from resolved list" : "Datei von der Liste der Gelösten entfernen",
-    "Create a new task or work on existing one and resolve some!" : "Eine neue Aufgabe erstellen oder an bestehenden arbeiten und diese lösen!",
     "Create a new one!" : "Neue erstellen!",
+    "Create a new task or work on existing one and resolve some!" : "Eine neue Aufgabe erstellen oder an bestehenden arbeiten und diese lösen!",
     "Change to grid view" : "Zur Rasteransicht wechseln",
     "Change to list view" : "Zur Listenansicht wechseln",
     "No resolved ${selectedType} yet" : "Noch keine Lösung für ${selectedType}",
@@ -268,7 +268,6 @@ OC.L10N.register(
     "MediaDC Resolved files" : "MediaDC gelöste Dateien",
     "An error occurred while deleting task" : "Es ist ein Fehler beim Löschen der Aufgabe aufgetreten.",
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
-    "_Test text_::_Test texts_" : ["Testtext","Testtexte"],
-    "Are you sure you want to delete this file?" : "Möchtest du wirklich diese Datei löschen?"
+    "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
 },
 "nplurals=2; plural=(n != 1);");
