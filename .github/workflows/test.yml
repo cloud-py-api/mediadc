@@ -2,8 +2,6 @@ name: Test
 
 on:
   pull_request:
-    branches: [main]
-    types: [opened, reopened, edited, synchronize]
     paths:
       - 'lib/*.*'
       - 'src/*.*'
@@ -12,7 +10,6 @@ on:
       - 'tests/Integration/**'
       - 'tests/javascript/**'
   push:
-    branches: [main]
     paths:
       - 'lib/*.*'
       - 'src/*.*'

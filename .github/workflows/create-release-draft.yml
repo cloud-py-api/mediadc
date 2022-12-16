@@ -15,6 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: generate-binaries-2.yml
+          workflow_conclusion: ""
+
       - name: Get release info
         id: get_release_info
         run: |
@@ -34,6 +41,7 @@ jobs:
           echo "IS_NIGHTLY=$IS_NIGHTLY" >> $GITHUB_ENV
 
       # TODO: Add binaries creation
+      # binaries live in ./cp_binaries folder...
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -93,6 +101,8 @@ jobs:
           name: tarball
           path: build/artifacts/${{ env.APP_NAME }}.tar.gz
           if-no-files-found: error
+
+        # TOP: why do we need previous step?
 
       - name: Create release draft
         uses: ncipollo/release-action@v1.10.0

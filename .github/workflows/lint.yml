@@ -2,8 +2,6 @@ name: Lint
 
 on:
   pull_request:
-    branches: [main]
-    types: [opened, reopened, edited, synchronize]
     paths:
       - 'appinfo/*.*'
       - 'lib/**'
@@ -13,7 +11,6 @@ on:
       - 'tests/Integration/**'
       - 'tests/javascript/**'
   push:
-    branches: [main]
     paths:
       - 'appinfo/*.*'
       - 'lib/**'
