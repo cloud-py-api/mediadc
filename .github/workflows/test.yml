@@ -90,9 +90,9 @@ jobs:
           DB_PORT: 4444
         run: |
           mkdir data
-          php occ maintenance:install --verbose --database=mysql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          php occ app:enable ${{ env.CPA_NAME }}
-          php occ app:enable ${{ env.APP_NAME }}
+          php nextcloud/occ maintenance:install --verbose --database=mysql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          php nextcloud/occ app:enable ${{ env.CPA_NAME }}
+          php nextcloud/occ app:enable ${{ env.APP_NAME }}
 
       - name: Check PHPUnit config file existence
         id: check_phpunit
@@ -186,9 +186,9 @@ jobs:
           DB_PORT: 4444
         run: |
           mkdir data
-          php occ maintenance:install --verbose --database=pgsql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          php occ app:enable ${{ env.CPA_NAME }}
-          php occ app:enable ${{ env.APP_NAME }}
+          php nextcloud/occ maintenance:install --verbose --database=pgsql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
+          php nextcloud/occ app:enable ${{ env.CPA_NAME }}
+          php nextcloud/occ app:enable ${{ env.APP_NAME }}
 
       - name: Check PHPUnit config file existence
         id: check_phpunit
