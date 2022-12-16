@@ -33,7 +33,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["7.4", "8.0"]
-        server-versions: ['25.0.2']
+        server-versions: ['25']
 
     services:
       mysql:
@@ -127,7 +127,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["8.0"]
-        server-versions: ['25.0.2']
+        server-versions: ['25']
 
     services:
       postgres:
