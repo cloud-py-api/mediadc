@@ -1,11 +1,13 @@
 # Nextcloud MediaDC
 
 ![build](https://github.com/andrey18106/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
-![static-analysis](https://github.com/andrey18106/mediadc/actions/workflows/static-analysis.yml/badge.svg?branch=dev)
+[![Publish to Nextcloud app store](https://github.com/andrey18106/mediadc/actions/workflows/publish-appstore.yml/badge.svg)](https://github.com/andrey18106/mediadc/actions/workflows/publish-appstore.yml)
 
 [![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/andrey18106/mediadc/releases)
 
 **📸📹 Collect photo and video duplicates to save your cloud storage space**
+
+**[cloud_py_api](https://apps.nextcloud.com/apps/cloud_py_api)** required to be installed and enabled first.
 
 | **Not working on FreeBSD systems for now**
 
@@ -21,8 +23,8 @@ Nextcloud Media Duplicate Collector application
 
 ## 🚀 Installation
 
-In your Nextcloud, simply enable the MediaDC app through the Apps management.
-The Nextcloud MediaDC app is only included in nextcloud v21 and higher.
+First of all, in you Nextcloud install and enable [`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) through the Apps management, then install MediaDC app.
+Starting from 0.2.0 version MediaDC is only included in Nextcloud v25 and higher.
 #### Read more on [Wiki page](https://github.com/andrey18106/mediadc/wiki)
 
 ## Maintainers
@@ -30,20 +32,14 @@ The Nextcloud MediaDC app is only included in nextcloud v21 and higher.
 * [Andrey Borysenko](https://github.com/andrey18106)
 * [Alexander Piskun](https://github.com/bigcat88)
 
-If you'd like to join, just go through the [issues list](https://github.com/andrey18106/mediadc/issues) and fix some!
+## Support
 
-## 🏗 Development setup
+You can support us in several ways:
 
-To start working on frontend follow this steps:
-
-1. ☁ Clone this into your `apps` folder of your Nextcloud.
-1. 👩‍💻 In a terminal, run the command `make dev-setup` to install the dependencies.
-1. 🏗 Then to build the frontend application run `make build-js-production` (builds Vue application in production mode), or watch changes with: `make watch-js` (in development mode).
-1. ✅ Enable the app through the app management of your Nextcloud.
-1. 💻 Fix easily linting issues with `npm run lint:fix`.
-
-## Support us
-
-You can support us with any donate amount.
+- ⭐ Star our work (it really motivates)
+- ❗ Create an Issue or feature request (bring to us an excellent idea)
+- 💁 Resolve some Issue or create a Pull Request (contribute to this project)
+- 🪙 Donate with any amount with one of the links below (fund this project)
 
 [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ)
+[![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/cloud_py_api/donate)

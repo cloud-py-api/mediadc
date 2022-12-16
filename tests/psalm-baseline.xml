@@ -5,6 +5,11 @@
       <code>\OCP\Server</code>
     </UndefinedClass>
   </file>
+  <file src="lib/BackgroundJob/CollectorCleanupJob.php">
+    <UndefinedMethod occurrences="1">
+      <code>cleanup</code>
+    </UndefinedMethod>
+  </file>
   <file src="lib/Command/CollectorFileContentsCommand.php">
     <MissingDependency occurrences="3">
       <code>$this-&gt;rootFolder</code>
@@ -13,6 +18,9 @@
     </MissingDependency>
   </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
+    <InvalidArgument occurrences="1">
+      <code>$taskId</code>
+    </InvalidArgument>
     <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;url</code>
     </UndefinedThisPropertyAssignment>
@@ -32,6 +40,9 @@
     <InvalidReturnType occurrences="1">
       <code>JSONResponse</code>
     </InvalidReturnType>
+    <UndefinedMethod occurrences="1">
+      <code>getSystemInfo</code>
+    </UndefinedMethod>
   </file>
   <file src="lib/Dashboard/RecentTasksWidget.php">
     <UndefinedThisPropertyAssignment occurrences="1">
@@ -45,6 +56,16 @@
     <UndefinedDocblockClass occurrences="1">
       <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
     </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Migration/AppDataInitializationStep.php">
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;appInitialData</code>
+    </UndefinedThisPropertyAssignment>
+  </file>
+  <file src="lib/Migration/AppUpdateStep.php">
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;appManager</code>
+    </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
     <ImplementedParamTypeMismatch occurrences="1">
@@ -69,15 +90,13 @@
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/AppDataService.php">
-    <UndefinedThisPropertyAssignment occurrences="2">
-      <code>$this-&gt;ncDataFolder</code>
-      <code>$this-&gt;ncInstanceId</code>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;appManager</code>
     </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch occurrences="4">
-      <code>$this-&gt;ncDataFolder</code>
-      <code>$this-&gt;ncDataFolder</code>
-      <code>$this-&gt;ncInstanceId</code>
-      <code>$this-&gt;ncInstanceId</code>
+  </file>
+  <file src="lib/Service/CleanupService.php">
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;logger</code>
     </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Service/CollectorService.php">
@@ -121,21 +140,6 @@
     <MismatchingDocblockReturnType occurrences="1">
       <code>\OCA\MediaDC\Db\Setting|array</code>
     </MismatchingDocblockReturnType>
-  </file>
-  <file src="lib/Service/UtilsService.php">
-    <UndefinedClass occurrences="1">
-      <code>?DatabaseStatistics</code>
-    </UndefinedClass>
-    <UndefinedDocblockClass occurrences="3">
-      <code>$ini</code>
-      <code>$this-&gt;databaseStatistics</code>
-      <code>?DatabaseStatistics</code>
-    </UndefinedDocblockClass>
-    <UndefinedFunction occurrences="3">
-      <code>str_contains($machineType, 'arm64')</code>
-      <code>str_contains($machineType, 'x86_64')</code>
-      <code>str_contains($output[0], 'musl')</code>
-    </UndefinedFunction>
   </file>
   <file src="lib/Service/VideosService.php">
     <MissingDependency occurrences="1">

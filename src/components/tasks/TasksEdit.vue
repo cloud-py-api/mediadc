@@ -196,7 +196,7 @@
 import axios from '@nextcloud/axios'
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
-import { getFilePickerBuilder, showWarning, showSuccess } from '@nextcloud/dialogs'
+import { getFilePickerBuilder, showWarning, showSuccess, showError } from '@nextcloud/dialogs'
 import { emit } from '@nextcloud/event-bus'
 
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'

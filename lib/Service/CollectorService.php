@@ -148,7 +148,7 @@ class CollectorService {
 				if (json_decode($pythonBinary->getValue())) {
 					$scriptName = 'binaries/main';
 				} else {
-					$scriptName = 'python/main.py';
+					$scriptName = 'main.py';
 				}
 				if ($this->cpaUtils->isFunctionEnabled('exec')) {
 					$this->pythonService->run(Application::APP_ID, $scriptName, [
@@ -207,7 +207,7 @@ class CollectorService {
 		if (json_decode($pythonBinary->getValue())) {
 			$scriptName = 'binaries/main';
 		} else {
-			$scriptName = 'python/main.py';
+			$scriptName = 'main.py';
 		}
 		$taskIdsRunning = array_map(function ($task) {
 			return $task->getId();

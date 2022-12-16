@@ -91,7 +91,7 @@ class CollectorTaskNotificationCommand extends Command {
 			}
 			unset($d['filessizes']);
 			return $d;
-		}, $this->tasksDetailsMapper->findAllByIdGroupped($taskId));
+		}, $this->tasksDetailsMapper->findAllByIdGroupped(intval($taskId)));
 		$duplicates = 0;
 		foreach ($detailGroups as $group) {
 			$duplicates += count($group['files']);

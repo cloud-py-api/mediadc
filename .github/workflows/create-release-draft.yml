@@ -40,9 +40,6 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
           echo "IS_NIGHTLY=$IS_NIGHTLY" >> $GITHUB_ENV
 
-      # TODO: Add binaries creation
-      # binaries live in ./cp_binaries folder...
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -96,14 +93,6 @@ jobs:
           cd ${{ env.APP_NAME }}/build/artifacts
           tar -zcvf ${{ env.APP_NAME }}.tar.gz ${{ env.APP_NAME }}
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: tarball
-          path: build/artifacts/${{ env.APP_NAME }}.tar.gz
-          if-no-files-found: error
-
-        # TOP: why do we need previous step?
-
       - name: Create release draft
         uses: ncipollo/release-action@v1.10.0
         with:
@@ -113,6 +102,6 @@ jobs:
           commit: ${{ github.ref }}
           draft: true
           body: ${{ env.CHANGELOG }}
-          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz"
+          artifacts: "build/artifacts/${{ env.APP_NAME }}.tar.gz,cp_binaries/*"
           token: ${{ secrets.GITHUB_TOKEN }}
           artifactErrorsFailBuild: true
