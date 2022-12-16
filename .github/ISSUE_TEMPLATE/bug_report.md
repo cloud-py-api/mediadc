@@ -22,11 +22,11 @@ If applicable, add screenshots to help explain your problem.
 **Desktop (please complete the following information):**
  - OS [e.g. Ubuntu]
  - CPU [architecture x86, ARM]
- - Browser [e.g. chrome, firefox, safari]
- - Nextcloud version [e.g. 23]
+ - Nextcloud version [e.g. 25]
  - Database configuration [e.g. mysql 8.0.27, without sensitive information]
- - Python version [e.g. 3.9.1]
- - MediaDC version [e.g. 0.1.9]
+ - Python version [e.g. 3.9.1] (if used Python sources instead of binaries)
+ - MediaDC version [e.g. 0.3.0]
+ - `cloud_py_api` version [e.g. 0.1.0]
 
 **Additional context**
 Add any other context about the problem here.

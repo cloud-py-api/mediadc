@@ -33,6 +33,8 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
           echo "IS_NIGHTLY=$IS_NIGHTLY" >> $GITHUB_ENV
 
+      # TODO: Add binaries creation
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -48,6 +50,43 @@ jobs:
 
       - name: Package app
         run: krankerl package
+
+      - name: Get nextcloud-min-version from appinfo
+        id: appinfo
+        uses: skjnldsv/xpath-action@master
+        with:
+          filename: ${{ env.APP_NAME }}/appinfo/info.xml
+          expression: "//info//dependencies//nextcloud/@min-version"
+
+      - name: Checkout server ${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+        continue-on-error: true
+        id: server-checkout
+        run: |
+          NCVERSION=${{ fromJSON(steps.appinfo.outputs.result).nextcloud.min-version }}
+          wget --quiet https://download.nextcloud.com/server/releases/latest-$NCVERSION.zip
+          unzip latest-$NCVERSION.zip
+
+      - name: Checkout server master fallback
+        uses: actions/checkout@v3
+        if: ${{ steps.server-checkout.outcome != 'success' }}
+        with:
+          repository: nextcloud/server
+          path: nextcloud
+
+      - name: Sign app
+        run: |
+          # Extracting release
+          cd ${{ env.APP_NAME }}/build/artifacts
+          tar -xvf ${{ env.APP_NAME }}.tar.gz
+          cd ../../../
+          # Setting up keys
+          echo "${{ secrets.APP_PRIVATE_KEY }}" > ${{ env.APP_NAME }}.key
+          echo "${{ secrets.APP_PUBLIC_CRT }}" > ${{ env.APP_NAME.key }}
+          # Signing
+          php nextcloud/occ integrity:sign-app --privateKey=../${{ env.APP_NAME }}.key --certificate=../${{ env.APP_NAME }}.crt --path=../${{ env.APP_NAME }}/build/artifacts/${{ env.APP_NAME }}
+          # Rebuilding archive
+          cd ${{ env.APP_NAME }}/build/artifacts
+          tar -zcvf ${{ env.APP_NAME }}.tar.gz ${{ env.APP_NAME }}
 
       - uses: actions/upload-artifact@v3
         with:

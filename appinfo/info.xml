@@ -7,6 +7,8 @@
 	<description>
 	<![CDATA[
 
+**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) is required to be installed and enabled first.**
+
 This app allows to find duplicate or similar 📸📹 photos and videos
 * **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.
 * **Large amount of supported video  formats** All that is supported by ffmpeg.
@@ -18,7 +20,7 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
 	]]>
 	</description>
-	<version>0.3.0-beta.2</version>
+	<version>0.3.0</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>

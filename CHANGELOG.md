@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0 - 2022-12-xx]
+
+This is the first release with part of Python framework (no need of Python installation).
+MediaDC now requires [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) to be installed
+and enabled first.
+
+### Added
+
+- Added automatic download of pre-compiled Python binaries with all needed packages for work
+- Added option to use Python sources and manually installed system packages (except nextcloud snap)
+instead of binaries (to use python sources refer docs)
+
+### Changed
+
+- Removed Configuration page
+
+### Fixed
+
+- Fixed MediaDC now working on snap installations
+- Fixed NC OCC is not broken when MediaDC enabled (https://github.com/andrey18106/mediadc/issues/93)
+
 ## [0.3.0-beta.1 - 2022-11-30]
 
 This is the first beta release with part of Python Framework (no need of Python installation)

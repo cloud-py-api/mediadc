@@ -74,7 +74,7 @@ class AppUpdateStep implements IRepairStep {
 			. $this->appManager->getAppVersion(Application::APP_ID)
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
 		$this->cpaUtils->downloadPythonBinary(
-			$url, $this->appDataService->getAppDataFolder('binaries')
+			$url, $this->appDataService->getAppDataFolder('binaries'), 'main', true
 		);
 		$output->finishProgress();
 	}

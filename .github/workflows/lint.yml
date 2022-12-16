@@ -2,10 +2,26 @@ name: Lint
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main]
     types: [opened, reopened, edited, synchronize]
+    paths:
+      - 'appinfo/*.*'
+      - 'lib/**'
+      - 'src/**'
+      - 'templates/*.*'
+      - 'tests/Unit/**'
+      - 'tests/Integration/**'
+      - 'tests/javascript/**'
   push:
-    branches: [dev, main]
+    branches: [main]
+    paths:
+      - 'appinfo/*.*'
+      - 'lib/**'
+      - 'src/**'
+      - 'templates/*.*'
+      - 'tests/Unit/**'
+      - 'tests/Integration/**'
+      - 'tests/javascript/**'
   workflow_dispatch:
 
 jobs:
