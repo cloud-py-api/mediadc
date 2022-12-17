@@ -105,7 +105,7 @@ class AppDataInitializationStep implements IRepairStep {
 		$output->advance(1, 'Downloading app binary');
 		$output->warning('This step may take some time');
 		$url = 'https://github.com/andrey18106/mediadc/releases/download/v'
-			. $this->appManager->getAppVersion(Application::APP_ID)
+			. $this->appManager->getAppVersion(Application::APP_ID, false)
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
 		$this->cpaUtils->downloadPythonBinary(
 			$url, $this->appDataService->getAppDataFolder('binaries')
