@@ -48,6 +48,7 @@ You can support us in several ways:
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_home.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_2.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_3.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_2.png</screenshot>
@@ -72,7 +73,6 @@ You can support us in several ways:
 		</uninstall>
 	</repair-steps>
 	<commands>
-		<command>OCA\MediaDC\Command\CollectorFileContentsCommand</command>
 		<command>OCA\MediaDC\Command\CollectorCleanupCommand</command>
 		<command>OCA\MediaDC\Command\CollectorTaskNotificationCommand</command>
 	</commands>
