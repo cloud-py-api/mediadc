@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Завдання",
-    "Configuration" : "Налаштування",
     "Settings" : "Налаштування",
     "Select file" : "Виберіть файл",
     "Deselect all" : "Зняти всі позначки",
@@ -29,10 +28,6 @@ OC.L10N.register(
     "Edit" : "Редагувати",
     "Delete task" : "Вилучити завдання",
     "You are not allowed to manage other user's tasks." : "Відсутні права кеувати завданнями інших користувачів",
-    "Install" : "Встановити",
-    "Type" : "Тип",
-    "Actions" : "Дії",
-    "Update" : "Оновлення",
     "This files won't be scanned in further tasks." : "Файли не будо проскановано у наступних завданнях."
 },
 "nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);");

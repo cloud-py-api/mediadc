@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Tarefas",
-    "Configuration" : "Configuración",
     "Settings" : "Axustes",
     "Select file" : "Seleccionar ficheiro",
     "Deselect all" : "Desmarcar todo",
@@ -17,10 +16,6 @@
     "Start" : "Iniciar",
     "Delete" : "Eliminar",
     "Edit" : "Editar",
-    "Delete task" : "Eliminar tarefa",
-    "Install" : "Instalar",
-    "Type" : "Tipo",
-    "Actions" : "Accións",
-    "Update" : "Actualizar"
+    "Delete task" : "Eliminar tarefa"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

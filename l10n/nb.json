@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Oppgaver",
-    "Configuration" : "Oppsett",
     "Settings" : "Innstillinger",
     "Select file" : "Velg fil",
     "Deselect all" : "Fjern all markering",
@@ -18,10 +17,6 @@
     "Start" : "Start",
     "Delete" : "Slett",
     "Edit" : "Rediger",
-    "Delete task" : "Slett oppgave",
-    "Install" : "Installer",
-    "Type" : "Type",
-    "Actions" : "Handlinger",
-    "Update" : "Oppdater"
+    "Delete task" : "Slett oppgave"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

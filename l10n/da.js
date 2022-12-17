@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Opgaver",
-    "Configuration" : "sætning",
     "Settings" : "Indstillinger",
     "Select file" : "Vælg fil",
     "Deselect all" : "Fravælg alle",
@@ -22,10 +21,6 @@ OC.L10N.register(
     "Duplicate" : "dubletter",
     "Delete" : "Slet",
     "Edit" : "Redigér",
-    "Delete task" : "Slet opgave",
-    "Install" : "Installer",
-    "Type" : "Type",
-    "Actions" : "Handlinger",
-    "Update" : "Opdater"
+    "Delete task" : "Slet opgave"
 },
 "nplurals=2; plural=(n != 1);");

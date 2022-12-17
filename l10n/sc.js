@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Fainas",
-    "Configuration" : "Cunfiguratzione",
     "Settings" : "Impostatziones",
     "Deselect all" : "Deseletziona totu",
     "Select all" : "Seletziona totu",
@@ -22,10 +21,6 @@ OC.L10N.register(
     "Start" : "Cumintza",
     "Delete" : "Cantzella",
     "Edit" : "Modìfica",
-    "Delete task" : "Cantzella faina",
-    "Install" : "Installa",
-    "Type" : "Genia",
-    "Actions" : "Atziones",
-    "Update" : "Agiorna"
+    "Delete task" : "Cantzella faina"
 },
 "nplurals=2; plural=(n != 1);");

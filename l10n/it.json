@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Compiti",
-    "Configuration" : "Configurazione",
     "Settings" : "Impostazioni",
     "Select file" : "Seleziona file",
     "Deselect all" : "Deseleziona tutto",
@@ -21,10 +20,6 @@
     "Start" : "Avvia",
     "Delete" : "Elimina",
     "Edit" : "Modifica",
-    "Delete task" : "Elimina attività",
-    "Install" : "Installa",
-    "Type" : "Tipo",
-    "Actions" : "Azioni",
-    "Update" : "Aggiorna"
+    "Delete task" : "Elimina attività"
 },"pluralForm" :"nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }

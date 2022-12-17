@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Tehtävät",
-    "Configuration" : "Asetukset",
     "Settings" : "Asetukset",
     "Select file" : "Valitse tiedosto",
     "Deselect all" : "Poista valinnat",
@@ -20,10 +19,6 @@
     "Start" : "Aloita",
     "Delete" : "Poista",
     "Edit" : "Muokkaa",
-    "Delete task" : "Poista tehtävä",
-    "Install" : "Asenna",
-    "Type" : "Tyyppi",
-    "Actions" : "Toiminnot",
-    "Update" : "Päivitä"
+    "Delete task" : "Poista tehtävä"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

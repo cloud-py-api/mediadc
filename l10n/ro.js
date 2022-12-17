@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Sarcini",
-    "Configuration" : "Configurație",
     "Settings" : "Setări",
     "Deselect all" : "Deselectează tot",
     "Select all" : "Selectează tot",
@@ -16,10 +15,6 @@ OC.L10N.register(
     "Videos" : "Fișiere video",
     "Start" : "Începe",
     "Delete" : "Șterge",
-    "Edit" : "Editează",
-    "Install" : "Instalează",
-    "Type" : "Tip",
-    "Actions" : "Acțiuni",
-    "Update" : "Actualizare"
+    "Edit" : "Editează"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

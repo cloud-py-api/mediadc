@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Detyra",
-    "Configuration" : "Formësim",
     "Settings" : "Rregullimet",
     "Deselect all" : "Hiqi të gjithë",
     "Select all" : "Zgjidhi të gjitha",
@@ -17,9 +16,6 @@ OC.L10N.register(
     "Videos" : "Videot",
     "Start" : "Fillo",
     "Delete" : "Fshi",
-    "Edit" : "Përpuno",
-    "Type" : "Shtyp",
-    "Actions" : "Veprimet",
-    "Update" : "Përditëso"
+    "Edit" : "Përpuno"
 },
 "nplurals=2; plural=(n != 1);");

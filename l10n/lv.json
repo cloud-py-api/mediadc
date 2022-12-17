@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Uzdevumi",
-    "Configuration" : "Konfigurācija",
     "Settings" : "Iestatījumi",
     "Deselect all" : "Atcelt atzīmi",
     "Select all" : "Atzīmēt visu",
@@ -18,9 +17,6 @@
     "Edit" : "Rediģēt",
     "Ignored" : "Ignorēts",
     "Owner:" : "Īpašnieks:",
-    "Type" : "Tips",
-    "Actions" : "Darbības",
-    "Update" : "Atjaunināt",
     "Scan for duplicates" : "Skenējiet dublikātus",
     "Photos&Videos" : "Attēli un video"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"

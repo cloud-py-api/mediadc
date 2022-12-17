@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Nhiệm vụ",
-    "Configuration" : "Cấu hình",
     "Settings" : "Cài đặt",
     "Select file" : "Chọn tập tin",
     "Deselect all" : "Bỏ chọn tất cả",
@@ -16,10 +15,6 @@ OC.L10N.register(
     "Videos" : "Phim",
     "Start" : "Bắt đầu",
     "Delete" : "Xóa",
-    "Edit" : "Chỉnh sửa",
-    "Install" : "Cài đặt",
-    "Type" : "Loại",
-    "Actions" : "Hành động",
-    "Update" : "Cập nhật"
+    "Edit" : "Chỉnh sửa"
 },
 "nplurals=1; plural=0;");

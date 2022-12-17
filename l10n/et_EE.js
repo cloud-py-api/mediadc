@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Ülesanded",
-    "Configuration" : "Seadistamine",
     "Settings" : "Seaded",
     "Select all" : "Vali kõik",
     "Remove" : "Eemalda",
@@ -16,9 +15,6 @@ OC.L10N.register(
     "Videos" : "Videod",
     "Start" : "Algus",
     "Delete" : "Kustuta",
-    "Edit" : "Redigeeri",
-    "Type" : "Tüüp",
-    "Actions" : "Tegevused",
-    "Update" : "Uuenda"
+    "Edit" : "Redigeeri"
 },
 "nplurals=2; plural=(n != 1);");

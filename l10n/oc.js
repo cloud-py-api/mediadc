@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Prètzfaches",
-    "Configuration" : "Configuracion",
     "Settings" : "Paramètres",
     "Select file" : "Seleccionar fichièr",
     "Remove" : "Suprimir",
@@ -14,9 +13,6 @@ OC.L10N.register(
     "Select" : "Select",
     "Photos" : "Photos",
     "Delete" : "Suprimir",
-    "Edit" : "Modificar",
-    "Type" : "Tipe",
-    "Actions" : "Accions",
-    "Update" : "Actualizar"
+    "Edit" : "Modificar"
 },
 "nplurals=2; plural=(n > 1);");

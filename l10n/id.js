@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Tugas",
-    "Configuration" : "Konfigurasi",
     "Settings" : "Setelan",
     "Select file" : "Pilih file",
     "Deselect all" : "Tidak ada yang dipilih",
@@ -17,10 +16,6 @@ OC.L10N.register(
     "Videos" : "Video",
     "Start" : "Mulai",
     "Delete" : "Hapus",
-    "Edit" : "Sunting",
-    "Install" : "Pasang",
-    "Type" : "tipe",
-    "Actions" : "Tindakan",
-    "Update" : "Perbarui"
+    "Edit" : "Sunting"
 },
 "nplurals=1; plural=0;");

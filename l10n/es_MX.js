@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Tareas",
-    "Configuration" : "Configuración",
     "Settings" : "Ajustes",
     "Select file" : "Seleccionar archivo",
     "Deselect all" : "Deseleccionar todo",
@@ -18,9 +17,6 @@ OC.L10N.register(
     "Videos" : "Videos",
     "Start" : "Iniciar",
     "Delete" : "Eliminar",
-    "Edit" : "Editar",
-    "Type" : "Tipo",
-    "Actions" : "Acciones",
-    "Update" : "Actualizar"
+    "Edit" : "Editar"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

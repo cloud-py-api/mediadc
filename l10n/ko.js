@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "작업",
-    "Configuration" : "설정",
     "Settings" : "설정",
     "Select file" : "파일 선택",
     "Deselect all" : "모두 선택 해제",
@@ -20,11 +19,6 @@ OC.L10N.register(
     "Videos" : "동영상",
     "Start" : "시작",
     "Delete" : "삭제",
-    "Edit" : "편집",
-    "Install" : "설치",
-    "Please contact your cloud administration." : "클라우드의 관리자에게 문의하십시오.",
-    "Type" : "종류",
-    "Actions" : "동작",
-    "Update" : "업데이트"
+    "Edit" : "편집"
 },
 "nplurals=1; plural=0;");

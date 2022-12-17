@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Tehtävät",
-    "Configuration" : "Asetukset",
     "Settings" : "Asetukset",
     "Select file" : "Valitse tiedosto",
     "Deselect all" : "Poista valinnat",
@@ -22,10 +21,6 @@ OC.L10N.register(
     "Start" : "Aloita",
     "Delete" : "Poista",
     "Edit" : "Muokkaa",
-    "Delete task" : "Poista tehtävä",
-    "Install" : "Asenna",
-    "Type" : "Tyyppi",
-    "Actions" : "Toiminnot",
-    "Update" : "Päivitä"
+    "Delete task" : "Poista tehtävä"
 },
 "nplurals=2; plural=(n != 1);");

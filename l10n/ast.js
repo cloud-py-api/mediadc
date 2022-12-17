@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Xeres",
-    "Configuration" : "Configuración",
     "Settings" : "Settings",
     "Select all" : "Esbillar too",
     "Remove" : "Desaniciar",
@@ -16,9 +15,6 @@ OC.L10N.register(
     "Videos" : "Vídeos",
     "Start" : "Aniciu",
     "Delete" : "Desaniciar",
-    "Edit" : "Editar",
-    "Type" : "Type",
-    "Actions" : "Aiciones",
-    "Update" : "Anovar"
+    "Edit" : "Editar"
 },
 "nplurals=2; plural=(n != 1);");

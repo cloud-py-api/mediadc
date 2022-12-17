@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Prètzfaches",
-    "Configuration" : "Configuracion",
     "Settings" : "Paramètres",
     "Select file" : "Seleccionar fichièr",
     "Remove" : "Suprimir",
@@ -12,9 +11,6 @@
     "Select" : "Select",
     "Photos" : "Photos",
     "Delete" : "Suprimir",
-    "Edit" : "Modificar",
-    "Type" : "Tipe",
-    "Actions" : "Accions",
-    "Update" : "Actualizar"
+    "Edit" : "Modificar"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

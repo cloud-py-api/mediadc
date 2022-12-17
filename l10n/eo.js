@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Taskoj",
-    "Configuration" : "Agordo",
     "Settings" : "Agordoj",
     "Deselect all" : "Malelekti ĉion",
     "Select all" : "Elekti ĉion",
@@ -17,10 +16,6 @@ OC.L10N.register(
     "Videos" : "Videaĵoj",
     "Start" : "Komenco",
     "Delete" : "Forigi",
-    "Edit" : "Modifi",
-    "Install" : "Instali",
-    "Type" : "Tipo",
-    "Actions" : "Agoj",
-    "Update" : "Ĝisdatigi"
+    "Edit" : "Modifi"
 },
 "nplurals=2; plural=(n != 1);");

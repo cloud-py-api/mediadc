@@ -3,7 +3,6 @@
     "MediaDC" : "MediaDC",
     "Tasks" : "Feladatok",
     "Resolved" : "Megoldott",
-    "Configuration" : "Konfiguráció",
     "Settings" : "Beállítások",
     "Select file" : "Fájl kiválasztása",
     "Deselect all" : "Kijelölés megszüntetése",
@@ -32,13 +31,8 @@
     "Delete" : "Törlés",
     "Edit" : "Szerkesztés",
     "Delete task" : "Feladat törlése",
-    "Install" : "Telepítés",
-    "Type" : "Típus",
-    "Actions" : "Műveletek",
-    "Update" : "Frissítés",
     "Photos&Videos" : "Fotók és videók",
     "MediaDC Task Details" : "MediaDC – Feladat részletei",
-    "MediaDC Configuration" : "MediaDC – Beállítások",
     "MediaDC Resolved files" : "MediaDC – Feloldott fájlok",
     "Task successfully started with duplicated settings!" : "A feladat sikeresen elindult a kettőzött beállításokkal."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

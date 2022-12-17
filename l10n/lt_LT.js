@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Užduotys",
-    "Configuration" : "Konfigūracija",
     "Settings" : "Nustatymai",
     "_Delete file_::_Delete files_" : ["Ištrinti failą","Ištrinti failus","Ištrinti failus","Ištrinti failus"],
     "Group successfully removed (1 file left)" : "Grupė sėkmingai pašalinta (liko 1 failas)",
@@ -34,14 +33,6 @@ OC.L10N.register(
     "Stop" : "Stabdyti",
     "Delete" : "Ištrinti",
     "Edit" : "Taisyti",
-    "Delete task" : "Ištrinti užduotį",
-    "Install" : "Įdiegti",
-    "Reinstall" : "Įdiegti iš naujo",
-    "Type" : "Tipas",
-    "Packages" : "Paketai",
-    "Actions" : "Veiksmai",
-    "Update" : "Atnaujinti",
-    "Configuration errors" : "Konfigūracijos klaidos",
-    "Configuration warnings" : "Konfigūracijos įspėjimai"
+    "Delete task" : "Ištrinti užduotį"
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

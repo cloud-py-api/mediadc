@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "งาน",
-    "Configuration" : "การกำหนดค่า",
     "Settings" : "การตั้งค่า",
     "Deselect all" : "ยกเลิกการเลือกทั้งหมด",
     "Select all" : "เลือกทั้งหมด",
@@ -17,10 +16,6 @@ OC.L10N.register(
     "Videos" : "วิดีโอ",
     "Start" : "เริ่ม",
     "Delete" : "ลบ",
-    "Edit" : "แก้ไข",
-    "Install" : "ติดตั้ง",
-    "Type" : "ประเภท",
-    "Actions" : "การกระทำ",
-    "Update" : "อัปเดต"
+    "Edit" : "แก้ไข"
 },
 "nplurals=1; plural=0;");

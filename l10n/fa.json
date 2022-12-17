@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "وظایف",
-    "Configuration" : "پیکربندی",
     "Settings" : "تنظیمات",
     "Deselect all" : "لغو انتخاب همه",
     "Select all" : "انتخاب همه",
@@ -15,10 +14,6 @@
     "Videos" : "فیلم ها ",
     "Start" : "شروع کنید",
     "Delete" : "حذف",
-    "Edit" : "ویرایش",
-    "Install" : "نصب",
-    "Type" : "نوع",
-    "Actions" : "فعالیت ها",
-    "Update" : "به‌روز رسانی"
+    "Edit" : "ویرایش"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

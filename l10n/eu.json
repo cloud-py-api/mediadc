@@ -10,8 +10,6 @@
     "Maximum number of python background scripts running" : "Exekutatzen diren python atzeko planoko script gehieneko kopurua",
     "Exclude list" : "Baztertu zerrenda",
     "Global administrator's exclude list that applies to each task" : "Zeregin bakoitzari aplikatzen zaion administratzaile globalaren bazterketa-zerrenda",
-    "MediaDC installed flag" : "MediaDC instalatutako bandera",
-    "Installation data with current MediaDC configuration" : "Instalazio datuak egungo MediaDC konfigurazioarekin",
     "Full path to python interpreter" : "Python interpreterako bide-izen osoa",
     "Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command." : "Python exekutatu daitekeen bide absolutua (adibidez, \"/usr/bin/python3\"). `whhich python3` komandoaren bidez lor daiteke.",
     "Remote/Encrypted file size limit to process" : "Urruneko/Enkriptatutako fitxategien tamaina prozesatzeko muga",
@@ -26,10 +24,8 @@
     "Task finished, check out results" : "Ataza amaitu da, begiratu emaitzak",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Nextcloud Media Duplicate Collector aplikazioa",
-    "**Python 3.6.8 or higher required**\n\nThis app allows to find duplicate or similar 📸📹 photos and videos\n* **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.\n* **Large amount of supported video  formats** All that is supported by ffmpeg.\n* **Flexible config** Set your precision level for comparing, choose algo that suits for you most.\n* **Quick rescan** Once file was scanned, hash will be saved, and used for other scans.\n* **External Storages support** [in progress] Search everywhere among all files available to the user.\n* **Save your time and cloud space** The title says all...\n\nQuick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki)." : "**Python 3.6.8 edo berriagoa behar da**\n\nAplikazio honek 📸📹 argazki eta bideo bikoiztuak edo antzekoak aurkitzeko aukera ematen du\n* ** Irudi formatu asko onartzen dira ** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 eta beste batzuk.\n* **Onartutako bideo formatu kopuru handia** ffmpeg-ek onartzen duen guztia.\n* **Konfigurazio malgua** Ezarri zure zehaztasun-maila alderatzeko, aukeratu gehien egokitzen zaizun algo-a.\n* **Azterketa azkarra** Fitxategia eskaneatu ondoren, hash-a gordeko da eta beste azterketa batzuetarako erabiliko da.\n* **Kanpoko biltegiratze-laguntza** [abian da] Bilatu edonon erabiltzaileak eskuragarri dituen fitxategi guztien artean.\n* **Aurreztu denbora eta hodeian espazioa** Izenburuak dena dio...\n\nHasierako gida azkarra eta informazio gehiago gure [Wiki](https://github.com/andrey18106/mediadc/wiki).",
     "Tasks" : "Zereginak",
     "Resolved" : "Ebatzita",
-    "Configuration" : "Ezarpenak",
     "Settings" : "Ezarpenak",
     "Select file" : "Hautatu fitxategia",
     "_Delete file_::_Delete files_" : ["Ezabatu fitxategiaa","Ezabatu fitxategiak"],
@@ -112,14 +108,6 @@
     "Delete" : "Ezabatu",
     "Edit" : "Aldatu",
     "Delete task" : "Ezabatu zeregina",
-    "Ignored" : "Ezikusia",
-    "Install" : "Instalatu",
-    "Type" : "Mota",
-    "Packages" : "Paketeak",
-    "Installed" : "Instalatuta",
-    "Actions" : "Ekintzak",
-    "Update" : "Eguneratu",
-    "Configuration errors" : "Konfigurazio erroreak",
-    "Configuration warnings" : "Konfigurazio oharrak"
+    "Ignored" : "Ezikusia"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

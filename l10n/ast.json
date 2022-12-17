@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Xeres",
-    "Configuration" : "Configuración",
     "Settings" : "Settings",
     "Select all" : "Esbillar too",
     "Remove" : "Desaniciar",
@@ -14,9 +13,6 @@
     "Videos" : "Vídeos",
     "Start" : "Aniciu",
     "Delete" : "Desaniciar",
-    "Edit" : "Editar",
-    "Type" : "Type",
-    "Actions" : "Aiciones",
-    "Update" : "Anovar"
+    "Edit" : "Editar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

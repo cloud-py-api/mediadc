@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "وظایف",
-    "Configuration" : "پیکربندی",
     "Settings" : "تنظیمات",
     "Deselect all" : "لغو انتخاب همه",
     "Select all" : "انتخاب همه",
@@ -17,10 +16,6 @@ OC.L10N.register(
     "Videos" : "فیلم ها ",
     "Start" : "شروع کنید",
     "Delete" : "حذف",
-    "Edit" : "ویرایش",
-    "Install" : "نصب",
-    "Type" : "نوع",
-    "Actions" : "فعالیت ها",
-    "Update" : "به‌روز رسانی"
+    "Edit" : "ویرایش"
 },
 "nplurals=2; plural=(n > 1);");

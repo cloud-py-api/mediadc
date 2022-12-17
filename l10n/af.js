@@ -12,9 +12,6 @@ OC.L10N.register(
     "Videos" : "Video's ",
     "Start" : "Start",
     "Delete" : "Skrap",
-    "Edit" : "Wysig",
-    "Type" : "Tipe",
-    "Actions" : "Aksies",
-    "Update" : "Werk by"
+    "Edit" : "Wysig"
 },
 "nplurals=2; plural=(n != 1);");

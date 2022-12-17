@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Úlohy",
-    "Configuration" : "Nastavenia",
     "Settings" : "Nastavenia",
     "Select file" : "Označ súbor",
     "Deselect all" : "Odznačiť všetko",
@@ -24,10 +23,6 @@ OC.L10N.register(
     "Duplicate" : "Duplikát",
     "Delete" : "Vymazať",
     "Edit" : "Upraviť",
-    "Delete task" : "Odstrániť úlohu",
-    "Install" : "Inštalovať",
-    "Type" : "Typ",
-    "Actions" : "Akcie",
-    "Update" : "Aktualizovať"
+    "Delete task" : "Odstrániť úlohu"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

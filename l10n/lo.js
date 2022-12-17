@@ -13,7 +13,6 @@ OC.L10N.register(
     "Videos" : "ວິດີໂອ",
     "Start" : "ເລີ່ມຕົ້ນ",
     "Delete" : "ລຶບ",
-    "Edit" : "ແກ້ໄຂ",
-    "Type" : "ພິມ"
+    "Edit" : "ແກ້ໄຂ"
 },
 "nplurals=1; plural=0;");

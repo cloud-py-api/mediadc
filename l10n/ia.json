@@ -1,5 +1,4 @@
 { "translations": {
-    "Configuration" : "Configuration",
     "Settings" : "Configurationes",
     "Select all" : "Selectionar toto",
     "Confirm" : "Confirmar",
@@ -9,9 +8,6 @@
     "Photos" : "Photos",
     "Start" : "Initio",
     "Delete" : "Deler",
-    "Edit" : "Modificar",
-    "Type" : "Typo",
-    "Actions" : "Actiones",
-    "Update" : "Actualisation"
+    "Edit" : "Modificar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

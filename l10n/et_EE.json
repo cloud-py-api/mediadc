@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Ülesanded",
-    "Configuration" : "Seadistamine",
     "Settings" : "Seaded",
     "Select all" : "Vali kõik",
     "Remove" : "Eemalda",
@@ -14,9 +13,6 @@
     "Videos" : "Videod",
     "Start" : "Algus",
     "Delete" : "Kustuta",
-    "Edit" : "Redigeeri",
-    "Type" : "Tüüp",
-    "Actions" : "Tegevused",
-    "Update" : "Uuenda"
+    "Edit" : "Redigeeri"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

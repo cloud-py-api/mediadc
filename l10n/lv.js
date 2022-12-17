@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Uzdevumi",
-    "Configuration" : "Konfigurācija",
     "Settings" : "Iestatījumi",
     "Deselect all" : "Atcelt atzīmi",
     "Select all" : "Atzīmēt visu",
@@ -20,9 +19,6 @@ OC.L10N.register(
     "Edit" : "Rediģēt",
     "Ignored" : "Ignorēts",
     "Owner:" : "Īpašnieks:",
-    "Type" : "Tips",
-    "Actions" : "Darbības",
-    "Update" : "Atjaunināt",
     "Scan for duplicates" : "Skenējiet dublikātus",
     "Photos&Videos" : "Attēli un video"
 },

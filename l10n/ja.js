@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "タスク",
-    "Configuration" : "設定",
     "Settings" : "設定",
     "Select file" : "ファイルを選択",
     "Deselect all" : "選択を全解除",
@@ -23,10 +22,6 @@ OC.L10N.register(
     "Start" : "開始",
     "Delete" : "削除",
     "Edit" : "編集",
-    "Delete task" : "タスクを削除",
-    "Install" : "インストール",
-    "Type" : "タイプ",
-    "Actions" : "アクション",
-    "Update" : "更新"
+    "Delete task" : "タスクを削除"
 },
 "nplurals=1; plural=0;");

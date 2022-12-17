@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Verkefni",
-    "Configuration" : "Uppsetning",
     "Settings" : "Stillingar",
     "Deselect all" : "Afvelja allt",
     "Select all" : "Select all",
@@ -19,10 +18,6 @@ OC.L10N.register(
     "Start" : "Start",
     "Duplicate" : "Tvítaka",
     "Delete" : "Eyða",
-    "Edit" : "Breyta",
-    "Install" : "Setja upp",
-    "Type" : "Tegund",
-    "Actions" : "Aðgerðir",
-    "Update" : "Uppfæra"
+    "Edit" : "Breyta"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

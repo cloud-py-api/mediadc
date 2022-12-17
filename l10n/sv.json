@@ -3,7 +3,6 @@
     "Hashing algorithm" : "Hashing-algorithm",
     "Hash size" : "Hashstorlek",
     "Tasks" : "Uppgifter",
-    "Configuration" : "Inställningar",
     "Settings" : "Inställningar",
     "Select file" : "Välj fil",
     "Deselect all" : "Avmarkera alla",
@@ -25,10 +24,6 @@
     "Duplicate" : "Dubblett",
     "Delete" : "Radera",
     "Edit" : "Ändra",
-    "Delete task" : "Ta bort uppgift",
-    "Install" : "Installera",
-    "Type" : "Typ",
-    "Actions" : "Åtgärder",
-    "Update" : "Uppdatera"
+    "Delete task" : "Ta bort uppgift"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

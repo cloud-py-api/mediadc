@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Compiti",
-    "Configuration" : "Configurazione",
     "Settings" : "Impostazioni",
     "Select file" : "Seleziona file",
     "Deselect all" : "Deseleziona tutto",
@@ -23,10 +22,6 @@ OC.L10N.register(
     "Start" : "Avvia",
     "Delete" : "Elimina",
     "Edit" : "Modifica",
-    "Delete task" : "Elimina attività",
-    "Install" : "Installa",
-    "Type" : "Tipo",
-    "Actions" : "Azioni",
-    "Update" : "Aggiorna"
+    "Delete task" : "Elimina attività"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

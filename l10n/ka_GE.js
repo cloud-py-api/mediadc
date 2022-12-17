@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "დავალებები",
-    "Configuration" : "კონფიგურაცია",
     "Settings" : "პარამეტრები",
     "Deselect all" : "ყველას წაშლა",
     "Select all" : "ყველას არჩევა",
@@ -17,9 +16,6 @@ OC.L10N.register(
     "Videos" : "ვიდეოები",
     "Start" : "დაწყება",
     "Delete" : "წაშლა",
-    "Edit" : "შეცვლა",
-    "Type" : "სახეობა",
-    "Actions" : "მოქმედებები",
-    "Update" : "განახლება"
+    "Edit" : "შეცვლა"
 },
 "nplurals=2; plural=(n!=1);");

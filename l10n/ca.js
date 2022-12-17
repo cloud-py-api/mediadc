@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Tasques",
-    "Configuration" : "Configuració",
     "Settings" : "Paràmetres",
     "Select file" : "Selecciona un fitxer",
     "Deselect all" : "No seleccionis res",
@@ -23,10 +22,6 @@ OC.L10N.register(
     "Duplicate" : "Duplica",
     "Delete" : "Suprimir",
     "Edit" : "Edita",
-    "Delete task" : "Esborra la tasca",
-    "Install" : "Instal·la",
-    "Type" : "Tipus",
-    "Actions" : "Accions",
-    "Update" : "Actualitzar"
+    "Delete task" : "Esborra la tasca"
 },
 "nplurals=2; plural=(n != 1);");

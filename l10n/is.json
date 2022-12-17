@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Verkefni",
-    "Configuration" : "Uppsetning",
     "Settings" : "Stillingar",
     "Deselect all" : "Afvelja allt",
     "Select all" : "Select all",
@@ -17,10 +16,6 @@
     "Start" : "Start",
     "Duplicate" : "Tvítaka",
     "Delete" : "Eyða",
-    "Edit" : "Breyta",
-    "Install" : "Setja upp",
-    "Type" : "Tegund",
-    "Actions" : "Aðgerðir",
-    "Update" : "Uppfæra"
+    "Edit" : "Breyta"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

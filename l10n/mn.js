@@ -12,9 +12,6 @@ OC.L10N.register(
     "Videos" : "Бичлэгүүд",
     "Start" : "эхлэх",
     "Delete" : "Устгах",
-    "Edit" : "засварлах",
-    "Type" : "Төрөл",
-    "Actions" : "Үйл ажиллагаа",
-    "Update" : "Шинэчлэх"
+    "Edit" : "засварлах"
 },
 "nplurals=2; plural=(n != 1);");

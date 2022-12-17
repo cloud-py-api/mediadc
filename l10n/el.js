@@ -4,7 +4,6 @@ OC.L10N.register(
     "Hashing algorithm" : "Αλγόριθμος κατακερματισμού",
     "Hashing algorithm used by Python background script" : "Αλγόριθμος κατακερματισμού που χρησιμοποιείται από το Python script παρασκηνίου",
     "Tasks" : "Εργασίες",
-    "Configuration" : "Ρύθμιση",
     "Settings" : "Ρυθμίσεις",
     "Select file" : "Επιλέξτε Αρχείο",
     "_Delete file_::_Delete files_" : ["Διαγραφή αρχείου","Διαγραφή αρχείων"],
@@ -15,7 +14,6 @@ OC.L10N.register(
     "Go to page" : "Μετάβαση στη σελίδα",
     "Change to grid view" : "Αλλαγή σε προβολή πλέγματος",
     "Change to list view" : "Αλλαγή σε προβολή λίστας",
-    "No available algorithms. Configure application dependencies on Configuration page" : "Δεν υπάρχουν διαθέσιμοι αλγόριθμοι. Διαμορφώστε τις εξαρτήσεις εφαρμογών στη σελίδα Διαμόρφωση",
     "Remove" : "Αφαίρεση",
     "Confirm" : "Επιβεβαίωση",
     "Decline" : "Απόρριψη",
@@ -28,11 +26,6 @@ OC.L10N.register(
     "Start" : "Έναρξη",
     "Delete" : "Διαγραφή",
     "Edit" : "Επεξεργασία",
-    "Delete task" : "Διαγραφή εργασίας",
-    "Install" : "Εγκατάσταση",
-    "Available algorithms: " : "Διαθέσιμοι αλγόριθμοι:",
-    "Type" : "Τύπος",
-    "Actions" : "Ενέργειες",
-    "Update" : "Ενημέρωση"
+    "Delete task" : "Διαγραφή εργασίας"
 },
 "nplurals=2; plural=(n != 1);");

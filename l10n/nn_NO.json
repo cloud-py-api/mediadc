@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Oppgåver",
-    "Configuration" : "Innstillingar",
     "Settings" : "Innstillingar",
     "Select file" : "Vel fil",
     "Select all" : "Merk alt",
@@ -12,9 +11,6 @@
     "Videos" : "Video",
     "Start" : "Start",
     "Delete" : "Slett",
-    "Edit" : "Rediger",
-    "Type" : "Type",
-    "Actions" : "Handlingar",
-    "Update" : "Oppdater"
+    "Edit" : "Rediger"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

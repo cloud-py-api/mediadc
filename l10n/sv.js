@@ -5,7 +5,6 @@ OC.L10N.register(
     "Hashing algorithm" : "Hashing-algorithm",
     "Hash size" : "Hashstorlek",
     "Tasks" : "Uppgifter",
-    "Configuration" : "Inställningar",
     "Settings" : "Inställningar",
     "Select file" : "Välj fil",
     "Deselect all" : "Avmarkera alla",
@@ -27,10 +26,6 @@ OC.L10N.register(
     "Duplicate" : "Dubblett",
     "Delete" : "Radera",
     "Edit" : "Ändra",
-    "Delete task" : "Ta bort uppgift",
-    "Install" : "Installera",
-    "Type" : "Typ",
-    "Actions" : "Åtgärder",
-    "Update" : "Uppdatera"
+    "Delete task" : "Ta bort uppgift"
 },
 "nplurals=2; plural=(n != 1);");

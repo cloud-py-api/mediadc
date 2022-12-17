@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Задаци",
-    "Configuration" : "Подешавање",
     "Settings" : "Поставке",
     "Deselect all" : "Поништи цео избор",
     "Select all" : "Одабери све ",
@@ -19,10 +18,6 @@ OC.L10N.register(
     "Start" : "Почетак",
     "Delete" : "Избриши",
     "Edit" : "Измени",
-    "Delete task" : "Обриши задатак",
-    "Install" : "Инсталирај",
-    "Type" : "Тип",
-    "Actions" : "Радње",
-    "Update" : "Ажурирај"
+    "Delete task" : "Обриши задатак"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

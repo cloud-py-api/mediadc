@@ -1,7 +1,6 @@
 OC.L10N.register(
     "mediadc",
     {
-    "Configuration" : "Configuration",
     "Settings" : "Configurationes",
     "Select all" : "Selectionar toto",
     "Confirm" : "Confirmar",
@@ -11,9 +10,6 @@ OC.L10N.register(
     "Photos" : "Photos",
     "Start" : "Initio",
     "Delete" : "Deler",
-    "Edit" : "Modificar",
-    "Type" : "Typo",
-    "Actions" : "Actiones",
-    "Update" : "Actualisation"
+    "Edit" : "Modificar"
 },
 "nplurals=2; plural=(n != 1);");

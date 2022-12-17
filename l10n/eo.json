@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Taskoj",
-    "Configuration" : "Agordo",
     "Settings" : "Agordoj",
     "Deselect all" : "Malelekti ĉion",
     "Select all" : "Elekti ĉion",
@@ -15,10 +14,6 @@
     "Videos" : "Videaĵoj",
     "Start" : "Komenco",
     "Delete" : "Forigi",
-    "Edit" : "Modifi",
-    "Install" : "Instali",
-    "Type" : "Tipo",
-    "Actions" : "Agoj",
-    "Update" : "Ĝisdatigi"
+    "Edit" : "Modifi"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

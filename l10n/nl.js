@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Taken",
-    "Configuration" : "Configuratie",
     "Settings" : "Instellingen",
     "Select file" : "Selecteer bestand",
     "Deselect all" : "Deselecteer alles",
@@ -24,10 +23,6 @@ OC.L10N.register(
     "Duplicate" : "Duplicaat",
     "Delete" : "Verwijder",
     "Edit" : "Bewerk",
-    "Delete task" : "Verwijder taak",
-    "Install" : "Installeren",
-    "Type" : "Type",
-    "Actions" : "Acties",
-    "Update" : "Update"
+    "Delete task" : "Verwijder taak"
 },
 "nplurals=2; plural=(n != 1);");

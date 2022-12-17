@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Oppgaver",
-    "Configuration" : "Oppsett",
     "Settings" : "Innstillinger",
     "Select file" : "Velg fil",
     "Deselect all" : "Fjern all markering",
@@ -20,10 +19,6 @@ OC.L10N.register(
     "Start" : "Start",
     "Delete" : "Slett",
     "Edit" : "Rediger",
-    "Delete task" : "Slett oppgave",
-    "Install" : "Installer",
-    "Type" : "Type",
-    "Actions" : "Handlinger",
-    "Update" : "Oppdater"
+    "Delete task" : "Slett oppgave"
 },
 "nplurals=2; plural=(n != 1);");

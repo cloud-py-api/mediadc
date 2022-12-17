@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "Tugas",
-    "Configuration" : "Konfigurasi",
     "Settings" : "Setelan",
     "Select file" : "Pilih file",
     "Deselect all" : "Tidak ada yang dipilih",
@@ -15,10 +14,6 @@
     "Videos" : "Video",
     "Start" : "Mulai",
     "Delete" : "Hapus",
-    "Edit" : "Sunting",
-    "Install" : "Pasang",
-    "Type" : "tipe",
-    "Actions" : "Tindakan",
-    "Update" : "Perbarui"
+    "Edit" : "Sunting"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

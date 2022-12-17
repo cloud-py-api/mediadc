@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "工作項目",
-    "Configuration" : "設定",
     "Settings" : "設定",
     "Select file" : "選擇檔案",
     "Deselect all" : "取消全選",
@@ -24,10 +23,6 @@ OC.L10N.register(
     "Duplicate" : "重複",
     "Delete" : "刪除",
     "Edit" : "編輯",
-    "Delete task" : "刪除工作項目",
-    "Install" : "安裝",
-    "Type" : "類型",
-    "Actions" : "動作",
-    "Update" : "更新"
+    "Delete task" : "刪除工作項目"
 },
 "nplurals=1; plural=0;");

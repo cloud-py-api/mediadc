@@ -1,6 +1,5 @@
 { "translations": {
     "Tasks" : "დავალებები",
-    "Configuration" : "კონფიგურაცია",
     "Settings" : "პარამეტრები",
     "Deselect all" : "ყველას წაშლა",
     "Select all" : "ყველას არჩევა",
@@ -15,9 +14,6 @@
     "Videos" : "ვიდეოები",
     "Start" : "დაწყება",
     "Delete" : "წაშლა",
-    "Edit" : "შეცვლა",
-    "Type" : "სახეობა",
-    "Actions" : "მოქმედებები",
-    "Update" : "განახლება"
+    "Edit" : "შეცვლა"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

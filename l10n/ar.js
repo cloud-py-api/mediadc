@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "المهام",
-    "Configuration" : "إعداد",
     "Settings" : "الإعدادات",
     "Select file" : "اختيار الملف",
     "Deselect all" : "إلغاء تحديد الكل",
@@ -23,10 +22,6 @@ OC.L10N.register(
     "Task errors" : "أخطاء في المهام",
     "Task terminated" : "نهاية المهمة",
     "You are not allowed to terminate this task" : "غير مسموح لك بإلغاء هذه المهمة",
-    "Task successfully restarted with previous settings!" : "تم بنجاح إعادة تشغيل المهمة بنفس الإعدادات السابقة",
-    "Install" : "تثبيت",
-    "Type" : "نوع",
-    "Actions" : "الإجراءات",
-    "Update" : "تحديث"
+    "Task successfully restarted with previous settings!" : "تم بنجاح إعادة تشغيل المهمة بنفس الإعدادات السابقة"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

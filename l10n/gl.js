@@ -2,7 +2,6 @@ OC.L10N.register(
     "mediadc",
     {
     "Tasks" : "Tarefas",
-    "Configuration" : "Configuración",
     "Settings" : "Axustes",
     "Select file" : "Seleccionar ficheiro",
     "Deselect all" : "Desmarcar todo",
@@ -19,10 +18,6 @@ OC.L10N.register(
     "Start" : "Iniciar",
     "Delete" : "Eliminar",
     "Edit" : "Editar",
-    "Delete task" : "Eliminar tarefa",
-    "Install" : "Instalar",
-    "Type" : "Tipo",
-    "Actions" : "Accións",
-    "Update" : "Actualizar"
+    "Delete task" : "Eliminar tarefa"
 },
 "nplurals=2; plural=(n != 1);");
