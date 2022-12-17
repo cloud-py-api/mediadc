@@ -1,0 +1,11 @@
+name: Test Binaries
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-binaries-in-release:
+    uses: cloud-py-api/py_bundler/.github/workflows/test-binaries.yml@main
+    with:
+      test_args: --test tests/cat.hif --test tests/cat.png
+      version_prefix: v
