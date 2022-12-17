@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.0 - 2022-12-xx]
+## [0.3.0 - 2022-12-18]
 
 This is the first release with part of Python framework (no need of Python installation).
 MediaDC now requires [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) to be installed
