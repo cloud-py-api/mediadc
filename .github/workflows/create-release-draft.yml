@@ -29,7 +29,7 @@ jobs:
           IS_NIGHTLY=$(if [[ $APP_VERSION == *"beta"* ]]; then echo "true"; else echo "false"; fi)
           echo "::set-output name=version::v${APP_VERSION}"
           echo "::set-output name=tag::v${APP_VERSION}"
-          CHANGELOG=$(grep -oPz "(?s)##\s\[$APP_VERSION.+?(?=##\s\[|$)" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d')
+          CHANGELOG=$(grep -oPz "(?s)##\s\[$APP_VERSION\s.+?(?=##\s\[|$)" ./CHANGELOG.md | tr -d '\0' | sed /^$/d | sed '1d')
           CHANGELOG=$(echo "$CHANGELOG" | sed '$!N;s/^###.*\n#/#/;P;D' | sed '$!N;s/^###.*\n#/#/;P;D' | sed '${/^###/d;}')
           if [ "$CHANGELOG" == "" ]; then
             echo "changelog is empty!"
