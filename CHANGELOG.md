@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1 - 2022-12-20]
+
+### Fixed
+
+- Fixed critical bug with db connection in binaries
+
 ## [0.3.0 - 2022-12-18]
 
 This is the first release with part of Python framework (no need of Python installation).
