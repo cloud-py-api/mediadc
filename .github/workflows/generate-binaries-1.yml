@@ -4,5 +4,5 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-prepare-workflow-in-bundler-repo:
-    uses: cloud-py-api/py_bundler/.github/workflows/generate-binaries.yml@main
+  bundler-prepare-binaries:
+    uses: cloud-py-api/py_bundler/.github/workflows/generate-binaries-1.yml@main

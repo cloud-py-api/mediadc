@@ -1,11 +1,15 @@
 name: Test Binaries
 
 on:
+  workflow_run:
+    workflows: [ Generate Binaries-2 ]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
-  test-binaries-in-release:
+  bundler-test-binaries:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     uses: cloud-py-api/py_bundler/.github/workflows/test-binaries.yml@main
     with:
       test_args: --test tests/cat.hif --test tests/cat.png
-      version_prefix: v

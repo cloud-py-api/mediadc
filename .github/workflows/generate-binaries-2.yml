@@ -7,6 +7,6 @@ on:
       - completed
 
 jobs:
-  call-final-workflow-in-bundler-repo:
+  bundler-generate-binaries:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: cloud-py-api/py_bundler/.github/workflows/generate-binaries-final.yml@main
+    uses: cloud-py-api/py_bundler/.github/workflows/generate-binaries-2.yml@main
