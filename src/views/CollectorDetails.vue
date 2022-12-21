@@ -25,6 +25,7 @@
 <template>
 	<div v-if="!loading" class="container">
 		<TasksEdit v-if="editingTask" :opened.sync="editingTask" />
+		<DetailsExport v-if="exporting" :opened.sync="exporting" :task="task" />
 		<div class="task-details">
 			<div class="task-details-heading">
 				<h2>
@@ -92,6 +93,17 @@
 									:close-after-click="true"
 									@click="_terminateTask(task)">
 									{{ t('mediadc', 'Stop') }}
+								</NcActionButton>
+								<NcActionButton v-if="getStatusBadge(task) === 'finished'"
+									v-tooltip="{ content: t('mediadc', 'Export task results'), placement: 'left' }"
+									:close-after-click="true"
+									@click="openExportResultsDialog(task)">
+									<template #default>
+										{{ t('mediadc', 'Export') }}
+									</template>
+									<template #icon>
+										<FileExportOutline :size="18" />
+									</template>
 								</NcActionButton>
 								<NcActionButton v-tooltip="{content: t('mediadc', 'Delete task'), placement: 'left'}"
 									icon="icon-delete"
@@ -162,30 +174,34 @@
 import axios from '@nextcloud/axios'
 import { getCurrentUser } from '@nextcloud/auth'
 import { subscribe, unsubscribe } from '@nextcloud/event-bus'
-import { showSuccess, showError, showWarning } from '@nextcloud/dialogs'
+import { showSuccess, showError, showWarning, showMessage } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
 import { mapActions, mapGetters } from 'vuex'
 
 import DetailsList from '../components/details/DetailsList.vue'
 import Formats from '../mixins/Formats.js'
 import TasksEdit from '../components/tasks/TasksEdit.vue'
+import DetailsExport from '../components/details/DetailsExport.vue'
 
 import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 import NcProgressBar from '@nextcloud/vue/dist/Components/NcProgressBar.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
+import FileExportOutline from 'vue-material-design-icons/FileExportOutline.vue'
 
 export default {
 	name: 'CollectorDetails',
 	components: {
 		DetailsList,
 		TasksEdit,
+		DetailsExport,
 		NcActions,
 		NcActionButton,
 		NcProgressBar,
 		NcButton,
 		ContentCopy,
+		FileExportOutline,
 	},
 	mixins: [Formats],
 	props: {
@@ -203,6 +219,7 @@ export default {
 			tasksUpdater: null,
 			collapsedStatus: false,
 			editingTask: false,
+			exporting: false,
 		}
 	},
 	computed: {
@@ -333,6 +350,13 @@ export default {
 		},
 		openEditTaskDialog() {
 			this.editingTask = true
+		},
+		openExportResultsDialog(task) {
+			if (this.getStatusBadge(task) === 'finished' && this.details.length > 0) {
+				this.exporting = true
+			} else {
+				showMessage(this.t('mediadc', 'No results to export'))
+			}
 		},
 		filesDirLink(dir) {
 			if (dir) {

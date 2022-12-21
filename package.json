@@ -1,7 +1,7 @@
 {
 	"name": "mediadc",
 	"description": "Nextcloud Media Duplicate Collector application",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"keywords": [
 		"nextcloud",
 		"photos",
@@ -49,12 +49,12 @@
 		"@nextcloud/l10n": "^1.6.0",
 		"@nextcloud/moment": "^1.2.1",
 		"@nextcloud/router": "^2.0.0",
-		"@nextcloud/vue": "^7.0.1",
+		"@nextcloud/vue": "^7.2.0",
 		"vue": "^2.7.13",
-		"vuex": "^3.6.2",
+		"vue-material-design-icons": "^5.1.2",
 		"vue-router": "^3.5.3",
-		"vuex-router-sync": "^5.0.0",
-		"vue-material-design-icons": "^5.1.2"
+		"vuex": "^3.6.2",
+		"vuex-router-sync": "^5.0.0"
 	},
 	"devDependencies": {
 		"@nextcloud/babel-config": "^1.0.0",

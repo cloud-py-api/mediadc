@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.2 - 2022-12-22]
+
+[`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
+and enabled first.
+
+### Added
+
+- Added option to export task details results (https://github.com/andrey18106/mediadc/issues/60)
+
+### Changed
+
+- Changed settings list
+
 ## [0.3.1 - 2022-12-20]
 
 ### Fixed

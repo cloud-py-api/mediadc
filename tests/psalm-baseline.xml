@@ -10,13 +10,6 @@
       <code>cleanup</code>
     </UndefinedMethod>
   </file>
-  <file src="lib/Command/CollectorFileContentsCommand.php">
-    <MissingDependency occurrences="3">
-      <code>$this-&gt;rootFolder</code>
-      <code>IRootFolder</code>
-      <code>IRootFolder</code>
-    </MissingDependency>
-  </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
     <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;url</code>
@@ -26,6 +19,12 @@
     <InvalidArgument occurrences="1">
       <code>$this-&gt;service-&gt;markResolved($type, $fileId, $resolved)</code>
     </InvalidArgument>
+    <InvalidReturnType occurrences="1">
+      <code>DataDownloadResponse</code>
+    </InvalidReturnType>
+    <TooManyArguments occurrences="1">
+      <code>details</code>
+    </TooManyArguments>
   </file>
   <file src="lib/Controller/PageController.php">
     <UndefinedClass occurrences="2">
@@ -54,7 +53,8 @@
     </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Db/CollectorTaskDetailMapper.php">
-    <UndefinedDocblockClass occurrences="1">
+    <UndefinedDocblockClass occurrences="2">
+      <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
       <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
     </UndefinedDocblockClass>
   </file>
@@ -77,9 +77,6 @@
       <code>$this-&gt;cpaUtils</code>
       <code>CPAUtilsService</code>
     </UndefinedDocblockClass>
-    <UndefinedThisPropertyFetch occurrences="1">
-      <code>$this-&gt;appManager</code>
-    </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Migration/Version0001Date20210627153636.php">
     <ImplementedParamTypeMismatch occurrences="1">
@@ -120,7 +117,8 @@
     <InvalidReturnType occurrences="1">
       <code>\OCA\MediaDC\Db\CollectorTask[]|array</code>
     </InvalidReturnType>
-    <MismatchingDocblockReturnType occurrences="3">
+    <MismatchingDocblockReturnType occurrences="4">
+      <code>array|bool</code>
       <code>int</code>
       <code>int</code>
       <code>int</code>

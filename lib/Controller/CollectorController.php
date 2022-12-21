@@ -36,6 +36,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\CollectorTask;
 use OCA\MediaDC\Service\CollectorService;
+use OCP\AppFramework\Http\DataDownloadResponse;
 
 class CollectorController extends Controller {
 	/** @var CollectorService */
@@ -190,6 +191,24 @@ class CollectorController extends Controller {
 			], Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
+		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param int $taskId target task id
+	 * @param string $format export file format (xml, json)
+	 *
+	 * @return DataDownloadResponse
+	 */
+	public function getTaskResultsExport(int $taskId, string $format): DataDownloadResponse {
+		if (in_array($format, ['xml', 'json'])) {
+			$export = $this->service->exportTaskResults(intval($taskId), $format);
+			if ($export) {
+				return new DataDownloadResponse($export['data'], $export['filename'], $export['contentType']);
+			}
 		}
 	}
 

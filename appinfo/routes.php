@@ -46,6 +46,7 @@ return [
 		['name' => 'collector#index', 'url' => '/api/v1/tasks/', 'verb' => 'GET'],
 		['name' => 'collector#details', 'url' => '/api/v1/tasks/{taskId}', 'verb' => 'GET'],
 		['name' => 'collector#getTaskInfo', 'url' => '/api/v1/tasks/{taskId}/info', 'verb' => 'GET'],
+		['name' => 'collector#getTaskResultsExport', 'url' => '/api/v1/tasks/{taskId}/export/{format}', 'verb' => 'GET'],
 		['name' => 'collector#deleteTaskDetail', 'url' => '/api/v1/tasks/{taskId}/detail/{groupId}', 'verb' => 'DELETE'],
 		['name' => 'collector#getDetailGroupFilesInfo', 'url' => '/api/v1/tasks/{taskId}/files/{groupId}/all', 'verb' => 'GET'],
 		['name' => 'collector#getDetailFilesTotalSize', 'url' => '/api/v1/tasks/{taskId}/filestotal', 'verb' => 'GET'],

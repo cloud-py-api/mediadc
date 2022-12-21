@@ -148,6 +148,45 @@ class CollectorTaskDetailMapper extends QBMapper {
 		return $qb->executeQuery()->fetchAll();
 	}
 
+	/**
+	 * @param int $taskId
+	 * @param int $limit
+	 * @param int $offset
+	 *
+	 * @return array
+	 */
+	public function findAllByIdGrouppedExtended(int $taskId, int $limit = null, int $offset = null): array {
+		$qb = $this->db->getQueryBuilder();
+		$platform = $this->db->getDatabasePlatform()->getName();
+		if ($platform === 'mysql') {
+			$grouppedFileIdsFunction = $qb->createFunction('GROUP_CONCAT(mdc_t_d.fileid SEPARATOR \',\') as files');
+			$grouppedFilesNamesFunction = $qb->createFunction('GROUP_CONCAT(ocf.name SEPARATOR \',\') as filesnames');
+			$grouppedFilesPathsFunction = $qb->createFunction('GROUP_CONCAT(ocf.path SEPARATOR \',\') as filespaths');
+			$grouppedFilesSizesFunction = $qb->createFunction('GROUP_CONCAT(ocf.size SEPARATOR \',\') as filessizes');
+		} elseif ($platform === 'postgresql') {
+			$grouppedFileIdsFunction = $qb->createFunction('array_to_string(array_agg(mdc_t_d.fileid), \',\') as files');
+			$grouppedFilesNamesFunction = $qb->createFunction('array_to_string(array_agg(ocf.name), \',\') as filesnames');
+			$grouppedFilesPathsFunction = $qb->createFunction('array_to_string(array_agg(ocf.path), \',\') as filespaths');
+			$grouppedFilesSizesFunction = $qb->createFunction('array_to_string(array_agg(ocf.size), \',\') as filessizes');
+		}
+		$qb->select(
+			'mdc_t_d.task_id',
+			'mdc_t_d.group_id',
+			$grouppedFileIdsFunction,
+			$grouppedFilesNamesFunction,
+			$grouppedFilesPathsFunction,
+			$grouppedFilesSizesFunction,
+		)
+			->from($this->tableName, 'mdc_t_d')
+			->innerJoin('mdc_t_d', 'filecache', 'ocf', 'ocf.fileid=mdc_t_d.fileid')
+			->groupBy('mdc_t_d.task_id', 'mdc_t_d.group_id')
+			->having($qb->expr()->eq('mdc_t_d.task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+			->orderBy('mdc_t_d.group_id', 'ASC')
+			->setMaxResults($limit)
+			->setFirstResult($offset);
+		return $qb->executeQuery()->fetchAll();
+	}
+
 	public function getDetailsTotals(int $taskId, int $limit = null, int $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(

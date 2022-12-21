@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Service;
 
+use DOMDocument;
 use OCP\Files\File;
 use OCP\Files\Node;
 use OCP\Files\Folder;
@@ -448,6 +449,78 @@ class CollectorService {
 	}
 
 	/**
+	 * Export task results
+	 *
+	 * @param int $taskId
+	 * @param string $format
+	 *
+	 * @return array|bool export result ['file', 'contentType'] or `false` on error
+	 */
+	public function exportTaskResults(int $taskId, string $format): array {
+		/** @var CollectorTask $collectorTask */
+		$collectorTask = $this->tasksMapper->find($taskId);
+		$taskDetails = $this->detailsExtended($taskId);
+		$data = [
+			'Task' => $collectorTask->jsonSerialize(),
+			'Results' => $taskDetails,
+		];
+
+		$exportFile = $taskId . '_task_results_export';
+		$contentType = $format == 'xml' ? 'application/xml' : 'application/json';
+		if ($format === 'xml') {
+			$exportFile = $exportFile . '.xml';
+			if ($resultData = $this->createXmlData($data, $exportFile)) {
+				return [
+					'data' => $resultData,
+					'filename' => $exportFile,
+					'contentType' => $contentType
+				];
+			};
+		} elseif ($format == 'json') {
+			$exportFile = $exportFile . '.json';
+			return [
+				'data' => json_encode($data, JSON_PRETTY_PRINT),
+				'filename' => $exportFile,
+				'contentType' => $contentType
+			];
+		}
+
+		return false;
+	}
+
+	private function createXmlData($data) {
+		$domxml = new DOMDocument('1.0', 'utf-8');
+		$domxml->preserveWhiteSpace = false;
+		$domxml->formatOutput = true;
+		$root = $domxml->createElement('MediaDC');
+		$domxml->appendChild($root);
+		$this->array_to_xml($data, $root, $domxml);
+		return $domxml->saveXML();
+	}
+
+	public function array_to_xml($array, $node, &$dom) {
+		foreach ($array as $key => $value) {
+			if (preg_match("/^[0-9]/", strval($key))) {
+				$key = "node-{$key}";
+			}
+			$key = preg_replace("/[^a-z0-9_\-]+/i", '', $key);
+
+			if ($key === '') {
+				$key = '_';
+			}
+
+			$a = $dom->createElement($key);
+			$node->appendChild($a);
+
+			if (!is_array($value)) {
+				$a->appendChild($dom->createTextNode(json_encode($value)));
+			} else {
+				$this->array_to_xml($value, $a, $dom);
+			}
+		}
+	}
+
+	/**
 	 * @param int $taskId
 	 *
 	 * @return \OCA\MediaDC\Db\CollectorTask[]|array
@@ -825,8 +898,7 @@ class CollectorService {
 	public function details(
 		int $taskId,
 		int $limit = null,
-		int $offset = null,
-		array $filter = []
+		int $offset = null
 	): array {
 		return array_map(function ($d) {
 			$d['files'] = explode(',', $d['files']);
@@ -841,6 +913,40 @@ class CollectorService {
 			unset($d['filessizes']);
 			return $d;
 		}, $this->tasksDetailsMapper->findAllByIdGroupped($taskId, $limit, $offset));
+	}
+
+	/**
+	 * @param int $taskId
+	 * @param int $limit
+	 * @param int $offset
+	 * @param array $filter
+	 *
+	 * @return array
+	 */
+	public function detailsExtended(
+		int $taskId,
+		int $limit = null,
+		int $offset = null
+	): array {
+		return array_map(function ($d) {
+			$d['files'] = explode(',', $d['files']);
+			$d['filesnames'] = explode(',', $d['filesnames']);
+			$d['filespaths'] = explode(',', $d['filespaths']);
+			$d['filessizes'] = explode(',', $d['filessizes']);
+			for ($i = 0; $i < count($d['files']); $i++) {
+				$fileid = $d['files'][$i];
+				$d['files'][$i] = [
+					'fileid' => intval($fileid),
+					'filename' => $d['filesnames'][$i],
+					'filepath' => $d['filespaths'][$i],
+					'filesize' => intval($d['filessizes'][$i])
+				];
+			}
+			unset($d['filesnames']);
+			unset($d['filespaths']);
+			unset($d['filessizes']);
+			return $d;
+		}, $this->tasksDetailsMapper->findAllByIdGrouppedExtended($taskId, $limit, $offset));
 	}
 
 	/**

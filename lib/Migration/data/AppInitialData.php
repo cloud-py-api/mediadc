@@ -66,30 +66,6 @@ class AppInitialData {
 				"description" => "Global administrator's exclude list that applies to each task"
 			],
 			[
-				"name" => "python_command",
-				"value" => "/usr/bin/python3",
-				"displayName" => "Full path to python interpreter",
-				"description" => "Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command."
-			],
-			[
-				"name" => "remote_filesize_limit",
-				"value" => 536870912,
-				"displayName" => "Remote/Encrypted file size limit to process",
-				"description" => "Maximum file size for requesting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size."
-			],
-			[
-				"name" => "use_php_path_from_settings",
-				"value" => false,
-				"displayName" => "Use path to PHP interpreter for Python from settings",
-				"description" => "Determine whether to use path from settings or detect it automatically (may not work with some unusual PHP install locations). Used in Python part."
-			],
-			[
-				"name" => "php_path",
-				"value" => "/usr/bin/php",
-				"displayName" => "Full path to PHP interpreter for Python",
-				"description" => "Absolute path to the PHP executable (e.g. \"/usr/bin/php7.4\"). Can be obtained by `which php` or `which php7.4` command"
-			],
-			[
 				"name" => "python_binary",
 				"value" => true,
 				"displayName" => "Use pre-compiled Python binaries",
@@ -114,14 +90,6 @@ class AppInitialData {
 		$this->l10n->t("Maximum number of python background scripts running");
 		$this->l10n->t("Exclude list");
 		$this->l10n->t("Global administrator's exclude list that applies to each task");
-		$this->l10n->t("Full path to python interpreter");
-		$this->l10n->t("Absolute path to the python runnable (e.g. \"/usr/bin/python3\"). Can be obtained by `which python3` command.");
-		$this->l10n->t("Remote/Encrypted file size limit to process");
-		$this->l10n->t("Maximum file size for requesting from php core. Used when file hosts on remote NC instance or have encrypted flag. Must be less then total available RAM size.");
-		$this->l10n->t("Use path to PHP interpreter for Python from settings");
-		$this->l10n->t("Determine whether to use path from settings or detect it automatically (may not work with some unusual PHP install locations). Used in Python part.");
-		$this->l10n->t("Full path to PHP interpreter for Python");
-		$this->l10n->t("Absolute path to the PHP executable (e.g. \"/usr/bin/php7.4\"). Can be obtained by `which php` or `which php7.4` command");
 		$this->l10n->t("Use pre-compiled Python binaries");
 		$this->l10n->t("Use Python part in binary format (located in the appdata folder)");
 	}

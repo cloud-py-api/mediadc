@@ -132,39 +132,6 @@
 					max="10"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.python_command.display_name)"
-				:description="t('mediadc', mappedSettings.python_command.description)">
-				<input id="python_command"
-					v-model="mappedSettings.python_command.value"
-					type="text"
-					name="python_command"
-					@change="saveChanges">
-			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.remote_filesize_limit.display_name)"
-				:description="t('mediadc', mappedSettings.remote_filesize_limit.description)">
-				<input id="remote_filesize_limit"
-					v-model="remote_filesize_limit"
-					type="number"
-					name="remote_filesize_limit"
-					min="0"
-					step="0.1"
-					@input="updateRemoteFilesizeLimit"
-					@change="saveChanges">
-			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.use_php_path_from_settings.display_name)"
-				:description="t('mediadc', mappedSettings.use_php_path_from_settings.description)">
-				<NcCheckboxRadioSwitch :checked.sync="usePhpPathFromSettings" @update:checked="updateUsePhpPathFromSettings">
-					{{ t('mediadc', 'Use PHP path from settings') }}
-				</NcCheckboxRadioSwitch>
-			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.php_path.display_name)"
-				:description="t('mediadc', mappedSettings.php_path.description)">
-				<input id="php_path"
-					v-model="mappedSettings.php_path.value"
-					type="text"
-					name="php_path"
-					@change="saveChanges">
-			</NcSettingsSection>
 			<NcSettingsSection :title="t('mediadc', mappedSettings.python_binary.display_name)"
 				:description="t('mediadc', mappedSettings.python_binary.description)">
 				<NcCheckboxRadioSwitch :checked.sync="python_binary" @update:checked="updatePythonBinary">
@@ -174,13 +141,11 @@
 		</div>
 		<div v-else>
 			<NcSettingsSection :title="t('mediadc', 'Error')">
-				<NcEmptyContent style="margin-top: 0;">
-					{{ t('mediadc', 'Settings list is empty') }}
+				<NcEmptyContent style="margin-top: 0;"
+					:title="t('mediadc', 'Settings list is empty')"
+					:description="t('mediadc', 'Seems like database not initialized properly. Try to re-enable the app')">
 					<template #icon>
-						<span class="icon-error" />
-					</template>
-					<template #desc>
-						{{ t('mediadc', 'Seems like database not initialized properly') }}
+						<AlertCircleOutline />
 					</template>
 				</NcEmptyContent>
 			</NcSettingsSection>
@@ -204,6 +169,7 @@ import NcSettingsSection from '@nextcloud/vue/dist/Components/NcSettingsSection.
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
+import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
 
 import BugReport from './BugReport.vue'
 
@@ -218,20 +184,19 @@ export default {
 		PlusThick,
 		NcSettingsSection,
 		NcCheckboxRadioSwitch,
+		AlertCircleOutline,
 	},
 	data() {
 		return {
 			settings: [],
 			algorithms: [],
 			mappedSettings: {},
-			remote_filesize_limit: null,
 			hashing_algorithm: null,
 			hash_size: null,
 			customExcludeList: [],
 			customExcludeMask: '',
 			addingCustomMask: false,
 			hashSizeValues: [8, 16, 32, 64],
-			usePhpPathFromSettings: false,
 			python_binary: true,
 		}
 	},
@@ -249,13 +214,16 @@ export default {
 				this.hashing_algorithm = JSON.parse(this.mappedSettings.hashing_algorithm.value)
 				this.hash_size = this.mappedSettings.hash_size.value
 				this.customExcludeList = JSON.parse(this.mappedSettings.exclude_list.value).mask
-				this.remote_filesize_limit = this.fromBytesToGBytes(Number(this.mappedSettings.remote_filesize_limit.value))
-				this.usePhpPathFromSettings = JSON.parse(this.mappedSettings.use_php_path_from_settings.value)
 				this.python_binary = JSON.parse(this.mappedSettings.python_binary.value)
 			})
 		},
 		saveChanges() {
 			axios.put(generateUrl('/apps/mediadc/api/v1/settings'), { settings: this.settings })
+				.then(res => {
+					if (res.data.success) {
+						showSuccess(this.t('mediadc', 'Settings successfully updated'))
+					}
+				})
 				.catch(err => {
 					console.debug(err)
 					showError(this.t('mediadc', 'Some error occurred while updating settings'))
@@ -272,13 +240,6 @@ export default {
 		},
 		fromGBytesToBytes(GBytes) {
 			return GBytes * Math.pow(1024, 3)
-		},
-		updateRemoteFilesizeLimit() {
-			this.mappedSettings.remote_filesize_limit.value = this.fromGBytesToBytes(Number(this.remote_filesize_limit))
-		},
-		updateUsePhpPathFromSettings() {
-			this.mappedSettings.use_php_path_from_settings.value = JSON.stringify(this.usePhpPathFromSettings)
-			this.saveChanges()
 		},
 		updatePythonBinary() {
 			this.mappedSettings.python_binary.value = JSON.stringify(this.python_binary)
