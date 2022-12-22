@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Zadaci",
     "Settings" : "Postavke",
+    "Export" : "Izvoz",
     "Deselect all" : "Odznači sve",
     "Select all" : "Odaberi sve",
     "Select group" : "Označi grupu",

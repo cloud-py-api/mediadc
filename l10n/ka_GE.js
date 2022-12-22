@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "დავალებები",
     "Settings" : "პარამეტრები",
+    "Export" : "ექსპორტი",
     "Deselect all" : "ყველას წაშლა",
     "Select all" : "ყველას არჩევა",
     "Remove" : "წაშლა",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Tugas",
     "Settings" : "Setelan",
+    "Export" : "Ekspor",
     "Select file" : "Pilih file",
     "Deselect all" : "Tidak ada yang dipilih",
     "Select all" : "Pilih semua",

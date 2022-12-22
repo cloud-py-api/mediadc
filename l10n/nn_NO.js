@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Oppgåver",
     "Settings" : "Innstillingar",
+    "Export" : "Eksporter",
     "Select file" : "Vel fil",
     "Select all" : "Merk alt",
     "Go to page" : "Gå til side",

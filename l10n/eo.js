@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Taskoj",
     "Settings" : "Agordoj",
+    "Export" : "Eksporti",
     "Deselect all" : "Malelekti ĉion",
     "Select all" : "Elekti ĉion",
     "Remove" : "Forigi",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "משימות",
     "Settings" : "הגדרות",
+    "Export" : "ייצוא",
     "Deselect all" : "ביטול בחירה",
     "Select all" : "בחר הכל",
     "Select group" : "בחירת קבוצה",

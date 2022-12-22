@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Задаци",
     "Settings" : "Поставке",
+    "Export" : "Извези",
     "Deselect all" : "Поништи цео избор",
     "Select all" : "Одабери све ",
     "Remove" : "Уклони",

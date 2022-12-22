@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Ülesanded",
     "Settings" : "Seaded",
+    "Export" : "Ekspordi",
     "Select all" : "Vali kõik",
     "Remove" : "Eemalda",
     "Confirm" : "Kinnita",

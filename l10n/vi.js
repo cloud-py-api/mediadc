@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Nhiệm vụ",
     "Settings" : "Cài đặt",
+    "Export" : "Xuất ra",
     "Select file" : "Chọn tập tin",
     "Deselect all" : "Bỏ chọn tất cả",
     "Select all" : "Chọn tất cả",

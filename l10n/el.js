@@ -5,6 +5,7 @@ OC.L10N.register(
     "Hashing algorithm used by Python background script" : "Αλγόριθμος κατακερματισμού που χρησιμοποιείται από το Python script παρασκηνίου",
     "Tasks" : "Εργασίες",
     "Settings" : "Ρυθμίσεις",
+    "Export" : "Εξαγωγή",
     "Select file" : "Επιλέξτε Αρχείο",
     "_Delete file_::_Delete files_" : ["Διαγραφή αρχείου","Διαγραφή αρχείων"],
     "Confirm file deletion" : "Επιβεβαίωση διαγραφής αρχείου",

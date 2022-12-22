@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Xeres",
     "Settings" : "Settings",
+    "Export" : "Esportar",
     "Select all" : "Esbillar too",
     "Remove" : "Desaniciar",
     "Confirm" : "Confirmar",

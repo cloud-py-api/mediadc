@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Take",
     "Settings" : "Instellings",
+    "Export" : "Voer uit",
     "Select all" : "Kies alle",
     "Remove" : "Verwyder",
     "Confirm" : "Bevestig",

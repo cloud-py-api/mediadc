@@ -6,6 +6,7 @@ OC.L10N.register(
     "Hash size" : "Hashstorlek",
     "Tasks" : "Uppgifter",
     "Settings" : "Inställningar",
+    "Export" : "Exportera",
     "Select file" : "Välj fil",
     "Deselect all" : "Avmarkera alla",
     "Select all" : "Välj alla",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "mediadc",
     {
     "Settings" : "Gosodiadau",
+    "Export" : "Allforio",
     "Deselect all" : "Dad ddewis popeth",
     "Remove" : "Gwaredu",
     "Confirm" : "Cadarnhau",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "งาน",
     "Settings" : "การตั้งค่า",
+    "Export" : "ส่งออก",
     "Deselect all" : "ยกเลิกการเลือกทั้งหมด",
     "Select all" : "เลือกทั้งหมด",
     "Remove" : "ลบออก",

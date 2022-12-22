@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Sarcini",
     "Settings" : "Setări",
+    "Export" : "Exportă",
     "Deselect all" : "Deselectează tot",
     "Select all" : "Selectează tot",
     "Remove" : "Elimină",

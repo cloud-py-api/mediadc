@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Tehtävät",
     "Settings" : "Asetukset",
+    "Export" : "Vie",
     "Select file" : "Valitse tiedosto",
     "Deselect all" : "Poista valinnat",
     "Select all" : "Valitse kaikki",

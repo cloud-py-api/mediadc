@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Detyra",
     "Settings" : "Rregullimet",
+    "Export" : "Eksport",
     "Deselect all" : "Hiqi të gjithë",
     "Select all" : "Zgjidhi të gjitha",
     "Remove" : "Hiq",

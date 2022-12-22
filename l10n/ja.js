@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "タスク",
     "Settings" : "設定",
+    "Export" : "エクスポート",
     "Select file" : "ファイルを選択",
     "Deselect all" : "選択を全解除",
     "Select all" : "すべて選択",

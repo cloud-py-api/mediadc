@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Задачи",
     "Settings" : "Параметри",
+    "Export" : "Извези",
     "Deselect all" : "Одселектирај се",
     "Select all" : "Избери се",
     "Remove" : "Отстрани ",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Úlohy",
     "Settings" : "Nastavenia",
+    "Export" : "Export",
     "Select file" : "Označ súbor",
     "Deselect all" : "Odznačiť všetko",
     "Select all" : "Vybrať všetko",

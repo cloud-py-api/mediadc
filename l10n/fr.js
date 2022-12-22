@@ -6,6 +6,7 @@ OC.L10N.register(
     "Tasks" : "Tâches",
     "Resolved" : "Résolu",
     "Settings" : "Paramètres",
+    "Export" : "Exporter",
     "Select file" : "Sélectionner un fichier",
     "_Delete file_::_Delete files_" : ["Effacer le fichier ","Effacer les fichiers","Effacer les fichiers"],
     "Are you sure you want to delete this file?" : "Êtes-vous certain de vouloir supprimer ce fichier ?",

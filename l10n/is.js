@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Verkefni",
     "Settings" : "Stillingar",
+    "Export" : "Flytja út",
     "Deselect all" : "Afvelja allt",
     "Select all" : "Select all",
     "Go to page" : "Go to page",

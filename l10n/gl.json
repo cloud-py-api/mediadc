@@ -1,6 +1,7 @@
 { "translations": {
     "Tasks" : "Tarefas",
     "Settings" : "Axustes",
+    "Export" : "Exportar",
     "Select file" : "Seleccionar ficheiro",
     "Deselect all" : "Desmarcar todo",
     "Select all" : "Seleccionar todo",

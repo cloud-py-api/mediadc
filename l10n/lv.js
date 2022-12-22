@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Uzdevumi",
     "Settings" : "Iestatījumi",
+    "Export" : "Eksportēt",
     "Deselect all" : "Atcelt atzīmi",
     "Select all" : "Atzīmēt visu",
     "Remove" : "Noņemt",

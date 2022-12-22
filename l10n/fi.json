@@ -1,6 +1,7 @@
 { "translations": {
     "Tasks" : "Tehtävät",
     "Settings" : "Asetukset",
+    "Export" : "Vie",
     "Select file" : "Valitse tiedosto",
     "Deselect all" : "Poista valinnat",
     "Select all" : "Valitse kaikki",

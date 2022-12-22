@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Tasques",
     "Settings" : "Paràmetres",
+    "Export" : "Exporta",
     "Select file" : "Selecciona un fitxer",
     "Deselect all" : "No seleccionis res",
     "Select all" : "Selecciona-ho tot",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Prètzfaches",
     "Settings" : "Paramètres",
+    "Export" : "Exportar",
     "Select file" : "Seleccionar fichièr",
     "Remove" : "Suprimir",
     "Confirm" : "Confirmar",

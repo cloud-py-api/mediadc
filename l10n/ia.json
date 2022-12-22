@@ -1,0 +1,14 @@
+{ "translations": {
+    "Settings" : "Configurationes",
+    "Export" : "Exportar",
+    "Select all" : "Selectionar toto",
+    "Confirm" : "Confirmar",
+    "Decline" : "Refusar",
+    "Error" : "Error",
+    "Select" : "Selectionar",
+    "Photos" : "Photos",
+    "Start" : "Initio",
+    "Delete" : "Deler",
+    "Edit" : "Modificar"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

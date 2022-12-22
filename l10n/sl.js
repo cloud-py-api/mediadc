@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Naloge",
     "Settings" : "Nastavitve",
+    "Export" : "Izvozi",
     "Select file" : "Izbor datotek",
     "Deselect all" : "Odstrani celoten izbor",
     "Select all" : "Izberi vse",

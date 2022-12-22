@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "Fainas",
     "Settings" : "Impostatziones",
+    "Export" : "Esporta",
     "Deselect all" : "Deseletziona totu",
     "Select all" : "Seletziona totu",
     "Select group" : "Seletziona grupos",

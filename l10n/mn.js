@@ -2,6 +2,7 @@ OC.L10N.register(
     "mediadc",
     {
     "Settings" : "Тохиргоо",
+    "Export" : "Экспорт",
     "Select all" : "бүгдийг сонгох",
     "Remove" : "Устгах",
     "Confirm" : "Батлах",

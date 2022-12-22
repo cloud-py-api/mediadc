@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Tasks" : "وظایف",
     "Settings" : "تنظیمات",
+    "Export" : "دریافت خروجی",
     "Deselect all" : "لغو انتخاب همه",
     "Select all" : "انتخاب همه",
     "Remove" : "حذف",
