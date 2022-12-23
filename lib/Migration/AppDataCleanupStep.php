@@ -47,7 +47,6 @@ class AppDataCleanupStep implements IRepairStep {
 
 	public function run(IOutput $output) {
 		$output->startProgress(1);
-		// $this->cleanupService->dropAppTables();
 		$this->cleanupService->deleteAppLogs();
 		$output->advance(1);
 		$output->finishProgress();
