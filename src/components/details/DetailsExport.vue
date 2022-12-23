@@ -30,11 +30,14 @@
 				<h2>{{ t('mediadc', 'Export task results') }}</h2>
 				<div class="selection-container">
 					<label for="export-file-format">{{ t('mediadc', 'Select export file format') }}</label>
-					<NcSelect v-model="exportFileFormat"
-						:input-id="'export-file-format'"
-						:options="exportFormatOptions" />
+					<select id="export-file-format"
+						v-model="exportFileFormat">
+						<option v-for="format in exportFormatOptions" :key="format" :value="format">
+							{{ format }}
+						</option>
+					</select>
 				</div>
-				<NcButton :href="downloadExportUrl">
+				<NcButton :href="downloadExportUrl" class="mediadc-button-vue">
 					{{ t('mediadc', 'Export') }}
 				</NcButton>
 			</div>
@@ -46,13 +49,11 @@
 import { generateUrl } from '@nextcloud/router'
 
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
 export default {
 	name: 'DetailsExport',
 	components: {
 		NcButton,
-		NcSelect,
 	},
 	props: {
 		task: {
@@ -116,7 +117,7 @@ export default {
 	box-shadow: 0 0 30px var(--color-box-shadow);
 	padding: 20px 20px 10px;
 	width: 100%;
-	max-width: 600px;
+	max-width: 300px;
 	margin: auto;
 	background-color: var(--color-main-background);
 }
@@ -137,6 +138,7 @@ export default {
 .selection-container {
 	display: flex;
 	flex-direction: column;
+	margin: 10px auto;
 }
 
 @media (max-width: 540px) {
