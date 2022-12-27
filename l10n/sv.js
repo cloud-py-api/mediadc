@@ -20,6 +20,7 @@ OC.L10N.register(
     "Error" : "Fel",
     "Copy to clipboard" : "Kopiera till urklipp",
     "Copied to clipboard" : "Kopierat till urklipp",
+    "Not selected" : "Ej vald",
     "Select" : "Välj",
     "Photos" : "Bilder",
     "Videos" : "Videor",
