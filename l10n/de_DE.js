@@ -93,7 +93,7 @@ OC.L10N.register(
     "Next duplicate list page" : "Nächste doppelte Listenseite",
     "Previous resolved list page" : "Vorherige aufgelöste Listenseite",
     "Next resolved list page" : "Nächste aufgelöste Listenseite",
-    "Navigate to resolved list page" : "Zuur Seite mit der aufgelösten Liste navigieren",
+    "Navigate to resolved list page" : "Zur Seite mit der aufgelösten Liste navigieren",
     "Resolved list" : "Liste der Aufgelösten",
     "Toggle media type" : "Medientyp umschalten",
     "Toggle resolved list media type" : "Medientyp der aufgelösten Liste umschalten",
