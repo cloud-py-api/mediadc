@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Service;
 
 use OCP\Files\SimpleFS\ISimpleFolder;
+use Psr\Log\LoggerInterface;
 
 class CleanupService {
 	/** @var AppDataService */
@@ -40,14 +41,19 @@ class CleanupService {
 	/** @var VideosService */
 	private $videosService;
 
+	/** @var LoggerInterface */
+	private $logger;
+
 	public function __construct(
 		AppDataService $appDataService,
 		PhotosService $photosService,
-		VideosService $videosService
+		VideosService $videosService,
+		LoggerInterface $logger
 	) {
 		$this->appDataService = $appDataService;
 		$this->photosService = $photosService;
 		$this->videosService = $videosService;
+		$this->logger = $logger;
 	}
 
 	public function deleteAppLogs() {
