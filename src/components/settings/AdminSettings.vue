@@ -270,7 +270,7 @@ export default {
 			}
 		},
 		updateHashSize() {
-			if (confirm(this.t('mediadc', 'The photo and video hashes would be cleaned before changing hash size.\nContinue?'))) {
+			if (confirm(this.t('mediadc', 'The photo and video hashes will be cleaned before changing hash size.\nContinue?'))) {
 				this.truncatePhotosAndVideos().then(() => {
 					this.mappedSettings.hash_size.value = JSON.stringify(this.hash_size)
 					this.updateSetting(this.mappedSettings.hash_size.name, this.mappedSettings.hash_size).then(res => {
