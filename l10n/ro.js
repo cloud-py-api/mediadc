@@ -10,6 +10,7 @@ OC.L10N.register(
     "Confirm" : "Confirmă",
     "Decline" : "Refuză",
     "Error" : "Eroare",
+    "Copy to clipboard" : "Copiază în clipboard",
     "Copied to clipboard" : "Copiat în clipboard",
     "Select" : "Selectează",
     "Photos" : "Poze",

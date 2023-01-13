@@ -118,6 +118,7 @@
     "Hashing algorithm successfully updated" : "Hashing-Algorithmus erfolgreich aktualisiert",
     "An error occurred while updating setting. Try again" : "Fehler beim aktualisieren der Einstellung. Erneut versuchen",
     "Some error occurred while changing hashing algorithm" : "Fehler beim Ändern des Hash-Algorithmus",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Die Foto- und Video-Hashes werden bereinigt, bevor die Hash-Größe geändert wird.\nFortfahren?",
     "Hash size successfully updated" : "Hash-Größe erfolgreich aktualisiert",
     "An error occurred when updating the setting. Try again" : "Fehler beim Aktualisieren der Einstellungen. Erneut versuchen",
     "Some error occurred while updating setting. Try again" : "Fehler beim Aktualisieren der Einstellungen. Erneut versuchen",
