@@ -118,6 +118,7 @@
     "Hashing algorithm successfully updated" : "Algoritmus pořizování otisků úspěšně aktualizován",
     "An error occurred while updating setting. Try again" : "Při aktualizování nastavení došlo k chybě. Zkuste to znovu",
     "Some error occurred while changing hashing algorithm" : "Při změně algoritmu pořizování otisků došlo k nějaké chybě",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Při změně velikost otisku (hash) budou ty stávající od fotek a videí smazány.\nPokračovat?",
     "Hash size successfully updated" : "Délka otisku úspěšně zaktualizována",
     "An error occurred when updating the setting. Try again" : "Při aktualizování nastavení došlo k chybě. Zkuste to znovu",
     "Some error occurred while updating setting. Try again" : "Při aktualizování nastavení došlo k nějaké chybě. Zkuste to znovu",

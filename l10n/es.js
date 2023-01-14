@@ -120,6 +120,7 @@ OC.L10N.register(
     "Hashing algorithm successfully updated" : "El algoritmo de hash fue exitósamente actualizado",
     "An error occurred while updating setting. Try again" : "Ocurrió un error mientras se actualizaba la configuración. Intente de nuevo",
     "Some error occurred while changing hashing algorithm" : "Ocurrió algún error mientras se cambiaba el algoritmo de hash",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Los valores hash correspondientes a las fotos y videos serán limpiados antes de cambiar a el tamaño del hash.\n¿Continuar?",
     "Hash size successfully updated" : "El tamaño del hash fue exitósamente actualizado",
     "An error occurred when updating the setting. Try again" : "Ocurrió algún error mientras se actualizaba la configuración. Intente de nuevo",
     "Some error occurred while updating setting. Try again" : "Ocurrió algún error mientras se actualizaba la configuración. Intente de nuevo",

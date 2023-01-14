@@ -120,6 +120,7 @@ OC.L10N.register(
     "Hashing algorithm successfully updated" : "更新了散列算法",
     "An error occurred while updating setting. Try again" : "更新設定時發生錯誤。請再試一次",
     "Some error occurred while changing hashing algorithm" : "更新散列算法時發生錯誤",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "在更改散列大小之前，將清除照片和視像散列。\n繼續？",
     "Hash size successfully updated" : "散列大小已成功更新",
     "An error occurred when updating the setting. Try again" : "更新設定時發生錯誤。請再試一次",
     "Some error occurred while updating setting. Try again" : "更新設定時發生錯誤。請再試一次",

@@ -118,6 +118,7 @@
     "Hashing algorithm successfully updated" : "Algorithme de hachage mis à jour avec succès",
     "An error occurred while updating setting. Try again" : "Une erreur est survenue lors de la mise à jour des paramètres. Essayer à nouveau",
     "Some error occurred while changing hashing algorithm" : "Une erreur est survenue lors du changement de l'algorithme de hachage",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Les hachages des photos et vidéos seront nettoyés avant changement de l'algorithme de hachage.\nContinuer ?",
     "Hash size successfully updated" : "Taille de hachage actualisée avec succès",
     "An error occurred when updating the setting. Try again" : "Une erreur est survenue lors de la mise à jour du paramètre",
     "Some error occurred while updating setting. Try again" : "Une erreur est survenue lors de la mise à jour du paramètre",
