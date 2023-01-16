@@ -1,8 +1,7 @@
-pynacl
 numpy
 scipy
 pywavelets
 pillow
 hexhamming
-nc-py-api>=0.0.8
+nc-py-api>=0.0.10
 pi-heif>=0.9.0
