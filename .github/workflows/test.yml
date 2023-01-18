@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
 
 env:
-  # Location of the phpunit.xml and phpunit.integration.xml files
-  PHPUNIT_CONFIG: ./tests/phpunit.xml
+  # Location of the phpunit.unit.xml and phpunit.integration.xml files
+  PHPUNIT_CONFIG: ./tests/phpunit.unit.xml
   PHPUNIT_INTEGRATION_CONFIG: ./tests/phpunit.integration.xml
   APP_NAME: mediadc
   CPA_NAME: cloud_py_api
@@ -139,7 +139,7 @@ jobs:
         run: composer test:integration:coverage
 
       - name: HTML coverage to artifacts
-        if: steps.check_phpunit.outputs.files_exists == 'true'
+        if: steps.check_integration.outputs.files_exists == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_mysql
@@ -147,7 +147,7 @@ jobs:
           if-no-files-found: error
 
       - name: Clover coverage to artifacts
-        if: steps.check_phpunit.outputs.files_exists == 'true'
+        if: steps.check_integration.outputs.files_exists == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: clover_coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_mysql.xml
@@ -155,7 +155,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload to Codecov
-        if: steps.check_phpunit.outputs.files_exists == 'true'
+        if: steps.check_integration.outputs.files_exists == 'true'
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -288,7 +288,7 @@ jobs:
         run: composer test:integration:coverage
 
       - name: HTML coverage to artifacts
-        if: steps.check_phpunit.outputs.files_exists == 'true'
+        if: steps.check_integration.outputs.files_exists == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_pgsql
@@ -296,7 +296,7 @@ jobs:
           if-no-files-found: error
 
       - name: Clover coverage to artifacts
-        if: steps.check_phpunit.outputs.files_exists == 'true'
+        if: steps.check_integration.outputs.files_exists == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: clover_coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_pgsql.xml
@@ -304,7 +304,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload to Codecov
-        if: steps.check_phpunit.outputs.files_exists == 'true'
+        if: steps.check_integration.outputs.files_exists == 'true'
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
