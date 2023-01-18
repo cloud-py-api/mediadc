@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["7.4", "8.0"]
-        server-versions: ['25']
+        nextcloud: ['25.0.3']
 
     services:
       mysql:
@@ -37,33 +37,6 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
-      - name: Cache nextcloud server
-        id: nextcloud_setup
-        uses: actions/cache@v3
-        with:
-          path: nextcloud-${{ matrix.server-versions }}.zip
-          key: ${{ matrix.server-versions }}
-
-      - name: Download nextcloud ${{ matrix.server-versions }}
-        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
-        continue-on-error: true
-        id: server-checkout
-        run: |
-          NCVERSION=${{ matrix.server-versions }}
-          wget --quiet https://download.nextcloud.com/server/releases/latest-$NCVERSION.zip
-          unzip latest-$NCVERSION.zip
-
-      - name: Checkout ${{ env.APP_NAME }} app
-        uses: actions/checkout@v3
-        with:
-          path: nextcloud/apps/${{ env.APP_NAME }}
-
-      - name: Checkout ${{ env.CPA_NAME }} app
-        uses: actions/checkout@v3
-        with:
-          repository: cloud-py-api/${{ env.CPA_NAME }}
-          path: nextcloud/apps/${{ env.CPA_NAME }}
-
       - name: Set up php ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
         with:
@@ -72,24 +45,51 @@ jobs:
           extensions: mbstring, iconv, fileinfo, intl, mysql, pdo_mysql
           coverage: xdebug
 
+      - name: cache-nextcloud
+        id: nextcloud_setup
+        uses: actions/cache@v3
+        with:
+          path: nextcloud-${{ matrix.nextcloud }}.tar.bz2
+          key: ${{ matrix.nextcloud }}
+
+      - name: Download Nextcloud
+        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
+        run: wget -q https://download.nextcloud.com/server/releases/nextcloud-${{ matrix.nextcloud }}.tar.bz2
+
+      - name: Unpack nextcloud
+        run: tar -xjf nextcloud-${{ matrix.nextcloud }}.tar.bz2 --strip-components 1
+
+      - name: Checkout ${{ env.APP_NAME }} app
+        uses: actions/checkout@v3
+        with:
+          path: apps/${{ env.APP_NAME }}
+
+      - name: Checkout ${{ env.CPA_NAME }} app
+        uses: actions/checkout@v3
+        with:
+          repository: cloud-py-api/${{ env.CPA_NAME }}
+          path: apps/${{ env.CPA_NAME }}
+
       - name: Set up PHPUnit
-        working-directory: nextcloud/apps/${{ env.APP_NAME }}
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer i
 
       - name: Set up Nextcloud
         env:
           DB_PORT: 4444
         run: |
-          mkdir nextcloud/data
-          php nextcloud/occ maintenance:install --verbose --database=mysql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          php nextcloud/occ app:enable ${{ env.CPA_NAME }}
-          php nextcloud/occ app:enable ${{ env.APP_NAME }}
+          mkdir data
+          php occ maintenance:install --verbose --database=mysql --database-name=nextcloud \
+          --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root \
+          --database-pass=rootpassword --admin-user admin --admin-pass password
+          php occ app:enable ${{ env.CPA_NAME }}
+          php occ app:enable ${{ env.APP_NAME }}
 
       - name: Check PHPUnit config file existence
         id: check_phpunit
         uses: andstor/file-existence-action@v2
         with:
-          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
+          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
 
       - name: Run Nextcloud
         run: php -S localhost:8080 &
@@ -97,7 +97,7 @@ jobs:
       - name: PHPUnit
         # Only run if phpunit config file exists
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        working-directory: nextcloud/apps/${{ env.APP_NAME }}
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer test:unit:coverage
 
       - name: HTML coverage to artifacts
@@ -130,12 +130,12 @@ jobs:
         id: check_integration
         uses: andstor/file-existence-action@v2
         with:
-          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
+          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
       - name: PHPUnit integration
         # Only run if phpunit integration config file exists
         if: steps.check_integration.outputs.files_exists == 'true'
-        working-directory: nextcloud/apps/${{ env.APP_NAME }}
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer test:integration:coverage
 
       - name: HTML coverage to artifacts
@@ -170,7 +170,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["8.0"]
-        server-versions: ['25']
+        nextcloud: ['25.0.3']
 
     services:
       postgres:
@@ -184,33 +184,6 @@ jobs:
         options: --health-cmd pg_isready --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
-      - name: Cache nextcloud server
-        id: nextcloud_setup
-        uses: actions/cache@v3
-        with:
-          path: nextcloud-${{ matrix.server-versions }}.zip
-          key: ${{ matrix.server-versions }}
-
-      - name: Download nextcloud ${{ matrix.server-versions }}
-        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
-        continue-on-error: true
-        id: server-checkout
-        run: |
-          NCVERSION=${{ matrix.server-versions }}
-          wget --quiet https://download.nextcloud.com/server/releases/latest-$NCVERSION.zip
-          unzip latest-$NCVERSION.zip
-
-      - name: Checkout app
-        uses: actions/checkout@v3
-        with:
-          path: nextcloud/apps/${{ env.APP_NAME }}
-
-      - name: Checkout ${{ env.CPA_NAME }} app
-        uses: actions/checkout@v3
-        with:
-          repository: cloud-py-api/${{ env.CPA_NAME }}
-          path: nextcloud/apps/${{ env.CPA_NAME }}
-
       - name: Set up php ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
         with:
@@ -219,8 +192,33 @@ jobs:
           extensions: mbstring, iconv, fileinfo, intl, pgsql, pdo_pgsql
           coverage: xdebug
 
+      - name: cache-nextcloud
+        id: nextcloud_setup
+        uses: actions/cache@v3
+        with:
+          path: nextcloud-${{ matrix.nextcloud }}.tar.bz2
+          key: ${{ matrix.nextcloud }}
+
+      - name: Download Nextcloud
+        if: steps.nextcloud_setup.outputs.cache-hit != 'true'
+        run: wget -q https://download.nextcloud.com/server/releases/nextcloud-${{ matrix.nextcloud }}.tar.bz2
+
+      - name: Unpack nextcloud
+        run: tar -xjf nextcloud-${{ matrix.nextcloud }}.tar.bz2 --strip-components 1
+
+      - name: Checkout app
+        uses: actions/checkout@v3
+        with:
+          path: apps/${{ env.APP_NAME }}
+
+      - name: Checkout ${{ env.CPA_NAME }} app
+        uses: actions/checkout@v3
+        with:
+          repository: cloud-py-api/${{ env.CPA_NAME }}
+          path: apps/${{ env.CPA_NAME }}
+
       - name: Set up PHPUnit
-        working-directory: nextcloud/apps/${{ env.APP_NAME }}
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer i
 
       - name: Set up Nextcloud
@@ -228,20 +226,22 @@ jobs:
           DB_PORT: 4444
         run: |
           mkdir data
-          php nextcloud/occ maintenance:install --verbose --database=pgsql --database-name=nextcloud --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root --database-pass=rootpassword --admin-user admin --admin-pass password
-          php nextcloud/occ app:enable ${{ env.CPA_NAME }}
-          php nextcloud/occ app:enable ${{ env.APP_NAME }}
+          php occ maintenance:install --verbose --database=pgsql --database-name=nextcloud \
+          --database-host=127.0.0.1 --database-port=$DB_PORT --database-user=root \
+          --database-pass=rootpassword --admin-user admin --admin-pass password
+          php occ app:enable ${{ env.CPA_NAME }}
+          php occ app:enable ${{ env.APP_NAME }}
 
       - name: Check PHPUnit config file existence
         id: check_phpunit
         uses: andstor/file-existence-action@v2
         with:
-          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
+          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
 
       - name: PHPUnit
         # Only run if phpunit config file exists
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        working-directory: nextcloud/apps/${{ env.APP_NAME }}
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer test:unit:coverage
 
       - name: HTML coverage to artifacts
@@ -274,7 +274,7 @@ jobs:
         id: check_integration
         uses: andstor/file-existence-action@v2
         with:
-          files: nextcloud/apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
+          files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
       - name: Run Nextcloud
         # Only run if phpunit integration config file exists
@@ -284,7 +284,7 @@ jobs:
       - name: PHPUnit integration
         # Only run if phpunit integration config file exists
         if: steps.check_integration.outputs.files_exists == 'true'
-        working-directory: nextcloud/apps/${{ env.APP_NAME }}
+        working-directory: apps/${{ env.APP_NAME }}
         run: composer test:integration:coverage
 
       - name: HTML coverage to artifacts
