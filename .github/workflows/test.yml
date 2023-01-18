@@ -333,7 +333,7 @@ jobs:
 
       - name: Run unit tests
         working-directory: apps/${{ env.APP_NAME }}
-        run: npm run test
+        run: npm run test:coverage
 
       - name: JavaScript coverage to artifacts
         uses: actions/upload-artifact@v3
