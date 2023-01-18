@@ -235,12 +235,6 @@ export default {
 		async updateSetting(name, setting) {
 			return axios.put(generateUrl(`/apps/mediadc/api/v1/settings/name/${name}`), { setting })
 		},
-		fromBytesToGBytes(bytes) {
-			return bytes / Math.pow(1024, 3)
-		},
-		fromGBytesToBytes(GBytes) {
-			return GBytes * Math.pow(1024, 3)
-		},
 		updatePythonBinary() {
 			this.mappedSettings.python_binary.value = JSON.stringify(this.python_binary)
 			this.saveChanges()

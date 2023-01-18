@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.3 - 2023-01-19]
+
+[`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
+(or updated) and enabled first.
+
+### Added
+
+- Added sha256 checksum of pre-compiled python binaries
+
+### Fixed
+
+- Fixed mediadc cli command (https://github.com/andrey18106/mediadc/issues/102)
+- Fixed icon on folders context menu (https://github.com/andrey18106/mediadc/issues/104)
+
 ## [0.3.2 - 2022-12-23]
 
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed

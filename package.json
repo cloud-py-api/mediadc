@@ -1,7 +1,7 @@
 {
 	"name": "mediadc",
 	"description": "Nextcloud Media Duplicate Collector application",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"keywords": [
 		"nextcloud",
 		"photos",
@@ -35,7 +35,7 @@
 		"stylelint": "stylelint css/*.css src/**/*.vue",
 		"stylelint:fix": "stylelint css/*.css src/**/*.vue --fix",
 		"test": "vue-cli-service test:unit --silent --no-coverage",
-		"test:coverage": "vue-cli-service test:unit --silent"
+		"test:coverage": "vue-cli-service test:unit --silent --coverageDirectory='tests/coverage/javascript'"
 	},
 	"browserslist": [
 		"extends @nextcloud/browserslist-config"
