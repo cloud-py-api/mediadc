@@ -2,23 +2,13 @@ name: Lint
 
 on:
   pull_request:
-    paths:
-      - 'appinfo/*.*'
-      - 'lib/**'
-      - 'src/**'
-      - 'templates/*.*'
-      - 'tests/Unit/**'
-      - 'tests/Integration/**'
-      - 'tests/javascript/**'
+    branches:
+      - main
+      - dev
   push:
-    paths:
-      - 'appinfo/*.*'
-      - 'lib/**'
-      - 'src/**'
-      - 'templates/*.*'
-      - 'tests/Unit/**'
-      - 'tests/Integration/**'
-      - 'tests/javascript/**'
+    branches:
+      - main
+      - dev
   workflow_dispatch:
 
 env:

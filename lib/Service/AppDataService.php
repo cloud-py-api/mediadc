@@ -29,7 +29,6 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Service;
 
 use RuntimeException;
-use OCP\App\IAppManager;
 use OCP\Files\IAppData;
 use OCP\IConfig;
 use OCP\Files\NotPermittedException;
@@ -50,13 +49,8 @@ class AppDataService {
 	/** @var string */
 	private $ncDataFolder;
 
-	public function __construct(
-		IAppData $appData,
-		IAppManager $appManager,
-		IConfig $config
-	) {
+	public function __construct(IAppData $appData, IConfig $config) {
 		$this->appData = $appData;
-		$this->appManager = $appManager;
 		$this->config = $config;
 		$this->ncInstanceId = $this->config->getSystemValue('instanceid');
 		$this->ncDataFolder = $this->config->getSystemValue('datadirectory');

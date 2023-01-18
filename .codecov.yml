@@ -1,0 +1,26 @@
+comment:
+  require_changes: true
+  layout: "diff, files"
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 2%
+    patch:
+      default:
+        target: auto
+        threshold: 2%
+
+flag_management:
+  individual_flags:
+    - name: php_backend
+      paths:
+        - lib/
+    - name: frontend
+      paths:
+        - src/
+
+fixes:
+  - "apps/mediadc/::"

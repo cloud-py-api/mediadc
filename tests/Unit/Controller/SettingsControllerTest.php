@@ -28,14 +28,17 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Tests\Unit\Controller;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject;
+
 use OCP\AppFramework\Http\JSONResponse;
+
+use OCA\Cloud_Py_API\Service\UtilsService;
+
 use OCA\MediaDC\Controller\SettingsController;
 use OCA\MediaDC\Service\PhotosService;
 use OCA\MediaDC\Service\SettingsService;
-use OCA\MediaDC\Service\UtilsService;
 use OCA\MediaDC\Service\VideosService;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject;
 
 class SettingsControllerTest extends TestCase {
 	/** @var SettingsController|MockObject */
@@ -59,7 +62,7 @@ class SettingsControllerTest extends TestCase {
 		$this->settingsService = $this->createMock(\OCA\MediaDC\Service\SettingsService::class);
 		$this->photosService = $this->createMock(\OCA\MediaDC\Service\PhotosService::class);
 		$this->videosService = $this->createMock(\OCA\MediaDC\Service\VideosService::class);
-		$this->utilsService = $this->createMock(\OCA\MediaDC\Service\UtilsService::class);
+		$this->utilsService = $this->createMock(\OCA\Cloud_Py_API\Service\UtilsService::class);
 		$this->controller = new SettingsController($request, $this->settingsService, $this->photosService, $this->videosService, $this->utilsService);
 	}
 

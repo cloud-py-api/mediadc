@@ -13,7 +13,7 @@
             <directory suffix=".php">../lib</directory>
         </include>
         <report>
-            <clover outputFile="./clover.integration.xml"/>
+            <clover outputFile="./coverage/php/integration/clover.xml"/>
         </report>
     </coverage>
 </phpunit>

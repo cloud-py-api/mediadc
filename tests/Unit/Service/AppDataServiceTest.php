@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2022 Andrey Borysenko <andrey18106x@gmail.com>
+ * @copyright Copyright (c) 2022-2023 Andrey Borysenko <andrey18106x@gmail.com>
  *
- * @copyright Copyright (c) 2022 Alexander Piskun <bigcat88@icloud.com>
+ * @copyright Copyright (c) 2022-2023 Alexander Piskun <bigcat88@icloud.com>
  *
- * @author 2022 Andrey Borysenko <andrey18106x@gmail.com>
+ * @author 2022-2023 Andrey Borysenko <andrey18106x@gmail.com>
  *
  * @license AGPL-3.0-or-later
  *
@@ -31,6 +31,9 @@ namespace OCA\MediaDC\Tests\Unit\Service;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject;
 
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
+
 use OCA\MediaDC\Service\AppDataService;
 
 class AppDataServiceTest extends TestCase {
@@ -40,30 +43,15 @@ class AppDataServiceTest extends TestCase {
 	/** @var \OCP\Files\IAppData|MockObject */
 	private $iAppData;
 
-	/** @var \OCP\App\IAppManager|MockObject */
-	private $iAppManager;
-
 	/** @var \OCP\IConfig|MockObject */
 	private $iConfig;
 
-	/** @var \OCA\MediaDC\Service\UtilsService|MockObject */
-	private $utils;
-
-	/** @var \OCA\MediaDC\Service\PythonService|MockObject */
-	private $pythonService;
-
 	public function setUp(): void {
 		$this->iAppData = $this->createMock(\OCP\Files\IAppData::class);
-		$this->iAppManager = $this->createMock(\OCP\App\IAppManager::class);
 		$this->iConfig = $this->createMock(\OCP\IConfig::class);
-		$this->utils = $this->createMock(\OCA\MediaDC\Service\UtilsService::class);
-		$this->pythonService = $this->createMock(\OCA\MediaDC\Service\PythonService::class);
 		$this->appDataService = new AppDataService(
 			$this->iAppData,
-			$this->iAppManager,
-			$this->iConfig,
-			$this->utils,
-			$this->pythonService
+			$this->iConfig
 		);
 	}
 
@@ -78,8 +66,46 @@ class AppDataServiceTest extends TestCase {
 	public function provideFolderNamesData() {
 		return [
 			'should create binaries app data folder' => ['binaries', true],
-			'should create logs app data folder' => ['logs', true],
-			'should create python app data folder' => ['python', true]
+			'should create logs app data folder' => ['logs', true]
 		];
+	}
+
+	/**
+	 * @dataProvider provideFolderNamesData
+	 */
+	public function testCreateAppDataFolderNotPermitted(string $folderName): void {
+		$this->iAppData->expects($this->any())
+			->method('newFolder')
+			->with($folderName)
+			->will($this->throwException(new NotPermittedException()));
+		$result = $this->appDataService->createAppDataFolder($folderName);
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * @dataProvider provideGetFolderNamesData
+	 */
+	public function testGetAppDataFolder(string $folderName, array $expected): void {
+		$result = $this->appDataService->getAppDataFolder($folderName);
+		$this->assertEquals($result['success'], $expected['success']);
+	}
+
+	public function provideGetFolderNamesData() {
+		return [
+			'should return binaries app data folder' => ['binaries', ['success' => false]],
+			'should return logs app data folder' => ['logs', ['success' => false]]
+		];
+	}
+
+	/**
+	 * @dataProvider provideGetFolderNamesData
+	 */
+	public function testGetAppDataFolderNotFound(string $folderName): void {
+		$this->iAppData->expects($this->any())
+			->method('getFolder')
+			->with($folderName)
+			->will($this->throwException(new NotFoundException()));
+		$result = $this->appDataService->getAppDataFolder($folderName);
+		$this->assertFalse($result['success']);
 	}
 }
