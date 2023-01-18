@@ -23,7 +23,7 @@
  */
 
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
+import { generateUrl, imagePath } from '@nextcloud/router'
 
 // eslint-disable-next-line
 function getSettings() {
@@ -63,7 +63,7 @@ OCA.Files.fileActions.registerAction({
 	displayName: t('mediadc', 'Scan for duplicates'),
 	mime: 'dir',
 	permissions: OC.PERMISSION_READ,
-	icon: '/nextcloud/apps/mediadc/img/settings.svg',
+	icon: imagePath('mediadc', 'settings.svg'),
 	actionHandler: (name, context) => {
 		createNewTaskFromFolder(context.fileInfoModel.attributes.id).then((res) => {
 			OC.dialogs.info(t('mediadc', 'New task for folder scan successfully created'), 'MediaDC')
