@@ -120,6 +120,7 @@ OC.L10N.register(
     "Hashing algorithm successfully updated" : "Алгоритъмът за хеширане е актуализиран успешно",
     "An error occurred while updating setting. Try again" : "Възникна грешка при актуализиране на настройката. Опитайте отново",
     "Some error occurred while changing hashing algorithm" : "Възникна грешка при промяна на алгоритъма за хеширане",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Хешовете на снимките и видеоклиповете ще бъдат изчистени, преди да се промени размерът на хеша. Продължавате ли?",
     "Hash size successfully updated" : "Размерът на хеша е актуализиран успешно",
     "An error occurred when updating the setting. Try again" : "Възникна грешка при актуализиране на настройката. Опитайте отново",
     "Some error occurred while updating setting. Try again" : "Възникна някаква грешка при актуализиране на настройката. Опитайте отново",

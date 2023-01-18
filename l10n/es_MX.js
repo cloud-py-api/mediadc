@@ -13,6 +13,7 @@ OC.L10N.register(
     "Error" : "Error",
     "Copy to clipboard" : "Copiar al portapapeles",
     "Copied to clipboard" : "Copiado al portapapeles",
+    "Not selected" : "No seleccionado",
     "Select" : "Seleccionar",
     "Photos" : "Fotos",
     "Videos" : "Videos",
