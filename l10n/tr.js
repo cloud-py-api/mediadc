@@ -120,6 +120,7 @@ OC.L10N.register(
     "Hashing algorithm successfully updated" : "Karma algoritması güncellendi",
     "An error occurred while updating setting. Try again" : "Ayar güncellenirken bir sorun çıktı. Yeniden deneyin",
     "Some error occurred while changing hashing algorithm" : "Karma uygulaması değiştirilirken bir sorun çıktı",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Karma boyutu değiştirilmeden önce fotoğraf ve görüntü karmaları temizlenecek.\nİlerlemek istiyor musunuz?",
     "Hash size successfully updated" : "Karma boyutu güncellendi",
     "An error occurred when updating the setting. Try again" : "Ayar güncellenirken bir sorun çıktı. Yeniden deneyin",
     "Some error occurred while updating setting. Try again" : "Ayar güncellenirken bir sorun çıktı. Yeniden deneyin",
