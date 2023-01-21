@@ -475,6 +475,11 @@ export default {
 	border-radius: var(--border-radius-large);
 }
 
+input#group-id-filter {
+	width: fit-content;
+	border-color: var(--color-border-dark);
+}
+
 body[data-theme-dark] .task-details-row, body[data-theme-dark] .filters {
 	border-color: var(--color-border-dark);
 }

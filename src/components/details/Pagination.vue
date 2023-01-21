@@ -46,7 +46,6 @@
 			<input id="go_to_page"
 				v-model="goToPage"
 				type="number"
-				style="width: fit-content;"
 				:min="1"
 				:max="pagesRange[pagesRange.length - 1] + 1"
 				name="go_to_page"
@@ -116,3 +115,10 @@ export default {
 	},
 }
 </script>
+
+<style scoped>
+input#go_to_page {
+	width: fit-content;
+	border-color: var(--color-border-dark);
+}
+</style>

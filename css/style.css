@@ -156,6 +156,10 @@ html {
 	font-weight: bold;
 }
 
+.block input, .block select {
+	border-color: var(--color-border-dark);
+}
+
 .target-directory, .custom-mask {
 	display: flex;
 	align-items: center;
