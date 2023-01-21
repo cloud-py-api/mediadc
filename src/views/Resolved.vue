@@ -27,8 +27,8 @@
 		<div class="heading">
 			<h2>{{ rootTitle }}</h2>
 			<p>
-				{{ t('mediadc', 'Here you can view resolved media files ')}}
-				{{ t('mediadc', '(removed from groups during the work on duplicates).')}}
+				{{ t('mediadc', 'Here you can view resolved media files ') }}
+				{{ t('mediadc', '(removed from groups during the work on duplicates).') }}
 				<br>
 				{{ t('mediadc', 'This files won\'t be scanned in further tasks.') }}
 			</p>
