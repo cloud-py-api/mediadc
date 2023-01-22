@@ -10,3 +10,4 @@ screenshots/* binary
 # Files to exclude from GitHub Languages statistics
 *.Dockerfile linguist-vendored=true
 js/* linguist-vendored=true
+l10n/* linguist-vendored=true
