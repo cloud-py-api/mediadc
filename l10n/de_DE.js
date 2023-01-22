@@ -100,7 +100,7 @@ OC.L10N.register(
     "Toggle list view (list or grid)" : "Listenansicht umschalten (Liste oder Raster)",
     "Remove file from resolved list" : "Datei von der Liste der Aufgelösten entfernen",
     "Create a new task or work on existing ones and resolve some!" : "Eine neue Aufgabe erstellen oder an Bestehenden arbeiten und diese erledigen!",
-    "Create a new one!" : "Neuse erstellen!",
+    "Create a new one!" : "Neue erstellen!",
     "Change to grid view" : "Zur Rasteransicht wechseln",
     "Change to list view" : "Zur Listenansicht wechseln",
     "No resolved ${selectedType} yet" : "Noch keine Lösung für ${selectedType}",
