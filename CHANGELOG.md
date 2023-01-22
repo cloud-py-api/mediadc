@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.3 - 2023-01-19]
+## [0.3.3 - 2023-01-23]
 
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
 (or updated) and enabled first.
@@ -13,8 +13,9 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Fixed mediadc cli command (https://github.com/andrey18106/mediadc/issues/102)
-- Fixed icon on folders context menu (https://github.com/andrey18106/mediadc/issues/104)
+- Fixed mediadc cli command (https://github.com/cloud-py-api/mediadc/issues/102)
+- Fixed mediadc background cleanup job (https://github.com/cloud-py-api/mediadc/issues/108)
+- Fixed icon on folders context menu (https://github.com/cloud-py-api/mediadc/issues/104)
 
 ## [0.3.2 - 2022-12-23]
 
