@@ -15,7 +15,7 @@ If your issue appears to be a bug, and hasn't been reported, open a new issue.
 
 Help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 
-[template]: https://raw.githubusercontent.com/andrey18106/mediadc/main/.github/ISSUE_TEMPLATE/bug_report.md
+[template]: https://raw.githubusercontent.com/cloud-py-api/mediadc/main/.github/ISSUE_TEMPLATE/bug_report.md
 
 ## Contributing to Source Code
 
