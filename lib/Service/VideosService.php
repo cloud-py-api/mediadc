@@ -36,6 +36,9 @@ use OCA\MediaDC\Db\Video;
 use OCA\MediaDC\Db\VideoMapper;
 
 class VideosService {
+	/** @var string */
+	private $userId;
+
 	/** @var VideoMapper */
 	private $mapper;
 

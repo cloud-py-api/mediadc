@@ -1,12 +1,12 @@
 # Nextcloud MediaDC
 
-![build](https://github.com/andrey18106/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
-[![Publish to Nextcloud app store](https://github.com/andrey18106/mediadc/actions/workflows/publish-appstore.yml/badge.svg)](https://github.com/andrey18106/mediadc/actions/workflows/publish-appstore.yml)
-[![Test](https://github.com/andrey18106/mediadc/actions/workflows/test.yml/badge.svg)](https://github.com/andrey18106/mediadc/actions/workflows/test.yml)
-[![Test Binaries](https://github.com/andrey18106/mediadc/actions/workflows/test-binaries.yml/badge.svg)](https://github.com/andrey18106/mediadc/actions/workflows/test-binaries.yml)
+![build](https://github.com/cloud-py-api/mediadc/actions/workflows/create-release-draft.yml/badge.svg)
+[![Publish to Nextcloud app store](https://github.com/cloud-py-api/mediadc/actions/workflows/publish-appstore.yml/badge.svg)](https://github.com/cloud-py-api/mediadc/actions/workflows/publish-appstore.yml)
+[![Test](https://github.com/cloud-py-api/mediadc/actions/workflows/test.yml/badge.svg)](https://github.com/cloud-py-api/mediadc/actions/workflows/test.yml)
+[![Test Binaries](https://github.com/cloud-py-api/mediadc/actions/workflows/test-binaries.yml/badge.svg)](https://github.com/cloud-py-api/mediadc/actions/workflows/test-binaries.yml)
 [![codecov](https://codecov.io/gh/andrey18106/mediadc/branch/main/graph/badge.svg?token=SCV4L0KDPV)](https://codecov.io/gh/andrey18106/mediadc)
 
-[![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/andrey18106/mediadc/releases)
+[![Github All Releases](https://img.shields.io/github/downloads/andrey18106/mediadc/total.svg)](https://github.com/cloud-py-api/mediadc/releases)
 
 **📸📹 Collect photo and video duplicates to save your cloud storage space**
 
@@ -28,7 +28,7 @@ Nextcloud Media Duplicate Collector application
 
 First of all, in you Nextcloud install and enable [`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) through the Apps management, then install MediaDC app.
 Starting from 0.2.0 version MediaDC is only included in Nextcloud v25 and higher.
-#### Read more on [Wiki page](https://github.com/andrey18106/mediadc/wiki)
+#### Read more on [Wiki page](https://github.com/cloud-py-api/mediadc/wiki)
 
 ## Maintainers
 

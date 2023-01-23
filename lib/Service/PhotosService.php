@@ -37,6 +37,9 @@ use OCA\MediaDC\Db\Photo;
 use OCA\MediaDC\Db\PhotoMapper;
 
 class PhotosService {
+	/** @var string */
+	private $userId;
+
 	/** @var PhotoMapper */
 	private $mapper;
 

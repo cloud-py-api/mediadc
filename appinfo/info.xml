@@ -17,7 +17,7 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 * **External Storages support** Search everywhere among all files available to the user.
 * **Save your time and cloud space** The title says all...
 
-Quick start guide and further information in our [Wiki](https://github.com/andrey18106/mediadc/wiki).
+Quick start guide and further information in our [Wiki](https://github.com/cloud-py-api/mediadc/wiki).
 
 ### Support
 
@@ -38,22 +38,22 @@ You can support us in several ways:
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
 	<namespace>MediaDC</namespace>
 	<documentation>
-		<admin>https://github.com/andrey18106/mediadc/wiki</admin>
+		<admin>https://github.com/cloud-py-api/mediadc/wiki</admin>
 	</documentation>
 	<category>tools</category>
 	<category>multimedia</category>
-	<website>https://github.com/andrey18106/mediadc</website>
-	<bugs>https://github.com/andrey18106/mediadc/issues</bugs>
-	<repository type="git">https://github.com/andrey18106/mediadc.git</repository>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_home.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_1.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_2.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_task_details_3.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_resolved.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_1.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_2.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_admin_settings_3.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/andrey18106/mediadc/main/screenshots/mediadc_filesplugin.png</screenshot>
+	<website>https://github.com/cloud-py-api/mediadc</website>
+	<bugs>https://github.com/cloud-py-api/mediadc/issues</bugs>
+	<repository type="git">https://github.com/cloud-py-api/mediadc.git</repository>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_home.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_task_details_1.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_task_details_2.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_task_details_3.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_resolved.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_admin_settings_1.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_admin_settings_2.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_admin_settings_3.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_filesplugin.png</screenshot>
 	<dependencies>
 		<php min-version="7.4" min-int-size="64" />
 		<nextcloud min-version="25" max-version="26" />
