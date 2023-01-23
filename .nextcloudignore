@@ -8,6 +8,7 @@
 /src
 tests
 /vendor
+/.codecov.yml
 /.eslintrc.js
 /.gitattributes
 /.gitignore
@@ -25,5 +26,6 @@ tests
 /package.json
 /postcss.config.js
 /psalm.xml
+/pyproject.toml
 /stylelint.config.js
 /webpack.config.js
