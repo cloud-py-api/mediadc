@@ -76,7 +76,7 @@ class AppUpdateStep implements IRepairStep {
 		$output->warning('This step may take some time');
 		$this->appDataService->createAppDataFolder('binaries');
 		$this->appDataService->createAppDataFolder('logs');
-		$url = 'https://github.com/andrey18106/mediadc/releases/download/v'
+		$url = 'https://github.com/cloud-py-api/mediadc/releases/download/v'
 			. $this->appManager->getAppVersion(Application::APP_ID, false)
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
 		$this->cpaUtils->downloadPythonBinary(
