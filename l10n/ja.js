@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "プリコンパイルされたPython実行ファイルを使用する",
     "Tasks" : "タスク",
     "Settings" : "設定",
     "Export" : "エクスポート",
@@ -15,6 +16,13 @@ OC.L10N.register(
     "Confirm" : "承認",
     "Decline" : "拒否",
     "Error" : "エラー",
+    "Settings list is empty" : "設定リストが空です",
+    "Seems like database not initialized properly. Try to re-enable the app" : "データベースが正しく初期化されていないようです。\nアプリを再度有効化してみてください。",
+    "Bug report" : "バグレポート",
+    "Settings successfully updated" : "設定が更新されました。",
+    "Some error occurred while updating settings" : "設定の更新中にエラーが発生しました。",
+    "Collect system info" : "システム情報を収集する",
+    "System info" : "システム情報",
     "Copy to clipboard" : "クリップボードにコピー",
     "Copied to clipboard" : "クリップボードにコピーされました",
     "Select" : "選択",
