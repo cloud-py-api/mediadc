@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "Используйте предварительно скомпилированные двоичные файлы Python",
     "Tasks" : "Задачи",
     "Settings" : "Настройки",
     "Export" : "Экспорт",
@@ -15,6 +16,13 @@ OC.L10N.register(
     "Confirm" : "Подтвердить",
     "Decline" : "Отклонить",
     "Error" : "Ошибка",
+    "Settings list is empty" : "Список настроек пуст",
+    "Bug report" : "Отчет об ошибке",
+    "Settings successfully updated" : "Настройки обновлены",
+    "Some error occurred while updating settings" : "Произошла ошибка во время обновления настроек",
+    "Collect non sensitive system info for bug report" : "Сбор нечувствительной информации от системе для отчета об ошибке",
+    "Collect system info" : "Сбор информации о системе",
+    "System info" : "Информация о системе",
     "Copy to clipboard" : "Копировать в буфер",
     "Copied to clipboard" : "Скопировано в буфер обмена",
     "Select" : "Выбрать",

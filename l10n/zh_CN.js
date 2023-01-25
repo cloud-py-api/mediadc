@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "使用预编译了的Python二进制文件",
     "Tasks" : "任务",
     "Settings" : "设置",
     "Export" : "导出",
@@ -15,6 +16,14 @@ OC.L10N.register(
     "Confirm" : "确认",
     "Decline" : "拒绝",
     "Error" : "错误",
+    "Settings list is empty" : "设置列表为空",
+    "Seems like database not initialized properly. Try to re-enable the app" : "数据库好像沒有正确初始化。尝试重新启用此应用",
+    "Bug report" : "反馈Bug",
+    "Settings successfully updated" : "设置已成功更新",
+    "Some error occurred while updating settings" : "更新设置时发生了错误",
+    "Collect non sensitive system info for bug report" : "为Bug反馈收集非敏感的系统信息",
+    "Collect system info" : "收集系统信息",
+    "System info" : "系统信息",
     "Copy to clipboard" : "复制到剪贴板",
     "Copied to clipboard" : "复制到剪贴板",
     "Select" : "选择",
@@ -24,6 +33,7 @@ OC.L10N.register(
     "Duplicate" : "重复",
     "Delete" : "删除",
     "Edit" : "编辑",
-    "Delete task" : "删除任务"
+    "Delete task" : "删除任务",
+    "_Test text_::_Test texts_" : ["测试文本"]
 },
 "nplurals=1; plural=0;");
