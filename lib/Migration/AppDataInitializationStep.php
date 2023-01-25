@@ -60,14 +60,12 @@ class AppDataInitializationStep implements IRepairStep {
 	public function __construct(
 		IAppManager $appManager,
 		SettingMapper $settingMapper,
-		AppInitialData $appInitialData,
 		UtilsService $utils,
 		CPAUtilsService $cpaUtils,
 		AppDataService $appDataService
 	) {
 		$this->appManager = $appManager;
 		$this->settingMapper = $settingMapper;
-		$this->appInitialData = $appInitialData;
 		$this->utils = $utils;
 		$this->cpaUtils = $cpaUtils;
 		$this->appDataService = $appDataService;
