@@ -131,6 +131,7 @@ OC.L10N.register(
     "Send notification on task finish" : "Bidali jakinarazpena zeregina bukatzean",
     "New task successfully created!" : "Zeregin berria ongi sortu da!",
     "Show task status" : "Erakutsi zereginen egoera",
+    "precision: " : "zehaztasuna:",
     "Deleted: " : "Ezabatuta:",
     "Restart task with current params" : "Berrabiarazi zeregina dauden parametroekin",
     "Edit task params" : "Editatu zereginaren parametroak",
