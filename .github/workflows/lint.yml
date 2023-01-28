@@ -5,10 +5,14 @@ on:
     branches:
       - main
       - dev
+    paths-ignore:
+      - l10n/**
   push:
     branches:
       - main
       - dev
+    paths-ignore:
+      - l10n/**
   workflow_dispatch:
 
 env:
