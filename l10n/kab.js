@@ -7,6 +7,7 @@ OC.L10N.register(
     "Remove" : "Kkes",
     "Confirm" : "Serggeg",
     "Error" : "Erreur",
+    "Copy to clipboard" : "Copier dans le presse-papiers",
     "Copied to clipboard" : "Aḍris yettwanγel γef afus",
     "Select" : "Fren",
     "Videos" : "Tividyutin",
