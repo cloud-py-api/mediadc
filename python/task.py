@@ -12,7 +12,7 @@ from nc_py_api import (
     fs_extract_sub_dirs,
     fs_filter_by,
     fs_list_directory,
-    fs_node_info,
+    fs_nodes_info,
     get_mimetype_id,
     get_time,
     mimetype,
@@ -185,7 +185,7 @@ def process_task(task_info) -> None:
 def process_image_task(task_settings: dict) -> int:
     """Top Level function to process image task. As input param expects dict from `init_task_settings` function."""
 
-    fs_objs = fs_node_info(task_settings["target_dirs"])
+    fs_objs = fs_nodes_info(task_settings["target_dirs"])
     fs_apply_exclude_lists(fs_objs, task_settings["exclude_fileid"], task_settings["exclude_mask"])
     process_image_task_dirs(fs_objs, task_settings)
     return save_image_results(task_settings["id"])
@@ -215,7 +215,7 @@ def process_directory_images(directory: FsNodeInfo, task_settings: dict) -> list
 def process_video_task(task_settings: dict, group_offset: int):
     """Top Level function to process video task. As input param expects dict from `init_task_settings` function."""
 
-    fs_objs = fs_node_info(task_settings["target_dirs"])
+    fs_objs = fs_nodes_info(task_settings["target_dirs"])
     fs_apply_exclude_lists(fs_objs, task_settings["exclude_fileid"], task_settings["exclude_mask"])
     process_video_task_dirs(fs_objs, task_settings)
     save_video_results(task_settings["id"], group_offset)
