@@ -20,6 +20,7 @@ OC.L10N.register(
     "Select" : "Selecteer",
     "Photos" : "Foto's",
     "Videos" : "Videos",
+    "Photos and Videos" : "Foto's en video's",
     "Start" : "Start",
     "Duplicate" : "Duplicaat",
     "Delete" : "Verwijder",

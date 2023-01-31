@@ -110,7 +110,7 @@
     "Add mask" : "Maske ekle",
     "Error" : "Hata",
     "Settings list is empty" : "Ayarlar listesi boş",
-    "Seems like database not initialized properly. Try to re-enable the app" : "Veritabanı doğru hazırlanmamış gibi görünüyor. Uygulamayı yeniden etkinleştirmeyi deneyin",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Veri tabanı doğru hazırlanmamış gibi görünüyor. Uygulamayı yeniden etkinleştirmeyi deneyin",
     "Bug report" : "Hata bildirimi",
     "Settings successfully updated" : "Ayarlar güncellendi",
     "Some error occurred while updating settings" : "Ayarlar güncellenirken bir sorun çıktı",

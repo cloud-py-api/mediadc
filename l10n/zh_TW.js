@@ -1,6 +1,8 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "使用預先編譯好的 Python 二進位檔案",
+    "Use Python part in binary format (located in the appdata folder)" : "使用二進位格式的 Python 部份（位於 appdata 資料夾中）",
     "Tasks" : "工作項目",
     "Settings" : "設定",
     "Export" : "匯出",
@@ -14,6 +16,14 @@ OC.L10N.register(
     "Confirm" : "確認",
     "Decline" : "回絕",
     "Error" : "錯誤",
+    "Settings list is empty" : "設定清單為空",
+    "Seems like database not initialized properly. Try to re-enable the app" : "資料庫似乎並未正確初始化。嘗試重新啟用此應用程式",
+    "Bug report" : "臭蟲回報",
+    "Settings successfully updated" : "設定已成功更新",
+    "Some error occurred while updating settings" : "更新設定時發生錯誤",
+    "Collect non sensitive system info for bug report" : "為臭蟲回報蒐集不包含敏感資訊的系統資訊",
+    "Collect system info" : "蒐集系統資訊",
+    "System info" : "系統資訊",
     "Copy to clipboard" : "複製到剪貼簿",
     "Copied to clipboard" : "已複製至剪貼簿",
     "Not selected" : "未選定",
@@ -24,6 +34,7 @@ OC.L10N.register(
     "Duplicate" : "重複",
     "Delete" : "刪除",
     "Edit" : "編輯",
-    "Delete task" : "刪除工作項目"
+    "Delete task" : "刪除工作項目",
+    "_Test text_::_Test texts_" : ["測試文字"]
 },
 "nplurals=1; plural=0;");
