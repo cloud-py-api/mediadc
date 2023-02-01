@@ -42,6 +42,9 @@ class VideosService {
 	/** @var VideoMapper */
 	private $mapper;
 
+	/** @var IRootFolder */
+	private $rootFolder;
+
 	/** @var Folder */
 	private $userFolder;
 
@@ -54,6 +57,7 @@ class VideosService {
 		VideoMapper $mapper,
 		IPreview $previewManager
 	) {
+		$this->rootFolder = $rootFolder;
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
@@ -114,7 +118,31 @@ class VideosService {
 					'has_preview' => $this->previewManager->isAvailable($file)
 				];
 			}
-			return [];
+			// Get file from root folder (trashbin)
+			$rootNode = $this->rootFolder->getById($filecache_data['fileid']);
+			if (count($rootNode) === 1 && ($rootNode[0] instanceof File)) {
+				/** @var File $file */
+				$file = $rootNode[0];
+				return [
+					'fileid' => $file->getId(),
+					'fileowner' => $file->getOwner()->getUID(),
+					'fileetag' => $file->getEtag(),
+					'filename' => $file->getName(),
+					'filemtype' => $file->getMimeType(),
+					'filempart' => $file->getMimePart(),
+					'relfilepath' => $file->getInternalPath(),
+					'filepath' => $file->getPath(),
+					'filesize' => $file->getSize(),
+					'has_preview' => $this->previewManager->isAvailable($file)
+				];
+			}
+			return [
+				'fileid' => $filecache_data['fileid'],
+				'filename' => $filecache_data['name'],
+				'filepath' => $filecache_data['path'],
+				'filesize' => $filecache_data['size'],
+				'not_found' => true
+			];
 		}, $result);
 		if (isset($offset)) {
 			$total_items = count($this->mapper->findAllResolvedByUser($userId));
