@@ -104,6 +104,7 @@ OC.L10N.register(
     "Bug report" : "Bug txostena",
     "Settings successfully updated" : "Ezarpenak ongi eguneratu dira",
     "Some error occurred while updating settings" : "Errore bat gertatu da ezarpenak eguneratzean",
+    "Collect system info" : "Jaso sistemaren informazioa",
     "System info" : "Sistemaren informazioa",
     "Copy to clipboard" : "Kopiatu arbelera",
     "Copied to clipboard" : "Kopiatu arbelera",
@@ -146,6 +147,7 @@ OC.L10N.register(
     "Are sure you want to delete this task?" : "Ziur zaude zeregin hau ezabatu nahi duzula?",
     "Owner:" : "Jabea:",
     "Photos&Videos" : "Argazkiak eta bideoak",
-    "MediaDC Task Details" : "MediaDC zereginaren xehetasunak"
+    "MediaDC Task Details" : "MediaDC zereginaren xehetasunak",
+    "_Test text_::_Test texts_" : ["Probatu testua","Probatu testuak"]
 },
 "nplurals=2; plural=(n != 1);");
