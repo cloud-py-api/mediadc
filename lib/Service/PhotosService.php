@@ -43,6 +43,9 @@ class PhotosService {
 	/** @var PhotoMapper */
 	private $mapper;
 
+	/** @var IRootFolder */
+	private $rootFolder;
+
 	/** @var Folder */
 	private $userFolder;
 
@@ -55,6 +58,7 @@ class PhotosService {
 		PhotoMapper $mapper,
 		IPreview $previewManager
 	) {
+		$this->rootFolder = $rootFolder;
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
@@ -97,11 +101,23 @@ class PhotosService {
 	public function getResolvedPhotos(string $userId = '', int $limit = null, int $offset = null): array {
 		$result = $this->mapper->findAllResolvedByUser($userId, $limit, $offset);
 		$result = array_map(function ($filecache_data) {
+			/** @var File $file */
+			$file = null;
 			/** @var File[] $node */
 			$node = $this->userFolder->getById($filecache_data['fileid']);
-			if (count($node) === 1) {
+			if (count($node) === 1 && ($node[0] instanceof File)) {
 				/** @var File $file */
 				$file = $node[0];
+			} else {
+				// Get file from root folder (trashbin)
+				/** @var File[] $rootNode */
+				$rootNode = $this->rootFolder->getById($filecache_data['fileid']);
+				if (count($rootNode) === 1 && ($rootNode[0] instanceof File)) {
+					/** @var File $file */
+					$file = $rootNode[0];
+				}
+			}
+			if (isset($file) && $file instanceof File) {
 				return [
 					'fileid' => $file->getId(),
 					'fileowner' => $file->getOwner()->getUID(),
@@ -115,7 +131,13 @@ class PhotosService {
 					'has_preview' => $this->previewManager->isAvailable($file)
 				];
 			}
-			return [];
+			return [
+				'fileid' => $filecache_data['fileid'],
+				'filename' => $filecache_data['name'],
+				'filepath' => $filecache_data['path'],
+				'filesize' => $filecache_data['size'],
+				'not_found' => true
+			];
 		}, $result);
 		if (isset($offset)) {
 			$total_items = count($this->mapper->findAllResolvedByUser($userId));
