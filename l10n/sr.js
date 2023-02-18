@@ -4,6 +4,7 @@ OC.L10N.register(
     "Tasks" : "Задаци",
     "Settings" : "Поставке",
     "Export" : "Извези",
+    "Select file" : "Изаберите фајл",
     "Deselect all" : "Поништи цео избор",
     "Select all" : "Одабери све ",
     "Remove" : "Уклони",
