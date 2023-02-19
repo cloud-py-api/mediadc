@@ -9,6 +9,7 @@ OC.L10N.register(
     "Select all" : "Chọn tất cả",
     "Remove" : "Xoá",
     "Confirm" : "Xác nhận",
+    "Decline" : "Từ chối",
     "Error" : "Lỗi",
     "Copied to clipboard" : "Đã sao chép vào bộ nhớ tạm",
     "Select" : "Chọn",
