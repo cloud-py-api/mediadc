@@ -46,8 +46,7 @@
 				<Transition name="fade" appear>
 					<div v-if="isValidUser" v-show="!collapsedStatus" class="task-details-description">
 						<p>
-							{{ t('mediadc', 'Here you can view task details, manage task (stop or restart), ') }}
-							{{ t('mediadc', 'delete found duplicated photos and videos.') }}
+							{{ t('mediadc', 'Here you can view task details, manage task (stop or restart), delete found duplicated photos and videos.') }}
 						</p>
 						<p>
 							{{ t('mediadc', 'Deleted files are placed in the trashbin, so that they can be restored in case of need.') }}
