@@ -28,8 +28,7 @@
 			<h2>{{ rootTitle }}</h2>
 			<p>
 				{{ t('mediadc', 'Welcome to Media Duplicate Collector (MediaDC). ') }}
-				{{ t('mediadc', 'Here you can manage your duplicate collection tasks and ') }}
-				{{ t('mediadc', 'see the history of previous finished tasks.') }}
+				{{ t('mediadc', 'Here you can manage your duplicate collection tasks and see the history of previous finished tasks.') }}
 			</p>
 		</div>
 		<div class="mediadc-row">
