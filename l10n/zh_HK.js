@@ -187,6 +187,7 @@ OC.L10N.register(
     "Collapse task status" : "收起任務狀態",
     "Show task status" : "顯示任務狀態",
     "Here you can view task details, manage task (stop or restart), " : "在這裡您可以查看任務詳情、管理任務（停止或重啟）、",
+    "delete found duplicated photos and videos." : "刪除找到的重複照片和視頻。",
     "Deleted files are placed in the trashbin, so that they can be restored in case of need." : "已刪除的檔案被放置在垃圾箱中，以便在需要時可以還原它們。",
     "precision: " : "精密度：",
     "Deleted: " : "已刪除︰",
