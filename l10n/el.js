@@ -25,6 +25,7 @@ OC.L10N.register(
     "Photos" : "Φωτογραφίες",
     "Videos" : "Βίντεο",
     "Start" : "Έναρξη",
+    "Duplicate" : "Διπλότυπο",
     "Delete" : "Διαγραφή",
     "Edit" : "Επεξεργασία",
     "Delete task" : "Διαγραφή εργασίας"
