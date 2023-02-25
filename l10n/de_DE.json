@@ -212,7 +212,7 @@
     "New task for folder scan successfully created" : "NeueNeue Aufgabe zum Scannen von Ordnern erfolgreich erstellt",
     "Photos&Videos" : "otos&Videos",
     "MediaDC Task Details" : "MediaDC Aufgaben Details",
-    "MediaDC Resolved files" : "MediaDC aufgelöste Dateien",
+    "MediaDC Resolved files" : "Von MediaDC aufgelöste Dateien",
     "An error occurred while deleting task" : "Fehler beim Löschen der Aufgabe",
     "Task successfully started with duplicated settings!" : "Aufgabe erfolgreich mit duplizierten Einstellungen gestartet!",
     "_Test text_::_Test texts_" : ["Testtext","Testtexte"]

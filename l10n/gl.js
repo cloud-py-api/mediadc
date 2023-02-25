@@ -7,6 +7,7 @@ OC.L10N.register(
     "Select file" : "Seleccionar ficheiro",
     "Deselect all" : "Desmarcar todo",
     "Select all" : "Seleccionar todo",
+    "Select group" : "Seleccione grupo",
     "Remove" : "Retirar",
     "Confirm" : "Confirmar",
     "Decline" : "Declinar",
