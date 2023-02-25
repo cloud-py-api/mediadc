@@ -147,7 +147,7 @@ class CollectorService {
 			$createdTask = $this->createCollectorTask($params);
 			if ($createdTask !== null) {
 				if (json_decode($pythonBinary->getValue())) {
-					$scriptName = 'binaries/' . Application::APP_ID 
+					$scriptName = 'binaries/' . Application::APP_ID
 						. '_' . $this->cpaUtils->getBinaryName() . '/main';
 				} else {
 					$scriptName = 'main.py';
@@ -207,7 +207,7 @@ class CollectorService {
 		$processesRunning = $this->tasksMapper->findAllRunning();
 		$pythonBinary = $this->settingsMapper->findByName('python_binary');
 		if (json_decode($pythonBinary->getValue())) {
-			$scriptName = 'binaries/' . Application::APP_ID 
+			$scriptName = 'binaries/' . Application::APP_ID
 				. '_' . $this->cpaUtils->getBinaryName() . '/main';
 		} else {
 			$scriptName = 'main.py';

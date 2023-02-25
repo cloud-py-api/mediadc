@@ -57,7 +57,8 @@
     <UndefinedClass occurrences="1">
       <code>CPAUtilsService</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="3">
+    <UndefinedDocblockClass occurrences="4">
+      <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
       <code>CPAUtilsService</code>
@@ -67,7 +68,8 @@
     <UndefinedClass occurrences="1">
       <code>CPAUtilsService</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="3">
+    <UndefinedDocblockClass occurrences="4">
+      <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
       <code>CPAUtilsService</code>
@@ -123,7 +125,9 @@
       <code>SharedStorage</code>
       <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="23">
+    <UndefinedDocblockClass occurrences="25">
+      <code>$this-&gt;cpaUtils</code>
+      <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
       <code>$this-&gt;cpaUtils</code>
