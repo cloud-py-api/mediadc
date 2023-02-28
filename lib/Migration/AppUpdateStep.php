@@ -79,9 +79,12 @@ class AppUpdateStep implements IRepairStep {
 		$url = 'https://github.com/cloud-py-api/mediadc/releases/download/v'
 			. $this->appManager->getAppVersion(Application::APP_ID, false)
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
-		$this->cpaUtils->downloadPythonBinary(
-			$url, $this->appDataService->getAppDataFolder('binaries'), 'main', true
+		$this->cpaUtils->downloadPythonBinaryDir(
+			$url, $this->appDataService->getAppDataFolder('binaries'),
+			Application::APP_ID,
+			Application::APP_ID . '_' . $this->cpaUtils->getBinaryName()
 		);
+
 		$output->finishProgress();
 	}
 }

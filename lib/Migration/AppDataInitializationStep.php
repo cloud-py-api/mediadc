@@ -104,9 +104,11 @@ class AppDataInitializationStep implements IRepairStep {
 		$output->warning('This step may take some time');
 		$url = 'https://github.com/cloud-py-api/mediadc/releases/download/v'
 			. $this->appManager->getAppVersion(Application::APP_ID, false)
-			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.gz';
-		$this->cpaUtils->downloadPythonBinary(
-			$url, $this->appDataService->getAppDataFolder('binaries')
+			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.tar.gz';
+		$this->cpaUtils->downloadPythonBinaryDir(
+			$url, $this->appDataService->getAppDataFolder('binaries'),
+			Application::APP_ID,
+			Application::APP_ID . '_' . $this->cpaUtils->getBinaryName()
 		);
 
 		$output->finishProgress();
