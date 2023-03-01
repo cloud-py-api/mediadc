@@ -34,7 +34,7 @@ OC.L10N.register(
     "Confirm file deletion" : "Confirm file deletion",
     "Group successfully removed (1 file left)" : "Group successfully removed (1 file left)",
     "Wait until file has been loaded before deleting it" : "Wait until file has been loaded before deleting it",
-    "Not enough permissions to delete the file" : "Not enough permissions to delete the file",
+    "Not enough permissions to delete the file" : "Insufficient permissions to delete the file",
     "File not found. Probably it's has been already deleted" : "File not found. Probably it's has been already deleted",
     "An error occurred while deleting the file" : "An error occurred while deleting the file",
     "A server error occurred" : "A server error occurred",

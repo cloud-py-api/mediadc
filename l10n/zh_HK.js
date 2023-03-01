@@ -34,7 +34,7 @@ OC.L10N.register(
     "Confirm file deletion" : "確認檔案刪除",
     "Group successfully removed (1 file left)" : "群組已成功移除（剩餘 1 個檔案）",
     "Wait until file has been loaded before deleting it" : "等到檔案加載完畢再刪除",
-    "Not enough permissions to delete the file" : "没有足够的權限刪除檔案",
+    "Not enough permissions to delete the file" : "權限不足，無法刪除文件",
     "File not found. Probably it's has been already deleted" : "檔案未找到。應該是已經被刪除了",
     "An error occurred while deleting the file" : "刪除檔案時發生了錯誤",
     "A server error occurred" : "伺服器發生錯誤",
