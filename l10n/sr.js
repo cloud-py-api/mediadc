@@ -7,6 +7,8 @@ OC.L10N.register(
     "Select file" : "Изаберите фајл",
     "Deselect all" : "Поништи цео избор",
     "Select all" : "Одабери све ",
+    "Change to grid view" : "Пређи на поглед мреже",
+    "Change to list view" : "Пређи на поглед листе",
     "Remove" : "Уклони",
     "Confirm" : "Потврди",
     "Decline" : "Одбиј",
