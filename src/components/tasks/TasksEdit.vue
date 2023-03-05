@@ -140,7 +140,9 @@
 								<template #icon>
 									<PlusThick :size="16" />
 								</template>
-								<span>{{ t('mediadc', 'Add mask') }}</span>
+								<template #default>
+									{{ t('mediadc', 'Add mask') }}
+								</template>
 							</NcButton>
 						</div>
 					</div>
