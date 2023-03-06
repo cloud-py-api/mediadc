@@ -14,7 +14,7 @@ OC.L10N.register(
     "Decline" : "Відхилити",
     "Error" : "Помилка",
     "Bug report" : "Звіт про недолік",
-    "Copy to clipboard" : "Скопіювати до буферу обміну ",
+    "Copy to clipboard" : "Копіювати до буферу обміну",
     "Copied to clipboard" : "Скопійовано",
     "Not selected" : "Не вибрано",
     "Select" : "Вибрати",
