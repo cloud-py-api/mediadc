@@ -20,6 +20,7 @@ OC.L10N.register(
     "Photos" : "Фотографије",
     "Videos" : "Видео снимци",
     "Start" : "Почетак",
+    "Duplicate" : "Дупликат",
     "Delete" : "Избриши",
     "Edit" : "Измени",
     "Delete task" : "Обриши задатак"
