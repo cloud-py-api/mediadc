@@ -1,6 +1,8 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "Користи прекомпајлиране Python бинарне фајлове",
+    "Use Python part in binary format (located in the appdata folder)" : "Користи се Python део у бинарном формату (и налази се у appdata фолдеру)",
     "Tasks" : "Задаци",
     "Settings" : "Поставке",
     "Export" : "Извези",
@@ -13,6 +15,14 @@ OC.L10N.register(
     "Confirm" : "Потврди",
     "Decline" : "Одбиј",
     "Error" : "Грешка",
+    "Settings list is empty" : "Листа подешавања је празна",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Изгледа да база података није исправно иницијализована. Покушајте да поново укључите апликацију",
+    "Bug report" : "Извештај о багу",
+    "Settings successfully updated" : "Подешавања су успешно ажурирана",
+    "Some error occurred while updating settings" : "Јавила се грешка током ажурирања ваших подешавања.",
+    "Collect non sensitive system info for bug report" : "Прикупи за извештај о багу податке о систему који нису осетљиви.",
+    "Collect system info" : "Прикупи информације о систему",
+    "System info" : "Информације о систему",
     "Copy to clipboard" : "Копирај у оставу",
     "Copied to clipboard" : "Копирано у клипборд",
     "Not selected" : "Није изабрано",
@@ -23,6 +33,7 @@ OC.L10N.register(
     "Duplicate" : "Дупликат",
     "Delete" : "Избриши",
     "Edit" : "Измени",
-    "Delete task" : "Обриши задатак"
+    "Delete task" : "Обриши задатак",
+    "_Test text_::_Test texts_" : ["Тест текст","Тест текста","Тест текстова"]
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
