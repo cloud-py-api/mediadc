@@ -32,7 +32,6 @@ use OCA\Files\Event\LoadSidebar;
 use OCA\Viewer\Event\LoadViewer;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IRequest;
 use OCP\Util;
@@ -66,13 +65,6 @@ class PageController extends Controller {
 		Util::addScript(Application::APP_ID, Application::APP_ID . '-main');
 		Util::addStyle(Application::APP_ID, 'style');
 
-		$response = new TemplateResponse(Application::APP_ID, 'main');
-
-		$policy = new ContentSecurityPolicy();
-		$policy->addAllowedWorkerSrcDomain("'self'");
-		$policy->addAllowedScriptDomain("'self'");
-		$response->setContentSecurityPolicy($policy);
-
-		return $response;
+		return new TemplateResponse(Application::APP_ID, 'main');
 	}
 }

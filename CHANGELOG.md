@@ -2,10 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.4 - 2023-02-25]
+## [0.3.4 - 2023-03-14]
 
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
 (or updated) and enabled first.
+
+### Changed
+
+- Changed Python binary type (from onefile to folder)
 
 ### Fixed
 
