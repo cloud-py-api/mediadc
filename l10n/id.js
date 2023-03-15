@@ -11,6 +11,7 @@ OC.L10N.register(
     "Confirm" : "Konfirmasi",
     "Decline" : "Tolak",
     "Error" : "Galat",
+    "Copy to clipboard" : "Salin ke papan klip",
     "Copied to clipboard" : "Disalin ke papan klip",
     "Select" : "Pilih",
     "Photos" : "Foto",
