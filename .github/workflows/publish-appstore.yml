@@ -14,13 +14,11 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Get release url
-      id: release_url
       run: |
         APP_VERSION=$(sed -n "s/<version>\(.*\)<\/version>/\\1/p" ./appinfo/info.xml | tr -d '\t')
         IS_NIGHTLY=$(if [[ $APP_VERSION == *"beta"* ]]; then echo "true"; else echo "false"; fi)
         REP_NAME=${{github.repository_owner}}
         RELEASE_URL=https://github.com/$REP_NAME/$APP_NAME/releases/download/v$APP_VERSION/$APP_NAME.tar.gz
-        echo "::set-output name=url::${RELEASE_URL}"
         curl -f --output app.tar.gz -L $RELEASE_URL
         echo "RELEASE_URL=$RELEASE_URL" >> $GITHUB_ENV
         echo "IS_NIGHTLY=$IS_NIGHTLY" >> $GITHUB_ENV
