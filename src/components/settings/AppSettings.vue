@@ -27,7 +27,7 @@
 		:show-navigation="true"
 		:title="t('mediadc', 'MediaDC settings')"
 		@update:open="onClose">
-		<NcAppSettingsSection id="settings" 
+		<NcAppSettingsSection id="settings"
 			:title="t('mediadc', 'Duplicates list')"
 			:area-label="t('mediadc', 'Duplicates list settings per user and browser')">
 			<div class="app-setting">
@@ -39,8 +39,7 @@
 					:label-outside="true"
 					type="number"
 					min="1"
-					max="20">
-				</NcInputField>
+					max="20" />
 			</div>
 			<div class="app-setting">
 				<label for="group-items-per-page">
@@ -51,18 +50,17 @@
 					:label-outside="true"
 					type="number"
 					min="1"
-					max="20">
-				</NcInputField>
+					max="20" />
 			</div>
 			<div class="app-setting">
 				<label for="details-grid-setting">
 					{{ t('mediadc', 'Group image size') }}
 				</label>
-				<NcSelect inputId="details-grid-setting"
-					v-model="selectedSize"
+				<NcSelect v-model="selectedSize"
+					input-id="details-grid-setting"
 					:clearable="false"
 					:options="gridSizes"
-					:label-outside="true"/>
+					:label-outside="true" />
 			</div>
 			<div class="app-setting">
 				<NcCheckboxRadioSwitch :checked.sync="deleteFileConfirmation">

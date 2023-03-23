@@ -65,8 +65,8 @@ export default {
 		}
 	},
 	beforeMount() {
-		let tasks = loadState('mediadc', 'tasks', false)
-		let settings = loadState('mediadc', 'settings', false)
+		const tasks = loadState('mediadc', 'tasks', false)
+		const settings = loadState('mediadc', 'settings', false)
 		if (tasks) {
 			this.$store.commit('setTasks', tasks)
 			this.$emit('update:loading', false)

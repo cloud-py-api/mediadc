@@ -44,7 +44,7 @@
 				</ul>
 			</template>
 			<AppSettings :open.sync="settingsOpened"
-				@close="closeSettingsModal"/>
+				@close="closeSettingsModal" />
 		</NcAppNavigation>
 		<NcAppContent :class="{ 'icon-loading': loading }">
 			<router-view v-show="!loading" :loading.sync="loading" />
@@ -57,7 +57,6 @@ import NcContent from '@nextcloud/vue/dist/Components/NcContent.js'
 import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
 import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
 import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
-import NcAppNavigationSettings from '@nextcloud/vue/dist/Components/NcAppNavigationSettings.js'
 import Cog from 'vue-material-design-icons/Cog.vue'
 
 import AppSettings from './components/settings/AppSettings.vue'
@@ -69,7 +68,6 @@ export default {
 		NcAppContent,
 		NcAppNavigation,
 		NcAppNavigationItem,
-		NcAppNavigationSettings,
 		AppSettings,
 		Cog,
 	},
