@@ -42,6 +42,7 @@ class RecentTasksWidget implements IWidget {
 	protected $il10n;
 
 	/** @var IInitialState */
+	private $initialState;
 
 	/** @var IURLGenerator */
 	private $urlGenerator;
