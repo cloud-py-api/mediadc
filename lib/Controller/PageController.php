@@ -37,18 +37,36 @@ use OCP\IRequest;
 use OCP\Util;
 
 use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Service\CollectorService;
+use OCA\MediaDC\Service\SettingsService;
+use OCP\AppFramework\Services\IInitialState;
 
 class PageController extends Controller {
 	/** @var IEventDispatcher */
 	private $eventDispatcher;
 
+	/** @var IInitialState */
+	private $initialStateService;
+
+	/** @var SettingsService */
+	private $settingsService;
+
+	/** @var CollectorService */
+	private $collectorService;
+
 	public function __construct(
 		IRequest $request,
-		IEventDispatcher $eventDispatcher
+		IEventDispatcher $eventDispatcher,
+		IInitialState $initialStateService,
+		SettingsService $settingsService,
+		?CollectorService $collectorService
 	) {
 		parent::__construct(Application::APP_ID, $request);
 
 		$this->eventDispatcher = $eventDispatcher;
+		$this->initialStateService = $initialStateService;
+		$this->settingsService = $settingsService;
+		$this->collectorService = $collectorService;
 	}
 
 	/**
@@ -64,6 +82,11 @@ class PageController extends Controller {
 
 		Util::addScript(Application::APP_ID, Application::APP_ID . '-main');
 		Util::addStyle(Application::APP_ID, 'style');
+
+		$tasks = $this->collectorService->getUserRecentTasks();
+		$this->initialStateService->provideInitialState('tasks', $tasks);
+		$settings = $this->settingsService->getSettings();
+		$this->initialStateService->provideInitialState('settings', $settings);
 
 		return new TemplateResponse(Application::APP_ID, 'main');
 	}

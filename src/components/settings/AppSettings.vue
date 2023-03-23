@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2023 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2023 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2023 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -23,58 +23,87 @@
  -->
 
 <template>
-	<div class="section" style="padding: 0 10px;">
-		<h3 style="font-weight: bold;">
-			{{ t('mediadc', 'Duplicates list settings') }}
-		</h3>
-		<div class="setting">
-			<label for="details-list-items-per-page">{{ t('mediadc', 'Groups per page') }}</label>
-			<input id="details-list-items-per-page"
-				v-model="detailsListItemPerPage"
-				type="number"
-				min="1"
-				max="20"
-				style="width: 60px;">
-		</div>
-		<div class="setting">
-			<label for="group-items-per-page">{{ t('mediadc', 'Items per group') }}</label>
-			<input id="group-items-per-page"
-				v-model="groupItemsPerPage"
-				type="number"
-				min="1"
-				max="20"
-				style="width: 60px;">
-		</div>
-		<div class="setting">
-			<label for="details-grid-setting">{{ t('mediadc', 'Group image size') }}</label>
-			<select id="details-grid-setting"
-				v-model="selectedSize"
-				name="details-grid-setting">
-				<option v-for="size in gridSizes" :key="size" :value="size">
-					{{ size }}px
-				</option>
-			</select>
-		</div>
-		<div class="setting">
-			<NcCheckboxRadioSwitch :checked.sync="deleteFileConfirmation">
-				{{ t('mediadc', 'Delete file confirmation') }}
-			</NcCheckboxRadioSwitch>
-		</div>
-		<div class="setting">
-			<NcCheckboxRadioSwitch :checked.sync="autoOpenNextGroup">
-				{{ t('mediadc', 'Auto open next group') }}
-			</NcCheckboxRadioSwitch>
-		</div>
-	</div>
+	<NcAppSettingsDialog :open="open"
+		:show-navigation="true"
+		:title="t('mediadc', 'MediaDC settings')"
+		@update:open="onClose">
+		<NcAppSettingsSection id="settings" 
+			:title="t('mediadc', 'Duplicates list')"
+			:area-label="t('mediadc', 'Duplicates list settings per user and browser')">
+			<div class="app-setting">
+				<label for="details-list-items-per-page">
+					{{ t('mediadc', 'Groups per page') }}
+				</label>
+				<NcInputField id="details-list-items-per-page"
+					:value.sync="detailsListItemPerPage"
+					:label-outside="true"
+					type="number"
+					min="1"
+					max="20">
+				</NcInputField>
+			</div>
+			<div class="app-setting">
+				<label for="group-items-per-page">
+					{{ t('mediadc', 'Items per group') }}
+				</label>
+				<NcInputField id="group-items-per-page"
+					:value.sync="groupItemsPerPage"
+					:label-outside="true"
+					type="number"
+					min="1"
+					max="20">
+				</NcInputField>
+			</div>
+			<div class="app-setting">
+				<label for="details-grid-setting">
+					{{ t('mediadc', 'Group image size') }}
+				</label>
+				<NcSelect inputId="details-grid-setting"
+					v-model="selectedSize"
+					:clearable="false"
+					:options="gridSizes"
+					:label-outside="true"/>
+			</div>
+			<div class="app-setting">
+				<NcCheckboxRadioSwitch :checked.sync="deleteFileConfirmation">
+					{{ t('mediadc', 'Delete file confirmation') }}
+				</NcCheckboxRadioSwitch>
+			</div>
+			<div class="app-setting">
+				<NcCheckboxRadioSwitch :checked.sync="autoOpenNextGroup">
+					{{ t('mediadc', 'Auto open next group') }}
+				</NcCheckboxRadioSwitch>
+			</div>
+			<div class="app-setting">
+				<NcCheckboxRadioSwitch :checked.sync="showFullFilePath">
+					{{ t('mediadc', 'Show full file path') }}
+				</NcCheckboxRadioSwitch>
+			</div>
+		</NcAppSettingsSection>
+	</NcAppSettingsDialog>
 </template>
 
 <script>
+import NcAppSettingsDialog from '@nextcloud/vue/dist/Components/NcAppSettingsDialog.js'
+import NcAppSettingsSection from '@nextcloud/vue/dist/Components/NcAppSettingsSection.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcInputField from '@nextcloud/vue/dist/Components/NcInputField.js'
+import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
 export default {
-	name: 'DetailsListSettings',
+	name: 'AppSettings',
 	components: {
+		NcAppSettingsDialog,
+		NcAppSettingsSection,
 		NcCheckboxRadioSwitch,
+		NcInputField,
+		NcSelect,
+	},
+	props: {
+		open: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
@@ -85,6 +114,7 @@ export default {
 			groupItemsPerPage: 10,
 			deleteFileConfirmation: true,
 			autoOpenNextGroup: true,
+			showFullFilePath: false,
 		}
 	},
 	watch: {
@@ -108,31 +138,53 @@ export default {
 			window.localStorage.setItem('mediadc_auto_open_next_group', this.autoOpenNextGroup)
 			this.$store.commit('setAutoOpenNextGroup', this.autoOpenNextGroup)
 		},
+		showFullFilePath() {
+			window.localStorage.setItem('mediadc_show_full_file_path', this.showFullFilePath)
+			this.$store.commit('setShowFullFilePath', this.showFullFilePath)
+		},
 	},
 	beforeMount() {
 		this.loadLocalSetting()
 	},
 	methods: {
+		onClose() {
+			this.$emit('update:open', false)
+		},
 		loadLocalSetting() {
 			const localSelectedSize = window.localStorage.getItem('mediadc_details_files_grid_size')
 			const localDetailsListItemsPerPage = window.localStorage.getItem('mediadc_details_list_items_per_page')
 			const localGroupItemsPerPage = window.localStorage.getItem('mediadc_group_items_per_page')
 			const localDeleteFileConfirmation = window.localStorage.getItem('mediadc_delete_file_confirmation')
 			const localAutoOpenNextGroup = window.localStorage.getItem('mediadc_auto_open_next_group')
+			const localShowFullFilePath = window.localStorage.getItem('mediadc_show_full_file_path')
 			this.selectedSize = localSelectedSize !== null ? localSelectedSize : 192
 			this.detailsListItemPerPage = localDetailsListItemsPerPage !== null ? localDetailsListItemsPerPage : 10
 			this.groupItemsPerPage = localGroupItemsPerPage !== null ? localGroupItemsPerPage : 10
 			this.deleteFileConfirmation = localDeleteFileConfirmation !== null ? JSON.parse(localDeleteFileConfirmation) === true : true
 			this.autoOpenNextGroup = localAutoOpenNextGroup !== null ? JSON.parse(localAutoOpenNextGroup) === true : true
+			this.showFullFilePath = localShowFullFilePath !== null ? JSON.parse(localShowFullFilePath) === true : false
 		},
 	},
 }
 </script>
 
 <style scoped>
+.app-setting {
+	display: flex;
+	align-items: center;
+	margin: 10px 0;
+}
+
+.app-setting label {
+	margin-right: 10px;
+	white-space: nowrap;
+	width: fit-content;
+}
+.app-setting .input-field {
+	width: fit-content;
+}
 .setting {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 }
 </style>

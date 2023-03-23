@@ -66,7 +66,8 @@
 			</div>
 		</div>
 		<div class="file-info">
-			<span class="filename" :title="file.filepath">{{ file.filename }}</span>
+			<span v-if="!showFullFilePath" class="filename" :title="file.filepath">{{ file.filename }}</span>
+			<span v-else class="filepath">{{ file.filepath }}</span>
 			<span class="owner">{{ file.fileowner }}</span>
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<div class="actions" style="display: flex;">
@@ -149,6 +150,7 @@ export default {
 		...mapGetters([
 			'detailsGridSize',
 			'deleteFileConfirmation',
+			'showFullFilePath',
 			'details',
 		]),
 		imageUrl() {
@@ -371,5 +373,11 @@ body[data-theme-dark] .placeholder {
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.filepath {
+	border-bottom: 1px solid var(--color-border-dark);
+	padding-bottom: 5px;
+	margin-bottom: 5px;
 }
 </style>

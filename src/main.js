@@ -26,7 +26,8 @@ import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
 import { Tooltip } from '@nextcloud/vue'
 import { sync } from 'vuex-router-sync'
-import Nextcloudl10n from './mixins/Nextcludl10n.js'
+import { translate, translatePlural } from '@nextcloud/l10n'
+// import Nextcloudl10n from './mixins/Nextcludl10n.js'
 import Vue from 'vue'
 
 import MediaDC from './MediaDC.vue'
@@ -43,7 +44,7 @@ sync(store, router)
 
 Vue.directive('tooltip', Tooltip)
 
-Vue.mixin(Nextcloudl10n)
+// Vue.mixin(Nextcloudl10n)
 
 window.addEventListener('DOMContentLoaded', () => {
 	if (!window.OCA.Files) {
@@ -52,6 +53,11 @@ window.addEventListener('DOMContentLoaded', () => {
 	// For sidebar functionality
 	Object.assign(window.OCA.Files, { App: { fileList: { filesClient: OC.Files.getClient() } } }, window.OCA.Files)
 })
+
+Vue.prototype.t = translate
+Vue.prototype.n = translatePlural
+Vue.prototype.OC = window.OC
+Vue.prototype.OCA = window.OCA
 
 export default new Vue({
 	el: '#content',

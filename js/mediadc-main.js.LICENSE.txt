@@ -73,6 +73,8 @@
 
 /*! For license information please see NcAppNavigationSettings.js.LICENSE.txt */
 
+/*! For license information please see NcAppSettingsDialog.js.LICENSE.txt */
+
 /*! For license information please see NcCheckboxRadioSwitch.js.LICENSE.txt */
 
 /*! For license information please see NcContent.js.LICENSE.txt */
