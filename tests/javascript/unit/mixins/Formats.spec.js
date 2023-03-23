@@ -25,6 +25,7 @@
 import MockComponent from '../stubs/MockComponent.vue'
 import { shallowMount } from '@vue/test-utils'
 import Formats from '../../../../src/mixins/Formats'
+import moment from '@nextcloud/moment'
 
 const task = {
 	id: 124,
@@ -55,7 +56,7 @@ describe('mixins/Formats test', () => {
 	})
 
 	it('should return formatted time', () => {
-		expect(wrapper.vm.parseUnixTimestamp(task.created_time)).toBe('2022-10-02 10:31:14')
+		expect(wrapper.vm.parseUnixTimestamp(task.created_time)).toBe(moment.utc('2022-10-02 13:31:14').format('YYYY-MM-DD HH:mm:ss'))
 	})
 
 	it('should return task status', () => {
