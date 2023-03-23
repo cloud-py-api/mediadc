@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.5 - 2023-03-23]
+
+[`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
+(or updated) and enabled first.
+
+### Added
+
+- Show full file path option (https://github.com/cloud-py-api/mediadc/issues/121)
+
+### Fixed
+
+- Fixed batch deleting and resolving (https://github.com/cloud-py-api/mediadc/issues/125)
+
 ## [0.3.4 - 2023-03-14]
 
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
