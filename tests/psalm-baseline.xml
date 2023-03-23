@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
-  <file src="lib/AppInfo/Application.php">
-    <UndefinedClass occurrences="1">
-      <code>\OCP\Server</code>
-    </UndefinedClass>
-  </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
     <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;url</code>
@@ -38,14 +33,6 @@
       <code>$this-&gt;cpaUtils</code>
       <code>UtilsService</code>
     </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Dashboard/RecentTasksWidget.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;initialState</code>
-    </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch occurrences="1">
-      <code>$this-&gt;initialState</code>
-    </UndefinedThisPropertyFetch>
   </file>
   <file src="lib/Db/CollectorTaskDetailMapper.php">
     <UndefinedDocblockClass occurrences="2">
@@ -98,12 +85,17 @@
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/CollectorService.php">
-    <InvalidReturnStatement occurrences="1">
+    <InvalidReturnStatement occurrences="2">
+      <code>$size</code>
       <code>$this-&gt;tasksMapper-&gt;find($taskId)</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
+    <InvalidReturnType occurrences="2">
       <code>\OCA\MediaDC\Db\CollectorTask[]|array</code>
+      <code>int</code>
     </InvalidReturnType>
+    <InvalidScalarArgument occurrences="1">
+      <code>$deletedFilesSize + $filesize</code>
+    </InvalidScalarArgument>
     <MismatchingDocblockReturnType occurrences="4">
       <code>array|bool</code>
       <code>int</code>
