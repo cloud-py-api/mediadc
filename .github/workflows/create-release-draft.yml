@@ -44,15 +44,17 @@ jobs:
           node-version: 16.x
 
       - name: Build
-        run: make
+        run: |
+          npm install --deps
+          npm run build
 
       - name: Install Krankerl
         run: |
-          wget https://github.com/ChristophWurst/krankerl/releases/download/v0.13.0/krankerl_0.13.0_amd64.deb
-          sudo dpkg -i krankerl_0.13.0_amd64.deb
+          wget https://github.com/ChristophWurst/krankerl/releases/download/v0.14.0/krankerl_0.14.0_amd64.deb
+          sudo dpkg -i krankerl_0.14.0_amd64.deb
 
       - name: Package app
-        run: krankerl package
+        run: krankerl package || make appstore
 
       # - name: Get nextcloud-min-version from appinfo
       #   id: appinfo
