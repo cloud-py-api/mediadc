@@ -836,7 +836,7 @@ class CollectorService {
 				}
 			}
 		}
-		if (count($groupFiles) <= 1) {
+		if (count($groupFiles) === 1) {
 			$this->markResolvedPhoto($groupFiles[0], true);
 			$this->markResolvedVideo($groupFiles[0], true);
 			$this->tasksDetailsMapper->delete(
@@ -876,7 +876,7 @@ class CollectorService {
 				$this->markResolvedVideo($fileId, true);
 			}
 		}
-		if (count($groupFiles) <= 1) {
+		if (count($groupFiles) === 1) {
 			$this->markResolvedPhoto($groupFiles[0], true);
 			$this->markResolvedVideo($groupFiles[0], true);
 			$this->tasksDetailsMapper->delete(
