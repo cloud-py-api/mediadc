@@ -167,6 +167,7 @@ const state = {
 	detailsGridSize: 192,
 	deleteFileConfirmation: true,
 	autoOpenNextGroup: true,
+	showFullFilePath: false,
 }
 
 describe('store/settings tests', () => {

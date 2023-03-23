@@ -45,10 +45,28 @@ class PageControllerTest extends TestCase {
 	/** @var \OCP\EventDispatcher\IEventDispatcher|MockObject */
 	private $eventDispatcher;
 
+	/** @var \OCP\AppFramework\Services\IInitialState|MockObject */
+	private $initialStateService;
+
+	/** @var \OCA\MediaDC\Service\SettingsService|MockObject */
+	private $settingsService;
+
+	/** @var \OCA\MediaDC\Service\CollectorService|MockObject */
+	private $collectorService;
+
 	public function setUp(): void {
 		$this->request = $this->createMock(\OCP\IRequest::class);
 		$this->eventDispatcher = $this->createMock(\OCP\EventDispatcher\IEventDispatcher::class);
-		$this->controller = new PageController($this->request, $this->eventDispatcher);
+		$this->initialStateService = $this->createMock(\OCP\AppFramework\Services\IInitialState::class);
+		$this->settingsService = $this->createMock(\OCA\MediaDC\Service\SettingsService::class);
+		$this->collectorService = $this->createMock(\OCA\MediaDC\Service\CollectorService::class);
+		$this->controller = new PageController(
+			$this->request,
+			$this->eventDispatcher,
+			$this->initialStateService,
+			$this->settingsService,
+			$this->collectorService
+		);
 	}
 
 	public function testIndex(): void {

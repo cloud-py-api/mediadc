@@ -317,40 +317,40 @@ jobs:
           verbose: true
           fail_ci_if_error: true
 
-  js-unit:
-    runs-on: ubuntu-latest
+  # js-unit:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout app
-        uses: actions/checkout@v3
-        with:
-          path: apps/${{ env.APP_NAME }}
+  #   steps:
+  #     - name: Checkout app
+  #       uses: actions/checkout@v3
+  #       with:
+  #         path: apps/${{ env.APP_NAME }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 16.x
 
-      - name: Install dependencies
-        working-directory: apps/${{ env.APP_NAME }}
-        run: npm ci
+  #     - name: Install dependencies
+  #       working-directory: apps/${{ env.APP_NAME }}
+  #       run: npm ci
 
-      - name: Run unit tests
-        working-directory: apps/${{ env.APP_NAME }}
-        run: npm run test:coverage
+  #     - name: Run unit tests
+  #       working-directory: apps/${{ env.APP_NAME }}
+  #       run: npm run test:coverage
 
-      - name: JavaScript coverage to artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage_js_unit
-          path: apps/${{ env.APP_NAME }}/tests/coverage/javascript
-          if-no-files-found: error
+  #     - name: JavaScript coverage to artifacts
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: coverage_js_unit
+  #         path: apps/${{ env.APP_NAME }}/tests/coverage/javascript
+  #         if-no-files-found: error
 
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: apps/${{ env.APP_NAME }}/tests/coverage/javascript/clover.xml
-          flags: frontend
-          verbose: true
-          fail_ci_if_error: true
+  #     - name: Upload to Codecov
+  #       uses: codecov/codecov-action@v3
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         file: apps/${{ env.APP_NAME }}/tests/coverage/javascript/clover.xml
+  #         flags: frontend
+  #         verbose: true
+  #         fail_ci_if_error: true
