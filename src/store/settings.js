@@ -30,6 +30,7 @@ const state = {
 	detailsGridSize: 192,
 	deleteFileConfirmation: true,
 	autoOpenNextGroup: true,
+	showFullFilePath: false,
 }
 
 const mutations = {
@@ -103,6 +104,16 @@ const mutations = {
 	setAutoOpenNextGroup(state, value) {
 		state.autoOpenNextGroup = value
 	},
+
+	/**
+	 * Set show full file path flag
+	 *
+	 * @param {object} state the store data
+	 * @param {boolean} value flag value
+	 */
+	setShowFullFilePath(state, value) {
+		state.showFullFilePath = value
+	},
 }
 
 const getters = {
@@ -146,6 +157,14 @@ const getters = {
 	 * @return {boolean}
 	 */
 	autoOpenNextGroup: state => state.autoOpenNextGroup,
+
+	/**
+	 * Returns showFullFilePath path setting
+	 *
+	 * @param {object} state the store data
+	 * @return {boolean}
+	 */
+	showFullFilePath: state => state.showFullFilePath,
 }
 
 const actions = {

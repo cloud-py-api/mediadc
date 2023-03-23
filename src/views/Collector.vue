@@ -41,6 +41,7 @@
 <script>
 import TasksNew from '../components/tasks/TasksNew.vue'
 import TasksList from '../components/tasks/TasksList.vue'
+import { loadState } from '@nextcloud/initial-state'
 
 export default {
 	name: 'Collector',
@@ -64,11 +65,26 @@ export default {
 		}
 	},
 	beforeMount() {
-		this.$store.dispatch('getTasks', true).then(() => {
-			this.$store.dispatch('getSettings').then(() => {
+		const tasks = loadState('mediadc', 'tasks', false)
+		const settings = loadState('mediadc', 'settings', false)
+		if (tasks) {
+			this.$store.commit('setTasks', tasks)
+			this.$emit('update:loading', false)
+			if (settings) {
+				this.$store.commit('setSettings', settings)
 				this.$emit('update:loading', false)
+			} else {
+				this.$store.dispatch('getSettings').then(() => {
+					this.$emit('update:loading', false)
+				})
+			}
+		} else {
+			this.$store.dispatch('getTasks', true).then(() => {
+				this.$store.dispatch('getSettings').then(() => {
+					this.$emit('update:loading', false)
+				})
 			})
-		})
+		}
 	},
 }
 </script>

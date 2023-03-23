@@ -1,9 +1,9 @@
 <!--
- - @copyright Copyright (c) 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ - @copyright Copyright (c) 2021-2023 Andrey Borysenko <andrey18106x@gmail.com>
  -
- - @copyright Copyright (c) 2021-2022 Alexander Piskun <bigcat88@icloud.com>
+ - @copyright Copyright (c) 2021-2023 Alexander Piskun <bigcat88@icloud.com>
  -
- - @author 2021-2022 Andrey Borysenko <andrey18106x@gmail.com>
+ - @author 2021-2023 Andrey Borysenko <andrey18106x@gmail.com>
  -
  - @license AGPL-3.0-or-later
  -
@@ -35,10 +35,16 @@
 					icon="icon-video-off" />
 			</template>
 			<template #footer>
-				<NcAppNavigationSettings :title="t('mediadc', 'Settings')" :open="false">
-					<DetailsListSettings />
-				</NcAppNavigationSettings>
+				<ul class="app-navigation-entry__settings">
+					<NcAppNavigationItem :aria-label="t('mediadc', 'Open MediaDC settings')"
+						:title="t('mediadc', 'Settings')"
+						@click.prevent.stop="openSettingsModal">
+						<Cog slot="icon" :size="20" />
+					</NcAppNavigationItem>
+				</ul>
 			</template>
+			<AppSettings :open.sync="settingsOpened"
+				@close="closeSettingsModal" />
 		</NcAppNavigation>
 		<NcAppContent :class="{ 'icon-loading': loading }">
 			<router-view v-show="!loading" :loading.sync="loading" />
@@ -51,9 +57,9 @@ import NcContent from '@nextcloud/vue/dist/Components/NcContent.js'
 import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
 import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
 import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
-import NcAppNavigationSettings from '@nextcloud/vue/dist/Components/NcAppNavigationSettings.js'
+import Cog from 'vue-material-design-icons/Cog.vue'
 
-import DetailsListSettings from './components/settings/DetailsListSettings.vue'
+import AppSettings from './components/settings/AppSettings.vue'
 
 export default {
 	name: 'MediaDC',
@@ -62,13 +68,31 @@ export default {
 		NcAppContent,
 		NcAppNavigation,
 		NcAppNavigationItem,
-		NcAppNavigationSettings,
-		DetailsListSettings,
+		AppSettings,
+		Cog,
 	},
 	data() {
 		return {
 			loading: true,
+			settingsOpened: false,
 		}
+	},
+	methods: {
+		openSettingsModal() {
+			this.settingsOpened = true
+		},
+		closeSettingsModal() {
+			this.settingsOpened = false
+		},
 	},
 }
 </script>
+
+<style scoped>
+.app-navigation-entry__settings {
+	height: auto !important;
+	overflow: hidden !important;
+	padding-top: 0 !important;
+	flex: 0 0 auto;
+}
+</style>
