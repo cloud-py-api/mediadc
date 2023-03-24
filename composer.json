@@ -19,7 +19,7 @@
 		"nextcloud/ocp": "dev-master",
 		"roave/security-advisories": "dev-master",
 		"psalm/phar": "^4.30.0",
-		"phpunit/phpunit": "^9.5",
+		"phpunit/phpunit": "^10.0",
 		"nextcloud/coding-standard": "^1.0",
 		"friendsofphp/php-cs-fixer": "^3.13"
 	},
