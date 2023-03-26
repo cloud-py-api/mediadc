@@ -2,14 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base",
-    ":packageFile",
     ":disableDependencyDashboard"
-  ],
-  "ignorePaths": [
-    "**/3rdparty/**",
-    "**/lib/**",
-    "**/src/**",
-    "**/templates/**",
-    "**/tests/**"
   ]
 }
