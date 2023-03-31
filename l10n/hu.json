@@ -1,5 +1,7 @@
 { "translations": {
     "MediaDC Tasks" : "MediaDC feladatok",
+    "Use pre-compiled Python binaries" : "Előre fordított Python binárisok használata",
+    "Use Python part in binary format (located in the appdata folder)" : "A bináris formátumú Python rész használata (az appdata mappában található)",
     "MediaDC" : "MediaDC",
     "Tasks" : "Feladatok",
     "Resolved" : "Megoldott",
@@ -19,7 +21,13 @@
     "Confirm" : "Megerősítés",
     "Decline" : "Elutasítás",
     "Error" : "Hiba",
+    "Settings list is empty" : "A beállítások listája üres",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Úgy néz ki, hogy az adatbázis nem lett megfelelően előkészítve. Próbálja újraengedélyezni az alkalmazást.",
+    "Bug report" : "Hibajelentés",
     "Settings successfully updated" : "Beállítások sikeresen frissítve",
+    "Some error occurred while updating settings" : "Hiba történt a beállítások frissítése során",
+    "Collect non sensitive system info for bug report" : "Nem érzékeny rendszer-információk összegyűjtése a hibajelentéshez",
+    "Collect system info" : "Rendszerinformációk gyűjtés",
     "System info" : "Rendszerinformáció",
     "Copy to clipboard" : "Másolás a vágólapra",
     "Copied to clipboard" : "Vágólapra másolva",
@@ -36,6 +44,7 @@
     "Photos&Videos" : "Fotók és videók",
     "MediaDC Task Details" : "MediaDC – Feladat részletei",
     "MediaDC Resolved files" : "MediaDC – Feloldott fájlok",
-    "Task successfully started with duplicated settings!" : "A feladat sikeresen elindult a kettőzött beállításokkal."
+    "Task successfully started with duplicated settings!" : "A feladat sikeresen elindult a kettőzött beállításokkal.",
+    "_Test text_::_Test texts_" : ["Tesztszöveg","Tesztszövegek"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
