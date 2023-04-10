@@ -18,6 +18,7 @@
     "Select" : "Вибрати",
     "Photos" : "Світлини",
     "Videos" : "Відео",
+    "Task successfully restarted!" : "Завдання успішно перезапущено!",
     "Recent Tasks" : "Останні завдання",
     "No tasks yet" : "Поки відсутні завдання",
     "Start" : "Початок",
@@ -27,6 +28,8 @@
     "Edit" : "Редагувати",
     "Delete task" : "Вилучити завдання",
     "You are not allowed to manage other user's tasks." : "Відсутні права кеувати завданнями інших користувачів",
-    "This files won't be scanned in further tasks." : "Файли не будо проскановано у наступних завданнях."
+    "Task successfully restarted with previous settings!" : "Завдання успішно перезапущено з попередніми налаштуваннями!",
+    "This files won't be scanned in further tasks." : "Файли не будо проскановано у наступних завданнях.",
+    "Task successfully started with duplicated settings!" : "Завдання успішно перезапущено зі скопійованими налаштуваннями!"
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);"
 }
