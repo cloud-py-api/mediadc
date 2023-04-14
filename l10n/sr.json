@@ -35,7 +35,7 @@
     "Wait until file has been loaded before deleting it" : "Сачекајте да се фајл учита пре него што га обришете",
     "Not enough permissions to delete the file" : "Нема довољно дозвола за брисање фајла",
     "File not found. Probably it's has been already deleted" : "Фајл није пронађен. Вероватно је већ обрисан",
-    "An error occurred while deleting the file" : "Дошло је до крешке током брисања фајла",
+    "An error occurred while deleting the file" : "Дошло је до грешке током брисања фајла",
     "A server error occurred" : "Дошло је до серверске грешке",
     "Files size sorting" : "Ређање по величини фајлова",
     "Toggle files size sorting" : "Укљ./Искљ. ређање по величини фајлова",
