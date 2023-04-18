@@ -135,6 +135,7 @@ export default {
 .details-export-close:hover {
 	opacity: 1;
 }
+
 .selection-container {
 	display: flex;
 	flex-direction: column;

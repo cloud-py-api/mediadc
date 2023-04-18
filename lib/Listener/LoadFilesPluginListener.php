@@ -26,38 +26,33 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\MediaDC\Settings;
+namespace OCA\MediaDC\Listener;
 
-use OC\URLGenerator;
+use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCP\EventDispatcher\Event;
+use OCP\EventDispatcher\IEventListener;
+use OCP\IConfig;
+use OCP\Util;
+
 use OCA\MediaDC\AppInfo\Application;
-use OCP\IL10N;
-use OCP\Settings\IIconSection;
 
-class AdminSection implements IIconSection {
-	/** @var IL10N */
-	private $l;
+class LoadFilesPluginListener implements IEventListener {
+	private IConfig $config;
 
-	/** @var UrlGenerator */
-	private $urlGenerator;
-
-	public function __construct(IL10N $l, URLGenerator $urlGenerator) {
-		$this->l = $l;
-		$this->urlGenerator = $urlGenerator;
+	public function __construct(IConfig $config) {
+		$this->config = $config;
 	}
 
-	public function getId() {
-		return Application::APP_ID;
-	}
+	public function handle(Event $event): void {
+		if (!$event instanceof LoadAdditionalScriptsEvent) {
+			return;
+		}
 
-	public function getName() {
-		return $this->l->t('MediaDC');
-	}
+		$fileActionsMenuEnabled = $this->config->getAppValue(Application::APP_ID, 'file_actions_menu', '1') === '1';
 
-	public function getPriority() {
-		return 50;
-	}
-
-	public function getIcon() {
-		return $this->urlGenerator->imagePath(Application::APP_ID, 'app-dark.svg');
+		if ($fileActionsMenuEnabled) {
+			Util::addScript(Application::APP_ID, Application::APP_ID . '-filesplugin');
+			Util::addStyle(Application::APP_ID, 'filesplugin');
+		}
 	}
 }
