@@ -37,7 +37,6 @@ use OCP\Util;
 use OCA\MediaDC\AppInfo\Application;
 
 class LoadFilesPluginListener implements IEventListener {
-
 	private IConfig $config;
 
 	public function __construct(IConfig $config) {

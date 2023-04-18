@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
+  <file src="lib/AppInfo/Application.php">
+    <UndefinedClass occurrences="1">
+      <code>LoadAdditionalScriptsEvent</code>
+    </UndefinedClass>
+  </file>
   <file src="lib/Command/CollectorTaskNotificationCommand.php">
     <UndefinedThisPropertyAssignment occurrences="1">
       <code>$this-&gt;url</code>
@@ -39,6 +44,11 @@
       <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
       <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
     </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Listener/LoadFilesPluginListener.php">
+    <UndefinedClass occurrences="1">
+      <code>LoadAdditionalScriptsEvent</code>
+    </UndefinedClass>
   </file>
   <file src="lib/Migration/AppDataInitializationStep.php">
     <UndefinedClass occurrences="1">
