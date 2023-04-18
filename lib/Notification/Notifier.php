@@ -64,7 +64,7 @@ class Notifier implements INotifier {
 		if ($notification->getSubject() === 'mediadc-task-alert') {
 			$notification
 				->setLink($this->url->linkToRouteAbsolute('mediadc.page.index') . 'tasks/' . $notification->getObjectId())
-				->setIcon($this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'settings.svg')));
+				->setIcon($this->url->getAbsoluteURL($this->url->imagePath(Application::APP_ID, 'app-dark.svg')));
 
 			$parameters = $notification->getSubjectParameters();
 			if ($parameters['status'] === 'finished') {

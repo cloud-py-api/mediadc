@@ -22,6 +22,7 @@
  *
  */
 
-.action-mediadcscan img {
+.icon-mediadc {
+	background-image: url('../img/app-dark.svg');
 	filter: var(--background-invert-if-dark);
 }

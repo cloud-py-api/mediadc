@@ -178,9 +178,11 @@ export default {
 	white-space: nowrap;
 	width: fit-content;
 }
+
 .app-setting .input-field {
 	width: fit-content;
 }
+
 .setting {
 	display: flex;
 	align-items: center;

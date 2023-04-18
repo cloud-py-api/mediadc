@@ -18,9 +18,6 @@ flag_management:
     - name: php_backend
       paths:
         - lib/
-    - name: frontend
-      paths:
-        - src/
 
 fixes:
   - "apps/mediadc/::"
