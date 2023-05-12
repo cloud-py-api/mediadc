@@ -6,6 +6,7 @@ OC.L10N.register(
     "Export" : "Exportă",
     "Deselect all" : "Deselectează tot",
     "Select all" : "Selectează tot",
+    "Select group" : "Selectați grupul",
     "Remove" : "Elimină",
     "Confirm" : "Confirmă",
     "Decline" : "Refuză",
