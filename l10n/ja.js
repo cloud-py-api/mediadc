@@ -29,6 +29,7 @@ OC.L10N.register(
     "Photos" : "写真",
     "Videos" : "動画",
     "Start" : "開始",
+    "Duplicate" : "複製",
     "Delete" : "削除",
     "Edit" : "編集",
     "Delete task" : "タスクを削除"
