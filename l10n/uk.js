@@ -16,6 +16,7 @@ OC.L10N.register(
     "Bug report" : "Звіт про недолік",
     "Copy to clipboard" : "Копіювати до буферу обміну",
     "Copied to clipboard" : "Скопійовано",
+    "Edit task" : "Редагувати завдання",
     "Not selected" : "Не вибрано",
     "Select" : "Вибрати",
     "Photos" : "Світлини",
