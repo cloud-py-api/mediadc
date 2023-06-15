@@ -1,6 +1,8 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "أكواد ثنائية مسبقة الترجمة من بايتون",
+    "Use Python part in binary format (located in the appdata folder)" : "استخدم جزء بايتون بالصيغة الثنائية (موجود في المجلد appdata)",
     "Tasks" : "المهام",
     "Settings" : "الإعدادات",
     "Export" : "تصدير",
@@ -11,6 +13,14 @@ OC.L10N.register(
     "Confirm" : "تأكيد",
     "Decline" : "رفض",
     "Error" : "خطأ",
+    "Settings list is empty" : "قائمة الإعدادات فارغة",
+    "Seems like database not initialized properly. Try to re-enable the app" : "يبدو أن قاعدة البيانات لم يبدأ تشغيلها كما يجب. حاول إعادة تمكين التطبيق",
+    "Bug report" : "تقرير بالأخطاء",
+    "Settings successfully updated" : "تمّ تحديث الإعدادات بنجاح",
+    "Some error occurred while updating settings" : "حدثت بعض الأخطاء أثناء تحديث الإعدادات",
+    "Collect non sensitive system info for bug report" : "تحصيل معلومات غير حساسة عن النظام لتقريرالتنقيح",
+    "Collect system info" : "تحصيل معلومات النظام",
+    "System info" : "معلومات النظام",
     "Copy to clipboard" : "نسخ الرابط",
     "Copied to clipboard" : "تم النسخ إلى الحافظة",
     "Select" : "تحديد",
