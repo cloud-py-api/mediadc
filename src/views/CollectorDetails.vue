@@ -108,7 +108,7 @@
 									icon="icon-delete"
 									:close-after-click="true"
 									@click="deleteTask(task)">
-									{{ t('mediadc', 'Delete') }}
+									{{ t('mediadc', 'Delete task') }}
 								</NcActionButton>
 							</NcActions>
 						</div>

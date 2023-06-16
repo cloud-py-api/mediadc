@@ -35,14 +35,3 @@ Starting from 0.2.0 version MediaDC is only included in Nextcloud v25 and higher
 * [Andrey Borysenko](https://github.com/andrey18106)
 * [Alexander Piskun](https://github.com/bigcat88)
 
-## Support
-
-You can support us in several ways:
-
-- ⭐ Star our work (it really motivates)
-- ❗ Create an Issue or feature request (bring to us an excellent idea)
-- 💁 Resolve some Issue or create a Pull Request (contribute to this project)
-- 🪙 Donate with any amount with one of the links below (fund this project)
-
-[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ)
-[![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/cloud_py_api/donate)

@@ -18,18 +18,6 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 * **Save your time and cloud space** The title says all...
 
 Quick start guide and further information in our [Wiki](https://github.com/cloud-py-api/mediadc/wiki).
-
-### Support
-
-You can support us in several ways:
-
-- ⭐ Star our work (it really motivates)
-- ❗ Create an Issue or feature request (bring to us an excellent idea)
-- 💁 Resolve some Issue or create a Pull Request (contribute to this project)
-- 🪙 Donate with any amount with one of the links below (fund this project)
-
-[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?hosted_button_id=H5PLJJMWLDNJQ)
-[![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/cloud_py_api/donate)
 	]]>
 	</description>
 	<version>0.3.6</version>
@@ -56,7 +44,7 @@ You can support us in several ways:
 	<screenshot>https://raw.githubusercontent.com/cloud-py-api/mediadc/main/screenshots/mediadc_filesplugin.png</screenshot>
 	<dependencies>
 		<php min-version="7.4" min-int-size="64" />
-		<nextcloud min-version="25" max-version="26" />
+		<nextcloud min-version="25" max-version="28" />
 	</dependencies>
 	<background-jobs>
 		<job>OCA\MediaDC\BackgroundJob\CollectorCleanupJob</job>
