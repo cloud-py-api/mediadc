@@ -8,6 +8,8 @@ OC.L10N.register(
     "Deselect all" : "Desmarcar todo",
     "Select all" : "Seleccionar todo",
     "Select group" : "Seleccione grupo",
+    "Change to grid view" : "Cambiar á vista de grella",
+    "Change to list view" : "Cambiar á vista de lista",
     "Remove" : "Retirar",
     "Confirm" : "Confirmar",
     "Decline" : "Declinar",
