@@ -28,7 +28,6 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Command;
 
-use OCP\IURLGenerator;
 use OCP\Notification\IManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -56,15 +55,13 @@ class CollectorTaskNotificationCommand extends Command {
 	public function __construct(
 		CollectorTaskMapper $tasksMapper,
 		CollectorTaskDetailMapper $tasksDetailsMapper,
-		IManager $notificationManager,
-		IURLGenerator $urlGenerator
+		IManager $notificationManager
 	) {
 		parent::__construct();
 
 		$this->tasksMapper = $tasksMapper;
 		$this->tasksDetailsMapper = $tasksDetailsMapper;
 		$this->notificationManager = $notificationManager;
-		$this->url = $urlGenerator;
 	}
 
 	protected function configure(): void {
