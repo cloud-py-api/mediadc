@@ -115,6 +115,22 @@ class CollectorTaskDetailMapper extends QBMapper {
 		}, $qb->executeQuery()->fetchAll());
 	}
 
+	public function findAllByGroupIdSize(int $taskId, int $groupId): array {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(
+			'mdc_t_d.fileid',
+		)
+			->from($this->tableName, 'mdc_t_d')
+			->innerJoin('mdc_t_d', 'filecache', 'f', $qb->expr()->eq('mdc_t_d.fileid', 'f.fileid'))
+			->where($qb->expr()->eq('mdc_t_d.task_id', $qb->createNamedParameter($taskId, IQueryBuilder::PARAM_INT)))
+			->andWhere($qb->expr()->eq('mdc_t_d.group_id', $qb->createNamedParameter($groupId, IQueryBuilder::PARAM_INT)))
+			->orderBy('mdc_t_d.group_id', 'ASC')
+			->addOrderBy('f.size', 'DESC');
+		return array_map(function ($row) {
+			return intval($row['fileid']);
+		}, $qb->executeQuery()->fetchAll());
+	}
+
 	/**
 	 * @param int $taskId
 	 * @param int $limit

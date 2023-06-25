@@ -66,8 +66,7 @@
 			</div>
 		</div>
 		<div class="file-info">
-			<span v-if="!showFullFilePath" class="filename" :title="file.filepath">{{ file.filename }}</span>
-			<span v-else class="filepath">{{ file.filepath }}</span>
+			<span :class="{ filename: !showFullFilePath, filepath: showFullFilePath }" :title="file.filepath">{{ !showFullFilePath ? file.filename : file.filepath }}</span>
 			<span class="owner">{{ file.fileowner }}</span>
 			<span class="size" :title="file.filesize + ' B'">{{ formatBytes(Number(file.filesize)) }}</span>
 			<div class="actions" style="display: flex;">
@@ -249,7 +248,7 @@ export default {
 						emit('updateGroupFilesPagination', this.file)
 					} else if ('locked' in res.data && res.data.locked) {
 						showWarning(this.t('mediadc', 'Wait until file has been loaded before deleting it'))
-					} else if ('not_permited' in res.data && res.data.not_permited) {
+					} else if ('not_permitted' in res.data && res.data.not_permited) {
 						showError(this.t('mediadc', 'Not enough permissions to delete the file'))
 					} else if ('not_found' in res.data && res.data.not_found) {
 						showError(this.t('mediadc', 'File not found. Probably it\'s has been already deleted'))
@@ -376,6 +375,8 @@ body[data-theme-dark] .placeholder {
 }
 
 .filepath {
+	width: 100%;
+	line-break: anywhere;
 	border-bottom: 1px solid var(--color-border-dark);
 	padding-bottom: 5px;
 	margin-bottom: 5px;

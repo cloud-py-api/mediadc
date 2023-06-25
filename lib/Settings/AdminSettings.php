@@ -29,17 +29,33 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Settings;
 
 use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Db\SettingMapper;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
 
 class AdminSettings implements ISettings {
-	public function __construct() {
+	/** @var SettingMapper */
+	private $settingMapper;
+
+	/** @var IInitialState */
+	private $initialState;
+
+	public function __construct(
+		IInitialState $initialState,
+		SettingMapper $settingMapper
+	) {
+		$this->settingMapper = $settingMapper;
+		$this->initialState = $initialState;
 	}
 
 	/**
 	 * @return TemplateResponse
 	 */
 	public function getForm() {
+		$settings = $this->settingMapper->findAll();
+		$this->initialState->provideInitialState('settings', $settings);
+
 		return new TemplateResponse(Application::APP_ID, 'admin');
 	}
 

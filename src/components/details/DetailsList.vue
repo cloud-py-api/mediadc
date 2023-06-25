@@ -84,28 +84,55 @@
 						{{ n('mediadc', 'Batch actions for %n group', 'Batch actions for %n groups', checkedDetailGroups.length) }}
 						<NcActions placement="top" style="margin-left: 5px;">
 							<template v-if="!filtered">
-								<NcActionButton icon="icon-checkmark" @click="selectAllGroups">
+								<NcActionButton @click="selectAllGroups">
+									<template #icon>
+										<CheckAll :size="20" />
+									</template>
 									{{ checkedDetailGroups.length === details.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
 								</NcActionButton>
-								<NcActionButton v-if="details.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
+								<NcActionButton v-if="details.length > itemsPerPage" @click="selectAllGroupsOnPage">
+									<template #icon>
+										<CheckUnderline :size="20" />
+									</template>
 									{{ checkedDetailGroupsIntersect.length === paginatedDetails[page].length || checkedDetailGroupsIntersect.length === paginatedSortedDetails[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
 								</NcActionButton>
 							</template>
 							<template v-else>
-								<NcActionButton icon="icon-checkmark" @click="selectAllGroups">
+								<NcActionButton @click="selectAllGroups">
+									<template #icon>
+										<CheckAll :size="20" />
+									</template>
 									{{ checkedDetailGroups.length === detailsFiltered.length ? t('mediadc', 'Deselect all') : t('mediadc', 'Select all') }}
 								</NcActionButton>
-								<NcActionButton v-if="detailsFiltered.length > itemsPerPage" icon="icon-checkmark" @click="selectAllGroupsOnPage">
+								<NcActionButton v-if="detailsFiltered.length > itemsPerPage" @click="selectAllGroupsOnPage">
+									<template #icon>
+										<CheckUnderline :size="20" />
+									</template>
 									{{ checkedDetailGroupsIntersect.length === paginatedDetailsFiltered[page].length ? t('mediadc', 'Deselect all on page') : t('mediadc', 'Select all on page') }}
 								</NcActionButton>
 							</template>
-							<NcActionButton v-if="checkedDetailGroups.length > 0" icon="icon-close" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
+							<NcActionButton v-if="checkedDetailGroups.length > 0" @click="_deselectAllGroups((!filtered) ? details : detailsFiltered)">
+								<template #icon>
+									<MinusBoxOutline :size="20" />
+								</template>
 								{{ t('mediadc', 'Uncheck selected') }}
 							</NcActionButton>
 							<NcActionButton v-tooltip="{content: t('mediadc', 'Mark all files in group as resolved'), placement: 'left'}"
-								icon="icon-delete"
+								icon="icon-close"
 								@click="removeCheckedGroups">
 								{{ n('mediadc', 'Remove group', 'Remove groups', checkedDetailGroups.length) }}
+							</NcActionButton>
+							<NcActionButton v-tooltip="{content: t('mediadc', 'Delete all files except the largest one'), placement: 'left'}"
+								icon="icon-delete"
+								:disabled="batchDeleting"
+								@click="deleteCheckedGroupsFiles">
+								<template v-if="!batchDeleting" #icon>
+									<span class="icon-delete material-design-icon" />
+								</template>
+								<template v-else #icon>
+									<NcLoadingIcon :size="20" />
+								</template>
+								{{ t('mediadc', 'Delete files') }}
 							</NcActionButton>
 						</NcActions>
 					</div>
@@ -168,6 +195,10 @@ import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadi
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import MinusBoxOutline from 'vue-material-design-icons/MinusBoxOutline.vue'
+import CheckAll from 'vue-material-design-icons/CheckAll.vue'
+import CheckUnderline from 'vue-material-design-icons/CheckUnderline.vue'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 
 import { mapGetters } from 'vuex'
 
@@ -185,6 +216,10 @@ export default {
 		NcActions,
 		NcActionButton,
 		Pagination,
+		MinusBoxOutline,
+		CheckAll,
+		CheckUnderline,
+		NcLoadingIcon,
 	},
 	mixins: [Formats],
 	data() {
@@ -194,6 +229,7 @@ export default {
 			checkedDetailGroups: [],
 			batchActionsOpened: false,
 			sortGroups: true,
+			batchDeleting: false,
 		}
 	},
 	computed: {
@@ -345,6 +381,36 @@ export default {
 					this.checkedDetailGroups.splice(detailIndex, 1)
 				}
 			}
+		},
+		deleteCheckedGroupsFiles() {
+			this.batchDeleting = true
+			axios.post(generateUrl(`/apps/mediadc/api/v1/tasks/${this.task.id}/details/delete`), { groupIds: this.checkedDetailGroups.map(d => d.group_id) }).then(res => {
+				if (res.data.success) {
+					emit('openNextDetailGroup', this.checkedDetailGroups[this.checkedDetailGroups.length - 1])
+					const updatedDetails = [...this.details]
+					for (const removedGroupId of res.data.removedGroupIds) {
+						const checkedIndex = this.checkedDetailGroups.findIndex(d => Number(d.group_id) === removedGroupId)
+						if (checkedIndex !== -1) {
+							this.checkedDetailGroups.splice(checkedIndex, 1)
+						}
+						const removedDetailIndex = updatedDetails.findIndex(d => Number(d.group_id) === removedGroupId)
+						updatedDetails.splice(removedDetailIndex, 1)
+					}
+					emit('updateTaskInfo')
+					this.$store.commit('setDetails', updatedDetails)
+					this.$store.commit('setTask', res.data.task)
+					showSuccess(this.t('mediadc', 'Selected groups files successfully deleted'))
+				} else if (res.data.removedGroupIds.length !== 0) {
+					showWarning(this.t('mediadc', 'Not all selected groups files deleted'))
+				} else {
+					showError(this.t('mediadc', 'Failed to delete selected groups files'))
+				}
+				this.batchDeleting = false
+			}).catch(err => {
+				showError(this.t('mediadc', 'A server error occurred'))
+				console.debug(err)
+				this.batchDeleting = false
+			})
 		},
 		selectAllGroups() {
 			const _details = (!this.filtered) ? this.details : this.detailsFiltered

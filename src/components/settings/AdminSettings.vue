@@ -160,6 +160,7 @@
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
+import { loadState } from '@nextcloud/initial-state'
 
 import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
@@ -201,21 +202,29 @@ export default {
 		}
 	},
 	beforeMount() {
-		this.getSettings()
+		this.settings = loadState('mediadc', 'settings', null)
+		if (this.settings !== null) {
+			this.mapSettings(this.settings)
+		} else {
+			this.getSettings()
+		}
 	},
 	methods: {
 		getSettings() {
 			axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
 				this.settings = res.data
-				this.settings.forEach(setting => {
-					this.mappedSettings[setting.name] = setting
-				})
-				this.algorithms = ['average', 'dhash', 'phash', 'whash']
-				this.hashing_algorithm = JSON.parse(this.mappedSettings.hashing_algorithm.value)
-				this.hash_size = this.mappedSettings.hash_size.value
-				this.customExcludeList = JSON.parse(this.mappedSettings.exclude_list.value).mask
-				this.python_binary = JSON.parse(this.mappedSettings.python_binary.value)
+				this.mapSettings(this.settings)
 			})
+		},
+		mapSettings(settings) {
+			settings.forEach(setting => {
+				this.mappedSettings[setting.name] = setting
+			})
+			this.algorithms = ['average', 'dhash', 'phash', 'whash']
+			this.hashing_algorithm = JSON.parse(this.mappedSettings.hashing_algorithm.value)
+			this.hash_size = this.mappedSettings.hash_size.value
+			this.customExcludeList = JSON.parse(this.mappedSettings.exclude_list.value).mask
+			this.python_binary = JSON.parse(this.mappedSettings.python_binary.value)
 		},
 		saveChanges() {
 			axios.put(generateUrl('/apps/mediadc/api/v1/settings'), { settings: this.settings })

@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Controller;
 
+use Exception;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -201,15 +202,17 @@ class CollectorController extends Controller {
 	 * @param int $taskId target task id
 	 * @param string $format export file format (xml, json)
 	 *
-	 * @return DataDownloadResponse
+	 * @throws Exception
+	 * @return DataDownloadResponse|null
 	 */
-	public function getTaskResultsExport(int $taskId, string $format): DataDownloadResponse {
+	public function getTaskResultsExport(int $taskId, string $format): ?DataDownloadResponse {
 		if (in_array($format, ['xml', 'json'])) {
 			$export = $this->service->exportTaskResults(intval($taskId), $format);
 			if ($export) {
 				return new DataDownloadResponse($export['data'], $export['filename'], $export['contentType']);
 			}
 		}
+		throw new Exception('Bad request. Requested export format is not supported.');
 	}
 
 	/**
@@ -325,6 +328,18 @@ class CollectorController extends Controller {
 	public function removeTaskDetailGroups(int $taskId, array $groupIds): JSONResponse {
 		if ($taskId && $groupIds) {
 			return new JSONResponse($this->service->removeTaskDetailGroups($taskId, $groupIds), Http::STATUS_OK);
+		} else {
+			return new JSONResponse(['success' => false], Http::STATUS_OK);
+		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function deleteTaskDetailGroupsFiles(int $taskId, array $groupIds): JSONResponse {
+		if ($taskId && $groupIds) {
+			return new JSONResponse($this->service->deleteTaskDetailGroupsFiles($taskId, $groupIds), Http::STATUS_OK);
 		} else {
 			return new JSONResponse(['success' => false], Http::STATUS_OK);
 		}

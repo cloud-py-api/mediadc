@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Service;
 
 use DOMDocument;
+use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\File;
 use OCP\Files\Node;
 use OCP\Files\Folder;
@@ -768,7 +769,7 @@ class CollectorService {
 			} catch (NotPermittedException | NotFoundException $e) {
 				return [
 					'success' => false,
-					'not_permited' => $e instanceof NotPermittedException,
+					'not_permitted' => $e instanceof NotPermittedException,
 					'not_found' => $e instanceof NotFoundException,
 				];
 			}
@@ -780,7 +781,7 @@ class CollectorService {
 	}
 
 	/**
-	 * Remove ColectorTaskDetail groups with deleting coresponding files
+	 * Remove CollectorTaskDetail groups with deleting corresponding files
 	 *
 	 * @param int $taskId
 	 * @param array $groupIds
@@ -801,7 +802,45 @@ class CollectorService {
 	}
 
 	/**
-	 * Delete ColectorTaskDetail groups with deleting coresponding files
+	 * Delete all CollectorTaskDetail group files except one largest
+	 *
+	 * @param int $taskId
+	 * @param array $groupIds
+	 *
+	 * @return array
+	 */
+	public function deleteTaskDetailGroupsFiles(int $taskId, array $groupIds) {
+		$result = [];
+		foreach ($groupIds as $groupId) {
+			$groupFiles = $this->tasksDetailsMapper->findAllByGroupIdSize($taskId, $groupId);
+			$largestFileId = array_splice($groupFiles, 0, 1)[0];
+			$this->tasksDetailsMapper->deleteGroupFiles($taskId, $groupId, [$largestFileId]);
+			$this->markResolvedPhoto($largestFileId, true);
+			$this->markResolvedVideo($largestFileId, true);
+			$collectorTask = null;
+			foreach ($groupFiles as $fileId) {
+				$deleteFileResult = $this->deleteTaskDetailFile($taskId, $groupId, $fileId, false);
+				if ($deleteFileResult['success']) {
+					$collectorTask = $deleteFileResult['task'];
+					$fileIdIndex = array_search($fileId, $groupFiles);
+					if ($fileIdIndex !== false) {
+						array_splice($groupFiles, $fileIdIndex, 1)[0];
+					}
+				}
+			}
+			if (count($groupFiles) === 0) {
+				$result[] = intval($groupId);
+			}
+		}
+		return [
+			'success' => count($result) === count($groupIds),
+			'removedGroupIds' => $result,
+			'task' => $collectorTask,
+		];
+	}
+
+	/**
+	 * Delete CollectorTaskDetail groups with deleting corresponding files
 	 *
 	 * @param int $taskId
 	 * @param int $groupId
@@ -813,7 +852,7 @@ class CollectorService {
 		$result = [];
 		$errors = [
 			'locked' => [],
-			'not_permited' => [],
+			'not_permitted' => [],
 			'not_found' => [],
 		];
 		$groupFiles = $this->tasksDetailsMapper->findAllByGroupId($taskId, $groupId);
@@ -828,8 +867,8 @@ class CollectorService {
 				if (isset($deleteFileResult['locked']) && $deleteFileResult['locked']) {
 					array_push($errors['locked'], $fileId);
 				}
-				if (isset($deleteFileResult['not_permited']) && $deleteFileResult['not_permited']) {
-					array_push($errors['not_permited'], $fileId);
+				if (isset($deleteFileResult['not_permitted']) && $deleteFileResult['not_permitted']) {
+					array_push($errors['not_permitted'], $fileId);
 				}
 				if (isset($deleteFileResult['not_found']) && $deleteFileResult['not_found']) {
 					array_push($errors['not_found'], $fileId);
@@ -855,7 +894,7 @@ class CollectorService {
 	}
 
 	/**
-	 * Remove ColectorTaskDetail groups with deleting coresponding files
+	 * Remove CollectorTaskDetail groups with deleting corresponding files
 	 *
 	 * @param int $taskId
 	 * @param int $groupId

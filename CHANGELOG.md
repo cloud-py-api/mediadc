@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.6 - 2023-06-19]
+
+[`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
+(or updated) and enabled first.
+
+### Added
+
+- Nextcloud Hub 5 (27) support
+- Option to delete all duplicates in group except the largest one
+
+### Updated
+
+- Updated packages
+- Updated l10n
+
 ## [0.3.5 - 2023-03-23]
 
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
