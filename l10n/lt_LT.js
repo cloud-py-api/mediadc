@@ -13,6 +13,7 @@ OC.L10N.register(
     "Select all" : "Pažymėti viską",
     "_Remove file_::_Remove files_" : ["Šalinti failą","Šalinti failus","Šalinti failus","Šalinti failus"],
     "_Delete selected file_::_Delete selected files_" : ["Ištrinti pažymėtą failą","Ištrinti pažymėtus failus","Ištrinti pažymėtus failus","Ištrinti pažymėtus failus"],
+    "Delete files" : "Ištrinti failus",
     "_Remove group_::_Remove groups_" : ["Šalinti grupę","Šalinti grupes","Šalinti grupes","Šalinti grupes"],
     "Page:" : "Puslapis:",
     "Change to grid view" : "Keisti į tinklelio rodinį",

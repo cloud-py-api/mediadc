@@ -12,6 +12,7 @@ OC.L10N.register(
     "A server error occurred" : "Παρουσιάστηκε σφάλμα διακομιστή",
     "Deselect all" : "Αναίρεση επιλογής όλων",
     "Select all" : "Επιλογή όλων",
+    "Delete files" : "Διαγραφή αρχείων",
     "Go to page" : "Μετάβαση στη σελίδα",
     "Change to grid view" : "Αλλαγή σε προβολή πλέγματος",
     "Change to list view" : "Αλλαγή σε προβολή λίστας",

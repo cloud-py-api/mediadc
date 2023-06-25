@@ -53,6 +53,7 @@ OC.L10N.register(
     "_Remove file_::_Remove files_" : ["Poista tiedosto","Poista tiedostot"],
     "_Delete selected file_::_Delete selected files_" : ["Poista valittu tiedosto","Poista valitut tiedostot"],
     "Duplicates list" : "Duplikaattien lista",
+    "Delete files" : "Poista tiedostot",
     "Selected groups successfully removed" : "Valitut ryhmät on poistettu onnistuneesti",
     "_group _::_groups_" : ["ryhmä","ryhmää"],
     "_file_::_files_" : ["tiedosto","tiedostoa"],
