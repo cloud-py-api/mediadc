@@ -66,6 +66,7 @@ OC.L10N.register(
     "Toggle groups" : "Превключване на групи",
     "Uncheck selected" : "Премахване на отметката от избраното",
     "Mark all files in group as resolved" : "Маркиране на всички файлове в групата, като отстранени",
+    "Delete files" : "Изтриване на файлове",
     "No matchings found" : "Няма намерени съвпадения",
     "No duplicates found." : "Няма намерени дублирания.",
     "First page reached!" : "Достигната първа страница!",
