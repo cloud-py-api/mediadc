@@ -15,6 +15,7 @@ OC.L10N.register(
     "Selected groups files successfully deleted" : "تم حذف ملفات المجموعات المحددة بنجاح",
     "Not all selected groups files deleted" : "لم يتم حذف جميع مجموعات الملفات المحددة",
     "Failed to delete selected groups files" : "فشل فى حذف مجموعة الملفات المختارة",
+    "Select group" : "إختر مجموعةً",
     "Remove" : "حذف",
     "Confirm" : "تأكيد",
     "Decline" : "رفض",
