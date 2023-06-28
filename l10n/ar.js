@@ -34,6 +34,7 @@ OC.L10N.register(
     "Photos" : "الصور",
     "Videos" : "فيديوهات",
     "Start" : "ابدأ",
+    "Duplicate" : "تكرار",
     "Delete" : "إزالة",
     "Edit" : "تعديل",
     "Delete task" : "حذف المهمّة",
