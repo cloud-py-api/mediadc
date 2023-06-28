@@ -35,3 +35,14 @@ Starting from 0.2.0 version MediaDC is only included in Nextcloud v25 and higher
 * [Andrey Borysenko](https://github.com/andrey18106)
 * [Alexander Piskun](https://github.com/bigcat88)
 
+## State of the Maintenance
+
+As Andrey and I(Alexander) are fully committed to the **NextCloud App Ecosystem** project, 
+we will be working tirelessly around the clock for the next two months. 
+Due to our intense dedication to that project, our availability will be limited during this period. 
+However, we encourage and welcome any contributions from the community in the form of pull requests.
+
+After Nextcloud App Ecosystem V2 finished we'll rewrite MediaDC to use the new system, and write many other amazing applications.
+
+For All Coders who want to write New Amazing Applications for 
+Nextcloud with New App Ecosystem - we are avalaible to discuss its API, prototypes, etc. in their repositories. 
