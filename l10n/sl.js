@@ -43,6 +43,7 @@ OC.L10N.register(
     "Select" : "Izbor",
     "Photos" : "Fotografije",
     "Videos" : "Video posnetki",
+    "Photos and Videos" : "Slike in videoposnetki",
     "Start" : "Začni",
     "Duplicate" : "Podvoji",
     "Delete" : "Izbriši",
