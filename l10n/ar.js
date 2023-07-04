@@ -16,6 +16,8 @@ OC.L10N.register(
     "Not all selected groups files deleted" : "لم يتم حذف جميع مجموعات الملفات المحددة",
     "Failed to delete selected groups files" : "فشل فى حذف مجموعة الملفات المختارة",
     "Select group" : "إختر مجموعةً",
+    "Change to grid view" : "بدّل إلى العرض الشبكي grid view",
+    "Change to list view" : "بدّل إلى عرض القائمة list view",
     "Remove" : "حذف",
     "Confirm" : "تأكيد",
     "Decline" : "رفض",
