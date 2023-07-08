@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Similarity threshold" : "Prag podobnosti",
     "Exclude list" : "Izločitveni seznam",
+    "MediaDC" : "MediaDC",
     "Tasks" : "Naloge",
     "Resolved" : "Razrešeno",
     "Settings" : "Nastavitve",
@@ -24,6 +25,10 @@ OC.L10N.register(
     "Deselect all on page" : "Odstrani izbor vseh na strani",
     "Select all on page" : "Izberi vse na strani",
     "No matches on this page" : "Na tej strani ni zadetkov",
+    "_Remove file_::_Remove files_" : ["Odstrani datoteko","Odstrani datoteki","Odstrani datoteke","Odstrani datoteke"],
+    "_Delete selected file_::_Delete selected files_" : ["Izbriši izbrano datoteko","Izbriši izbrani datoteki","Izbriši izbrane datoteke","Izbriši izbrane datoteke"],
+    "Duplicates list" : "Seznam podvojenih",
+    "Sort groups" : "Razvrsti skupine",
     "Delete files" : "Izbriši datoteki",
     "Select group" : "Izbor skupine",
     "Page:" : "Stran:",
