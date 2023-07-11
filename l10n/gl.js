@@ -139,7 +139,7 @@ OC.L10N.register(
     "Delete file confirmation" : "Confirmación de eliminación de ficheiros",
     "Auto open next group" : "Abrir automaticamente o seguinte grupo",
     "Show full file path" : "Amosar a ruta completa do ficheiro",
-    "Collect non sensitive system info for bug report" : "Recoller información non sensíbel do sistema para o informe de erros",
+    "Collect non sensitive system info for bug report" : "Recoller información non sensíbel do sistema para o informe de fallos",
     "Collect system info" : "Recoller información do sistema",
     "System info" : "Información do sistema",
     "Copy to clipboard" : "Copiar no portapapeis.",
