@@ -23,11 +23,15 @@ OC.L10N.register(
     "**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) is required to be installed and enabled first.**\n\nThis app allows to find duplicate or similar 📸📹 photos and videos\n* **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.\n* **Large amount of supported video  formats** All that is supported by ffmpeg.\n* **Flexible config** Set your precision level for comparing, choose algo that suits for you most.\n* **Quick rescan** Once file was scanned, hash will be saved, and used for other scans.\n* **External Storages support** Search everywhere among all files available to the user.\n* **Save your time and cloud space** The title says all...\n\nQuick start guide and further information in our [Wiki](https://github.com/cloud-py-api/mediadc/wiki)." : "**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) يلزم تثبيته وتفعيلة أولاً. **\n\nيسمح هذا التطبيق بالعثور على الصور ومقاطع الفيديو 📸📹 المكررة أو المتشابهة\n* ** يدعم العديد من تنسيقات الصور ** Jpeg و png و tiff و bmp و gif و heic / hif و cr2 وغيرها.\n * ** كمية كبيرة من تنسيقات الفيديو المدعومة ** كل هذا مدعوم من قبل ffmpeg.\n * ** تهيئة مرنة ** قم بضبط مستوى الدقة الخاص بك من أجل المقارنة، واختر الخوارزمية الأكثر ملائمة لك. \n* ** مسح ضوئي سريع ** فبمجرد مسح الملف ضوئيًا، يتم حفظ المقاطع واستخدامها لعمليات المسح الضوئي الأخرى.\n * ** دعم التخزين الخارجي ** البحث في كل مكان وبين جميع الملفات المتاحة للمستخدم.\n توفير لوقتك ولمساحة السحابة ** العنوان يقول جميع...\n\n دليل البدء السريع والمزيد من المعلومات من خلال [Wiki] الخاصة بنا \n(https://github.com/cloud-py-api/mediadc/wiki).",
     "Tasks" : "المهام",
     "Resolved" : "تمّ الحل",
+    "Open MediaDC settings" : "إعدادات أوبن ميديا دى سى Open MediaDC",
     "Settings" : "الإعدادات",
+    "Export task results" : "تصدير نتائج المهام",
+    "Select export file format" : "حدد تنسيق ملف التصدير",
     "Export" : "تصدير",
     "Select file" : "اختيار الملف",
     "_Delete file_::_Delete files_" : ["حذف ملفات","حذف ملف","حذف ملفات","حذف ملفات","حذف ملفات","حذف ملفات"],
     "Remove file (mark resolved)" : "حذف الملف (ضع علامة \"تمّ الحل\")",
+    "Are you sure you want to delete this file?" : "هل أنت متأكد أنك تريد حذف هذا الملف؟",
     "Confirm file deletion" : "قم بتأكيد حذف الملف",
     "Group successfully removed (1 file left)" : "تمّت إزالة المجموعة بنجاح (بقيَ 1 ملف)",
     "Wait until file has been loaded before deleting it" : "إنتظِر لحين إكتمال تحميل الملف قبل حذفه",
@@ -101,6 +105,7 @@ OC.L10N.register(
     "Toggle resolved list media type" : "تبديل نوع وسائط القائمة التي تم حلها",
     "Toggle list view (list or grid)" : "تبديل عرض القائمة (قائمة أو شبكة)",
     "Remove file from resolved list" : "حذف ملف من القائمة المحلولة",
+    "Create a new task or work on existing ones and resolve some!" : "أنشئ مهمة جديدة أو قم بالعمل على المهام الحالية وحل بعضها!",
     "Create a new one!" : "أنشِيءْ واحداً جديداً",
     "Change to grid view" : "بدّل إلى العرض الشبكي grid view",
     "Change to list view" : "بدّل إلى عرض القائمة list view",
@@ -119,17 +124,21 @@ OC.L10N.register(
     "Some error occurred while updating settings" : "حدثت بعض الأخطاء أثناء تحديث الإعدادات",
     "The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?" : "سيتم إزالة أجزاء حزم الصور والفيديو قبل تغيير خوارزمية التجزئة.\nاستمرار",
     "Hashing algorithm successfully updated" : "تمّ تحديث خوارزمية التجزئة بنجاحٍ",
+    "An error occurred while updating setting. Try again" : "حدث خطأ أثناء تحديث الإعداد. حاول مرة ثانية",
     "Some error occurred while changing hashing algorithm" : "حدث خطأ ما أثناء تغيير خوارزمية التجزئة",
+    "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "سيتم إزالة أجزاء حزم الصور والفيديو قبل تغيير خوارزمية التجزئة.\nاستمرار",
     "Hash size successfully updated" : "تمّ تحديث حجم التجزئة بنجاح",
     "An error occurred when updating the setting. Try again" : "حدث خطأ أثناء تحديث الإعداد. حاول ثانية",
     "Some error occurred while updating setting. Try again" : "حدث خطأ ما أثناء تحديث الإعداد. حاول ثانية",
     "This mask already exists!" : "هذا القناع موجودٌ بالفعل!",
     "Enter custom mask!" : "أدخِل قناعاً مُخصَّصاً",
+    "Duplicates list settings per user and browser" : "إعدادات قائمة التكرارات لكل مستخدم ومتصفح",
     "Groups per page" : "المجموعات لكل صفحة",
     "Items per group" : "العناصر لكل مجموعة",
     "Group image size" : "حجم صور المجموعة",
     "Delete file confirmation" : "تأكيد حذف الملف",
     "Auto open next group" : "إفتح المجموعة التالية تلقائيّاً",
+    "Show full file path" : "عرض المسار الكامل للملف",
     "Collect non sensitive system info for bug report" : "تحصيل معلومات غير حساسة عن النظام لتقريرالتنقيح",
     "Collect system info" : "تحصيل معلومات النظام",
     "System info" : "معلومات النظام",
@@ -162,6 +171,7 @@ OC.L10N.register(
     "This directory already excluded" : "هذا الدليل سبق استثناؤه بالفعل",
     "Task successfully restarted!" : "تمّت إعادة تشغيل المهمة بنجاح!",
     "Running tasks limit exceeded. Try again later." : "تم تجاوز حد مهام التشغيل. حاول مرة أخرى في وقت لاحق.",
+    "Task run error: PHP `exec` function is not enabled" : "خطأ في تشغيل المهمة: تعذر تمكين وظيفة PHP `exec`",
     "Some error occurred while running Collector Task. Try again." : "حدث خطأ ما أثناء تشغيل مهمة المجمع. حاول مرة ثانية.",
     "_Target folder has no files or all of them excluded_::_Target folders have no files or all of them excluded_" : ["لا تحتوي المجلدات المستهدفة على ملفات أو أنه تم استثناؤها جميعًا","لا تيتوي المجلد المستهدف على ملفات أو أنه تم استثناؤها جميعًا","لا تحتوي المجلدات المستهدفة على ملفات أو أنه تم استثناؤها جميعًا","لا تحتوي المجلدات المستهدفة على ملفات أو أنه تم استثناؤها جميعًا","لا تحتوي المجلدات المستهدفة على ملفات أو أنه تم استثناؤها جميعًا","لا تحتوي المجلدات المستهدفة على ملفات أو أنه تم استثناؤها جميعًا"],
     "Recent Tasks" : "المهام الأخيرة",
@@ -179,8 +189,10 @@ OC.L10N.register(
     "New task successfully created!" : "تمّ إنشاء مهمة جديدة بنجاحٍ",
     "Running tasks limit exceed. Try again later." : "تمّ تجاوُز الحدّ الأقصى لعدد المهام الجارية. حاول مرة أخرى في وقت لاحق.",
     "Welcome to Media Duplicate Collector (MediaDC). " : "أهلاً بكم في جامع تكرارات الوسائط (ميديا دي سي)",
+    "Here you can manage your duplicate collection tasks and see the history of previous finished tasks." : "هنا يمكنك إدارة المهام المُكرَّرة و الاطلاع على تاريخ المهام المنتهية السابقة.",
     "Collapse task status" : "طي شاشة حالة المُهِمَّة",
     "Show task status" : "إظهار شاشة حالة المُهِمَّة",
+    "Here you can view task details, manage task (stop or restart), delete found duplicated photos and videos." : "هنا يمكنك عرض تفاصيل المهمة، وإدارة المهمة (الإيقاف أو إعادة التشغيل)، و حذف الصور و مقاطع الفيديو المكررة التي تم العثور عليها.",
     "Deleted files are placed in the trashbin, so that they can be restored in case of need." : "توضع الملفات المحذوفة في سلة المهملات؛ بحيث يمكن استعادتها لاحقاً عند الحاجة إليها.",
     "precision: " : "الدِّقَّة:",
     "Deleted: " : "محذوفة:",
@@ -200,14 +212,17 @@ OC.L10N.register(
     "Confirm task deletion" : "تأكيد حذف المهمة",
     "Task successfully deleted" : "تمّ حذف المهمة بنجاح",
     "You are not allowed to delete this task" : "ليس مسموح لك بحذف هذه المهمة",
+    "No results to export" : "لا توجد نتائج للتصدير",
     "Owner:" : "المالك:",
     "Here you can view resolved media files " : "هنا يمكنك عرض ملفات الوسائط التي تمّ حلُّها",
+    "(removed from groups during the work on duplicates)." : "(تمت إزالته من المجموعات أثناء العمل على التكرارات).",
     "This files won't be scanned in further tasks." : "لن يتم فحص هذه الملفات في مهام لاحقة.",
     "Scan for duplicates" : "الفحص بحثا عن التكرارات",
     "New task for folder scan successfully created" : "تم إنشاء المهمة الجديدة لمسح المجلد بنجاح",
     "Photos&Videos" : "الصور و الفيديوهات",
     "MediaDC Task Details" : "تفاصيل مهمة جامع تكرارات الوسائط ميديا دي سي",
     "MediaDC Resolved files" : "ملفات ميديا دي سي التي تمّ حلُّها",
+    "An error occurred while deleting task" : "حدث خطأ أثناء حذف المهمة",
     "Task successfully started with duplicated settings!" : "بدأت المهمة بنجاح بإعدادات مُكرَّرَة!",
     "_Test text_::_Test texts_" : ["نصوص الاختبار","نص الاختبار","نصوص الاختبار","نصوص الاختبار","نصوص الاختبار","نصوص الاختبار"]
 },
