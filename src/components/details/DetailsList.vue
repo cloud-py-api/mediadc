@@ -399,11 +399,11 @@ export default {
 					emit('updateTaskInfo')
 					this.$store.commit('setDetails', updatedDetails)
 					this.$store.commit('setTask', res.data.task)
-					showSuccess(this.t('mediadc', 'Selected groups files successfully deleted'))
+					showSuccess(this.t('mediadc', 'Selected group files successfully deleted'))
 				} else if (res.data.removedGroupIds.length !== 0) {
-					showWarning(this.t('mediadc', 'Not all selected groups files deleted'))
+					showWarning(this.t('mediadc', 'Not all selected group files deleted'))
 				} else {
-					showError(this.t('mediadc', 'Failed to delete selected groups files'))
+					showError(this.t('mediadc', 'Failed to delete selected group files'))
 				}
 				this.batchDeleting = false
 			}).catch(err => {
