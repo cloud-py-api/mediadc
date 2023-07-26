@@ -6,22 +6,22 @@
     "Hashing algorithm threshold (precision)" : "عتبة خوارزمية التجزئة (الدقة)",
     "Hash size" : "حجم الجزء/ الحزمة",
     "Computed hash size (8, 16, 32, 64)" : "حجم الجزء المحسوب (8 ، 16 ، 32 ، 64)",
-    "Simultaneously running tasks limit" : "حد عدد المهام التس يتم تشغيلها بشكل متزامن",
-    "Maximum number of python background scripts running" : "العدد الأقصى لتشغيل خلفية النص البرمجي بايثون ",
+    "Simultaneously running tasks limit" : "حد عدد المهام التي يتم تشغيلها بشكل متزامن",
+    "Maximum number of python background scripts running" : "أقصى عدد لعمليات خلفية النص البرمجي بايثون التي يتم تشغيلها",
     "Exclude list" : "قائمة الاستثناء",
     "Global administrator's exclude list that applies to each task" : "قائمة الاستثناء الخاصة بالمسؤول العام والتي تنطبق على كل مهمة",
     "Use pre-compiled Python binaries" : "أكواد ثنائية مسبقة الترجمة من بايتون",
     "Use Python part in binary format (located in the appdata folder)" : "استخدم جزء بايتون بالصيغة الثنائية (موجود في المجلد appdata)",
-    "Task finished alert" : "التنبيه عند كتمال المهمة",
+    "Task finished alert" : "التنبيه عند اكتمال المهمة",
     "Task successfully finished, found " : "المهمة اكتملت بنجاح، وُجِدَ ",
     "Task finished with status \"" : "المهمة اكتملت بحالة \"",
     "Task finished, check out results" : "تم اكتمال المهمة، تحقق من النتائج",
-    "MediaDC" : "ميديا دي سي",
-    "Nextcloud Media Duplicate Collector application" : "تطبيق \"جامع الوسائط المتكررة\" في نكست كلاود",
+    "MediaDC" : "تطبيق MediaDC",
+    "Nextcloud Media Duplicate Collector application" : "تطبيق جامع الوسائط المتكررة في نكست كلاود",
     "**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) is required to be installed and enabled first.**\n\nThis app allows to find duplicate or similar 📸📹 photos and videos\n* **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.\n* **Large amount of supported video  formats** All that is supported by ffmpeg.\n* **Flexible config** Set your precision level for comparing, choose algo that suits for you most.\n* **Quick rescan** Once file was scanned, hash will be saved, and used for other scans.\n* **External Storages support** Search everywhere among all files available to the user.\n* **Save your time and cloud space** The title says all...\n\nQuick start guide and further information in our [Wiki](https://github.com/cloud-py-api/mediadc/wiki)." : "**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) يلزم تثبيته وتفعيلة أولاً. **\n\nيسمح هذا التطبيق بالعثور على الصور ومقاطع الفيديو 📸📹 المكررة أو المتشابهة\n* ** يدعم العديد من تنسيقات الصور ** Jpeg و png و tiff و bmp و gif و heic / hif و cr2 وغيرها.\n * ** كمية كبيرة من تنسيقات الفيديو المدعومة ** كل هذا مدعوم من قبل ffmpeg.\n * ** تهيئة مرنة ** قم بضبط مستوى الدقة الخاص بك من أجل المقارنة، واختر الخوارزمية الأكثر ملائمة لك. \n* ** مسح ضوئي سريع ** فبمجرد مسح الملف ضوئيًا، يتم حفظ المقاطع واستخدامها لعمليات المسح الضوئي الأخرى.\n * ** دعم التخزين الخارجي ** البحث في كل مكان وبين جميع الملفات المتاحة للمستخدم.\n توفير لوقتك ولمساحة السحابة ** العنوان يقول جميع...\n\n دليل البدء السريع والمزيد من المعلومات من خلال [Wiki] الخاصة بنا \n(https://github.com/cloud-py-api/mediadc/wiki).",
     "Tasks" : "المهام",
     "Resolved" : "تمّ الحل",
-    "Open MediaDC settings" : "إعدادات أوبن ميديا دى سى Open MediaDC",
+    "Open MediaDC settings" : "إعدادات Open MediaDC",
     "Settings" : "الإعدادات",
     "Export task results" : "تصدير نتائج المهام",
     "Select export file format" : "حدد تنسيق ملف التصدير",
@@ -108,7 +108,7 @@
     "Change to grid view" : "بدّل إلى العرض الشبكي grid view",
     "Change to list view" : "بدّل إلى عرض القائمة list view",
     "No resolved ${selectedType} yet" : "لم يتمّ حلُّ ${selectedType} بعدُ",
-    "MediaDC settings" : "إعدادات ميديا دي سي",
+    "MediaDC settings" : "إعدادات تطبيق MediaDC",
     "Remove" : "حذف",
     "Not added" : "غير مُضَافَة",
     "Confirm" : "تأكيد",
@@ -125,7 +125,7 @@
     "An error occurred while updating setting. Try again" : "حدث خطأ أثناء تحديث الإعداد. حاول مرة ثانية",
     "Some error occurred while changing hashing algorithm" : "حدث خطأ ما أثناء تغيير خوارزمية التجزئة",
     "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "سيتم إزالة أجزاء حزم الصور والفيديو قبل تغيير خوارزمية التجزئة.\nاستمرار",
-    "Hash size successfully updated" : "تمّ تحديث حجم التجزئة بنجاح",
+    "Hash size successfully updated" : "تمّ تحديث حزم التجزئة بنجاح",
     "An error occurred when updating the setting. Try again" : "حدث خطأ أثناء تحديث الإعداد. حاول ثانية",
     "Some error occurred while updating setting. Try again" : "حدث خطأ ما أثناء تحديث الإعداد. حاول ثانية",
     "This mask already exists!" : "هذا القناع موجودٌ بالفعل!",
@@ -186,7 +186,7 @@
     "Send notification on task finish" : "إرسال إشعاراً عند اكتمال المُهِمَّة",
     "New task successfully created!" : "تمّ إنشاء مهمة جديدة بنجاحٍ",
     "Running tasks limit exceed. Try again later." : "تمّ تجاوُز الحدّ الأقصى لعدد المهام الجارية. حاول مرة أخرى في وقت لاحق.",
-    "Welcome to Media Duplicate Collector (MediaDC). " : "أهلاً بكم في جامع تكرارات الوسائط (ميديا دي سي)",
+    "Welcome to Media Duplicate Collector (MediaDC). " : "أهلاً بكم في جامع تكرارات الوسائط (MediaDC)",
     "Here you can manage your duplicate collection tasks and see the history of previous finished tasks." : "هنا يمكنك إدارة المهام المُكرَّرة و الاطلاع على تاريخ المهام المنتهية السابقة.",
     "Collapse task status" : "طي شاشة حالة المُهِمَّة",
     "Show task status" : "إظهار شاشة حالة المُهِمَّة",
@@ -218,8 +218,8 @@
     "Scan for duplicates" : "الفحص بحثا عن التكرارات",
     "New task for folder scan successfully created" : "تم إنشاء المهمة الجديدة لمسح المجلد بنجاح",
     "Photos&Videos" : "الصور و الفيديوهات",
-    "MediaDC Task Details" : "تفاصيل مهمة جامع تكرارات الوسائط ميديا دي سي",
-    "MediaDC Resolved files" : "ملفات ميديا دي سي التي تمّ حلُّها",
+    "MediaDC Task Details" : "تفاصيل مهمة جامع تكرارات الوسائط MediaDC",
+    "MediaDC Resolved files" : "ملفات MediaDC التي تمّ حلُّها",
     "An error occurred while deleting task" : "حدث خطأ أثناء حذف المهمة",
     "Task successfully started with duplicated settings!" : "بدأت المهمة بنجاح بإعدادات مُكرَّرَة!",
     "_Test text_::_Test texts_" : ["نصوص الاختبار","نص الاختبار","نصوص الاختبار","نصوص الاختبار","نصوص الاختبار","نصوص الاختبار"]
