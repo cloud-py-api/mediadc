@@ -17,6 +17,7 @@ OC.L10N.register(
     "Videos" : "فیلم ها ",
     "Start" : "شروع کنید",
     "Delete" : "حذف",
-    "Edit" : "ویرایش"
+    "Edit" : "ویرایش",
+    "Delete task" : "وظیفه را حذف کنید"
 },
 "nplurals=2; plural=(n > 1);");
