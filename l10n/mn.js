@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Tasks" : "Даалгавар",
     "Settings" : "Тохиргоо",
     "Export" : "Экспорт",
     "Select all" : "бүгдийг сонгох",
