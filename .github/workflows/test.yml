@@ -64,12 +64,12 @@ jobs:
         run: tar -xjf nextcloud-${{ matrix.nextcloud }}.tar.bz2 --strip-components 1
 
       - name: Checkout ${{ env.APP_NAME }} app
-        uses: actions/checkout@v3
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
         with:
           path: apps/${{ env.APP_NAME }}
 
       - name: Checkout ${{ env.CPA_NAME }} app
-        uses: actions/checkout@v3
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
           path: apps/${{ env.CPA_NAME }}
@@ -211,12 +211,12 @@ jobs:
         run: tar -xjf nextcloud-${{ matrix.nextcloud }}.tar.bz2 --strip-components 1
 
       - name: Checkout app
-        uses: actions/checkout@v3
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
         with:
           path: apps/${{ env.APP_NAME }}
 
       - name: Checkout ${{ env.CPA_NAME }} app
-        uses: actions/checkout@v3
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
           path: apps/${{ env.CPA_NAME }}
