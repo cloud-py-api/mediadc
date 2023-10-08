@@ -63,15 +63,27 @@
 				</template>
 			</div>
 			<h2>{{ t('mediadc', 'Resolved list') }} ({{ resolved.total_items }} {{ n('mediadc', 'file', 'files', resolved.total_items) }})</h2>
-			<NcButton v-tooltip="t('mediadc', 'Toggle media type')"
-				type="tertiary"
-				class="toggle-type-button"
-				:aria-label="t('mediadc', 'Toggle resolved list media type')"
-				@click="toggleMediaType">
-				<template #icon>
-					<span :class="selectedType === 'photos' ? 'icon-video' : 'icon-picture'" />
-				</template>
-			</NcButton>
+			<div class="type-actions">
+				<NcButton v-tooltip="t('mediadc', 'Toggle media type')"
+					type="tertiary"
+					:aria-label="t('mediadc', 'Toggle resolved list media type')"
+					@click="toggleMediaType">
+					<template #icon>
+						<span :class="selectedType === 'photos' ? 'icon-video' : 'icon-picture'" />
+					</template>
+				</NcButton>
+				<NcButton v-if="resolved.total_items > 0"
+					v-tooltip="cleanupText"
+					type="tertiary"
+					:aria-label="cleanupText"
+					:disabled="cleanuploading"
+					@click="cleanup">
+					<template #icon>
+						<span v-if="cleanuploading" class="icon-loading" />
+						<span v-else class="icon-delete" />
+					</template>
+				</NcButton>
+			</div>
 			<NcButton v-tooltip="viewTooltip"
 				type="tertiary"
 				class="toggle-view-button"
@@ -228,6 +240,7 @@ export default {
 			'resolved',
 			'page',
 			'selectedType',
+			'cleanuploading',
 		]),
 		tasksLink() {
 			return generateUrl('/apps/mediadc')
@@ -237,6 +250,9 @@ export default {
 		},
 		pagesRange() {
 			return Array.from({ length: this.resolved.total_pages }, (_, i) => i)
+		},
+		cleanupText() {
+			return this.selectedType === 'photos' ? this.t('mediadc', 'Cleanup resolved photos (mark unresolved)') : this.t('mediadc', 'Cleanup resolved videos (mark unresolved)')
 		},
 	},
 	methods: {
@@ -299,6 +315,13 @@ export default {
 				this.goToPage = 1
 			}
 			this.$store.commit('updatePage', this.goToPage - 1)
+		},
+		cleanup() {
+			this.$store.commit('setCleanupLoading', true)
+			this.$store.dispatch('cleanupResolved', { type: this.selectedType }).then(() => {
+				this.getResolved()
+				this.$store.commit('setCleanupLoading', false)
+			})
 		},
 	},
 }
@@ -375,6 +398,10 @@ export default {
 	box-shadow: 0 0 4px 0 var(--color-box-shadow);
 	border-radius: var(--border-radius-large);
 	background-color: var(--color-border);
+}
+
+.type-actions {
+	display: flex;
 }
 
 .resolved-list-heading h2 {

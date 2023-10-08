@@ -185,6 +185,9 @@
 							<span class="icon-loading-small" />
 						</template>
 					</NcButton>
+					<input v-model="taskName"
+						type="text"
+						:placeholder="t('mediadc', 'Task name')">
 					<NcCheckboxRadioSwitch :checked.sync="finishNotification">
 						{{ t('mediadc', 'Finish notification') }}
 					</NcCheckboxRadioSwitch>
@@ -229,6 +232,7 @@ export default {
 			addingCustomMask: false,
 			runningTask: false,
 			finishNotification: true,
+			taskName: '',
 		}
 	},
 	computed: {
@@ -247,6 +251,7 @@ export default {
 		this.targetMimeType = JSON.parse(this.task.collector_settings).target_mtype
 		this.similarity_threshold = JSON.parse(this.task.collector_settings).similarity_threshold
 		this.finishNotification = JSON.parse(this.task.collector_settings).finish_notification
+		this.taskName = this.task.name
 		this.parseTaskSettings()
 	},
 	methods: {
@@ -356,6 +361,7 @@ export default {
 						target_mtype: this.targetMimeType,
 						finish_notification: this.finishNotification,
 					},
+					name: this.taskName,
 				}).then(res => {
 					this.runningTask = false
 					if (res.data.success) {

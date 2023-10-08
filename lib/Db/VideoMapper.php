@@ -129,4 +129,15 @@ class VideoMapper extends QBMapper {
 			->setFirstResult($offset);
 		return $qb->executeQuery()->fetchAll();
 	}
+
+	public function cleanupResolved(array $fileIds): int {
+		$qb = $this->db->getQueryBuilder();
+		$qb->update($this->tableName)
+			->set('skipped', $qb->createNamedParameter(0, IQueryBuilder::PARAM_INT))
+			->where(
+				$qb->expr()->gte('skipped', $qb->createNamedParameter(100, IQueryBuilder::PARAM_INT)),
+				$qb->expr()->in('fileid', $qb->createNamedParameter($fileIds, IQueryBuilder::PARAM_INT_ARRAY))
+			);
+		return $qb->executeStatement();
+	}
 }

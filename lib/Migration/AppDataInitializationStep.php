@@ -93,7 +93,7 @@ class AppDataInitializationStep implements IRepairStep {
 			}
 		}
 
-		$output->advance(1, 'Checking for inital data changes and syncing with database');
+		$output->advance(1, 'Checking for initial data changes and syncing with database');
 		$this->utils->checkForSettingsUpdates($app_data);
 
 		$output->advance(1, 'Creating app data folders');

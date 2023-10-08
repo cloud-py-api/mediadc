@@ -5,18 +5,10 @@
       <code>LoadAdditionalScriptsEvent</code>
     </UndefinedClass>
   </file>
-  <file src="lib/Command/CollectorTaskNotificationCommand.php">
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;url</code>
-    </UndefinedThisPropertyAssignment>
-  </file>
   <file src="lib/Controller/CollectorController.php">
     <InvalidArgument occurrences="1">
       <code>$this-&gt;service-&gt;markResolved($type, $fileId, $resolved)</code>
     </InvalidArgument>
-    <InvalidReturnType occurrences="1">
-      <code>DataDownloadResponse</code>
-    </InvalidReturnType>
     <TooManyArguments occurrences="1">
       <code>details</code>
     </TooManyArguments>
@@ -84,6 +76,17 @@
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/Version0002Date20221102124949.php">
+    <ImplementedParamTypeMismatch occurrences="1">
+      <code>$schemaClosure</code>
+    </ImplementedParamTypeMismatch>
+    <MismatchingDocblockParamType occurrences="1">
+      <code>Closure</code>
+    </MismatchingDocblockParamType>
+    <UndefinedDocblockClass occurrences="1">
+      <code>Closure</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Migration/Version0003Date20230710162020.php">
     <ImplementedParamTypeMismatch occurrences="1">
       <code>$schemaClosure</code>
     </ImplementedParamTypeMismatch>

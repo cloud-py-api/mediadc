@@ -93,16 +93,30 @@ class CollectorController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
+	 * @param string $type
+	 *
+	 * @return JSONResponse
+	 */
+	public function cleanupResolved(string $type): JSONResponse {
+		return new JSONResponse($this->service->cleanupResolved($type), Http::STATUS_OK);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * @param string $targetDirectoryIds
 	 * @param string $excludeList
 	 * @param string $collectorSettings
+	 * @param string $name
 	 */
-	public function runTask($targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse {
+	public function runTask($targetDirectoryIds, $excludeList, $collectorSettings, $name): JSONResponse {
 		if ($targetDirectoryIds !== null && $excludeList !== null && $collectorSettings !== null) {
 			$params = [
 				'targetDirectoryIds' => json_decode($targetDirectoryIds),
 				'excludeList' => $excludeList,
-				'collectorSettings' => $collectorSettings
+				'collectorSettings' => $collectorSettings,
+				'name' => $name,
 			];
 			return new JSONResponse($this->service->runTask($params), Http::STATUS_OK);
 		} else {
@@ -121,8 +135,9 @@ class CollectorController extends Controller {
 	 * @param string $targetDirectoryIds
 	 * @param string $excludeList
 	 * @param string $collectorSettings
+	 * @param string $name
 	 */
-	public function restartTask($taskId, $targetDirectoryIds, $excludeList, $collectorSettings): JSONResponse {
+	public function restartTask($taskId, $targetDirectoryIds, $excludeList, $collectorSettings, $name): JSONResponse {
 		if (
 			$taskId !== null && $targetDirectoryIds !== null
 			&& $excludeList !== null && $collectorSettings !== null
@@ -131,7 +146,8 @@ class CollectorController extends Controller {
 				'taskId' => $taskId,
 				'targetDirectoryIds' => json_decode($targetDirectoryIds),
 				'excludeList' => $excludeList,
-				'collectorSettings' => $collectorSettings
+				'collectorSettings' => $collectorSettings,
+				'name' => $name,
 			];
 			return new JSONResponse($this->service->restartTask($params), Http::STATUS_OK);
 		} else {

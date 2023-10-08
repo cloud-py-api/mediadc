@@ -51,6 +51,7 @@ use OCP\AppFramework\Db\Entity;
  * @method int getDeletedFilesSize()
  * @method int getPyPid()
  * @method array getErrors()
+ * @method string getName()
  * @method void setType(string $type)
  * @method void setOwner(string $taskOwner)
  * @method void setTargetDirectoryIds(string $targetDirectoryIds)
@@ -66,6 +67,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setUpdatedTime(int $updatedTime)
  * @method void setPyPid(int $pyPid)
  * @method void setErrors(string $errors)
+ * @method void setName(string $name)
  */
 class CollectorTask extends Entity implements JsonSerializable {
 	protected $type;
@@ -83,6 +85,7 @@ class CollectorTask extends Entity implements JsonSerializable {
 	protected $updatedTime;
 	protected $pyPid;
 	protected $errors;
+	protected $name;
 
 
 	public function __construct(array $params = []) {
@@ -134,6 +137,9 @@ class CollectorTask extends Entity implements JsonSerializable {
 		if (isset($params['errors'])) {
 			$this->setErrors($params['errors']);
 		}
+		if (isset($params['name'])) {
+			$this->setName($params['name']);
+		}
 	}
 
 	public function jsonSerialize(): array {
@@ -154,6 +160,7 @@ class CollectorTask extends Entity implements JsonSerializable {
 			'updated_time' => $this->getUpdatedTime(),
 			'py_pid' => $this->getPyPid(),
 			'errors' => $this->getErrors(),
+			'name' => $this->getName(),
 		];
 	}
 }

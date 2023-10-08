@@ -99,7 +99,8 @@ export default {
 			return getCurrentUser().uid
 		},
 		getItemText(item) {
-			return this.parseTargetMtype(item) + ' ' + item.files_total + ' ' + this.n('mediadc', 'file', 'files', Number(item.files_total)) + ' (' + this.formatBytes(item.files_total_size) + ')'
+			const taskName = item.name !== '' && item.name !== null ? item.name + ' - ' : ''
+			return taskName + this.parseTargetMtype(item) + ' ' + item.files_total + ' ' + this.n('mediadc', 'file', 'files', Number(item.files_total)) + ' (' + this.formatBytes(item.files_total_size) + ')'
 		},
 	},
 }

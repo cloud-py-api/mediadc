@@ -89,7 +89,8 @@ export default {
 			'tasks',
 		]),
 		listItemTitle() {
-			return `${this.parseTargetMtype(this.task)}
+			const taskName = this.task.name !== '' && this.task.name !== null ? this.task.name + ' - ' : ''
+			return `${taskName}${this.parseTargetMtype(this.task)}
 				${this.task.files_scanned !== this.task.files_total ? this.task.files_scanned + '/' : ''}${this.task.files_total} ${this.n('mediadc', 'file', 'files', this.task.files_total)}
 				(${this.formatBytes(Number(this.task.files_total_size))})`
 		},
