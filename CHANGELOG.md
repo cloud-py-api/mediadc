@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.7 - 2023-10-08]
+
+Maintenance update.
+[`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
+(or updated) and enabled first.
+
+### Added
+
+- Added optional task name (https://github.com/cloud-py-api/mediadc/issues/182)
+- Added option to unmark all resolved items (https://github.com/cloud-py-api/mediadc/issues/189)
+
+### Updated
+
+- Updated packages
+- Updated l10n
+
 ## [0.3.6 - 2023-06-19]
 
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed

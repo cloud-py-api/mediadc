@@ -20,7 +20,7 @@ This app allows to find duplicate or similar 📸📹 photos and videos
 Quick start guide and further information in our [Wiki](https://github.com/cloud-py-api/mediadc/wiki).
 	]]>
 	</description>
-	<version>0.3.6</version>
+	<version>0.3.7</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
@@ -72,7 +72,6 @@ Quick start guide and further information in our [Wiki](https://github.com/cloud
 		<navigation>
 			<name>MediaDC</name>
 			<route>mediadc.page.index</route>
-			<order>1</order>
 		</navigation>
 	</navigations>
 </info>

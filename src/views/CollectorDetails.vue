@@ -60,6 +60,7 @@
 						<div class="task-status">
 							<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 							<div style="display: flex; flex-direction: column;">
+								<span v-if="task.name !== null && task.name !== ''"><b>{{ task.name }}</b><br></span>
 								<span>
 									<b>{{ parseTargetMtype(task) }}</b> {{ task.files_scanned !== task.files_total ? `${task.files_scanned}/` : '' }}{{ task.files_total }} {{ n('mediadc', 'file', 'files', task.files_total) }}
 									({{ formatBytes(Number(task.files_total_size)) }})
@@ -338,7 +339,7 @@ export default {
 								showSuccess(self.t('mediadc', 'Task successfully deleted'))
 							})
 						}
-					}
+					},
 				)
 			} else {
 				showWarning(this.t('mediadc', 'You are not allowed to delete this task'))

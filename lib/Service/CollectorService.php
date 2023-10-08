@@ -240,6 +240,7 @@ class CollectorService {
 			$collectorTask->setDeletedFilesCount(0);
 			$collectorTask->setDeletedFilesSize(0);
 			$collectorTask->setErrors('');
+			$collectorTask->setName($params['name']);
 		} else {
 			$empty = true;
 		}
@@ -421,7 +422,8 @@ class CollectorService {
 			'createdTime' => time(),
 			'finishedTime' => 0,
 			'pyPid' => 0,
-			'errors' => ''
+			'errors' => '',
+			'name' => $params['name'] ?? '',
 		]);
 
 		if ($task->getFilesTotal() > 0) {
@@ -1050,6 +1052,15 @@ class CollectorService {
 	public function markResolvedVideo(int $fileid, bool $resolved = true): array {
 		$result = $this->videosService->resolve($fileid, $resolved);
 		return ['success' => $result === 1];
+	}
+
+	public function cleanupResolved(string $type): array {
+		if ($type === 'photos') {
+			$result = $this->photosService->cleanupResolved($this->userId);
+		} elseif ($type === 'videos') {
+			$result = $this->videosService->cleanupResolved($this->userId);
+		}
+		return ['success' => $result > 0];
 	}
 
 	/**

@@ -60,6 +60,7 @@ return [
 		// COLLECTOR RESOLVED API
 		['name' => 'collector#resolved', 'url' => '/api/v1/resolved', 'verb' => 'GET'],
 		['name' => 'collector#markResolved', 'url' => '/api/v1/resolved/mark/{fileId}', 'verb' => 'POST'],
+		['name' => 'collector#cleanupResolved', 'url' => '/api/v1/resolved/{type}/cleanup', 'verb' => 'POST'],
 
 		// BATCH ACTIONS API
 		['name' => 'collector#removeTaskDetailGroups', 'url' => '/api/v1/tasks/{taskId}/details/remove', 'verb' => 'POST'],

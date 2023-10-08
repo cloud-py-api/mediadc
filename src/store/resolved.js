@@ -39,6 +39,7 @@ const state = {
 	},
 	selectedType: 'photos',
 	pageSize: 10,
+	cleanuploading: false,
 }
 
 const mutations = {
@@ -84,6 +85,16 @@ const mutations = {
 	updatePage(state, value) {
 		state[state.selectedType].page = value
 	},
+
+	/**
+	 * Set cleanup loading state
+	 *
+	 * @param {object} state the store data
+	 * @param {number} value page number
+	 */
+	setCleanupLoading(state, value) {
+		state.cleanuploading = value
+	},
 }
 
 const getters = {
@@ -118,6 +129,14 @@ const getters = {
 	 * @return {Array}
 	 */
 	selectedType: state => state.selectedType,
+
+	/**
+	 * Return current cleanup loading state
+	 *
+	 * @param {object} state the store data
+	 * @return {boolean}
+	 */
+	cleanuploading: state => state.cleanuploading,
 }
 
 const actions = {
@@ -155,6 +174,22 @@ const actions = {
 	 */
 	async resolveFile(context, params) {
 		return axios.post(generateUrl(`/apps/mediadc/api/v1/resolved/mark/${params.fileid}`), { type: context.state.selectedType, resolved: params.resolved }).then(res => {
+			return res
+		}).catch(err => {
+			console.debug(err)
+			showError(t('mediadc', 'A server error occurred'))
+		})
+	},
+
+	/**
+	 * Perform cleanupResolved request (unmark resolved list of photos or videos)
+	 *
+	 * @param {object} context the store object
+	 * @param {object} params method params
+	 * @return {Promise<object>}
+	 */
+	async cleanupResolved(context, params) {
+		return axios.post(generateUrl(`/apps/mediadc/api/v1/resolved/${params.type}/cleanup`)).then(res => {
 			return res
 		}).catch(err => {
 			console.debug(err)

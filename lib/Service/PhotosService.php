@@ -151,4 +151,11 @@ class PhotosService {
 		}
 		return ['data' => $result];
 	}
+
+	public function cleanupResolved(string $userId): int {
+		$resolvedFileIdsByUser = array_map(function (array $filecache_data) {
+			return $filecache_data['fileid'];
+		}, $this->mapper->findAllResolvedByUser($userId));
+		return $this->mapper->cleanupResolved($resolvedFileIdsByUser);
+	}
 }

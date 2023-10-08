@@ -188,6 +188,9 @@
 					<span class="icon-loading-small" />
 				</template>
 			</NcButton>
+			<input v-model="taskName"
+				type="text"
+				:placeholder="t('mediadc', 'Task name')">
 			<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Send notification on task finish')"
 				:checked.sync="finishNotification">
 				{{ t('mediadc', 'Finish notification') }}
@@ -226,6 +229,7 @@ export default {
 			addingCustomMask: false,
 			runningTask: false,
 			finishNotification: true,
+			taskName: '',
 		}
 	},
 	computed: {

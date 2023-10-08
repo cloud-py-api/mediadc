@@ -1,7 +1,7 @@
 {
 	"name": "mediadc",
 	"description": "Nextcloud Media Duplicate Collector application",
-	"version": "0.3.6",
+	"version": "0.3.7",
 	"keywords": [
 		"nextcloud",
 		"photos",
@@ -39,15 +39,15 @@
 		"extends @nextcloud/browserslist-config"
 	],
 	"dependencies": {
-		"@nextcloud/auth": "^2.1.0",
-		"@nextcloud/axios": "^2.3.0",
-		"@nextcloud/dialogs": "^4.0.1",
+		"@nextcloud/auth": "^2.2.1",
+		"@nextcloud/axios": "^2.4.0",
+		"@nextcloud/dialogs": "^4.2.1",
 		"@nextcloud/event-bus": "^3.1.0",
-		"@nextcloud/initial-state": "^2.0.0",
-		"@nextcloud/l10n": "^2.1.0",
+		"@nextcloud/initial-state": "^2.1.0",
+		"@nextcloud/l10n": "^2.2.0",
 		"@nextcloud/moment": "^1.2.1",
 		"@nextcloud/router": "^2.1.2",
-		"@nextcloud/vue": "^7.12.0",
+		"@nextcloud/vue": "^7.12.6",
 		"vue": "^2.7.14",
 		"vuex": "^3.6.2",
 		"vue-router": "^3.5.3",
@@ -58,7 +58,7 @@
 	"devDependencies": {
 		"@nextcloud/babel-config": "^1.0.0",
 		"@nextcloud/browserslist-config": "^2.3.0",
-		"@nextcloud/eslint-config": "^8.2.1",
+		"@nextcloud/eslint-config": "^8.3.0",
 		"@nextcloud/stylelint-config": "^2.3.0",
 		"@nextcloud/webpack-vue-config": "^5.4.0",
 		"eslint-webpack-plugin": "^4.0.1",
