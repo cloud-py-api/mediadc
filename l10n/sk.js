@@ -19,6 +19,7 @@ OC.L10N.register(
     "Decline" : "Odmietnuť",
     "Add mask" : "Pridať masku",
     "Error" : "Chyba",
+    "Settings list is empty" : "Zoznam nastavení je prázdny",
     "Delete file confirmation" : "Potvrdenie odstránenia súboru",
     "Copy to clipboard" : "Skopírovať do schránky",
     "Copied to clipboard" : "Skopírované do schránky",
