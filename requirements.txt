@@ -1,7 +1,7 @@
 numpy
 scipy
 pywavelets
-pillow
+pillow==9.5.0
 hexhamming
 nc-py-api==0.0.11
 pi-heif>=0.9.0
