@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 def average_hash(image, hash_size=8, mean=numpy.mean):
     # reduce size and complexity, then covert to grayscale
-    image = image.convert("L").resize((hash_size, hash_size), Image.ANTIALIAS)
+    image = image.convert("L").resize((hash_size, hash_size), Image.LANCZOS)
     # find average pixel value; 'pixels' is an array of the pixel values, ranging from 0 (black) to 255 (white)
     pixels = numpy.asarray(image)
     avg = mean(pixels)
@@ -51,7 +51,7 @@ def average_hash(image, hash_size=8, mean=numpy.mean):
 
 def phash(image, hash_size=8, highfreq_factor=4):
     img_size = hash_size * highfreq_factor
-    image = image.convert("L").resize((img_size, img_size), Image.ANTIALIAS)
+    image = image.convert("L").resize((img_size, img_size), Image.LANCZOS)
     pixels = numpy.asarray(image)
     dct = scipy.fftpack.dct(scipy.fftpack.dct(pixels, axis=0), axis=1)
     dctlowfreq = dct[:hash_size, :hash_size]
@@ -62,7 +62,7 @@ def phash(image, hash_size=8, highfreq_factor=4):
 
 def phash_simple(image, hash_size=8, highfreq_factor=4):
     img_size = hash_size * highfreq_factor
-    image = image.convert("L").resize((img_size, img_size), Image.ANTIALIAS)
+    image = image.convert("L").resize((img_size, img_size), Image.LANCZOS)
     pixels = numpy.asarray(image)
     dct = scipy.fftpack.dct(pixels)
     dctlowfreq = dct[:hash_size, 1 : hash_size + 1]
@@ -72,7 +72,7 @@ def phash_simple(image, hash_size=8, highfreq_factor=4):
 
 
 def dhash(image, hash_size=8):
-    image = image.convert("L").resize((hash_size + 1, hash_size), Image.ANTIALIAS)
+    image = image.convert("L").resize((hash_size + 1, hash_size), Image.LANCZOS)
     pixels = numpy.asarray(image)
     # compute differences between columns
     diff = pixels[:, 1:] > pixels[:, :-1]
@@ -80,7 +80,7 @@ def dhash(image, hash_size=8):
 
 
 def dhash_vertical(image, hash_size=8):
-    image = image.convert("L").resize((hash_size, hash_size + 1), Image.ANTIALIAS)
+    image = image.convert("L").resize((hash_size, hash_size + 1), Image.LANCZOS)
     pixels = numpy.asarray(image)
     # compute differences between rows
     diff = pixels[1:, :] > pixels[:-1, :]
@@ -101,7 +101,7 @@ def whash(image, hash_size=8, image_scale=None, mode="haar", remove_max_haar_ll=
     assert level <= ll_max_level, "hash_size in a wrong range"
     dwt_level = ll_max_level - level
 
-    image = image.convert("L").resize((image_scale, image_scale), Image.ANTIALIAS)
+    image = image.convert("L").resize((image_scale, image_scale), Image.LANCZOS)
     pixels = numpy.asarray(image) / 255.0
 
     # Remove low level frequency LL(max_ll) if @remove_max_haar_ll using haar filter
