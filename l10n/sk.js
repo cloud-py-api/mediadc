@@ -29,6 +29,7 @@ OC.L10N.register(
     "Select" : "Vybrať",
     "Photos" : "Fotografie",
     "Videos" : "Videá",
+    "Recent Tasks" : "Nedávne úlohy",
     "Start" : "Začať",
     "Duplicate" : "Duplikát",
     "Delete" : "Vymazať",
