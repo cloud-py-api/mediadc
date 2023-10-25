@@ -121,6 +121,7 @@ OC.L10N.register(
     "Bug report" : "Hibajelentés",
     "Settings successfully updated" : "Beállítások sikeresen frissítve",
     "Some error occurred while updating settings" : "Hiba történt a beállítások frissítése során",
+    "The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?" : "A fénykép és videó ujjlenyomatok törölve lesznek, mielőtt ujjlenyomat algoritmust váltana.\nFolytatja?",
     "Hashing algorithm successfully updated" : "Ujjlenyomat algoritmus sikeresen frissítve",
     "An error occurred while updating setting. Try again" : "Hiba történt a beállítások frissítése során. Próbálja újra",
     "Some error occurred while changing hashing algorithm" : "Hiba történt az ujjlenyomat algoritmus megváltozatása során",
