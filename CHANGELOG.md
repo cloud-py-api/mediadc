@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.8 - 2023-11-04]
+
+Maintenance update.
+[`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
+(or updated) and enabled first.
+
+### Added
+
+- Added task name of target folder for tasks created via file action
+
+### Fixed
+
+- Fixed duplicate task action does not copy task name
+- Fixed translatable strings for notification
+
+### Updated
+
+- Updated packages (security fixes)
+- Updated l10n (localization)
+
 ## [0.3.7 - 2023-10-08]
 
 Maintenance update.

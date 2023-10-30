@@ -74,7 +74,7 @@ class CollectorTaskNotificationCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$taskId = $input->getArgument(self::ARGUMENT_TASK_ID);
 		$status = $input->getArgument(self::ARGUMENT_TASK_STATUS);
-		/** @var CollectorTask */
+		/** @var CollectorTask $collectorTask */
 		$collectorTask = $this->tasksMapper->find(intval($taskId));
 		$detailGroups = array_map(function ($d) {
 			$d['files'] = explode(',', $d['files']);
@@ -103,6 +103,7 @@ class CollectorTaskNotificationCommand extends Command {
 				'status' => $status,
 				'duplicate-groups' => count($detailGroups),
 				'duplicates' => $duplicates,
+				'name' => $collectorTask->getName(),
 			]);
 		$this->notificationManager->notify($notification);
 		return 0;

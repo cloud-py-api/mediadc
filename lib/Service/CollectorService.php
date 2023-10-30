@@ -36,6 +36,7 @@ use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 use OCP\BackgroundJob\IJobList;
 use OCP\Files\NotFoundException;
@@ -99,6 +100,7 @@ class CollectorService {
 	public const TASK_TYPE_MANUAL = 'manual';
 	public const TASK_TYPE_AUTO = 'auto';
 	public const TASK_TYPE_QUEUED = 'queued';
+	private IL10N $l10n;
 
 
 	public function __construct(
@@ -113,7 +115,8 @@ class CollectorService {
 		VideosService $videosService,
 		IJobList $jobList,
 		IPreview $previewManager,
-		CPAUtilsService $cpaUtils
+		CPAUtilsService $cpaUtils,
+		IL10N $l10n,
 	) {
 		if ($userId !== null) {
 			$this->userId = $userId;
@@ -129,6 +132,7 @@ class CollectorService {
 		$this->videosService = $videosService;
 		$this->jobList = $jobList;
 		$this->previewManager = $previewManager;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -344,6 +348,7 @@ class CollectorService {
 				'finish_notification' => $collectorSettings['finish_notification'],
 			],
 			'excludeList' => json_decode($collectorTask->getExcludeList(), true),
+			'name' => '[' . $this->l10n->t('duplicated') . '] ' . $collectorTask->getName(),
 		]);
 		return $duplicatedCollectorTask;
 	}

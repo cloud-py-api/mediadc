@@ -68,9 +68,16 @@ class Notifier implements INotifier {
 
 			$parameters = $notification->getSubjectParameters();
 			if ($parameters['status'] === 'finished') {
-				$notification->setRichSubject($l->t('Task successfully finished, found ' . $parameters['duplicate-groups'] . ' duplicate group(s) (' . $parameters['duplicates'] .  ' file(s))'));
+				if (isset($parameters['name']) && $parameters['name'] !== '') {
+					$message = $l->t('Task "%s" successfully finished.', [$parameters['name']]);
+				} else {
+					$message = $l->t('Task successfully finished.');
+				}
+				$filesMessage = $l->n('%n file', '%n files', $parameters['duplicates']);
+				$message .= ' ' . $l->n('Found %n duplicate group', 'Found %n duplicate groups', $parameters['duplicate-groups']) . ' (' . $filesMessage . ')';
+				$notification->setRichSubject($message);
 			} else {
-				$notification->setRichSubject($l->t('Task finished with status "' . $parameters['status'] . '".'));
+				$notification->setRichSubject($l->t('Task finished with status {status}', ['status' => $parameters['status']]));
 			}
 			$notification->setRichMessage($l->t('Task finished, check out results'));
 			$notification->setParsedSubject($l->t('Task finished, check out results'));
