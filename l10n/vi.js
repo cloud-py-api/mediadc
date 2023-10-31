@@ -18,6 +18,7 @@ OC.L10N.register(
     "Videos" : "Phim",
     "Start" : "Bắt đầu",
     "Delete" : "Xóa",
-    "Edit" : "Chỉnh sửa"
+    "Edit" : "Chỉnh sửa",
+    "Delete task" : "Xóa nhiệm vụ"
 },
 "nplurals=1; plural=0;");
