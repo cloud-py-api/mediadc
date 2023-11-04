@@ -28,17 +28,22 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: ["7.4", "8.0"]
-        nextcloud: ['25.0.3']
+        php-versions: ["8.0", "8.1"]
+        nextcloud: ['25.0.13']
 
     services:
-      mysql:
+      mariadb:
         image: mariadb:11.1
+        env:
+          MARIADB_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: nextcloud
+          options: >-
+            --health-cmd mysqladmin ping
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
         ports:
           - 4444:3306/tcp
-        env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-        options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
       - name: Set up php ${{ matrix.php-versions }}
@@ -174,7 +179,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ["8.0"]
-        nextcloud: ['25.0.3']
+        nextcloud: ['25.0.13']
 
     services:
       postgres:
