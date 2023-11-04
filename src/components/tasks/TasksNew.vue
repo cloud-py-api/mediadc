@@ -191,10 +191,14 @@
 			<input v-model="taskName"
 				type="text"
 				:placeholder="t('mediadc', 'Task name')">
-			<NcCheckboxRadioSwitch v-tooltip="t('mediadc', 'Send notification on task finish')"
-				:checked.sync="finishNotification">
-				{{ t('mediadc', 'Finish notification') }}
-			</NcCheckboxRadioSwitch>
+			<NcActions>
+				<NcActionCheckbox v-tooltip="t('mediadc', 'Send notification on task finish')" :checked.sync="finishNotification">
+					{{ t('mediadc', 'Finish notification') }}
+				</NcActionCheckbox>
+				<NcActionCheckbox v-tooltip="t('mediadc', 'Detected images with changed orientation as duplicates')" :checked.sync="ignoreOrientation">
+					{{ t('mediadc', 'Ignore orientation') }}
+				</NcActionCheckbox>
+			</NcActions>
 		</div>
 	</div>
 </template>
@@ -206,14 +210,16 @@ import { mapActions, mapGetters } from 'vuex'
 import { requestFileInfo, getFileId } from '../../utils/files.js'
 
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionCheckbox from '@nextcloud/vue/dist/Components/NcActionCheckbox.js'
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
 export default {
 	name: 'TasksNew',
 	components: {
 		NcButton,
-		NcCheckboxRadioSwitch,
+		NcActions,
+		NcActionCheckbox,
 		PlusThick,
 	},
 	data() {
@@ -229,6 +235,7 @@ export default {
 			addingCustomMask: false,
 			runningTask: false,
 			finishNotification: true,
+			ignoreOrientation: true,
 			taskName: '',
 		}
 	},
@@ -334,6 +341,7 @@ export default {
 					hash_size: this.settingByName('hash_size').value || 16,
 					target_mtype: this.targetMimeType,
 					finish_notification: this.finishNotification,
+					exif_transpose: !this.ignoreOrientation,
 				},
 			}).then(res => {
 				this.runningTask = false

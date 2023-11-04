@@ -188,9 +188,14 @@
 					<input v-model="taskName"
 						type="text"
 						:placeholder="t('mediadc', 'Task name')">
-					<NcCheckboxRadioSwitch :checked.sync="finishNotification">
-						{{ t('mediadc', 'Finish notification') }}
-					</NcCheckboxRadioSwitch>
+					<NcActions>
+						<NcActionCheckbox v-tooltip="t('mediadc', 'Send notification on task finish')" :checked.sync="finishNotification">
+							{{ t('mediadc', 'Finish notification') }}
+						</NcActionCheckbox>
+						<NcActionCheckbox v-tooltip="t('mediadc', 'Detected images with changed orientation as duplicates')" :checked.sync="ignoreOrientation">
+							{{ t('mediadc', 'Ignore orientation') }}
+						</NcActionCheckbox>
+					</NcActions>
 				</div>
 			</div>
 		</div>
@@ -204,7 +209,8 @@ import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess, showError } from '@nextcloud/dialogs'
 import { emit } from '@nextcloud/event-bus'
 
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
+import NcActionCheckbox from '@nextcloud/vue/dist/Components/NcActionCheckbox.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
@@ -215,8 +221,9 @@ import { requestFileInfo, getFileId } from '../../utils/files.js'
 export default {
 	name: 'TasksEdit',
 	components: {
+		NcActions,
+		NcActionCheckbox,
 		NcButton,
-		NcCheckboxRadioSwitch,
 		PlusThick,
 	},
 	data() {
@@ -232,6 +239,7 @@ export default {
 			addingCustomMask: false,
 			runningTask: false,
 			finishNotification: true,
+			ignoreOrientation: true,
 			taskName: '',
 		}
 	},
@@ -251,6 +259,7 @@ export default {
 		this.targetMimeType = JSON.parse(this.task.collector_settings).target_mtype
 		this.similarity_threshold = JSON.parse(this.task.collector_settings).similarity_threshold
 		this.finishNotification = JSON.parse(this.task.collector_settings).finish_notification
+		this.ignoreOrientation = !JSON.parse(this.task.collector_settings)?.exif_transpose || false
 		this.taskName = this.task.name
 		this.parseTaskSettings()
 	},
@@ -360,6 +369,7 @@ export default {
 						hash_size: Number(this.settingByName('hash_size').value) || 16,
 						target_mtype: this.targetMimeType,
 						finish_notification: this.finishNotification,
+						exif_transpose: !this.ignoreOrientation,
 					},
 					name: this.taskName,
 				}).then(res => {

@@ -346,6 +346,7 @@ class CollectorService {
 				'hash_size' => $collectorSettings['hash_size'],
 				'target_mtype' => $collectorSettings['target_mtype'],
 				'finish_notification' => $collectorSettings['finish_notification'],
+				'exif_transpose' => $collectorSettings['exif_transpose'] ?? true,
 			],
 			'excludeList' => json_decode($collectorTask->getExcludeList(), true),
 			'name' => '[' . $this->l10n->t('duplicated') . '] ' . $collectorTask->getName(),
@@ -409,6 +410,7 @@ class CollectorService {
 				'finish_notification' => count($params) === 0
 					? true : $params['collectorSettings']['finish_notification'],
 				'duplicated' => isset($params['type']) && $params['type'] === 'duplicated',
+				'exif_transpose' => $params['collectorSettings']['exif_transpose'],
 			]),
 			'filesScanned' => 0,
 			'filesTotal' => count($params) === 0
