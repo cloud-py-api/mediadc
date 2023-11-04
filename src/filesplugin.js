@@ -53,7 +53,6 @@ function createNewTaskFromFolder(folderId, folderName = null) {
 				hash_size: settingByName(settings, 'hash_size').value || 16,
 				target_mtype: 2,
 				finish_notification: true,
-				exif_transpose: false,
 			},
 			name: folderName,
 		}
