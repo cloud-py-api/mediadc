@@ -79,6 +79,7 @@ def init_task_settings(task_info: dict) -> dict:
     task_settings["type"] = collector_settings["target_mtype"]
     task_settings["target_dirs"] = task_info["target_directory_ids"]
     task_settings["target_dirs"] = sorted(list(map(int, task_settings["target_dirs"])))
+    task_settings["exif_transpose"] = bool(collector_settings.get("exif_transpose", True))
     return task_settings
 
 

@@ -52,6 +52,7 @@ def process_images(settings: dict, fs_objs: list[FsNodeInfo]):
                 settings["hash_algo"],
                 settings["hash_size"],
                 mdc_image_info,
+                settings["exif_transpose"],
             )
         else:
             if check_hexstrings_within_dist:
@@ -62,11 +63,11 @@ def process_images(settings: dict, fs_objs: list[FsNodeInfo]):
             process_image_record(settings["precision_img"], mdc_image_info)
 
 
-def process_hash(algo: str, hash_size: int, mdc_img_info: MdcImageInfo):
+def process_hash(algo: str, hash_size: int, mdc_img_info: MdcImageInfo, exif_transpose: bool):
     data = fs_file_data(mdc_img_info)
     if not data:
         return None
-    hash_of_image = calc_hash(algo, hash_size, data)
+    hash_of_image = calc_hash(algo, hash_size, data, exif_transpose)
     if hash_of_image is None:
         store_err_image_hash(mdc_img_info["id"], mdc_img_info["mtime"], mdc_img_info["skipped"] + 1)
         return None
@@ -85,8 +86,8 @@ def arr_hash_to_string(arr) -> str:
     return numpy.packbits(arr, axis=None).tobytes().hex()
 
 
-def calc_hash(algo: str, hash_size: int, image_data: bytes):
-    image_hash = hash_image_data(algo, hash_size, image_data)
+def calc_hash(algo: str, hash_size: int, image_data: bytes, exif_transpose=True):
+    image_hash = hash_image_data(algo, hash_size, image_data, exif_transpose=exif_transpose)
     if image_hash is None:
         return None
     return image_hash.flatten()
@@ -133,8 +134,9 @@ def save_image_results(task_id: int) -> int:
     return n_group
 
 
-def pil_to_hash(algo: str, hash_size: int, pil_image):
-    pil_image = ImageOps.exif_transpose(pil_image)
+def pil_to_hash(algo: str, hash_size: int, pil_image, exif_transpose: bool = True):
+    if exif_transpose:
+        pil_image = ImageOps.exif_transpose(pil_image)
     if algo == "phash":
         image_hash = phash(pil_image, hash_size=hash_size)
     elif algo == "dhash":
@@ -148,10 +150,10 @@ def pil_to_hash(algo: str, hash_size: int, pil_image):
     return image_hash
 
 
-def hash_image_data(algo: str, hash_size: int, image_data: bytes):
+def hash_image_data(algo: str, hash_size: int, image_data: bytes, exif_transpose: bool):
     try:
         pil_image = Image.open(BytesIO(image_data))
-        return pil_to_hash(algo, hash_size, pil_image)
+        return pil_to_hash(algo, hash_size, pil_image, exif_transpose)
     except Exception as exception_info:  # noqa # pylint: disable=broad-except
         log.debug("Exception during image processing:\n%s", str(exception_info))
         return None
