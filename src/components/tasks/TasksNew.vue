@@ -334,6 +334,7 @@ export default {
 					hash_size: this.settingByName('hash_size').value || 16,
 					target_mtype: this.targetMimeType,
 					finish_notification: this.finishNotification,
+					exif_transpose: !JSON.parse(this.settingByName('ignore_orientation').value),
 				},
 			}).then(res => {
 				this.runningTask = false

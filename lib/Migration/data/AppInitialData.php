@@ -71,6 +71,12 @@ class AppInitialData {
 				"displayName" => "Use pre-compiled Python binaries",
 				"description" => "Use Python part in binary format (located in the appdata folder)"
 			],
+			[
+				"name" => "ignore_orientation",
+				"value" => false,
+				"displayName" => "Ignore EXIF image orientation",
+				"description" => "Enable to allow detection of mirrored images as duplicates"
+			],
 		]
 	];
 
@@ -92,5 +98,7 @@ class AppInitialData {
 		$this->l10n->t("Global administrator's exclude list that applies to each task");
 		$this->l10n->t("Use pre-compiled Python binaries");
 		$this->l10n->t("Use Python part in binary format (located in the appdata folder)");
+		$this->l10n->t("Ignore EXIF image orientation");
+		$this->l10n->t("Enable to allow detection of mirrored images as duplicates");
 	}
 }

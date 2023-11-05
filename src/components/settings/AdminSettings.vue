@@ -63,6 +63,12 @@
 					</option>
 				</select>
 			</NcSettingsSection>
+			<NcSettingsSection :title="t('mediadc',mappedSettings.ignore_orientation.display_name)"
+				:description="t('mediadc', mappedSettings.ignore_orientation.description)">
+				<NcCheckboxRadioSwitch :checked.sync="ignore_orientation" @update:checked="updateIgnoreOrientation">
+					{{ t('mediadc', 'Ignore image orientation') }}
+				</NcCheckboxRadioSwitch>
+			</NcSettingsSection>
 			<NcSettingsSection :title="t('mediadc', mappedSettings.exclude_list.display_name)"
 				:description="t('mediadc', mappedSettings.exclude_list.description)">
 				<template #default>
@@ -199,6 +205,7 @@ export default {
 			addingCustomMask: false,
 			hashSizeValues: [8, 16, 32, 64],
 			python_binary: true,
+			ignore_orientation: true,
 		}
 	},
 	beforeMount() {
@@ -225,6 +232,7 @@ export default {
 			this.hash_size = this.mappedSettings.hash_size.value
 			this.customExcludeList = JSON.parse(this.mappedSettings.exclude_list.value).mask
 			this.python_binary = JSON.parse(this.mappedSettings.python_binary.value)
+			this.ignore_orientation = JSON.parse(this.mappedSettings.ignore_orientation.value)
 		},
 		saveChanges() {
 			axios.put(generateUrl('/apps/mediadc/api/v1/settings'), { settings: this.settings })
@@ -290,6 +298,26 @@ export default {
 				})
 			} else {
 				this.hash_size = JSON.parse(this.mappedSettings.hash_size.value)
+			}
+		},
+		updateIgnoreOrientation() {
+			if (confirm(this.t('mediadc', 'The photo and video hashes will be cleaned before changing hash size.\nContinue?'))) {
+				this.truncatePhotosAndVideos().then(() => {
+					this.mappedSettings.ignore_orientation.value = JSON.stringify(this.ignore_orientation)
+					this.updateSetting(this.mappedSettings.ignore_orientation.name, this.ignore_orientation).then(res => {
+						if (res.data.success) {
+							showSuccess(this.t('mediadc', 'Ignore orientation flag successfully updated'))
+							this.saveChanges()
+						} else {
+							showError(res.data.message)
+						}
+					}).catch(err => {
+						console.debug(err)
+						showError(this.t('mediadc', 'An error occurred when updating the setting. Try again'))
+					})
+				})
+			} else {
+				this.ignore_orientation = JSON.parse(this.mappedSettings.hash_size.value)
 			}
 		},
 		updateExcludeList() {
