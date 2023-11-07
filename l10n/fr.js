@@ -66,6 +66,7 @@ OC.L10N.register(
     "Toggle groups" : "Basculer les groupes",
     "Uncheck selected" : "Décocher la sélection",
     "Mark all files in group as resolved" : "Marquer tous les fichiers du groupe comme résolus",
+    "Delete all files except the largest one" : "Supprimer tous les fichiers sauf le plus lourd",
     "Delete files" : "Effacer les fichiers",
     "No matchings found" : "Aucune correspondance trouvée",
     "No duplicates found." : "Aucune doublon trouvé",
