@@ -1,13 +1,18 @@
 OC.L10N.register(
     "mediadc",
     {
+    "MediaDC" : "MediaDC",
     "Tasks" : "Compiti",
+    "Resolved" : "Risolto",
     "Settings" : "Impostazioni",
     "Export" : "Esporta",
     "Select file" : "Seleziona file",
     "Deselect all" : "Deseleziona tutto",
     "Select all" : "Seleziona tutto",
+    "_group _::_groups_" : ["gruppo","gruppi","gruppi"],
+    "_file_::_files_" : ["file","File","File"],
     "Select group" : "Seleziona gruppo",
+    "Page:" : "Pagina:",
     "Go to page" : "Vai alla pagina",
     "Change to grid view" : "Mostra visuale a griglia",
     "Change to list view" : "Mostra visuale a elenco",
@@ -21,9 +26,16 @@ OC.L10N.register(
     "Photos" : "Foto",
     "Videos" : "Video",
     "Start" : "Avvia",
+    "Restart" : "Ricomincia",
+    "Stop" : "Fermare",
     "Duplicate" : "Duplicato",
     "Delete" : "Elimina",
+    "precision: " : "precisione:",
+    "Deleted: " : "Eliminato:",
     "Edit" : "Modifica",
-    "Delete task" : "Elimina attività"
+    "Delete task" : "Elimina attività",
+    "Ignored" : "Ignorato",
+    "Owner:" : "Proprietario:",
+    "Photos&Videos" : "Foto e video"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
