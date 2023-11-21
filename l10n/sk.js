@@ -12,6 +12,7 @@ OC.L10N.register(
     "Select all" : "Vybrať všetko",
     "Not all files deleted" : "Neboli odstránené všetky súbory",
     "_Batch actions for %n file_::_Batch actions for %n files_" : ["Hromadné akcie pre %n súbor","Hromadné akcie pre %n súbory","Hromadné akcie pre %n súborov","Hromadné akcie pre %n súborov"],
+    "Sort groups" : "Triediť skupiny",
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Hromadné akcie pre %n skupinu","Hromadné akcie pre %n skupiny","Hromadné akcie pre %n skupín","Hromadné akcie pre %n skupín"],
     "Select group" : "Vybrať skupinu",
     "Go to page" : "Prejisť na stránku",
@@ -38,6 +39,7 @@ OC.L10N.register(
     "Run new Task" : "Spustiť novú úlohu",
     "Edit" : "Upraviť",
     "Delete task" : "Odstrániť úlohu",
+    "Ignored" : "Ignorované",
     "Confirm task deletion" : "Potvrdiť odstránenie úlohy",
     "No results to export" : "Žiadne výsledky pre exportovanie"
 },
