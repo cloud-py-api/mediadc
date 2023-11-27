@@ -19,6 +19,7 @@ OC.L10N.register(
     "Start" : "Start",
     "Duplicate" : "Tvítaka",
     "Delete" : "Eyða",
-    "Edit" : "Breyta"
+    "Edit" : "Breyta",
+    "Delete task" : "Eyða verki"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");
