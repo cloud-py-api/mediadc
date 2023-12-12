@@ -178,7 +178,7 @@ OC.L10N.register(
     "Some error occurred while running Collector Task. Try again." : "Produciuse un erro ao executar a tarefa de recolleita. Ténteo de novo.",
     "_Target folder has no files or all of them excluded_::_Target folders have no files or all of them excluded_" : ["O cartafol de destino non teñen ficheiros ou están excluídos todos","Os cartafoles de destino non teñen ficheiros ou están excluídos todos"],
     "Recent Tasks" : "Tarefas recentes",
-    "No tasks yet" : "Aínda non hai tarefas",
+    "No tasks yet" : "Aínda non hai ningunha tarefa",
     "Start" : "Iniciar",
     "Restart" : "Reiniciar",
     "Stop" : "Parar",
