@@ -23,7 +23,7 @@
  -->
 
 <template>
-	<NcListItem :title="listItemTitle"
+	<NcListItem :name="listItemTitle"
 		:bold="true"
 		:force-display-actions="true"
 		:to="{ name: 'collectorDetails', params: { taskId: task.id } }"
@@ -31,7 +31,7 @@
 		<template #icon>
 			<span :class="'badge ' + getStatusBadge(task)">{{ getStatusBadge(task) }}</span>
 		</template>
-		<template #subtitle>
+		<template #subname>
 			{{ listItemDetails }}
 			<NcProgressBar :value="Math.round((task.files_scanned / task.files_total) * 100)"
 				size="small"

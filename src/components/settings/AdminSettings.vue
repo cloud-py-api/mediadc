@@ -28,7 +28,7 @@
 			{{ t('mediadc', 'MediaDC settings') }}
 		</h2>
 		<div v-if="settings.length > 0" class="settings">
-			<NcSettingsSection :title="t('mediadc', mappedSettings.hashing_algorithm.display_name)"
+			<NcSettingsSection :name="t('mediadc', mappedSettings.hashing_algorithm.display_name)"
 				:description="t('mediadc', mappedSettings.hashing_algorithm.description)">
 				<select v-if="algorithms.length > 0"
 					id="hashing_algorithm"
@@ -42,7 +42,7 @@
 					</option>
 				</select>
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.similarity_threshold.display_name)"
+			<NcSettingsSection :name="t('mediadc', mappedSettings.similarity_threshold.display_name)"
 				:description="t('mediadc', mappedSettings.similarity_threshold.description)">
 				<input id="similarity_threshold"
 					v-model="mappedSettings.similarity_threshold.value"
@@ -52,7 +52,7 @@
 					max="100"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc',mappedSettings.hash_size.display_name)"
+			<NcSettingsSection :name="t('mediadc',mappedSettings.hash_size.display_name)"
 				:description="t('mediadc', mappedSettings.hash_size.description)">
 				<select id="hash_size"
 					v-model.number="hash_size"
@@ -63,13 +63,13 @@
 					</option>
 				</select>
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc',mappedSettings.ignore_orientation.display_name)"
+			<NcSettingsSection :name="t('mediadc',mappedSettings.ignore_orientation.display_name)"
 				:description="t('mediadc', mappedSettings.ignore_orientation.description)">
 				<NcCheckboxRadioSwitch :checked.sync="ignore_orientation" @update:checked="updateIgnoreOrientation">
 					{{ t('mediadc', 'Ignore image orientation') }}
 				</NcCheckboxRadioSwitch>
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.exclude_list.display_name)"
+			<NcSettingsSection :name="t('mediadc', mappedSettings.exclude_list.display_name)"
 				:description="t('mediadc', mappedSettings.exclude_list.description)">
 				<template #default>
 					<ul v-if="customExcludeList.length > 0" style="width: 100%; max-width: 350px; max-height: 290px; overflow-y: scroll;">
@@ -128,7 +128,7 @@
 					</div>
 				</template>
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.python_limit.display_name)"
+			<NcSettingsSection :name="t('mediadc', mappedSettings.python_limit.display_name)"
 				:description="t('mediadc', mappedSettings.python_limit.description)">
 				<input id="python_limit"
 					v-model.number="mappedSettings.python_limit.value"
@@ -138,7 +138,7 @@
 					max="10"
 					@change="saveChanges">
 			</NcSettingsSection>
-			<NcSettingsSection :title="t('mediadc', mappedSettings.python_binary.display_name)"
+			<NcSettingsSection :name="t('mediadc', mappedSettings.python_binary.display_name)"
 				:description="t('mediadc', mappedSettings.python_binary.description)">
 				<NcCheckboxRadioSwitch :checked.sync="python_binary" @update:checked="updatePythonBinary">
 					{{ t('mediadc', 'Use pre-compiled Python binaries') }}
@@ -146,7 +146,7 @@
 			</NcSettingsSection>
 		</div>
 		<div v-else>
-			<NcSettingsSection :title="t('mediadc', 'Error')">
+			<NcSettingsSection :name="t('mediadc', 'Error')">
 				<NcEmptyContent style="margin-top: 0;"
 					:title="t('mediadc', 'Settings list is empty')"
 					:description="t('mediadc', 'Seems like database not initialized properly. Try to re-enable the app')">
@@ -156,7 +156,7 @@
 				</NcEmptyContent>
 			</NcSettingsSection>
 		</div>
-		<NcSettingsSection :title="t('mediadc', 'Bug report')">
+		<NcSettingsSection :name="t('mediadc', 'Bug report')">
 			<BugReport />
 		</NcSettingsSection>
 	</div>

@@ -25,10 +25,10 @@
 <template>
 	<NcAppSettingsDialog :open="open"
 		:show-navigation="true"
-		:title="t('mediadc', 'MediaDC settings')"
+		:name="t('mediadc', 'MediaDC settings')"
 		@update:open="onClose">
 		<NcAppSettingsSection id="settings"
-			:title="t('mediadc', 'Duplicates list')"
+			:name="t('mediadc', 'Duplicates list')"
 			:area-label="t('mediadc', 'Duplicates list settings per user and browser')">
 			<div class="app-setting">
 				<label for="details-list-items-per-page">

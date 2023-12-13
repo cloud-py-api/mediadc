@@ -27,17 +27,17 @@
 		<NcAppNavigation>
 			<template #list>
 				<NcAppNavigationItem :to="{name: 'collector'}"
-					:title="t('mediadc', 'Tasks')"
+					:name="t('mediadc', 'Tasks')"
 					icon="icon-toggle-filelist"
 					exact />
 				<NcAppNavigationItem :to="{name: 'resolved'}"
-					:title="t('mediadc', 'Resolved')"
+					:name="t('mediadc', 'Resolved')"
 					icon="icon-video-off" />
 			</template>
 			<template #footer>
 				<ul class="app-navigation-entry__settings">
 					<NcAppNavigationItem :aria-label="t('mediadc', 'Open MediaDC settings')"
-						:title="t('mediadc', 'Settings')"
+						:name="t('mediadc', 'Settings')"
 						@click.prevent.stop="openSettingsModal">
 						<Cog slot="icon" :size="20" />
 					</NcAppNavigationItem>

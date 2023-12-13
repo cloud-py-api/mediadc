@@ -274,7 +274,6 @@ export default {
 			return getFilePickerBuilder(title)
 				.setMultiSelect(false)
 				.addMimeTypeFilter('httpd/unix-directory')
-				.setModal(true)
 				.setType(1)
 				.allowDirectories(true)
 				.build()
@@ -282,7 +281,6 @@ export default {
 		getFilesPicker(title) {
 			return getFilePickerBuilder(title)
 				.setMultiSelect(false)
-				.setModal(true)
 				.setType(1)
 				.allowDirectories(true)
 				.build()
