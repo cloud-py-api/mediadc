@@ -22,6 +22,7 @@ Maintenance update.
 
 - Updated packages (security fixes, NC28 support)
 - Updated l10n (localization)
+- Update files plugin (NC28 support)
 
 ## [0.3.7 - 2023-10-08]
 
