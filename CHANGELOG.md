@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.8 - 2023-11-04]
+## [0.3.8 - 2023-12-14]
 
 Maintenance update.
 [`cloud_py_api`](https://github.com/cloud-py-api/cloud_py_api) is **required** to be installed
@@ -11,6 +11,7 @@ Maintenance update.
 ### Added
 
 - Added task name of target folder for tasks created via file action
+- Added EXIF transpose option (https://github.com/cloud-py-api/mediadc/issues/199)
 
 ### Fixed
 
@@ -19,7 +20,7 @@ Maintenance update.
 
 ### Updated
 
-- Updated packages (security fixes)
+- Updated packages (security fixes, NC28 support)
 - Updated l10n (localization)
 
 ## [0.3.7 - 2023-10-08]
