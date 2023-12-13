@@ -33,7 +33,7 @@ jobs:
 
     services:
       mysql:
-        image: mariadb:11.1
+        image: mariadb:11.2
         ports:
           - 4444:3306/tcp
         env:
@@ -64,12 +64,12 @@ jobs:
         run: tar -xjf nextcloud-${{ matrix.nextcloud }}.tar.bz2 --strip-components 1
 
       - name: Checkout ${{ env.APP_NAME }} app
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           path: apps/${{ env.APP_NAME }}
 
       - name: Checkout ${{ env.CPA_NAME }} app
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
           path: apps/${{ env.CPA_NAME }}
@@ -211,12 +211,12 @@ jobs:
         run: tar -xjf nextcloud-${{ matrix.nextcloud }}.tar.bz2 --strip-components 1
 
       - name: Checkout app
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           path: apps/${{ env.APP_NAME }}
 
       - name: Checkout ${{ env.CPA_NAME }} app
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           repository: cloud-py-api/${{ env.CPA_NAME }}
           path: apps/${{ env.CPA_NAME }}

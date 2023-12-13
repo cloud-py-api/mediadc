@@ -17,6 +17,7 @@ OC.L10N.register(
     "Photos" : "Poze",
     "Videos" : "Fișiere video",
     "Start" : "Începe",
+    "Duplicate" : "Duplicat",
     "Delete" : "Șterge",
     "Edit" : "Editează"
 },

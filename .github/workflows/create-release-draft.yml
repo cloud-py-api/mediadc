@@ -13,11 +13,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Download artifacts
         id: download-artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           workflow: generate-binaries-2.yml
           workflow_conclusion: ""
@@ -39,7 +39,7 @@ jobs:
           echo "IS_NIGHTLY=$IS_NIGHTLY" >> $GITHUB_ENV
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16.x
 

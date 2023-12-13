@@ -11,12 +11,14 @@ OC.L10N.register(
     "Confirm" : "Xác nhận",
     "Decline" : "Từ chối",
     "Error" : "Lỗi",
+    "Copy to clipboard" : "Sao chép vào clipboard",
     "Copied to clipboard" : "Đã sao chép vào bộ nhớ tạm",
     "Select" : "Chọn",
     "Photos" : "Ảnh",
     "Videos" : "Phim",
     "Start" : "Bắt đầu",
     "Delete" : "Xóa",
-    "Edit" : "Chỉnh sửa"
+    "Edit" : "Chỉnh sửa",
+    "Delete task" : "Xóa nhiệm vụ"
 },
 "nplurals=1; plural=0;");
