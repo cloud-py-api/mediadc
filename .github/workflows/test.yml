@@ -106,7 +106,7 @@ jobs:
 
       - name: HTML coverage to artifacts
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage_unit_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_mysql
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/unit
@@ -114,7 +114,7 @@ jobs:
 
       - name: Clover coverage to artifacts
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: clover_coverage_unit_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_mysql.xml
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/unit/clover.xml
@@ -144,7 +144,7 @@ jobs:
 
       - name: HTML coverage to artifacts
         if: steps.check_integration.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_mysql
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/integration
@@ -152,7 +152,7 @@ jobs:
 
       - name: Clover coverage to artifacts
         if: steps.check_integration.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: clover_coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_mysql.xml
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/integration/clover.xml
@@ -250,7 +250,7 @@ jobs:
 
       - name: HTML coverage to artifacts
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage_unit_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_pgsql
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/unit
@@ -258,7 +258,7 @@ jobs:
 
       - name: Clover coverage to artifacts
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: clover_coverage_unit_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_pgsql.xml
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/unit/clover.xml
@@ -293,7 +293,7 @@ jobs:
 
       - name: HTML coverage to artifacts
         if: steps.check_integration.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_pgsql
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/integration
@@ -301,7 +301,7 @@ jobs:
 
       - name: Clover coverage to artifacts
         if: steps.check_integration.outputs.files_exists == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: clover_coverage_integration_${{ matrix.nextcloud }}_${{ matrix.php-versions }}_pgsql.xml
           path: apps/${{ env.APP_NAME }}/tests/coverage/php/integration/clover.xml
