@@ -302,6 +302,7 @@ export default {
 							hash_size: Number(this.settingByName('hash_size').value) || 16,
 							target_mtype: Number(JSON.parse(this.task.collector_settings).target_mtype),
 							finish_notification: JSON.parse(this.task.collector_settings).finish_notification,
+							exif_transpose: !this.settingByName('ignore_orientation').value || true,
 						},
 					}).then(res => {
 						if (res.data.success) {

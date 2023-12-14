@@ -36,6 +36,7 @@ use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 use OCP\BackgroundJob\IJobList;
 use OCP\Files\NotFoundException;
@@ -99,6 +100,7 @@ class CollectorService {
 	public const TASK_TYPE_MANUAL = 'manual';
 	public const TASK_TYPE_AUTO = 'auto';
 	public const TASK_TYPE_QUEUED = 'queued';
+	private IL10N $l10n;
 
 
 	public function __construct(
@@ -113,7 +115,8 @@ class CollectorService {
 		VideosService $videosService,
 		IJobList $jobList,
 		IPreview $previewManager,
-		CPAUtilsService $cpaUtils
+		CPAUtilsService $cpaUtils,
+		IL10N $l10n,
 	) {
 		if ($userId !== null) {
 			$this->userId = $userId;
@@ -129,6 +132,7 @@ class CollectorService {
 		$this->videosService = $videosService;
 		$this->jobList = $jobList;
 		$this->previewManager = $previewManager;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -228,6 +232,10 @@ class CollectorService {
 		$this->terminate($taskId);
 
 		if ($taskData['files_total'] > 0) {
+			if (!isset($collectorSettings['exif_transpose'])) {
+				$ignoreOrientationSetting = $this->settingsMapper->findByName('ignore_orientation');
+				$collectorSettings['exif_transpose'] = !json_decode($ignoreOrientationSetting->getValue());
+			}
 			$collectorTask->setTargetDirectoryIds(json_encode($targetDirectoryIds));
 			$collectorTask->setExcludeList(json_encode($excludeList));
 			$collectorTask->setCollectorSettings(json_encode($collectorSettings));
@@ -342,8 +350,10 @@ class CollectorService {
 				'hash_size' => $collectorSettings['hash_size'],
 				'target_mtype' => $collectorSettings['target_mtype'],
 				'finish_notification' => $collectorSettings['finish_notification'],
+				'exif_transpose' => $collectorSettings['exif_transpose'] ?? true,
 			],
 			'excludeList' => json_decode($collectorTask->getExcludeList(), true),
+			'name' => '[' . $this->l10n->t('duplicated') . '] ' . $collectorTask->getName(),
 		]);
 		return $duplicatedCollectorTask;
 	}
@@ -362,6 +372,8 @@ class CollectorService {
 			$pyThresholdSetting = $this->settingsMapper->findByName('similarity_threshold');
 			/** @var Setting */
 			$pyHashSizeSetting = $this->settingsMapper->findByName('hash_size');
+			/** @var Setting */
+			$ignoreOrientationSetting = $this->settingsMapper->findByName('ignore_orientation');
 		} else {
 			/** @var string */
 			$pyAlgorithmSetting = $params['collectorSettings']['hashing_algorithm'];
@@ -369,6 +381,8 @@ class CollectorService {
 			$pyThresholdSetting = $params['collectorSettings']['similarity_threshold'];
 			/** @var string */
 			$pyHashSizeSetting = $params['collectorSettings']['hash_size'];
+			/** @var Setting */
+			$ignoreOrientationSetting = $this->settingsMapper->findByName('ignore_orientation');
 			/** @var Setting */
 			$excludeListSetting = $this->settingsMapper->findByName('exclude_list');
 			$excludeList = count($params) === 0 ? [
@@ -404,6 +418,7 @@ class CollectorService {
 				'finish_notification' => count($params) === 0
 					? true : $params['collectorSettings']['finish_notification'],
 				'duplicated' => isset($params['type']) && $params['type'] === 'duplicated',
+				'exif_transpose' => count($params) === 0 ? $ignoreOrientationSetting->getValue() : $params['collectorSettings']['exif_transpose'],
 			]),
 			'filesScanned' => 0,
 			'filesTotal' => count($params) === 0

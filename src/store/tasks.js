@@ -204,6 +204,7 @@ const actions = {
 				target_mtype: Number(JSON.parse(task.collector_settings).target_mtype),
 				finish_notification: JSON.parse(task.collector_settings).finish_notification,
 			},
+			name: task.name,
 		}).then(res => {
 			if (res.data.success) {
 				commit('updateTask', res.data.restartedTask)

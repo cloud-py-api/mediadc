@@ -250,7 +250,6 @@ export default {
 			return getFilePickerBuilder(title)
 				.setMultiSelect(false)
 				.addMimeTypeFilter('httpd/unix-directory')
-				.setModal(true)
 				.setType(1)
 				.allowDirectories(true)
 				.build()
@@ -258,7 +257,6 @@ export default {
 		getFilesPicker(title) {
 			return getFilePickerBuilder(title)
 				.setMultiSelect(false)
-				.setModal(true)
 				.setType(1)
 				.allowDirectories(true)
 				.build()
@@ -334,6 +332,7 @@ export default {
 					hash_size: this.settingByName('hash_size').value || 16,
 					target_mtype: this.targetMimeType,
 					finish_notification: this.finishNotification,
+					exif_transpose: !JSON.parse(this.settingByName('ignore_orientation').value),
 				},
 			}).then(res => {
 				this.runningTask = false
