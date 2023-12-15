@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n fail","%n faili"],
     "Tasks" : "Ülesanded",
     "Settings" : "Seaded",
     "Export" : "Ekspordi",

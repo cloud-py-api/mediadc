@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n file","%n file","%n file"],
     "MediaDC" : "MediaDC",
     "Tasks" : "Compiti",
     "Resolved" : "Risolto",

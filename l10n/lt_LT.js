@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n failas","%n failai","%n failų","%n failas"],
     "Tasks" : "Užduotys",
     "Settings" : "Nustatymai",
     "Export" : "Eksportuoti",

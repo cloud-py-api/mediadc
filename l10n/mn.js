@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n файл","%n файл"],
     "Tasks" : "Даалгавар",
     "Settings" : "Тохиргоо",
     "Export" : "Экспорт",

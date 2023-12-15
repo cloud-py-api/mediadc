@@ -15,8 +15,6 @@ OC.L10N.register(
     "Use pre-compiled Python binaries" : "أكواد ثنائية مسبقة الترجمة من بايتون",
     "Use Python part in binary format (located in the appdata folder)" : "استخدم جزء بايتون بالصيغة الثنائية (موجود في المجلد appdata)",
     "Task finished alert" : "التنبيه عند اكتمال المهمة",
-    "Task successfully finished, found " : "المهمة اكتملت بنجاح، وُجِدَ ",
-    "Task finished with status \"" : "المهمة اكتملت بحالة \"",
     "Task finished, check out results" : "تم اكتمال المهمة، تحقق من النتائج",
     "MediaDC" : "تطبيق MediaDC",
     "Nextcloud Media Duplicate Collector application" : "تطبيق جامع الوسائط المتكررة في نكست كلاود",

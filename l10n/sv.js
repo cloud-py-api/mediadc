@@ -4,6 +4,7 @@ OC.L10N.register(
     "MediaDC Tasks" : "MediaDC-uppgifter",
     "Hashing algorithm" : "Hashing-algorithm",
     "Hash size" : "Hashstorlek",
+    "_%n file_::_%n files_" : ["%n fil","%n filer"],
     "Tasks" : "Uppgifter",
     "Settings" : "Inställningar",
     "Export" : "Exportera",

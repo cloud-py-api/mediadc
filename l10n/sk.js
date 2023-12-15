@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n súbor","%n súbory","%n súbory","%n súborov"],
     "Tasks" : "Úlohy",
     "Settings" : "Nastavenia",
     "Export" : "Export",

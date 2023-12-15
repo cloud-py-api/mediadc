@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Use pre-compiled Python binaries" : "使用預先編譯好的 Python 二進位檔案",
     "Use Python part in binary format (located in the appdata folder)" : "使用二進位格式的 Python 部份（位於 appdata 資料夾中）",
+    "_%n file_::_%n files_" : ["%n 個檔案"],
     "Tasks" : "工作項目",
     "Settings" : "設定",
     "Export" : "匯出",

@@ -13,8 +13,6 @@
     "Use pre-compiled Python binaries" : "Použít předkompilované spustitelné soubory v Python",
     "Use Python part in binary format (located in the appdata folder)" : "Použít část v Python v binární podobě (nachází se ve složce appdata)",
     "Task finished alert" : "Úloha dokončena s výstrahou",
-    "Task successfully finished, found " : "Úloha úspěšně dokončena, nalezeno",
-    "Task finished with status \"" : "Úloha dokončena se stavem „",
     "Task finished, check out results" : "Úloha dokončena, zkontrolujte výsledky",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Nextcloud aplikace „Odhalování duplicit v souborech s médii“ (MediaDC)",

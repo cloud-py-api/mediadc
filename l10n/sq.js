@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n kartelë","%n skedar"],
     "Tasks" : "Detyra",
     "Settings" : "Rregullimet",
     "Export" : "Eksport",

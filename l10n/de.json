@@ -13,8 +13,6 @@
     "Use pre-compiled Python binaries" : "Vorkompilierte Python-Binärdateien verwenden",
     "Use Python part in binary format (located in the appdata folder)" : "Python-Teil im Binärformat verwenden (befindet sich im AppData-Ordner)",
     "Task finished alert" : "Aufgabe erledigt Meldung",
-    "Task successfully finished, found " : "Aufgabe erfrolgreich beendet, gefunden",
-    "Task finished with status \"" : "Aufgabe beendet mit dem Status \"",
     "Task finished, check out results" : "Aufgabe beendet, prüfe die Ergebnisse.",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Nextcloud Media Duplikat Sammler Anwendung",

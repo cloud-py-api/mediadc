@@ -2,6 +2,7 @@ OC.L10N.register(
     "mediadc",
     {
     "Use pre-compiled Python binaries" : "プリコンパイルされたPython実行ファイルを使用する",
+    "_%n file_::_%n files_" : ["%n ファイル"],
     "Tasks" : "タスク",
     "Settings" : "設定",
     "Export" : "エクスポート",

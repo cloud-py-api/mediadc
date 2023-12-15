@@ -2,6 +2,7 @@ OC.L10N.register(
     "mediadc",
     {
     "Use pre-compiled Python binaries" : "使用预编译了的Python二进制文件",
+    "_%n file_::_%n files_" : ["%n 个文件"],
     "Tasks" : "任务",
     "Settings" : "设置",
     "Export" : "导出",

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Similarity threshold" : "Prag podobnosti",
     "Exclude list" : "Izločitveni seznam",
+    "_%n file_::_%n files_" : ["%n datoteka","%n datoteki","%n datoteke","%n datotek"],
     "MediaDC" : "MediaDC",
     "Tasks" : "Naloge",
     "Resolved" : "Razrešeno",

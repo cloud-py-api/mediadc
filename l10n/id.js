@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n berkas"],
     "Tasks" : "Tugas",
     "Settings" : "Setelan",
     "Export" : "Ekspor",
