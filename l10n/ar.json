@@ -12,8 +12,16 @@
     "Global administrator's exclude list that applies to each task" : "قائمة الاستثناء الخاصة بالمسؤول العام والتي تنطبق على كل مهمة",
     "Use pre-compiled Python binaries" : "أكواد ثنائية مسبقة الترجمة من بايتون",
     "Use Python part in binary format (located in the appdata folder)" : "استخدم جزء بايتون بالصيغة الثنائية (موجود في المجلد appdata)",
+    "Ignore EXIF image orientation" : "تجاهل اتجاه الصورة المسجل في EXIF ",
+    "Enable to allow detection of mirrored images as duplicates" : "تمكين احتساب الصور المرآوية باعتبارها تكرارات",
     "Task finished alert" : "التنبيه عند اكتمال المهمة",
+    "Task \"%s\" successfully finished." : "المهمّة\"%s\" تمّ إنجازها بنجاحٍ.",
+    "Task successfully finished." : "تمّ إنجاز المهمة بنجاحٍ.",
+    "_%n file_::_%n files_" : ["لا يوجد ملفات %n","%n ملف","ملفان","%n ملفات","%n ملفات","%n ملفات"],
+    "_Found %n duplicate group_::_Found %n duplicate groups_" : ["تمّ العثور على %n مجموعة متكررة","تمّ العثور على %n مجموعة متكررة","تمّ العثور على %n مجموعة متكررة","تمّ العثور على %n مجموعات متكررة","تمّ العثور على %n مجموعة متكررة","تم العثورة على %n مجموعات متكررة"],
+    "Task finished with status {status}" : "تمّ الانتهاء من المهمة بالحالة {status}",
     "Task finished, check out results" : "تم اكتمال المهمة، تحقق من النتائج",
+    "duplicated" : "مُتكرِّر",
     "MediaDC" : "تطبيق MediaDC",
     "Nextcloud Media Duplicate Collector application" : "تطبيق جامع الوسائط المتكررة في نكست كلاود",
     "**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) is required to be installed and enabled first.**\n\nThis app allows to find duplicate or similar 📸📹 photos and videos\n* **Many image formats supported** Jpeg, png, tiff, bmp, gif, heic/hif, cr2 and others.\n* **Large amount of supported video  formats** All that is supported by ffmpeg.\n* **Flexible config** Set your precision level for comparing, choose algo that suits for you most.\n* **Quick rescan** Once file was scanned, hash will be saved, and used for other scans.\n* **External Storages support** Search everywhere among all files available to the user.\n* **Save your time and cloud space** The title says all...\n\nQuick start guide and further information in our [Wiki](https://github.com/cloud-py-api/mediadc/wiki)." : "**[`cloud_py_api`](https://apps.nextcloud.com/apps/cloud_py_api) يلزم تثبيته وتفعيلة أولاً. **\n\nيسمح هذا التطبيق بالعثور على الصور ومقاطع الفيديو 📸📹 المكررة أو المتشابهة\n* ** يدعم العديد من تنسيقات الصور ** Jpeg و png و tiff و bmp و gif و heic / hif و cr2 وغيرها.\n * ** كمية كبيرة من تنسيقات الفيديو المدعومة ** كل هذا مدعوم من قبل ffmpeg.\n * ** تهيئة مرنة ** قم بضبط مستوى الدقة الخاص بك من أجل المقارنة، واختر الخوارزمية الأكثر ملائمة لك. \n* ** مسح ضوئي سريع ** فبمجرد مسح الملف ضوئيًا، يتم حفظ المقاطع واستخدامها لعمليات المسح الضوئي الأخرى.\n * ** دعم التخزين الخارجي ** البحث في كل مكان وبين جميع الملفات المتاحة للمستخدم.\n توفير لوقتك ولمساحة السحابة ** العنوان يقول جميع...\n\n دليل البدء السريع والمزيد من المعلومات من خلال [Wiki] الخاصة بنا \n(https://github.com/cloud-py-api/mediadc/wiki).",
@@ -109,6 +117,7 @@
     "Cleanup resolved videos (mark unresolved)" : "تنظيف الصور التي تمّ تحليلها  (ضع علامة \"لم يتم تحليلها unresolved\")",
     "No resolved ${selectedType} yet" : "لم يتمّ حلُّ ${selectedType} بعدُ",
     "MediaDC settings" : "إعدادات تطبيق MediaDC",
+    "Ignore image orientation" : "تجاهل اتجاه الصورة",
     "Remove" : "حذف",
     "Not added" : "غير مُضَافَة",
     "Confirm" : "تأكيد",
@@ -127,6 +136,7 @@
     "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "سيتم إزالة أجزاء حزم الصور والفيديو قبل تغيير خوارزمية التجزئة.\nاستمرار",
     "Hash size successfully updated" : "تمّ تحديث حزم التجزئة بنجاح",
     "An error occurred when updating the setting. Try again" : "حدث خطأ أثناء تحديث الإعداد. حاول ثانية",
+    "Ignore orientation flag successfully updated" : "تمّ تحديث علامة تجاهل الاتجاه بنجاحٍ",
     "Some error occurred while updating setting. Try again" : "حدث خطأ ما أثناء تحديث الإعداد. حاول ثانية",
     "This mask already exists!" : "هذا القناع موجودٌ بالفعل!",
     "Enter custom mask!" : "أدخِل قناعاً مُخصَّصاً",

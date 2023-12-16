@@ -15,6 +15,7 @@ OC.L10N.register(
     "Use pre-compiled Python binaries" : "Použít předkompilované spustitelné soubory v Python",
     "Use Python part in binary format (located in the appdata folder)" : "Použít část v Python v binární podobě (nachází se ve složce appdata)",
     "Task finished alert" : "Úloha dokončena s výstrahou",
+    "_%n file_::_%n files_" : ["%n soubor","%n soubory","%n souborů","%n soubory"],
     "Task finished, check out results" : "Úloha dokončena, zkontrolujte výsledky",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Nextcloud aplikace „Odhalování duplicit v souborech s médii“ (MediaDC)",

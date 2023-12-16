@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Hashing algorithm" : "Αλγόριθμος κατακερματισμού",
     "Hashing algorithm used by Python background script" : "Αλγόριθμος κατακερματισμού που χρησιμοποιείται από το Python script παρασκηνίου",
+    "_%n file_::_%n files_" : ["%n αρχείο","%n αρχεία"],
     "Tasks" : "Εργασίες",
     "Settings" : "Ρυθμίσεις",
     "Export" : "Εξαγωγή",

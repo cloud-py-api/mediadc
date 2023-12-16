@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n restr","%n restr","restroù zo","an darn vrasañ eus ar restroù","%n restr"],
     "Settings" : "Arventennoù",
     "Deselect all" : "Disibab pep tra",
     "Select all" : "Dibab pep tra",

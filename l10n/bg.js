@@ -15,6 +15,7 @@ OC.L10N.register(
     "Use pre-compiled Python binaries" : "Използване на предварително компилирани двоични файлове на Python",
     "Use Python part in binary format (located in the appdata folder)" : "Използване на частта от Python в двоичен формат (разположена в папка appdata)",
     "Task finished alert" : "Известие за завършена задача",
+    "_%n file_::_%n files_" : ["%n файла","%n файла"],
     "Task finished, check out results" : "Задачата е завършена, проверка на резултатите",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Приложение на Nextcloud Media Duplicate Collector / програма за събиране на дублирани медиини файлове/",

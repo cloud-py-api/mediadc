@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n fitxer","%n fitxers"],
     "Tasks" : "Tasques",
     "Settings" : "Paràmetres",
     "Export" : "Exporta",

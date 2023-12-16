@@ -15,6 +15,7 @@ OC.L10N.register(
     "Use pre-compiled Python binaries" : "Vorkompilierte Python-Binärdateien verwenden",
     "Use Python part in binary format (located in the appdata folder)" : "Python-Teil im Binärformat verwenden (befindet sich im AppData-Ordner)",
     "Task finished alert" : "Aufgabe erledigt Meldung",
+    "_%n file_::_%n files_" : ["%n Datei","%n Dateien"],
     "Task finished, check out results" : "Aufgabe beendet, prüfe die Ergebnisse.",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Nextcloud Media Duplikat Sammler Anwendung",
