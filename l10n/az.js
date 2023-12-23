@@ -7,6 +7,8 @@ OC.L10N.register(
     "Export" : "Çıxarış",
     "Select all" : "Hamısıı seç",
     "Remove" : "Sil",
+    "Confirm" : "Təsdiq edin",
+    "Decline" : "İmtina",
     "Error" : "Səhv",
     "Copied to clipboard" : "Mübadilə buferinə nüsxələndi",
     "Select" : "Select",
