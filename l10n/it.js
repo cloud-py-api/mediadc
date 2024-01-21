@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "_%n file_::_%n files_" : ["%n file","%n file","%n file"],
     "MediaDC" : "MediaDC",
-    "Tasks" : "Compiti",
+    "Tasks" : "Attività",
     "Resolved" : "Risolto",
     "Settings" : "Impostazioni",
     "Export" : "Esporta",
@@ -28,7 +28,7 @@ OC.L10N.register(
     "Videos" : "Video",
     "Start" : "Avvia",
     "Restart" : "Ricomincia",
-    "Stop" : "Fermare",
+    "Stop" : "Ferma",
     "Duplicate" : "Duplicato",
     "Delete" : "Elimina",
     "precision: " : "precisione:",
@@ -37,6 +37,7 @@ OC.L10N.register(
     "Delete task" : "Elimina attività",
     "Ignored" : "Ignorato",
     "Owner:" : "Proprietario:",
+    "New task for folder scan successfully created" : "Nuova attività per la scansione della cartella creata correttamente",
     "Photos&Videos" : "Foto e video"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -80,7 +80,7 @@ OC.L10N.register(
     "Add mask" : "Додати маску",
     "Error" : "Помилка",
     "Settings list is empty" : "Список налаштувань порожній",
-    "Seems like database not initialized properly. Try to re-enable the app" : "Схоже, база даних не ініціалізована належним чином. Спробуйте увімкнути програму повторно",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Схоже, базу даних не ініціалізовано належним чином. Спробуйте увімкнути застосунок повторно",
     "Bug report" : "Звіт про недолік",
     "Settings successfully updated" : "Налаштування успішно оновлено",
     "Some error occurred while updating settings" : "Виникла помилка під час оновлення налаштувань",
