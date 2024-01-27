@@ -20,6 +20,7 @@ OC.L10N.register(
     "Photos" : "사진",
     "Videos" : "동영상",
     "Start" : "시작",
+    "Duplicate" : "복제",
     "Delete" : "삭제",
     "Edit" : "편집"
 },
