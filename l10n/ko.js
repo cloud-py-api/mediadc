@@ -10,6 +10,7 @@ OC.L10N.register(
     "Select all" : "모두 선택",
     "Select group" : "그룹 선택",
     "Go to page" : "페이지로 이동",
+    "Create a new one!" : "새로 만드십시오",
     "Remove" : "삭제",
     "Confirm" : "확인",
     "Decline" : "거절",
