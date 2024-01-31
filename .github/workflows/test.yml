@@ -122,7 +122,7 @@ jobs:
 
       - name: Upload to Codecov
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: apps/${{ env.APP_NAME }}/tests/coverage/php/unit/clover.xml
@@ -160,7 +160,7 @@ jobs:
 
       - name: Upload to Codecov
         if: steps.check_integration.outputs.files_exists == 'true'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: apps/${{ env.APP_NAME }}/tests/coverage/php/integration/clover.xml
@@ -266,7 +266,7 @@ jobs:
 
       - name: Upload to Codecov
         if: steps.check_phpunit.outputs.files_exists == 'true'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: apps/${{ env.APP_NAME }}/tests/coverage/php/unit/clover.xml
@@ -309,7 +309,7 @@ jobs:
 
       - name: Upload to Codecov
         if: steps.check_integration.outputs.files_exists == 'true'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: apps/${{ env.APP_NAME }}/tests/coverage/php/integration/clover.xml
