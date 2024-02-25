@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "_%n file_::_%n files_" : ["%n archìviu","%n archìviu"],
     "Tasks" : "Fainas",
-    "Settings" : "Impostatziones",
+    "Settings" : "Cunfiguratzione",
     "Export" : "Esporta",
     "Deselect all" : "Deseletziona totu",
     "Select all" : "Seletziona totu",
