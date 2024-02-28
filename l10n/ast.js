@@ -11,6 +11,7 @@ OC.L10N.register(
     "Confirm" : "Confirmar",
     "Decline" : "Refugar",
     "Error" : "Error",
+    "Copy to clipboard" : "Copiar nel cartafueyu",
     "Photos" : "Semeyes",
     "Videos" : "Vídeos",
     "Delete" : "Desaniciar",
