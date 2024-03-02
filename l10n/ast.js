@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "Usar binarios de Python precompilaos",
     "_%n file_::_%n files_" : ["%n ficheru","%n ficheros"],
     "Tasks" : "Xeres",
     "Settings" : "Configuración",
@@ -8,13 +9,21 @@ OC.L10N.register(
     "_Delete file_::_Delete files_" : ["Desaniciar el ficheru","Desaniciar los ficheros"],
     "Select all" : "Seleicionar too",
     "Delete files" : "Desaniciar los ficheros",
+    "Remove" : "Quitar",
     "Confirm" : "Confirmar",
     "Decline" : "Refugar",
     "Error" : "Error",
+    "Settings list is empty" : "La llista d'opciones ta balera",
+    "Bug report" : "Informe de fallos",
+    "Settings successfully updated" : "La configuración anovóse correutamente",
+    "Some error occurred while updating settings" : "Prodúxose dalgún error mentanto s'anovaba la configuración",
+    "System info" : "Información del sistema",
     "Copy to clipboard" : "Copiar nel cartafueyu",
+    "Copied to clipboard" : "Copióse nel cartafueyu",
     "Photos" : "Semeyes",
     "Videos" : "Vídeos",
     "Delete" : "Desaniciar",
-    "Edit" : "Editar"
+    "Edit" : "Editar",
+    "_Test text_::_Test texts_" : ["Testu de prueba","Testos de prueba"]
 },
 "nplurals=2; plural=(n != 1);");
