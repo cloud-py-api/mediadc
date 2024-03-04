@@ -20,6 +20,7 @@ OC.L10N.register(
     "System info" : "Información del sistema",
     "Copy to clipboard" : "Copiar nel cartafueyu",
     "Copied to clipboard" : "Copióse nel cartafueyu",
+    "Select" : "Seleicionar",
     "Photos" : "Semeyes",
     "Videos" : "Vídeos",
     "Delete" : "Desaniciar",
