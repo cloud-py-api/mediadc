@@ -25,6 +25,7 @@ OC.L10N.register(
     "Videos" : "Vídeos",
     "Delete" : "Desaniciar",
     "Edit" : "Editar",
+    "Delete task" : "Desaniciar la xera",
     "_Test text_::_Test texts_" : ["Testu de prueba","Testos de prueba"]
 },
 "nplurals=2; plural=(n != 1);");

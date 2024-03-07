@@ -23,6 +23,7 @@
     "Videos" : "Vídeos",
     "Delete" : "Desaniciar",
     "Edit" : "Editar",
+    "Delete task" : "Desaniciar la xera",
     "_Test text_::_Test texts_" : ["Testu de prueba","Testos de prueba"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
