@@ -31,6 +31,7 @@ OC.L10N.register(
     "Duplicate" : "Dubblett",
     "Delete" : "Radera",
     "Edit" : "Ändra",
-    "Delete task" : "Ta bort uppgift"
+    "Delete task" : "Ta bort uppgift",
+    "Task successfully deleted" : "Uppgiften har raderats"
 },
 "nplurals=2; plural=(n != 1);");
