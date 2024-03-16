@@ -38,6 +38,7 @@ OC.L10N.register(
     "Delete" : "刪除",
     "Edit" : "編輯",
     "Delete task" : "刪除工作項目",
+    "Task successfully deleted" : "已成功刪除工作項目",
     "_Test text_::_Test texts_" : ["測試文字"]
 },
 "nplurals=1; plural=0;");
