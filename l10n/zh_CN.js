@@ -37,6 +37,7 @@ OC.L10N.register(
     "Delete" : "删除",
     "Edit" : "编辑",
     "Delete task" : "删除任务",
+    "Task successfully deleted" : "任务已删除",
     "_Test text_::_Test texts_" : ["测试文本"]
 },
 "nplurals=1; plural=0;");
