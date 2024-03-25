@@ -44,6 +44,7 @@ OC.L10N.register(
     "Delete task" : "Odstrániť úlohu",
     "Ignored" : "Ignorované",
     "Confirm task deletion" : "Potvrdiť odstránenie úlohy",
+    "Task successfully deleted" : "Úloha bola úspešne zmazaná",
     "No results to export" : "Žiadne výsledky pre exportovanie"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");
