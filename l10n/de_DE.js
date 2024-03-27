@@ -113,7 +113,7 @@ OC.L10N.register(
     "Remove file from resolved list" : "Datei von der Aufgelöst-Liste entfernen",
     "Create a new task or work on existing ones and resolve some!" : "Eine neue Aufgabe erstellen oder an Bestehenden arbeiten und diese erledigen!",
     "Create a new one!" : "Neue erstellen!",
-    "Change to grid view" : "Zur Rasteransicht wechseln",
+    "Change to grid view" : "Zur Kachelansicht wechseln",
     "Change to list view" : "Zur Listenansicht wechseln",
     "Cleanup resolved photos (mark unresolved)" : "Aufgelöste Fotos bereinigen (als ungelöst markieren)",
     "Cleanup resolved videos (mark unresolved)" : "Aufgelöste Videos bereinigen (als ungelöst markieren)",
