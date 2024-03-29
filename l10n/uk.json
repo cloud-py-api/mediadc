@@ -13,7 +13,7 @@
     "_%n file_::_%n files_" : ["%n файл","%n файли","%n файлів","%n файлів"],
     "Task finished, check out results" : "Завдання виконано, перевірте результати",
     "MediaDC" : "MediaDC ",
-    "Nextcloud Media Duplicate Collector application" : "Додаток Nextcloud Media Duplicate Collector",
+    "Nextcloud Media Duplicate Collector application" : "Застосунок Nextcloud Media Duplicate Collector",
     "Tasks" : "Завдання",
     "Resolved" : "Вирішено",
     "Open MediaDC settings" : "Відкрийте налаштування MediaDC",
@@ -167,7 +167,7 @@
     "This files won't be scanned in further tasks." : "Файли не будо проскановано у наступних завданнях.",
     "Scan for duplicates" : "Пошук дублікатів",
     "New task for folder scan successfully created" : "Нове завдання для сканування тек створено",
-    "Photos&Videos" : "Фото та відео",
+    "Photos&Videos" : "Світлини та відео",
     "MediaDC Task Details" : "Деталі завдання MediaDC",
     "An error occurred while deleting task" : "Виникла помилка під час видалення завдання",
     "Task successfully started with duplicated settings!" : "Завдання успішно перезапущено зі скопійованими налаштуваннями!"
