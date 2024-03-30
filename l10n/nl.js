@@ -26,6 +26,7 @@ OC.L10N.register(
     "Duplicate" : "Duplicaat",
     "Delete" : "Verwijder",
     "Edit" : "Bewerk",
-    "Delete task" : "Verwijder taak"
+    "Delete task" : "Verwijder taak",
+    "Task successfully deleted" : "Taak succesvol verwijderd"
 },
 "nplurals=2; plural=(n != 1);");
