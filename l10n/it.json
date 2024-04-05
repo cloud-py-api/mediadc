@@ -8,6 +8,7 @@
     "Select file" : "Seleziona file",
     "Deselect all" : "Deseleziona tutto",
     "Select all" : "Seleziona tutto",
+    "Delete files" : "Elimina i file",
     "_group _::_groups_" : ["gruppo","gruppi","gruppi"],
     "_file_::_files_" : ["file","File","File"],
     "Select group" : "Seleziona gruppo",
