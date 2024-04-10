@@ -23,6 +23,7 @@ OC.L10N.register(
     "Duplicate" : "dubletter",
     "Delete" : "Slet",
     "Edit" : "Redigér",
-    "Delete task" : "Slet opgave"
+    "Delete task" : "Slet opgave",
+    "Task successfully deleted" : "Opgaven er slettet"
 },
 "nplurals=2; plural=(n != 1);");
