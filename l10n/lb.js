@@ -7,11 +7,13 @@ OC.L10N.register(
     "Export" : "Exportéieren",
     "Select all" : "All auswielen",
     "Remove" : "Läschen",
+    "Confirm" : "Konfirméieren",
     "Error" : "Fehler",
     "Copied to clipboard" : "An d'Tëschenoflag kopéiert",
     "Select" : "Select",
     "Photos" : "Photos",
     "Delete" : "Läschen",
-    "Edit" : "Änneren"
+    "Edit" : "Änneren",
+    "Task successfully deleted" : "Aufgab erfollegräich geläscht"
 },
 "nplurals=2; plural=(n != 1);");
