@@ -5,6 +5,7 @@ OC.L10N.register(
     "Tasks" : "Tasks",
     "Settings" : "Settings",
     "Export" : "Export",
+    "Select file" : "აირჩიეთ ფაილი",
     "Deselect all" : "Deselect all",
     "Select all" : "Select all",
     "Remove" : "Remove",
