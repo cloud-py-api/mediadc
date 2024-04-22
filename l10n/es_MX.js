@@ -10,6 +10,8 @@ OC.L10N.register(
     "Deselect all" : "Deseleccionar todo",
     "Select all" : "Seleccionar todo",
     "Delete files" : "Eliminar archivos",
+    "Change to grid view" : "Cambiar a la vista de cuadrícula",
+    "Change to list view" : "Cambiar a la vista de lista",
     "Remove" : "Eliminar",
     "Confirm" : "Confirmar",
     "Decline" : "Rechazar",
