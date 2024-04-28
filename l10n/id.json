@@ -17,6 +17,7 @@
     "Videos" : "Video",
     "Start" : "Mulai",
     "Delete" : "Hapus",
-    "Edit" : "Sunting"
+    "Edit" : "Sunting",
+    "Task successfully deleted" : "Tugas berhasil dihapus"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

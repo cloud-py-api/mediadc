@@ -19,6 +19,7 @@ OC.L10N.register(
     "Videos" : "Video",
     "Start" : "Mulai",
     "Delete" : "Hapus",
-    "Edit" : "Sunting"
+    "Edit" : "Sunting",
+    "Task successfully deleted" : "Tugas berhasil dihapus"
 },
 "nplurals=1; plural=0;");
