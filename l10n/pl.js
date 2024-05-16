@@ -30,6 +30,7 @@ OC.L10N.register(
     "Stop" : "Stop",
     "Duplicate" : "Zduplikuj",
     "Delete" : "Usuń",
+    "Here you can view task details, manage task (stop or restart), delete found duplicated photos and videos." : "Tutaj możesz wyświetlić szczegóły zadania, zarządzać zadaniem (zatrzymać lub uruchomić ponownie), usunąć znalezione zduplikowane zdjęcia i filmy.",
     "Deleted: " : "Usunięto: ",
     "Edit" : "Edytuj",
     "Delete task" : "Usuń zadanie",
