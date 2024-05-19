@@ -20,6 +20,7 @@ OC.L10N.register(
     "Start" : "Începe",
     "Duplicate" : "Duplicat",
     "Delete" : "Șterge",
-    "Edit" : "Editează"
+    "Edit" : "Editează",
+    "Task successfully deleted" : "Task șters cu succes"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");
