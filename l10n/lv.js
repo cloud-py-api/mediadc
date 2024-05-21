@@ -14,14 +14,15 @@ OC.L10N.register(
     "Copy to clipboard" : "Kopēt starpliktuvē",
     "Copied to clipboard" : "Nokopēts starpliktuvē",
     "Select" : "Atzīmēt",
-    "Photos" : "Bildes",
+    "Photos" : "Fotoattēli",
     "Videos" : "Video",
+    "Photos and Videos" : "Fotoattēli un video",
     "Start" : "Sākt",
     "Delete" : "Dzēst",
     "Edit" : "Rediģēt",
     "Ignored" : "Ignorēts",
     "Owner:" : "Īpašnieks:",
     "Scan for duplicates" : "Skenējiet dublikātus",
-    "Photos&Videos" : "Attēli un video"
+    "Photos&Videos" : "Fotoattēli un video"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
