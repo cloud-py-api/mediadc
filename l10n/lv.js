@@ -19,7 +19,7 @@ OC.L10N.register(
     "Photos and Videos" : "Fotoattēli un video",
     "Start" : "Sākt",
     "Delete" : "Dzēst",
-    "Edit" : "Rediģēt",
+    "Edit" : "Labot",
     "Ignored" : "Ignorēts",
     "Owner:" : "Īpašnieks:",
     "Scan for duplicates" : "Skenējiet dublikātus",
