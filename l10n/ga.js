@@ -4,6 +4,7 @@ OC.L10N.register(
     "Settings" : "Socruithe",
     "Export" : "Easpórtáil",
     "Deselect all" : "Díroghnaigh go léir",
+    "Select all" : "Roghnú go léir",
     "Remove" : "Bain",
     "Confirm" : "Deimhnigh",
     "Error" : "Earráid",
