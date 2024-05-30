@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Tasks" : "Tascanna",
     "Settings" : "Socruithe",
     "Export" : "Easpórtáil",
     "Deselect all" : "Díroghnaigh go léir",
