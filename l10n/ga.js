@@ -15,6 +15,7 @@ OC.L10N.register(
     "Copy to clipboard" : "Cóipeáil chuig an ngearrthaisce",
     "Copied to clipboard" : "Cóipeáladh chuig an ngearrthaisce",
     "Select" : "Roghnaigh",
+    "Photos" : "Grianghraif",
     "Videos" : "Físeáin",
     "Delete" : "Scrios",
     "Edit" : "Cuir in eagar",
