@@ -29,6 +29,7 @@ OC.L10N.register(
     "Select" : "Roghnaigh",
     "Photos" : "Grianghraif",
     "Videos" : "Físeáin",
+    "Start" : "Tosaigh",
     "Duplicate" : "Dúblach",
     "Delete" : "Scrios",
     "Edit" : "Cuir in eagar",
