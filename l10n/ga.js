@@ -26,6 +26,7 @@ OC.L10N.register(
     "System info" : "Eolas córais",
     "Copy to clipboard" : "Cóipeáil chuig an ngearrthaisce",
     "Copied to clipboard" : "Cóipeáladh chuig an ngearrthaisce",
+    "Not selected" : "Gan roghnaithe",
     "Select" : "Roghnaigh",
     "Photos" : "Grianghraif",
     "Videos" : "Físeáin",
