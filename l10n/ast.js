@@ -23,6 +23,7 @@ OC.L10N.register(
     "Select" : "Seleicionar",
     "Photos" : "Semeyes",
     "Videos" : "Vídeos",
+    "Photos and Videos" : "Semeyes y vídeos",
     "Delete" : "Desaniciar",
     "Edit" : "Editar",
     "Delete task" : "Desaniciar la xera",
