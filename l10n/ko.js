@@ -13,6 +13,8 @@ OC.L10N.register(
     "Select group" : "그룹 선택",
     "Go to page" : "페이지로 이동",
     "Create a new one!" : "새로 만드십시오",
+    "Change to grid view" : "바둑판 보기로 변경",
+    "Change to list view" : "목록 보기로 변경",
     "Remove" : "삭제",
     "Confirm" : "확인",
     "Decline" : "거절",
@@ -25,6 +27,7 @@ OC.L10N.register(
     "Start" : "시작",
     "Duplicate" : "복제",
     "Delete" : "삭제",
-    "Edit" : "편집"
+    "Edit" : "편집",
+    "Task successfully deleted" : "작업이 성공적으로 삭제됨"
 },
 "nplurals=1; plural=0;");
