@@ -27,7 +27,7 @@ import { getRequestToken } from '@nextcloud/auth'
 import { Tooltip } from '@nextcloud/vue'
 import { sync } from 'vuex-router-sync'
 import { translate, translatePlural } from '@nextcloud/l10n'
-// import Nextcloudl10n from './mixins/Nextcludl10n.js'
+import '@nextcloud/dialogs/style.css'
 import Vue from 'vue'
 
 import MediaDC from './MediaDC.vue'

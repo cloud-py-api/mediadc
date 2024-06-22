@@ -278,13 +278,6 @@ export default {
 				.allowDirectories(true)
 				.build()
 		},
-		getFilesPicker(title) {
-			return getFilePickerBuilder(title)
-				.setMultiSelect(false)
-				.setType(1)
-				.allowDirectories(true)
-				.build()
-		},
 		openDirectoriesExplorer() {
 			this.getDirectoriesPicker(this.t('mediadc', 'Choose target directory')).pick().then(dir => {
 				if (dir.startsWith('/')) {
