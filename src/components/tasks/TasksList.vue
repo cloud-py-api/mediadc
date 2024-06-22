@@ -35,7 +35,7 @@
 		</div>
 		<div v-else class="empty-tasks-list">
 			<NcEmptyContent style="margin-top: 5vh;"
-				:title="t('mediadc', 'No tasks yet')"
+				:name="t('mediadc', 'No tasks yet')"
 				:description="t('mediadc', 'Create a new one!')">
 				<template #icon>
 					<ClipboardListOutline />

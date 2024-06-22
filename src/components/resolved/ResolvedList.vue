@@ -138,9 +138,9 @@
 						:key="photo.fileid"
 						:bold="true"
 						:force-display-actions="true"
-						:title="fileTitle(photo)"
+						:name="fileTitle(photo)"
 						@click="openFile(photo)">
-						<template #subtitle>
+						<template #subname>
 							{{ photo.fileowner }} <span :title="photo.relfilepath">({{ photo.relfilepath }})</span>
 						</template>
 						<template #icon>
@@ -159,7 +159,7 @@
 				</transition-group>
 				<div v-else class="empty-resolved" style="margin: 0 0 20px;">
 					<NcEmptyContent style="margin-top: 5vh;"
-						:title="t('mediadc', `No resolved ${selectedType} yet`)"
+						:name="t('mediadc', `No resolved ${selectedType} yet`)"
 						:description="t('mediadc', 'Create a new task or work on existing ones and resolve some!')">
 						<template #icon>
 							<ClipboardListOutline />
@@ -184,7 +184,7 @@
 			</transition-group>
 			<div v-else class="empty-resolved" style="margin: 0 0 20px;">
 				<NcEmptyContent style="margin-top: 5vh;"
-					:title="t('mediadc', `No resolved ${selectedType} yet`)"
+					:name="t('mediadc', `No resolved ${selectedType} yet`)"
 					:description="t('mediadc', 'Create a new task or work on existing ones and resolve some!')">
 					<template #icon>
 						<ClipboardListOutline />

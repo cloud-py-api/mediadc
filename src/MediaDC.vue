@@ -28,11 +28,17 @@
 			<template #list>
 				<NcAppNavigationItem :to="{name: 'collector'}"
 					:name="t('mediadc', 'Tasks')"
-					icon="icon-toggle-filelist"
-					exact />
+					exact>
+					<template #icon>
+						<FormatListBulletedSquare :size="20" />
+					</template>
+				</NcAppNavigationItem>
 				<NcAppNavigationItem :to="{name: 'resolved'}"
-					:name="t('mediadc', 'Resolved')"
-					icon="icon-video-off" />
+					:name="t('mediadc', 'Resolved')">
+					<template #icon>
+						<FormatListChecks :size="20" />
+					</template>
+				</NcAppNavigationItem>
 			</template>
 			<template #footer>
 				<ul class="app-navigation-entry__settings">
@@ -58,6 +64,8 @@ import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
 import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
 import NcAppNavigationItem from '@nextcloud/vue/dist/Components/NcAppNavigationItem.js'
 import Cog from 'vue-material-design-icons/Cog.vue'
+import FormatListBulletedSquare from 'vue-material-design-icons/FormatListBulletedSquare.vue'
+import FormatListChecks from 'vue-material-design-icons/FormatListChecks.vue'
 
 import AppSettings from './components/settings/AppSettings.vue'
 
@@ -70,6 +78,8 @@ export default {
 		NcAppNavigationItem,
 		AppSettings,
 		Cog,
+		FormatListBulletedSquare,
+		FormatListChecks,
 	},
 	data() {
 		return {

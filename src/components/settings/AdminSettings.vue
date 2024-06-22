@@ -148,7 +148,7 @@
 		<div v-else>
 			<NcSettingsSection :name="t('mediadc', 'Error')">
 				<NcEmptyContent style="margin-top: 0;"
-					:title="t('mediadc', 'Settings list is empty')"
+					:name="t('mediadc', 'Settings list is empty')"
 					:description="t('mediadc', 'Seems like database not initialized properly. Try to re-enable the app')">
 					<template #icon>
 						<AlertCircleOutline />

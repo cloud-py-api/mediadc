@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.9 - 2024-06-23]
+
+Maintenance update.
+
+### Fixed
+
+- Fixed taskName is not set for new tasks
+- Fixed filePicker dialog
+- Other minor UI fixes after packages update
+
+### Updated
+
+- Updated packages (security fixes)
+- Updated l10n (localization)
+
 ## [0.3.8 - 2023-12-14]
 
 Maintenance update.

@@ -35,7 +35,7 @@
 		<template #empty-content>
 			<div class="empty-tasks-list">
 				<NcEmptyContent style="margin-top: 5vh;"
-					:title="t('mediadc', 'No tasks yet')">
+					:name="t('mediadc', 'No tasks yet')">
 					<template #icon>
 						<ClipboardListOutline />
 					</template>
