@@ -31,7 +31,7 @@ jobs:
         run: wget https://raw.githubusercontent.com/nextcloud/appstore/master/nextcloudappstore/api/v1/release/info.xsd
 
       - name: Lint appinfo/info.xml
-        uses: ChristophWurst/xmllint-action@v1.1
+        uses: ChristophWurst/xmllint-action@v1.2
         with:
           xml-file: ./appinfo/info.xml
           xml-schema-file: ./info.xsd
