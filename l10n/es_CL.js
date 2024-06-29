@@ -5,6 +5,7 @@ OC.L10N.register(
     "Tasks" : "Tareas",
     "Settings" : "Configuraciones ",
     "Export" : "Exportar",
+    "Select file" : "Seleccione archivo",
     "Deselect all" : "Deseleccionar todo",
     "Select all" : "Seleccionar todo",
     "Remove" : "Eliminar",
@@ -18,6 +19,7 @@ OC.L10N.register(
     "Videos" : "Videos",
     "Start" : "Iniciar",
     "Delete" : "Borrar",
-    "Edit" : "Editar"
+    "Edit" : "Editar",
+    "Task successfully deleted" : "Tarea eliminada con éxito"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
