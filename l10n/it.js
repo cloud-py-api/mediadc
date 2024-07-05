@@ -37,6 +37,7 @@ OC.L10N.register(
     "Edit" : "Modifica",
     "Delete task" : "Elimina attività",
     "Ignored" : "Ignorato",
+    "Task successfully deleted" : "Task cancellato con successo",
     "Owner:" : "Proprietario:",
     "New task for folder scan successfully created" : "Nuova attività per la scansione della cartella creata correttamente",
     "Photos&Videos" : "Foto e video"
