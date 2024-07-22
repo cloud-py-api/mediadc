@@ -17,7 +17,7 @@ jobs:
 
       - name: Download artifacts
         id: download-artifact
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: generate-binaries-2.yml
           workflow_conclusion: ""
