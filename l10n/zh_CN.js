@@ -133,6 +133,8 @@ OC.L10N.register(
     "Some error occurred while updating settings" : "更新设置时发生了错误",
     "The photo and video hashes will be cleaned before hashing algorithm is changed.\nContinue?" : "哈希算法修改后，图片和视频的哈希值将被清除。\n继续该操作吗？",
     "Hashing algorithm successfully updated" : "哈希算法已更新",
+    "An error occurred while updating setting. Try again" : "更新设置时出现错误。请重试",
+    "Some error occurred while changing hashing algorithm" : "修改哈希算法时出现错误",
     "Collect non sensitive system info for bug report" : "为Bug反馈收集非敏感的系统信息",
     "Collect system info" : "收集系统信息",
     "System info" : "系统信息",

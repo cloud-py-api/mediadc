@@ -35,6 +35,7 @@ OC.L10N.register(
     "Duplicate" : "複製",
     "Delete" : "削除",
     "Edit" : "編集",
-    "Delete task" : "タスクを削除"
+    "Delete task" : "タスクを削除",
+    "Task successfully deleted" : "タスクは正常に削除されました。"
 },
 "nplurals=1; plural=0;");
