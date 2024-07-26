@@ -7,7 +7,7 @@
     "Hash size" : "Hash-Größe",
     "Computed hash size (8, 16, 32, 64)" : "Errechnete Hash-Größe (8, 16, 32, 64)",
     "Simultaneously running tasks limit" : "Limit für gleichzeitig laufende Aufgaben",
-    "Maximum number of python background scripts running" : "Maximale Anzahl von Python-Hintergrundskripts, die ausgeführt werden",
+    "Maximum number of python background scripts running" : "Maximale Anzahl von Python-Hintergrundskripten, die ausgeführt werden",
     "Exclude list" : "Ausschlussliste",
     "Global administrator's exclude list that applies to each task" : "Ausschlussliste des globalen Administrators, die für jede Aufgabe gilt",
     "Use pre-compiled Python binaries" : "Vorkompilierte Python-Binärdateien verwenden",

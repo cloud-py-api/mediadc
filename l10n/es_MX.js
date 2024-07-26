@@ -23,6 +23,7 @@ OC.L10N.register(
     "Photos" : "Fotos",
     "Videos" : "Videos",
     "Start" : "Iniciar",
+    "Duplicate" : "Duplicado",
     "Delete" : "Eliminar",
     "Edit" : "Editar",
     "Delete task" : "Eliminar tarea",
