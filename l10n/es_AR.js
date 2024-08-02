@@ -19,6 +19,7 @@ OC.L10N.register(
     "Videos" : "Videos",
     "Start" : "Inicio",
     "Delete" : "Eliminar",
-    "Edit" : "Editar"
+    "Edit" : "Editar",
+    "Task successfully deleted" : "Tarea eliminada exitosamente"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
