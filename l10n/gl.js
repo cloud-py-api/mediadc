@@ -83,7 +83,7 @@ OC.L10N.register(
     "Selected group files successfully deleted" : "Os ficheiros do grupo seleccionado elimináronse correctamente",
     "Not all selected group files deleted" : "Non se eliminaron todos os ficheiros do grupo seleccionado",
     "Failed to delete selected group files" : "Produciuse un fallo ao eliminar os ficheiros do grupo seleccionado",
-    "_group _::_groups_" : ["grupo","groups"],
+    "_group _::_groups_" : ["grupo","grupos"],
     "_file_::_files_" : ["ficheiro","ficheiros"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Accións por lotes para %n grupo","Accións por lotes para %n grupos"],
     "_Remove group_::_Remove groups_" : ["Retirar o grupo","Retirar os grupos"],
