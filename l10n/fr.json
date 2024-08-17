@@ -76,6 +76,8 @@
     "First page reached!" : "Première page atteinte !",
     "Last page reached!" : "Dernière page atteinte !",
     "Selected groups successfully removed" : "Groupes sélectionnés retirés avec succès",
+    "Selected group files successfully deleted" : "Le groupe de fichiers sélectionné a été supprimé avec succès",
+    "Not all selected group files deleted" : "Tous les fichiers du groupe sélectionné n'ont pas été supprimés",
     "_group _::_groups_" : ["groupe","groupes","groupes"],
     "_file_::_files_" : ["fichier","fichiers","fichiers"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Traitements par lot pour %n groupe","Traitements par lots pour %n groupes","Traitements par lots pour %n groupes"],
