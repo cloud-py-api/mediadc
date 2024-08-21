@@ -7,6 +7,7 @@ OC.L10N.register(
     "Export" : "Извези",
     "Deselect all" : "Одселектирај се",
     "Select all" : "Избери се",
+    "Delete files" : "Delete files",
     "Remove" : "Отстрани ",
     "Confirm" : "Потврди",
     "Decline" : "Одбиј",
