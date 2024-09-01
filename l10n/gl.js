@@ -153,7 +153,7 @@ OC.L10N.register(
     "Collect system info" : "Recoller información do sistema",
     "System info" : "Información do sistema",
     "Copy to clipboard" : "Copiar no portapapeis.",
-    "Copied to clipboard" : "Copiado no portapapeis.",
+    "Copied to clipboard" : "Copiado no portapapeis",
     "Edit task" : "Editar tarefa",
     "Target directories" : "Directorios de destino",
     "Remove selected target directory" : "Retirar o directorio de destino seleccionado",
