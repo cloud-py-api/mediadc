@@ -17,6 +17,7 @@ OC.L10N.register(
     "Task finished alert" : "Ataza amaitu da alerta",
     "_%n file_::_%n files_" : ["Fitxategi %n","%n fitxategi"],
     "Task finished, check out results" : "Ataza amaitu da, begiratu emaitzak",
+    "duplicated" : "bikoiztuta",
     "MediaDC" : "MediaDC",
     "Nextcloud Media Duplicate Collector application" : "Nextcloud Media Duplicate Collector aplikazioa",
     "Tasks" : "Zereginak",
