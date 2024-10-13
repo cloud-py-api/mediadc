@@ -112,7 +112,7 @@ OC.L10N.register(
     "Toggle list view (list or grid)" : "تبديل عرض القائمة (قائمة أو شبكة)",
     "Remove file from resolved list" : "حذف ملف من القائمة المحلولة",
     "Create a new task or work on existing ones and resolve some!" : "أنشئ مهمة جديدة أو قم بالعمل على المهام الحالية وحل بعضها!",
-    "Create a new one!" : "أنشِيءْ واحداً جديداً",
+    "Create a new one!" : "إنشاء جديد!",
     "Change to grid view" : "بدّل إلى العرض الشبكي grid view",
     "Change to list view" : "بدّل إلى عرض القائمة list view",
     "Cleanup resolved photos (mark unresolved)" : "تنظيف الصور التي تم تحليلها (ضع علامة \"لم يتم تحليلها unresolved\")",
