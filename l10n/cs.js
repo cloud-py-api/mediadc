@@ -15,6 +15,7 @@ OC.L10N.register(
     "Use pre-compiled Python binaries" : "Použít předkompilované spustitelné soubory v Python",
     "Use Python part in binary format (located in the appdata folder)" : "Použít část v Python v binární podobě (nachází se ve složce appdata)",
     "Ignore EXIF image orientation" : "Ignorovat natočení obrázku z EXIF",
+    "Enable to allow detection of mirrored images as duplicates" : "Zapněte pokud chcete aby zrcadlené obrázky byly označovány jako duplicity",
     "Task finished alert" : "Úloha dokončena s výstrahou",
     "Task \"%s\" successfully finished." : "Úkol „%s“ úspěšně dokončen.",
     "Task successfully finished." : "Úkol úspěšně dokončen.",
