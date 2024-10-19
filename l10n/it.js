@@ -24,6 +24,7 @@ OC.L10N.register(
     "Error" : "Errore",
     "Copy to clipboard" : "Copia negli appunti",
     "Copied to clipboard" : "Copiato negli appunti",
+    "Not selected" : "Non selezionato",
     "Select" : "Seleziona",
     "Photos" : "Foto",
     "Videos" : "Video",
