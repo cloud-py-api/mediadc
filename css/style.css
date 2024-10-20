@@ -34,22 +34,27 @@ html {
 	margin: 0 auto;
 }
 
-.mediadc-button-vue {
-	min-height: 36px !important;
+.mediadc-row h1, h2, h3, h4, h5, h6 {
+	margin: 5px 0;
+	font-size: 1.4em;
 }
 
-.mediadc-button-vue .button-vue__icon {
-	width: 36px !important;
-	height: 36px !important;
-	min-width: 36px !important;
-	min-height: 36px !important;
-}
+/*.mediadc-button-vue {*/
+/*	min-height: 36px !important;*/
+/*}*/
 
-.mediadc-button-vue .icon-loading:after {
-	height: 20px !important;
-	width: 20px !important;
-	margin: -12px 0 0 -12px !important;
-}
+/*.mediadc-button-vue .button-vue__icon {*/
+/*	width: 36px !important;*/
+/*	height: 36px !important;*/
+/*	min-width: 36px !important;*/
+/*	min-height: 36px !important;*/
+/*}*/
+
+/*.mediadc-button-vue .icon-loading:after {*/
+/*	height: 20px !important;*/
+/*	width: 20px !important;*/
+/*	margin: -12px 0 0 -12px !important;*/
+/*}*/
 
 .mediadc-checkbox-only .checkbox-radio-switch__icon {
 	margin: 0 !important;
@@ -154,6 +159,7 @@ html {
 
 .block h3 {
 	font-weight: bold;
+	font-size: 1.2em;
 }
 
 .block input, .block select {

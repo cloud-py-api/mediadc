@@ -43,25 +43,12 @@ class CollectorTaskNotificationCommand extends Command {
 	public const ARGUMENT_TASK_ID = 'task_id';
 	public const ARGUMENT_TASK_STATUS = 'status';
 
-	/** @var CollectorTaskMapper */
-	private $tasksMapper;
-
-	/** @var CollectorTaskDetailMapper */
-	private $tasksDetailsMapper;
-
-	/** @var IManager */
-	private $notificationManager;
-
 	public function __construct(
-		CollectorTaskMapper $tasksMapper,
-		CollectorTaskDetailMapper $tasksDetailsMapper,
-		IManager $notificationManager
+		private readonly CollectorTaskMapper $tasksMapper,
+		private readonly CollectorTaskDetailMapper $tasksDetailsMapper,
+		private readonly IManager $notificationManager,
 	) {
 		parent::__construct();
-
-		$this->tasksMapper = $tasksMapper;
-		$this->tasksDetailsMapper = $tasksDetailsMapper;
-		$this->notificationManager = $notificationManager;
 	}
 
 	protected function configure(): void {

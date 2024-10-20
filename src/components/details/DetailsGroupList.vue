@@ -109,9 +109,7 @@ import { showError, showMessage, showSuccess, showWarning } from '@nextcloud/dia
 import { generateUrl } from '@nextcloud/router'
 import { emit } from '@nextcloud/event-bus'
 
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import { NcActions, NcActionButton, NcButton } from '@nextcloud/vue'
 
 import Formats from '../../mixins/Formats.js'
 import DetailsFile from './DetailsFile.vue'

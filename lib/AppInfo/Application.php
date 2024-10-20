@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace OCA\MediaDC\AppInfo;
 
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCA\MediaDC\Notification\Notifier;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -46,7 +47,7 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(RecentTasksWidget::class);
-		$context->registerNotifierService(\OCA\MediaDC\Notification\Notifier::class);
+		$context->registerNotifierService(Notifier::class);
 		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadFilesPluginListener::class);
 	}
 

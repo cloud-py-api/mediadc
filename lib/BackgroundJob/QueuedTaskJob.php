@@ -33,15 +33,11 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\QueuedJob;
 
 class QueuedTaskJob extends QueuedJob {
-	/** @var CollectorService */
-	private $collectorService;
-
 	public function __construct(
 		ITimeFactory $time,
-		CollectorService $collectorService
+		private readonly CollectorService $collectorService
 	) {
 		parent::__construct($time);
-		$this->collectorService = $collectorService;
 	}
 
 	/**

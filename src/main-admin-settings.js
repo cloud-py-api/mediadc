@@ -24,7 +24,7 @@
 
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
-import Nextcloudl10n from './mixins/Nextcludl10n.js'
+import { translate, translatePlural } from '@nextcloud/l10n'
 import { Tooltip } from '@nextcloud/vue'
 
 import Vue from 'vue'
@@ -37,7 +37,10 @@ __webpack_nonce__ = btoa(getRequestToken())
 // eslint-disable-next-line
 __webpack_public_path__ = generateFilePath('mediadc', '', 'js/')
 
-Vue.mixin(Nextcloudl10n)
+Vue.prototype.t = translate
+Vue.prototype.n = translatePlural
+Vue.prototype.OC = window.OC
+Vue.prototype.OCA = window.OCA
 
 const View = Vue.extend(AdminSettings)
 new View().$mount('#mediadc-admin-settings')

@@ -82,11 +82,13 @@
 </template>
 
 <script>
-import NcAppSettingsDialog from '@nextcloud/vue/dist/Components/NcAppSettingsDialog.js'
-import NcAppSettingsSection from '@nextcloud/vue/dist/Components/NcAppSettingsSection.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcInputField from '@nextcloud/vue/dist/Components/NcInputField.js'
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
+import {
+	NcAppSettingsDialog,
+	NcAppSettingsSection,
+	NcCheckboxRadioSwitch,
+	NcInputField,
+	NcSelect,
+} from '@nextcloud/vue'
 
 export default {
 	name: 'AppSettings',

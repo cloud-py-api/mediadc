@@ -28,7 +28,9 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Controller;
 
-use Exception;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\OCS\OCSBadRequestException;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -40,21 +42,15 @@ use OCA\MediaDC\Service\CollectorService;
 use OCP\AppFramework\Http\DataDownloadResponse;
 
 class CollectorController extends Controller {
-	/** @var CollectorService */
-	private $service;
-
-	public function __construct(IRequest $request, CollectorService $service) {
+	public function __construct(
+		IRequest $request,
+		private readonly CollectorService $service,
+	) {
 		parent::__construct(Application::APP_ID, $request);
-
-		$this->service = $service;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param bool $recent
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function index(bool $recent = false): JSONResponse {
 		if ($recent) {
 			return new JSONResponse($this->service->getUserRecentTasks(), Http::STATUS_OK);
@@ -62,14 +58,8 @@ class CollectorController extends Controller {
 		return new JSONResponse($this->service->getUserCollectorTasks(), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $type
-	 * @param int $limit
-	 * @param int $offset
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function resolved(string $type, int $limit = null, int $offset = null): JSONResponse {
 		return new JSONResponse([
 			'success' => true,
@@ -77,40 +67,26 @@ class CollectorController extends Controller {
 		], Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $type
-	 * @param int $fileid
-	 * @param bool $resolved
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function markResolved(string $type, int $fileId, bool $resolved = true): JSONResponse {
 		return new JSONResponse($this->service->markResolved($type, $fileId, $resolved), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $type
-	 *
-	 * @return JSONResponse
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function cleanupResolved(string $type): JSONResponse {
 		return new JSONResponse($this->service->cleanupResolved($type), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $targetDirectoryIds
-	 * @param string $excludeList
-	 * @param string $collectorSettings
-	 * @param string $name
-	 */
-	public function runTask($targetDirectoryIds, $excludeList, $collectorSettings, $name): JSONResponse {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function runTask(
+		array|string $targetDirectoryIds,
+		array|string $excludeList,
+		array|string $collectorSettings,
+		string $name
+	): JSONResponse {
 		if ($targetDirectoryIds !== null && $excludeList !== null && $collectorSettings !== null) {
 			$params = [
 				'targetDirectoryIds' => json_decode($targetDirectoryIds),
@@ -127,17 +103,15 @@ class CollectorController extends Controller {
 		}
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param int $taskId
-	 * @param string $targetDirectoryIds
-	 * @param string $excludeList
-	 * @param string $collectorSettings
-	 * @param string $name
-	 */
-	public function restartTask($taskId, $targetDirectoryIds, $excludeList, $collectorSettings, $name): JSONResponse {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function restartTask(
+		int $taskId,
+		array|string $targetDirectoryIds,
+		array|string $excludeList,
+		array|string $collectorSettings,
+		?string $name = null
+	): JSONResponse {
 		if (
 			$taskId !== null && $targetDirectoryIds !== null
 			&& $excludeList !== null && $collectorSettings !== null
@@ -158,22 +132,15 @@ class CollectorController extends Controller {
 		}
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param int $taskId
-	 * @param int $limit
-	 * @param int $page
-	 * @param array $filter
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function details(int $taskId, int $limit = null, int $page = null, array $filter = []): JSONResponse {
 		if ($taskId) {
 			/** @var CollectorTask */
 			$collectorTask = $this->service->getCollectorTask($taskId);
 			if ($collectorTask instanceof CollectorTask) {
 				$offset = $page * $limit;
-				$collectorTaskDetails = $this->service->details($taskId, $limit, $offset, $filter);
+				$collectorTaskDetails = $this->service->details($taskId, $limit, $offset);
 				return new JSONResponse([
 					'id' => $taskId,
 					'success' => $taskId === intval($collectorTask->getId()),
@@ -191,10 +158,8 @@ class CollectorController extends Controller {
 		}
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function getTaskInfo(int $taskId): JSONResponse {
 		if ($taskId) {
 			/** @var CollectorTask */
@@ -212,23 +177,21 @@ class CollectorController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
 	 * @param int $taskId target task id
 	 * @param string $format export file format (xml, json)
 	 *
-	 * @throws Exception
-	 * @return DataDownloadResponse|null
+	 * @throws OCSBadRequestException
 	 */
-	public function getTaskResultsExport(int $taskId, string $format): ?DataDownloadResponse {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function getTaskResultsExport(int $taskId, string $format): DataDownloadResponse {
 		if (in_array($format, ['xml', 'json'])) {
 			$export = $this->service->exportTaskResults(intval($taskId), $format);
 			if ($export) {
 				return new DataDownloadResponse($export['data'], $export['filename'], $export['contentType']);
 			}
 		}
-		throw new Exception('Bad request. Requested export format is not supported.');
+		throw new OCSBadRequestException('Bad request. Requested export format is not supported.');
 	}
 
 	/**

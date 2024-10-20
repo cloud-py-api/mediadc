@@ -32,28 +32,12 @@ use OCP\Files\SimpleFS\ISimpleFolder;
 use Psr\Log\LoggerInterface;
 
 class CleanupService {
-	/** @var AppDataService */
-	private $appDataService;
-
-	/** @var PhotosService */
-	private $photosService;
-
-	/** @var VideosService */
-	private $videosService;
-
-	/** @var LoggerInterface */
-	private $logger;
-
 	public function __construct(
-		AppDataService $appDataService,
-		PhotosService $photosService,
-		VideosService $videosService,
-		LoggerInterface $logger
+		private readonly AppDataService $appDataService,
+		private readonly PhotosService $photosService,
+		private readonly VideosService $videosService,
+		private readonly LoggerInterface $logger,
 	) {
-		$this->appDataService = $appDataService;
-		$this->photosService = $photosService;
-		$this->videosService = $videosService;
-		$this->logger = $logger;
 	}
 
 	public function deleteAppLogs() {

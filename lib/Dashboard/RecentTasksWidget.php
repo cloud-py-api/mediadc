@@ -38,28 +38,12 @@ use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\CollectorService;
 
 class RecentTasksWidget implements IWidget {
-	/** @var IL10N */
-	protected $il10n;
-
-	/** @var IInitialState */
-	private $initialState;
-
-	/** @var IURLGenerator */
-	private $urlGenerator;
-
-	/** @var CollectorService */
-	private $collectorService;
-
 	public function __construct(
-		IInitialState $initialState,
-		IL10N $il10n,
-		IURLGenerator $urlGenerator,
-		CollectorService $collectorService
+		private readonly IInitialState $initialState,
+		private readonly IL10N $il10n,
+		private readonly IURLGenerator $urlGenerator,
+		private readonly CollectorService $collectorService,
 	) {
-		$this->initialState = $initialState;
-		$this->il10n = $il10n;
-		$this->urlGenerator = $urlGenerator;
-		$this->collectorService = $collectorService;
 	}
 
 	/**

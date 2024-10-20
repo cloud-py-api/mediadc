@@ -24,7 +24,7 @@
 
 import { generateFilePath } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
-import Nextcloudl10n from './mixins/Nextcludl10n.js'
+import { translate, translatePlural } from '@nextcloud/l10n'
 
 import Vue from 'vue'
 import Dashboard from './views/Dashboard.vue'
@@ -34,7 +34,10 @@ __webpack_nonce__ = btoa(getRequestToken())
 // eslint-disable-next-line
 __webpack_public_path__ = generateFilePath('mediadc', '', 'js/')
 
-Vue.mixin(Nextcloudl10n)
+Vue.prototype.t = translate
+Vue.prototype.n = translatePlural
+Vue.prototype.OC = window.OC
+Vue.prototype.OCA = window.OCA
 
 document.addEventListener('DOMContentLoaded', () => {
 	const register = OCA?.Dashboard?.register || (() => {})

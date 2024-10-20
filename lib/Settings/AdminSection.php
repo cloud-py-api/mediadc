@@ -34,15 +34,10 @@ use OCP\IL10N;
 use OCP\Settings\IIconSection;
 
 class AdminSection implements IIconSection {
-	/** @var IL10N */
-	private $l;
-
-	/** @var UrlGenerator */
-	private $urlGenerator;
-
-	public function __construct(IL10N $l, URLGenerator $urlGenerator) {
-		$this->l = $l;
-		$this->urlGenerator = $urlGenerator;
+	public function __construct(
+		private readonly IL10N $l,
+		private readonly URLGenerator $urlGenerator
+	) {
 	}
 
 	public function getId() {

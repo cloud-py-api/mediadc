@@ -37,7 +37,7 @@
 						</option>
 					</select>
 				</div>
-				<NcButton :href="downloadExportUrl" class="mediadc-button-vue">
+				<NcButton :href="downloadExportUrl">
 					{{ t('mediadc', 'Export') }}
 				</NcButton>
 			</div>
@@ -48,7 +48,7 @@
 <script>
 import { generateUrl } from '@nextcloud/router'
 
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import { NcButton } from '@nextcloud/vue'
 
 export default {
 	name: 'DetailsExport',

@@ -54,13 +54,15 @@
 import { getCurrentUser } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
 import { loadState } from '@nextcloud/initial-state'
-import { NcDashboardWidget, NcDashboardWidgetItem } from '@nextcloud/vue'
+import {
+	NcDashboardWidget,
+	NcDashboardWidgetItem,
+	NcButton,
+	NcEmptyContent,
+	ClipboardListOutline,
+} from '@nextcloud/vue'
 
 import Formats from '../mixins/Formats.js'
-
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import ClipboardListOutline from 'vue-material-design-icons/ClipboardListOutline.vue'
 
 const tasks = loadState('mediadc', 'mediadc-recent-tasks')
 

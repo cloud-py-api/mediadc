@@ -28,6 +28,8 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Controller;
 
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -41,91 +43,46 @@ use OCA\MediaDC\Service\SettingsService;
 use OCA\MediaDC\Service\VideosService;
 
 class SettingsController extends Controller {
-	/** @var SettingsService */
-	private $service;
-
-	/** @var PhotosService */
-	private $photosService;
-
-	/** @var VideosService */
-	private $videosService;
-
-	/** @var UtilsService */
-	private $cpaUtils;
-
 	public function __construct(
 		IRequest $request,
-		SettingsService $service,
-		PhotosService $photosService,
-		VideosService $videosService,
-		UtilsService $cpaUtils
+		private readonly SettingsService $service,
+		private readonly PhotosService $photosService,
+		private readonly VideosService $videosService,
+		private readonly UtilsService $cpaUtils
 	) {
 		parent::__construct(Application::APP_ID, $request);
-
-		$this->service = $service;
-		$this->photosService = $photosService;
-		$this->videosService = $videosService;
-		$this->cpaUtils = $cpaUtils;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @return JSONResponse array of all settings
-	 */
-	public function index() {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function index(): JSONResponse {
 		return new JSONResponse($this->service->getSettings(), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoCSRFRequired
-	 *
-	 * @param array $settings
-	 *
-	 * @return JSONResponse
-	 */
-	public function update($settings) {
+	#[NoCSRFRequired]
+	public function update(array $settings): JSONResponse {
 		return new JSONResponse($this->service->updateSettings($settings), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoCSRFRequired
-	 *
-	 * @param array $setting
-	 *
-	 * @return JSONResponse
-	 */
-	public function updateSetting($setting) {
+	#[NoCSRFRequired]
+	public function updateSetting(array $setting): JSONResponse {
 		return new JSONResponse($this->service->updateSetting($setting), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param int $id
-	 */
-	public function getSettingById($id): JSONResponse {
+	#[NoCSRFRequired]
+	#[NoAdminRequired]
+	public function getSettingById(int $id): JSONResponse {
 		return new JSONResponse($this->service->getSettingById($id), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $name
-	 */
-	public function getSettingByName($name): JSONResponse {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function getSettingByName(string $name): JSONResponse {
 		return new JSONResponse($this->service->getSettingByName($name), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoCSRFRequired
-	 *
-	 * @param string $name table name
-	 */
-	public function truncate($name): JSONResponse {
+	#[NoCSRFRequired]
+	public function truncate(string $name): JSONResponse {
 		if ($name === 'photos') {
 			return new JSONResponse(['rows_deleted' => $this->photosService->truncate()], Http::STATUS_OK);
 		}
@@ -138,13 +95,10 @@ class SettingsController extends Controller {
 				'videos' => $this->videosService->truncate()
 			], Http::STATUS_OK);
 		}
+		return new JSONResponse([], Http::STATUS_BAD_REQUEST);
 	}
 
-	/**
-	 * @NoCSRFRequired
-	 *
-	 * @return JSONResponse
-	 */
+	#[NoCSRFRequired]
 	public function systemInfo(): JSONResponse {
 		return new JSONResponse($this->cpaUtils->getSystemInfo(Application::APP_ID), Http::STATUS_OK);
 	}

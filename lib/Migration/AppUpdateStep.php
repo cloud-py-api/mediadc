@@ -40,28 +40,12 @@ use OCA\MediaDC\Service\AppDataService;
 use OCA\MediaDC\Service\UtilsService;
 
 class AppUpdateStep implements IRepairStep {
-	/** @var IAppManager */
-	private $appManager;
-
-	/** @var UtilsService */
-	private $utils;
-
-	/** @var CPAUtilsService */
-	private $cpaUtils;
-
-	/** @var AppDataService */
-	private $appDataService;
-
 	public function __construct(
-		IAppManager $appManager,
-		UtilsService $utils,
-		CPAUtilsService $cpaUtils,
-		AppDataService $appDataService
+		private readonly IAppManager $appManager,
+		private readonly UtilsService $utils,
+		private readonly CPAUtilsService $cpaUtils,
+		private readonly AppDataService $appDataService
 	) {
-		$this->appManager = $appManager;
-		$this->utils = $utils;
-		$this->cpaUtils = $cpaUtils;
-		$this->appDataService = $appDataService;
 	}
 
 	public function getName(): string {
@@ -76,15 +60,19 @@ class AppUpdateStep implements IRepairStep {
 		$output->warning('This step may take some time');
 		$this->appDataService->createAppDataFolder('binaries');
 		$this->appDataService->createAppDataFolder('logs');
+		$version = $this->appManager->getAppVersion(Application::APP_ID, false);
 		$url = 'https://github.com/cloud-py-api/mediadc/releases/download/v'
-			. $this->appManager->getAppVersion(Application::APP_ID, false)
+			. $version
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.tar.gz';
-		$this->cpaUtils->downloadPythonBinaryDir(
+		$result = $this->cpaUtils->downloadPythonBinaryDir(
 			$url, $this->appDataService->getAppDataFolder('binaries'),
 			Application::APP_ID,
 			Application::APP_ID . '_' . $this->cpaUtils->getBinaryName(),
 			true
 		);
+		if (!isset($result['downloaded']) || !$result['downloaded']) {
+			$output->warning('Failed to download app Python binary');
+		}
 
 		$output->finishProgress();
 	}

@@ -36,6 +36,7 @@ use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\IConfig;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 use OCP\BackgroundJob\IJobList;
@@ -55,42 +56,6 @@ use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
 use OCP\Lock\LockedException;
 
 class CollectorService {
-	/** @var string */
-	private $userId;
-
-	/** @var Folder */
-	private $userFolder;
-
-	/** @var SettingMapper */
-	private $settingsMapper;
-
-	/** @var CollectorTaskMapper */
-	private $tasksMapper;
-
-	/** @var CollectorTaskDetailMapper */
-	private $tasksDetailsMapper;
-
-	/** @var PythonService */
-	private $pythonService;
-
-	/** @var CPAUtilsService */
-	private $cpaUtils;
-
-	/** @var PhotosService */
-	private $photosService;
-
-	/** @var VideosService */
-	private $videosService;
-
-	/** @var LoggerInterface */
-	private $logger;
-
-	/** @var IJobList */
-	private $jobList;
-
-	/** @var IPreview */
-	private $previewManager;
-
 	public const TARGET_MIME_TYPE = [
 		0 => ['image'],
 		1 => ['video'],
@@ -100,39 +65,30 @@ class CollectorService {
 	public const TASK_TYPE_MANUAL = 'manual';
 	public const TASK_TYPE_AUTO = 'auto';
 	public const TASK_TYPE_QUEUED = 'queued';
-	private IL10N $l10n;
 
+	private bool $isObjectStore;
 
 	public function __construct(
 		?string $userId,
 		IRootFolder $rootFolder,
-		SettingMapper $settingsMapper,
-		CollectorTaskMapper $tasksMapper,
-		CollectorTaskDetailMapper $tasksDetailsMapper,
-		PythonService $pythonService,
-		LoggerInterface $logger,
-		PhotosService $photosService,
-		VideosService $videosService,
-		IJobList $jobList,
-		IPreview $previewManager,
-		CPAUtilsService $cpaUtils,
-		IL10N $l10n,
+		private readonly SettingMapper $settingsMapper,
+		private readonly CollectorTaskMapper $tasksMapper,
+		private readonly CollectorTaskDetailMapper $tasksDetailsMapper,
+		private readonly PythonService $pythonService,
+		private readonly LoggerInterface $logger,
+		private readonly PhotosService $photosService,
+		private readonly VideosService $videosService,
+		private readonly IJobList $jobList,
+		private readonly IPreview $previewManager,
+		private readonly CPAUtilsService $cpaUtils,
+		private readonly IL10N $l10n,
+		IConfig $config,
 	) {
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
 		}
-		$this->settingsMapper = $settingsMapper;
-		$this->tasksMapper = $tasksMapper;
-		$this->tasksDetailsMapper = $tasksDetailsMapper;
-		$this->cpaUtils = $cpaUtils;
-		$this->pythonService = $pythonService;
-		$this->logger = $logger;
-		$this->photosService = $photosService;
-		$this->videosService = $videosService;
-		$this->jobList = $jobList;
-		$this->previewManager = $previewManager;
-		$this->l10n = $l10n;
+		$this->isObjectStore = $config->getSystemValue('objectstore', null) !== null;
 	}
 
 	/**
@@ -158,6 +114,19 @@ class CollectorService {
 					$scriptName = 'main.py';
 				}
 				if ($this->cpaUtils->isFunctionEnabled('exec')) {
+					if ($this->isObjectStore) {
+						$result = $this->cpaUtils->prefetchAppDataFile(
+							Application::APP_ID,
+							'binaries',
+							Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.tar.gz'
+						);
+						if (!$result) {
+							$this->logger->error('[' . self::class . '] Task run error: Can\'t prefetch Python binary');
+							return ['success' => false, 'prefetch_error' => true];
+						}
+						// Prepend the cwd that is temp folder
+						$scriptName = $result['path'] . $scriptName;
+					}
 					$this->pythonService->run(Application::APP_ID, $scriptName, [
 						'-t' => $createdTask->getId()
 					], true, [
@@ -259,6 +228,19 @@ class CollectorService {
 				$collectorTask = $this->tasksMapper->update($collectorTask);
 				$this->deleteTaskDetails($taskId);
 				if ($this->cpaUtils->isFunctionEnabled('exec')) {
+					if ($this->isObjectStore) {
+						$result = $this->cpaUtils->prefetchAppDataFile(
+							Application::APP_ID,
+							'binaries',
+							Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.tar.gz'
+						);
+						if (!$result) {
+							$this->logger->error('[' . self::class . '] Task run error: Can\'t prefetch Python binary');
+							return ['success' => false, 'prefetch_error' => true];
+						}
+						// Prepend the cwd that is temp folder
+						$scriptName = $result['path'] . $scriptName;
+					}
 					$this->pythonService->run(Application::APP_ID,
 						$scriptName, ['-t' => $taskId], true, [
 							'PHP_PATH' => $this->cpaUtils->getPhpInterpreter(),

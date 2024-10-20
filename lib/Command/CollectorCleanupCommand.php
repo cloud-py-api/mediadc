@@ -35,13 +35,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CollectorCleanupCommand extends Command {
-	/** @var CleanupService */
-	private $cleanupService;
-
-	public function __construct(CleanupService $cleanupService) {
+	public function __construct(
+		private readonly CleanupService $cleanupService,
+	) {
 		parent::__construct();
-
-		$this->cleanupService = $cleanupService;
 	}
 
 	protected function configure(): void {
@@ -62,6 +59,5 @@ class CollectorCleanupCommand extends Command {
 			$output->writeln($e->getTraceAsString());
 			return 1;
 		}
-		return 1;
 	}
 }

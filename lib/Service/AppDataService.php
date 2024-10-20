@@ -28,6 +28,8 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Service;
 
+use OCP\Files\AppData\IAppDataFactory;
+use OCP\Files\SimpleFS\ISimpleFolder;
 use RuntimeException;
 use OCP\Files\IAppData;
 use OCP\IConfig;
@@ -37,23 +39,17 @@ use OCP\Files\NotFoundException;
 use OCA\MediaDC\AppInfo\Application;
 
 class AppDataService {
-	/** @var IAppData */
-	private $appData;
+	private string $ncInstanceId;
+	private string $ncDataFolder;
+	private IAppData $appData;
 
-	/** @var IConfig */
-	private $config;
-
-	/** @var string */
-	private $ncInstanceId;
-
-	/** @var string */
-	private $ncDataFolder;
-
-	public function __construct(IAppData $appData, IConfig $config) {
-		$this->appData = $appData;
-		$this->config = $config;
+	public function __construct(
+		private readonly IAppDataFactory $appDataFactory,
+		private readonly IConfig $config,
+	) {
 		$this->ncInstanceId = $this->config->getSystemValue('instanceid');
 		$this->ncDataFolder = $this->config->getSystemValue('datadirectory');
+		$this->appData = $this->appDataFactory->get(Application::APP_ID);
 	}
 
 	/**
@@ -61,12 +57,18 @@ class AppDataService {
 	 *
 	 * @param string $folderName target appdata folder
 	 *
-	 * @return bool `false` on permition error
+	 * @return bool `false` on permission error
 	 */
 	public function createAppDataFolder(string $folderName): bool {
 		$appDataFolder = $this->ncDataFolder . '/appdata_' . $this->ncInstanceId . '/'
 			. Application::APP_ID . '/' . $folderName;
-		if (!file_exists($appDataFolder)) {
+		$folderNameExists = false;
+		try {
+			$folder = $this->appData->getFolder($folderName);
+			$folderNameExists = $folder instanceof ISimpleFolder;
+		} catch (NotFoundException $e) {
+		}
+		if (!$folderNameExists) {
 			try {
 				$this->appData->newFolder($folderName);
 				return true;

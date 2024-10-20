@@ -34,11 +34,9 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 class SettingsService {
-	/** @var SettingMapper */
-	private $mapper;
-
-	public function __construct(SettingMapper $settingMapper) {
-		$this->mapper = $settingMapper;
+	public function __construct(
+		private readonly SettingMapper $mapper
+	) {
 	}
 
 	/**

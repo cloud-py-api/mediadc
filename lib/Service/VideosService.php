@@ -36,34 +36,19 @@ use OCA\MediaDC\Db\Video;
 use OCA\MediaDC\Db\VideoMapper;
 
 class VideosService {
-	/** @var string */
-	private $userId;
-
-	/** @var VideoMapper */
-	private $mapper;
-
-	/** @var IRootFolder */
-	private $rootFolder;
-
-	/** @var Folder */
-	private $userFolder;
-
-	/** @var IPreview */
-	private $previewManager;
+	private string $userId;
+	private Folder $userFolder;
 
 	public function __construct(
 		?string $userId,
-		IRootFolder $rootFolder,
-		VideoMapper $mapper,
-		IPreview $previewManager
+		private readonly IRootFolder $rootFolder,
+		private readonly VideoMapper $mapper,
+		private readonly IPreview $previewManager
 	) {
-		$this->rootFolder = $rootFolder;
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
 		}
-		$this->previewManager = $previewManager;
-		$this->mapper = $mapper;
 	}
 
 	public function get($id): Video {

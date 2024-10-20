@@ -31,6 +31,8 @@ namespace OCA\MediaDC\Controller;
 use OCA\Files\Event\LoadSidebar;
 use OCA\Viewer\Event\LoadViewer;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IRequest;
@@ -42,40 +44,18 @@ use OCA\MediaDC\Service\SettingsService;
 use OCP\AppFramework\Services\IInitialState;
 
 class PageController extends Controller {
-	/** @var IEventDispatcher */
-	private $eventDispatcher;
-
-	/** @var IInitialState */
-	private $initialStateService;
-
-	/** @var SettingsService */
-	private $settingsService;
-
-	/** @var CollectorService */
-	private $collectorService;
-
 	public function __construct(
 		IRequest $request,
-		IEventDispatcher $eventDispatcher,
-		IInitialState $initialStateService,
-		SettingsService $settingsService,
-		?CollectorService $collectorService
+		private readonly IEventDispatcher $eventDispatcher,
+		private readonly IInitialState $initialStateService,
+		private readonly SettingsService $settingsService,
+		private readonly ?CollectorService $collectorService
 	) {
 		parent::__construct(Application::APP_ID, $request);
-
-		$this->eventDispatcher = $eventDispatcher;
-		$this->initialStateService = $initialStateService;
-		$this->settingsService = $settingsService;
-		$this->collectorService = $collectorService;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * Render default index template
-	 *
-	 * @return TemplateResponse
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function index(): TemplateResponse {
 		$this->eventDispatcher->dispatchTyped(new LoadSidebar());
 		$this->eventDispatcher->dispatchTyped(new LoadViewer());

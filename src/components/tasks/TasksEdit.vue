@@ -50,8 +50,7 @@
 							<span>{{ t('mediadc', 'Not selected') }}</span>
 						</div>
 						<br>
-						<NcButton class="mediadc-button-vue"
-							:aria-label="t('mediadc', 'Select target directory')"
+						<NcButton :aria-label="t('mediadc', 'Select target directory')"
 							@click="openDirectoriesExplorer">
 							<template #icon>
 								<PlusThick :size="16" />
@@ -80,8 +79,7 @@
 							<span>{{ t('mediadc', 'Not selected') }}</span>
 						</div>
 						<br>
-						<NcButton class="mediadc-button-vue"
-							:aria-label="t('mediadc', 'Select exclude directory')"
+						<NcButton :aria-label="t('mediadc', 'Select exclude directory')"
 							@click="openExcludeExplorer">
 							<template #icon>
 								<PlusThick :size="16" />
@@ -134,8 +132,7 @@
 							</NcButton>
 						</div>
 						<div style="display: flex; align-items: center; margin: 20px 0;">
-							<NcButton class="mediadc-button-vue"
-								:aria-label="t('mediadc', 'Add custom exclude mask')"
+							<NcButton :aria-label="t('mediadc', 'Add custom exclude mask')"
 								@click="addNewMask">
 								<template #icon>
 									<PlusThick :size="16" />
@@ -174,8 +171,7 @@
 					</div>
 				</div>
 				<div class="create-task-actions">
-					<NcButton class="mediadc-button-vue"
-						:aria-label="t('mediadc', 'Restart Task with changed parameters')"
+					<NcButton :aria-label="t('mediadc', 'Restart Task with changed parameters')"
 						:disabled="runningTask || Object.keys(targetDirectoriesPaths).length === 0"
 						@click="restartTask">
 						<template #default>
@@ -204,8 +200,7 @@ import { generateUrl } from '@nextcloud/router'
 import { getFilePickerBuilder, showWarning, showSuccess, showError } from '@nextcloud/dialogs'
 import { emit } from '@nextcloud/event-bus'
 
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import { NcCheckboxRadioSwitch, NcButton } from '@nextcloud/vue'
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 
 import { mapGetters } from 'vuex'

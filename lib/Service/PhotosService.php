@@ -37,34 +37,19 @@ use OCA\MediaDC\Db\Photo;
 use OCA\MediaDC\Db\PhotoMapper;
 
 class PhotosService {
-	/** @var string */
-	private $userId;
-
-	/** @var PhotoMapper */
-	private $mapper;
-
-	/** @var IRootFolder */
-	private $rootFolder;
-
-	/** @var Folder */
-	private $userFolder;
-
-	/** @var IPreview */
-	private $previewManager;
+	private string $userId;
+	private Folder $userFolder;
 
 	public function __construct(
 		?string $userId,
-		IRootFolder $rootFolder,
-		PhotoMapper $mapper,
-		IPreview $previewManager
+		private readonly IRootFolder $rootFolder,
+		private readonly PhotoMapper $mapper,
+		private readonly IPreview $previewManager
 	) {
-		$this->rootFolder = $rootFolder;
 		if ($userId !== null) {
 			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
 		}
-		$this->previewManager = $previewManager;
-		$this->mapper = $mapper;
 	}
 
 	public function get($id): Photo {

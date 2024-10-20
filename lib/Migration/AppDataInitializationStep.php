@@ -42,33 +42,13 @@ use OCA\MediaDC\Service\AppDataService;
 use OCA\MediaDC\Service\UtilsService;
 
 class AppDataInitializationStep implements IRepairStep {
-	/** @var IAppManager */
-	private $appManager;
-
-	/** @var SettingMapper */
-	private $settingMapper;
-
-	/** @var UtilsService */
-	private $utils;
-
-	/** @var CPAUtilsService */
-	private $cpaUtils;
-
-	/** @var AppDataService */
-	private $appDataService;
-
 	public function __construct(
-		IAppManager $appManager,
-		SettingMapper $settingMapper,
-		UtilsService $utils,
-		CPAUtilsService $cpaUtils,
-		AppDataService $appDataService
+		private readonly SettingMapper $settingMapper,
+		private readonly UtilsService $utils,
+		private readonly CPAUtilsService $cpaUtils,
+		private readonly AppDataService $appDataService,
+		private readonly IAppManager $appManager,
 	) {
-		$this->appManager = $appManager;
-		$this->settingMapper = $settingMapper;
-		$this->utils = $utils;
-		$this->cpaUtils = $cpaUtils;
-		$this->appDataService = $appDataService;
 	}
 
 	public function getName(): string {
@@ -100,16 +80,20 @@ class AppDataInitializationStep implements IRepairStep {
 		$this->appDataService->createAppDataFolder('binaries');
 		$this->appDataService->createAppDataFolder('logs');
 
-		$output->advance(1, 'Downloading app binary');
+		$output->advance(1, 'Downloading app Python binary');
 		$output->warning('This step may take some time');
+		$version = $this->appManager->getAppVersion(Application::APP_ID, false);
 		$url = 'https://github.com/cloud-py-api/mediadc/releases/download/v'
-			. $this->appManager->getAppVersion(Application::APP_ID, false)
+			. $version
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.tar.gz';
-		$this->cpaUtils->downloadPythonBinaryDir(
+		$result = $this->cpaUtils->downloadPythonBinaryDir(
 			$url, $this->appDataService->getAppDataFolder('binaries'),
 			Application::APP_ID,
 			Application::APP_ID . '_' . $this->cpaUtils->getBinaryName()
 		);
+		if (!isset($result['downloaded']) || !$result['downloaded']) {
+			$output->warning('Failed to download app Python binary');
+		}
 
 		$output->finishProgress();
 	}
