@@ -56,6 +56,7 @@ OC.L10N.register(
     "First page reached!" : "Перша сторінка досягнута!",
     "Last page reached!" : "Останню сторінку досягнуто!",
     "Selected groups successfully removed" : "Вибрані групи успішно видалено",
+    "Select group" : "Обрати групу",
     "Open duplicate group" : "Відкрити дублікат групи",
     "Duplicate group" : "Група дублікатів",
     "Remove group without deleting files" : " Видалення групи без видалення файлів",
