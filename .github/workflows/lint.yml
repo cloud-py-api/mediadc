@@ -41,7 +41,7 @@ jobs:
     name: php-lint
     strategy:
       matrix:
-        php-versions: ["8.0", "8.1"]
+        php-versions: ["8.1", "8.2"]
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -60,7 +60,7 @@ jobs:
     name: php-cs
     strategy:
       matrix:
-        php-versions: ["8.0", "8.1"]
+        php-versions: ["8.1", "8.2"]
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php-versions: ["8.0", "8.1"]
+        php-versions: ["8.1", "8.2"]
         server-versions: ['30']
     name: php-psalm-analysis
 
