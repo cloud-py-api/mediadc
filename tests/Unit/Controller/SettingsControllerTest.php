@@ -28,17 +28,17 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Tests\Unit\Controller;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject;
-
-use OCP\AppFramework\Http\JSONResponse;
-
 use OCA\Cloud_Py_API\Service\UtilsService;
-
 use OCA\MediaDC\Controller\SettingsController;
+
 use OCA\MediaDC\Service\PhotosService;
+
 use OCA\MediaDC\Service\SettingsService;
+
 use OCA\MediaDC\Service\VideosService;
+use OCP\AppFramework\Http\JSONResponse;
+use PHPUnit\Framework\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class SettingsControllerTest extends TestCase {
 	/** @var SettingsController|MockObject */

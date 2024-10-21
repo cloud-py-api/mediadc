@@ -28,45 +28,32 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Command;
 
+use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Db\CollectorTask;
+use OCA\MediaDC\Db\CollectorTaskDetailMapper;
+use OCA\MediaDC\Db\CollectorTaskMapper;
 use OCP\Notification\IManager;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Db\CollectorTask;
-use OCA\MediaDC\Db\CollectorTaskDetailMapper;
-use OCA\MediaDC\Db\CollectorTaskMapper;
-
 class CollectorTaskNotificationCommand extends Command {
 	public const ARGUMENT_TASK_ID = 'task_id';
 	public const ARGUMENT_TASK_STATUS = 'status';
 
-	/** @var CollectorTaskMapper */
-	private $tasksMapper;
-
-	/** @var CollectorTaskDetailMapper */
-	private $tasksDetailsMapper;
-
-	/** @var IManager */
-	private $notificationManager;
-
 	public function __construct(
-		CollectorTaskMapper $tasksMapper,
-		CollectorTaskDetailMapper $tasksDetailsMapper,
-		IManager $notificationManager
+		private readonly CollectorTaskMapper $tasksMapper,
+		private readonly CollectorTaskDetailMapper $tasksDetailsMapper,
+		private readonly IManager $notificationManager,
 	) {
 		parent::__construct();
-
-		$this->tasksMapper = $tasksMapper;
-		$this->tasksDetailsMapper = $tasksDetailsMapper;
-		$this->notificationManager = $notificationManager;
 	}
 
 	protected function configure(): void {
-		$this->setName("mediadc:collector:tasks:notify");
-		$this->setDescription("Sends task finished notification to the user");
+		$this->setName('mediadc:collector:tasks:notify');
+		$this->setDescription('Sends task finished notification to the user');
 		$this->addArgument(self::ARGUMENT_TASK_ID, InputArgument::REQUIRED);
 		$this->addArgument(self::ARGUMENT_TASK_STATUS, InputArgument::REQUIRED);
 	}

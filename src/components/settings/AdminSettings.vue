@@ -27,7 +27,8 @@
 		<h2 style="padding: 30px 30px 0 30px; font-size: 24px;">
 			{{ t('mediadc', 'MediaDC settings') }}
 		</h2>
-		<div v-if="settings.length > 0" class="settings">
+		<NcLoadingIcon v-if="loadingSettings" :size="48" />
+		<div v-if="settings.length > 0 && !loadingSettings" class="settings">
 			<NcSettingsSection :name="t('mediadc', mappedSettings.hashing_algorithm.display_name)"
 				:description="t('mediadc', mappedSettings.hashing_algorithm.description)">
 				<select v-if="algorithms.length > 0"
@@ -118,7 +119,6 @@
 						</div>
 						<NcButton v-if="!addingCustomMask"
 							type="secondary"
-							class="mediadc-button-vue"
 							@click="addNewMask">
 							{{ t('mediadc', 'Add mask') }}
 							<template #icon>
@@ -145,7 +145,7 @@
 				</NcCheckboxRadioSwitch>
 			</NcSettingsSection>
 		</div>
-		<div v-else>
+		<div v-if="settings.length === 0 && !loadingSettings">
 			<NcSettingsSection :name="t('mediadc', 'Error')">
 				<NcEmptyContent style="margin-top: 0;"
 					:name="t('mediadc', 'Settings list is empty')"
@@ -156,7 +156,7 @@
 				</NcEmptyContent>
 			</NcSettingsSection>
 		</div>
-		<NcSettingsSection :name="t('mediadc', 'Bug report')">
+		<NcSettingsSection v-if="!loadingSettings" :name="t('mediadc', 'Bug report')">
 			<BugReport />
 		</NcSettingsSection>
 	</div>
@@ -168,12 +168,15 @@ import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
 
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcListItem from '@nextcloud/vue/dist/Components/NcListItem.js'
-import NcSettingsSection from '@nextcloud/vue/dist/Components/NcSettingsSection.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import {
+	NcActionButton,
+	NcButton,
+	NcEmptyContent,
+	NcListItem,
+	NcSettingsSection,
+	NcCheckboxRadioSwitch,
+	NcLoadingIcon,
+} from '@nextcloud/vue'
 
 import PlusThick from 'vue-material-design-icons/PlusThick.vue'
 import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
@@ -188,6 +191,7 @@ export default {
 		NcButton,
 		NcEmptyContent,
 		NcListItem,
+		NcLoadingIcon,
 		PlusThick,
 		NcSettingsSection,
 		NcCheckboxRadioSwitch,
@@ -195,6 +199,7 @@ export default {
 	},
 	data() {
 		return {
+			loadingSettings: false,
 			settings: [],
 			algorithms: [],
 			mappedSettings: {},
@@ -210,7 +215,7 @@ export default {
 	},
 	beforeMount() {
 		this.settings = loadState('mediadc', 'settings', null)
-		if (this.settings !== null) {
+		if (this.settings !== null && this.settings.length > 0) {
 			this.mapSettings(this.settings)
 		} else {
 			this.getSettings()
@@ -218,9 +223,12 @@ export default {
 	},
 	methods: {
 		getSettings() {
+			this.loadingSettings = true
 			axios.get(generateUrl('/apps/mediadc/api/v1/settings')).then(res => {
 				this.settings = res.data
 				this.mapSettings(this.settings)
+			}).finally(() => {
+				this.loadingSettings = false
 			})
 		},
 		mapSettings(settings) {

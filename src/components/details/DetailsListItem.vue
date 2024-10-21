@@ -23,7 +23,9 @@
  -->
 
 <template>
-	<div class="details-list-item" :class="{'icon-loading': updating}">
+	<div :id="'detail-' + detail.task_id + '-' + detail.group_id"
+		class="details-list-item"
+		:class="{'icon-loading': updating}">
 		<div class="details-list-item-title">
 			<NcCheckboxRadioSwitch v-tooltip="{content: t('mediadc', 'Select group'), placement: 'top'}"
 				class="mediadc-checkbox-only batch-checkbox"
@@ -101,10 +103,12 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import {
+	NcCheckboxRadioSwitch,
+	NcActions,
+	NcActionButton,
+	NcButton,
+} from '@nextcloud/vue'
 
 import { mapGetters } from 'vuex'
 
@@ -346,6 +350,12 @@ export default {
 		openGroup(detail) {
 			if (this.detail.group_id === detail.group_id && !this.opened) {
 				this.openDetailFiles(detail)
+				setTimeout(() => {
+					const target = document.getElementById(`detail-${detail.task_id}-${detail.group_id}`)
+					if (target) {
+						target.scrollIntoView({ behavior: 'smooth' })
+					}
+				}, 500) // wait for the details to open and render files
 			}
 		},
 		toggleGroup(detail) {

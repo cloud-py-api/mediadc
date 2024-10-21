@@ -28,38 +28,22 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Dashboard;
 
-use OCP\IL10N;
+use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Service\CollectorService;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Dashboard\IWidget;
+use OCP\IL10N;
+
 use OCP\IURLGenerator;
 use OCP\Util;
 
-use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Service\CollectorService;
-
 class RecentTasksWidget implements IWidget {
-	/** @var IL10N */
-	protected $il10n;
-
-	/** @var IInitialState */
-	private $initialState;
-
-	/** @var IURLGenerator */
-	private $urlGenerator;
-
-	/** @var CollectorService */
-	private $collectorService;
-
 	public function __construct(
-		IInitialState $initialState,
-		IL10N $il10n,
-		IURLGenerator $urlGenerator,
-		CollectorService $collectorService
+		private readonly IInitialState $initialState,
+		private readonly IL10N $il10n,
+		private readonly IURLGenerator $urlGenerator,
+		private readonly CollectorService $collectorService,
 	) {
-		$this->initialState = $initialState;
-		$this->il10n = $il10n;
-		$this->urlGenerator = $urlGenerator;
-		$this->collectorService = $collectorService;
 	}
 
 	/**
@@ -80,7 +64,7 @@ class RecentTasksWidget implements IWidget {
 
 	/**
 	 * @return int Initial order for widget sorting
-	 *   in the range of 10-100, 0-9 are reserved for shipped apps
+	 *             in the range of 10-100, 0-9 are reserved for shipped apps
 	 * @since 20.0.0
 	 */
 	public function getOrder(): int {

@@ -62,10 +62,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import {
+	NcActionButton,
+	NcProgressBar,
+	NcListItem,
+} from '@nextcloud/vue'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
-import NcProgressBar from '@nextcloud/vue/dist/Components/NcProgressBar.js'
-import NcListItem from '@nextcloud/vue/dist/Components/NcListItem.js'
 
 import Formats from '../../mixins/Formats.js'
 

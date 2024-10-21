@@ -28,43 +28,28 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Service;
 
-use OCP\Files\File;
-use OCP\IPreview;
-use OCP\Files\Folder;
-use OCP\Files\IRootFolder;
-
 use OCA\MediaDC\Db\Photo;
 use OCA\MediaDC\Db\PhotoMapper;
+use OCP\Files\File;
+use OCP\Files\Folder;
+
+use OCP\Files\IRootFolder;
+use OCP\IPreview;
 
 class PhotosService {
-	/** @var string */
-	private $userId;
-
-	/** @var PhotoMapper */
-	private $mapper;
-
-	/** @var IRootFolder */
-	private $rootFolder;
-
-	/** @var Folder */
-	private $userFolder;
-
-	/** @var IPreview */
-	private $previewManager;
+	private string $userId;
+	private Folder $userFolder;
 
 	public function __construct(
 		?string $userId,
-		IRootFolder $rootFolder,
-		PhotoMapper $mapper,
-		IPreview $previewManager
+		private readonly IRootFolder $rootFolder,
+		private readonly PhotoMapper $mapper,
+		private readonly IPreview $previewManager,
 	) {
-		$this->rootFolder = $rootFolder;
 		if ($userId !== null) {
 			$this->userId = $userId;
-			$this->userFolder = $rootFolder->getUserFolder($this->userId);
+			$this->userFolder = $this->rootFolder->getUserFolder($this->userId);
 		}
-		$this->previewManager = $previewManager;
-		$this->mapper = $mapper;
 	}
 
 	public function get($id): Photo {
@@ -98,7 +83,7 @@ class PhotosService {
 	 *
 	 * @return array
 	 */
-	public function getResolvedPhotos(string $userId = '', int $limit = null, int $offset = null): array {
+	public function getResolvedPhotos(string $userId = '', ?int $limit = null, ?int $offset = null): array {
 		$result = $this->mapper->findAllResolvedByUser($userId, $limit, $offset);
 		$result = array_map(function ($filecache_data) {
 			/** @var File $file */

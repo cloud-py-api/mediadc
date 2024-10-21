@@ -88,7 +88,7 @@ import { mapGetters } from 'vuex'
 
 import Formats from '../../mixins/Formats.js'
 
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import { NcButton } from '@nextcloud/vue'
 
 export default {
 	name: 'ResolvedListFile',

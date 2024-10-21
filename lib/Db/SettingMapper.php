@@ -28,13 +28,15 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Db;
 
-use OCP\AppFramework\Db\Entity;
-use OCP\IDBConnection;
+use OCA\MediaDC\AppInfo\Application;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
-use OCA\MediaDC\AppInfo\Application;
+use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Setting>
+ */
 class SettingMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_settings');
@@ -48,7 +50,7 @@ class SettingMapper extends QBMapper {
 	 *
 	 * @return \OCA\MediaDC\Db\Setting
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Setting {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -58,7 +60,7 @@ class SettingMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findAll(int $limit = null, int $offset = null): array {
+	public function findAll(?int $limit = null, ?int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -75,7 +77,7 @@ class SettingMapper extends QBMapper {
 	 *
 	 * @return \OCA\MediaDC\Db\Setting
 	 */
-	public function findByName(string $name): Entity {
+	public function findByName(string $name): Setting {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)

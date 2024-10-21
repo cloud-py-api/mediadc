@@ -33,49 +33,49 @@ class AppInitialData {
 	public static $APP_INITIAL_DATA = [
 		'settings' => [
 			[
-				"name" => "hashing_algorithm",
-				"value" => "dhash",
-				"displayName" => "Hashing algorithm",
-				"description" => "Hashing algorithm used by Python background script"
+				'name' => 'hashing_algorithm',
+				'value' => 'dhash',
+				'displayName' => 'Hashing algorithm',
+				'description' => 'Hashing algorithm used by Python background script'
 			],
 			[
-				"name" => "similarity_threshold",
-				"value" => 90,
-				"displayName" => "Similarity threshold",
-				"description" => "Hashing algorithm threshold (precision)"
+				'name' => 'similarity_threshold',
+				'value' => 90,
+				'displayName' => 'Similarity threshold',
+				'description' => 'Hashing algorithm threshold (precision)'
 			],
 			[
-				"name" => "hash_size",
-				"value" => 16,
-				"displayName" => "Hash size",
-				"description" => "Computed hash size (8, 16, 32, 64)"
+				'name' => 'hash_size',
+				'value' => 16,
+				'displayName' => 'Hash size',
+				'description' => 'Computed hash size (8, 16, 32, 64)'
 			],
 			[
-				"name" => "python_limit",
-				"value" => 1,
-				"displayName" => "Simultaneously running tasks limit",
-				"description" => "Maximum number of python background scripts running"
+				'name' => 'python_limit',
+				'value' => 1,
+				'displayName' => 'Simultaneously running tasks limit',
+				'description' => 'Maximum number of python background scripts running'
 			],
 			[
-				"name" => "exclude_list",
-				"value" => [
-					"mask" => [],
-					"fileid" => []
+				'name' => 'exclude_list',
+				'value' => [
+					'mask' => [],
+					'fileid' => []
 				],
-				"displayName" => "Exclude list",
-				"description" => "Global administrator's exclude list that applies to each task"
+				'displayName' => 'Exclude list',
+				'description' => "Global administrator's exclude list that applies to each task"
 			],
 			[
-				"name" => "python_binary",
-				"value" => true,
-				"displayName" => "Use pre-compiled Python binaries",
-				"description" => "Use Python part in binary format (located in the appdata folder)"
+				'name' => 'python_binary',
+				'value' => true,
+				'displayName' => 'Use pre-compiled Python binaries',
+				'description' => 'Use Python part in binary format (located in the appdata folder)'
 			],
 			[
-				"name" => "ignore_orientation",
-				"value" => false,
-				"displayName" => "Ignore EXIF image orientation",
-				"description" => "Enable to allow detection of mirrored images as duplicates"
+				'name' => 'ignore_orientation',
+				'value' => false,
+				'displayName' => 'Ignore EXIF image orientation',
+				'description' => 'Enable to allow detection of mirrored images as duplicates'
 			],
 		]
 	];
@@ -86,19 +86,19 @@ class AppInitialData {
 
 	private function _stringsForL10N(): void {
 		// TRANSLATORS MediaDC Admin settings strings for localization (Eng versions stored in the database and translated on front-end)
-		$this->l10n->t("Hashing algorithm");
-		$this->l10n->t("Hashing algorithm used by Python background script");
-		$this->l10n->t("Similarity threshold");
-		$this->l10n->t("Hashing algorithm threshold (precision)");
-		$this->l10n->t("Hash size");
-		$this->l10n->t("Computed hash size (8, 16, 32, 64)");
-		$this->l10n->t("Simultaneously running tasks limit");
-		$this->l10n->t("Maximum number of python background scripts running");
-		$this->l10n->t("Exclude list");
+		$this->l10n->t('Hashing algorithm');
+		$this->l10n->t('Hashing algorithm used by Python background script');
+		$this->l10n->t('Similarity threshold');
+		$this->l10n->t('Hashing algorithm threshold (precision)');
+		$this->l10n->t('Hash size');
+		$this->l10n->t('Computed hash size (8, 16, 32, 64)');
+		$this->l10n->t('Simultaneously running tasks limit');
+		$this->l10n->t('Maximum number of python background scripts running');
+		$this->l10n->t('Exclude list');
 		$this->l10n->t("Global administrator's exclude list that applies to each task");
-		$this->l10n->t("Use pre-compiled Python binaries");
-		$this->l10n->t("Use Python part in binary format (located in the appdata folder)");
-		$this->l10n->t("Ignore EXIF image orientation");
-		$this->l10n->t("Enable to allow detection of mirrored images as duplicates");
+		$this->l10n->t('Use pre-compiled Python binaries');
+		$this->l10n->t('Use Python part in binary format (located in the appdata folder)');
+		$this->l10n->t('Ignore EXIF image orientation');
+		$this->l10n->t('Enable to allow detection of mirrored images as duplicates');
 	}
 }

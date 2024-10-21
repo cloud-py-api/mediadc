@@ -48,7 +48,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import { NcEmptyContent } from '@nextcloud/vue'
 import ClipboardListOutline from 'vue-material-design-icons/ClipboardListOutline.vue'
 
 import Formats from '../../mixins/Formats.js'

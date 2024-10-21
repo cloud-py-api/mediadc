@@ -1,201 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.x-dev@">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="lib/AppInfo/Application.php">
-    <UndefinedClass occurrences="1">
-      <code>LoadAdditionalScriptsEvent</code>
+    <UndefinedClass>
+      <code><![CDATA[LoadAdditionalScriptsEvent]]></code>
     </UndefinedClass>
   </file>
-  <file src="lib/Controller/CollectorController.php">
-    <InvalidArgument occurrences="1">
-      <code>$this-&gt;service-&gt;markResolved($type, $fileId, $resolved)</code>
-    </InvalidArgument>
-    <TooManyArguments occurrences="1">
-      <code>details</code>
-    </TooManyArguments>
+  <file src="lib/Command/CollectorCleanupCommand.php">
+    <UndefinedClass>
+      <code><![CDATA[Command]]></code>
+    </UndefinedClass>
+  </file>
+  <file src="lib/Command/CollectorTaskNotificationCommand.php">
+    <UndefinedClass>
+      <code><![CDATA[Command]]></code>
+    </UndefinedClass>
   </file>
   <file src="lib/Controller/PageController.php">
-    <UndefinedClass occurrences="2">
-      <code>LoadSidebar</code>
-      <code>LoadViewer</code>
+    <UndefinedClass>
+      <code><![CDATA[LoadSidebar]]></code>
+      <code><![CDATA[LoadViewer]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Controller/SettingsController.php">
-    <InvalidReturnType occurrences="1">
-      <code>JSONResponse</code>
-    </InvalidReturnType>
-    <UndefinedClass occurrences="1">
-      <code>UtilsService</code>
+    <UndefinedClass>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[private]]></code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="2">
-      <code>$this-&gt;cpaUtils</code>
-      <code>UtilsService</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Db/CollectorTaskDetailMapper.php">
-    <UndefinedDocblockClass occurrences="2">
-      <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
-      <code>$this-&gt;db-&gt;getDatabasePlatform()</code>
+    <UndefinedDocblockClass>
+      <code><![CDATA[$this->db->getDatabasePlatform()]]></code>
+      <code><![CDATA[$this->db->getDatabasePlatform()]]></code>
     </UndefinedDocblockClass>
   </file>
   <file src="lib/Listener/LoadFilesPluginListener.php">
-    <UndefinedClass occurrences="1">
-      <code>LoadAdditionalScriptsEvent</code>
+    <MissingTemplateParam>
+      <code><![CDATA[IEventListener]]></code>
+    </MissingTemplateParam>
+    <UndefinedClass>
+      <code><![CDATA[LoadAdditionalScriptsEvent]]></code>
     </UndefinedClass>
   </file>
   <file src="lib/Migration/AppDataInitializationStep.php">
-    <UndefinedClass occurrences="1">
-      <code>CPAUtilsService</code>
+    <UndefinedClass>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[private]]></code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="4">
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>CPAUtilsService</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Migration/AppUpdateStep.php">
-    <UndefinedClass occurrences="1">
-      <code>CPAUtilsService</code>
+    <UndefinedClass>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[private]]></code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="4">
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>CPAUtilsService</code>
-    </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Migration/Version0001Date20210627153636.php">
-    <ImplementedParamTypeMismatch occurrences="1">
-      <code>$schemaClosure</code>
-    </ImplementedParamTypeMismatch>
-    <MismatchingDocblockParamType occurrences="1">
-      <code>Closure</code>
-    </MismatchingDocblockParamType>
-    <UndefinedDocblockClass occurrences="1">
-      <code>Closure</code>
-    </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Migration/Version0002Date20221102124949.php">
-    <ImplementedParamTypeMismatch occurrences="1">
-      <code>$schemaClosure</code>
-    </ImplementedParamTypeMismatch>
-    <MismatchingDocblockParamType occurrences="1">
-      <code>Closure</code>
-    </MismatchingDocblockParamType>
-    <UndefinedDocblockClass occurrences="1">
-      <code>Closure</code>
-    </UndefinedDocblockClass>
-  </file>
-  <file src="lib/Migration/Version0003Date20230710162020.php">
-    <ImplementedParamTypeMismatch occurrences="1">
-      <code>$schemaClosure</code>
-    </ImplementedParamTypeMismatch>
-    <MismatchingDocblockParamType occurrences="1">
-      <code>Closure</code>
-    </MismatchingDocblockParamType>
-    <UndefinedDocblockClass occurrences="1">
-      <code>Closure</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/CollectorService.php">
-    <InvalidReturnStatement occurrences="2">
-      <code>$size</code>
-      <code>$this-&gt;tasksMapper-&gt;find($taskId)</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
-      <code>\OCA\MediaDC\Db\CollectorTask[]|array</code>
-      <code>int</code>
-    </InvalidReturnType>
-    <InvalidScalarArgument occurrences="1">
-      <code>$deletedFilesSize + $filesize</code>
-    </InvalidScalarArgument>
-    <MismatchingDocblockReturnType occurrences="4">
-      <code>array|bool</code>
-      <code>int</code>
-      <code>int</code>
-      <code>int</code>
+    <MismatchingDocblockReturnType>
+      <code><![CDATA[array|bool]]></code>
     </MismatchingDocblockReturnType>
-    <MissingDependency occurrences="1">
-      <code>IRootFolder</code>
+    <MissingDependency>
+      <code><![CDATA[$rootFolder]]></code>
+      <code><![CDATA[IRootFolder]]></code>
     </MissingDependency>
-    <RedundantCondition occurrences="1">
-      <code>$createdTask !== null</code>
+    <RedundantCondition>
+      <code><![CDATA[$createdTask !== null]]></code>
     </RedundantCondition>
-    <TypeDoesNotContainType occurrences="1">
-      <code>count($params) === 0</code>
+    <TypeDoesNotContainType>
+      <code><![CDATA[count($params) === 0]]></code>
     </TypeDoesNotContainType>
-    <UndefinedClass occurrences="4">
-      <code>CPAUtilsService</code>
-      <code>PythonService</code>
-      <code>SharedStorage</code>
-      <code>\OCA\GroupFolders\Mount\GroupFolderStorage</code>
+    <UndefinedClass>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->cpaUtils]]></code>
+      <code><![CDATA[$this->pythonService]]></code>
+      <code><![CDATA[$this->pythonService]]></code>
+      <code><![CDATA[$this->pythonService]]></code>
+      <code><![CDATA[SharedStorage]]></code>
+      <code><![CDATA[\OCA\GroupFolders\Mount\GroupFolderStorage]]></code>
+      <code><![CDATA[private]]></code>
+      <code><![CDATA[private]]></code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="25">
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;cpaUtils</code>
-      <code>$this-&gt;pythonService</code>
-      <code>$this-&gt;pythonService</code>
-      <code>$this-&gt;pythonService</code>
-      <code>CPAUtilsService</code>
-      <code>PythonService</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="lib/Service/PhotosService.php">
-    <MissingDependency occurrences="3">
-      <code>$this-&gt;rootFolder</code>
-      <code>IRootFolder</code>
-      <code>IRootFolder</code>
+    <MissingDependency>
+      <code><![CDATA[$this->rootFolder]]></code>
+      <code><![CDATA[$this->rootFolder]]></code>
+      <code><![CDATA[private]]></code>
     </MissingDependency>
-    <RedundantCondition occurrences="1">
-      <code>isset($offset)</code>
+    <RedundantCondition>
+      <code><![CDATA[isset($offset)]]></code>
     </RedundantCondition>
-    <TypeDoesNotContainNull occurrences="1">
-      <code>0</code>
+    <TypeDoesNotContainNull>
+      <code><![CDATA[0]]></code>
     </TypeDoesNotContainNull>
   </file>
   <file src="lib/Service/SettingsService.php">
-    <MismatchingDocblockReturnType occurrences="1">
-      <code>\OCA\MediaDC\Db\Setting|array</code>
+    <MismatchingDocblockReturnType>
+      <code><![CDATA[\OCA\MediaDC\Db\Setting|array]]></code>
     </MismatchingDocblockReturnType>
   </file>
   <file src="lib/Service/VideosService.php">
-    <MissingDependency occurrences="3">
-      <code>$this-&gt;rootFolder</code>
-      <code>IRootFolder</code>
-      <code>IRootFolder</code>
+    <MissingDependency>
+      <code><![CDATA[$this->rootFolder]]></code>
+      <code><![CDATA[$this->rootFolder]]></code>
+      <code><![CDATA[private]]></code>
     </MissingDependency>
-    <RedundantCondition occurrences="1">
-      <code>isset($offset)</code>
+    <RedundantCondition>
+      <code><![CDATA[isset($offset)]]></code>
     </RedundantCondition>
-    <TypeDoesNotContainNull occurrences="1">
-      <code>0</code>
+    <TypeDoesNotContainNull>
+      <code><![CDATA[0]]></code>
     </TypeDoesNotContainNull>
-  </file>
-  <file src="lib/Settings/AdminSection.php">
-    <UndefinedClass occurrences="1">
-      <code>URLGenerator</code>
-    </UndefinedClass>
-    <UndefinedDocblockClass occurrences="2">
-      <code>$this-&gt;urlGenerator</code>
-      <code>UrlGenerator</code>
-    </UndefinedDocblockClass>
   </file>
 </files>

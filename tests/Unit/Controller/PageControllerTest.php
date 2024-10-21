@@ -28,12 +28,12 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Tests\Unit\Controller;
 
-use OCP\AppFramework\Http\TemplateResponse;
+use OCA\MediaDC\Controller\PageController;
 
-use PHPUnit\Framework\TestCase;
+use OCP\AppFramework\Http\TemplateResponse;
 use PHPUnit\Framework\MockObject;
 
-use OCA\MediaDC\Controller\PageController;
+use PHPUnit\Framework\TestCase;
 
 class PageControllerTest extends TestCase {
 	/** @var PageController */

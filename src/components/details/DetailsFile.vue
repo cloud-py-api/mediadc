@@ -72,8 +72,7 @@
 			<div class="actions" style="display: flex;">
 				<NcCheckboxRadioSwitch v-tooltip="{ content: t('mediadc', 'Select file'), placement: 'top' }"
 					class="mediadc-checkbox-only"
-					:checked.sync="checked"
-					style="margin: 0 14px 0 10px;" />
+					:checked.sync="checked" />
 				<NcButton v-tooltip="{ content: t('mediadc', 'Delete file'), placement: 'top' }"
 					type="tertiary"
 					:aria-label="t('mediadc', 'Delete file')"
@@ -102,8 +101,7 @@ import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import { showError, showMessage, showWarning } from '@nextcloud/dialogs'
 import { generateRemoteUrl, generateUrl } from '@nextcloud/router'
 
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import { NcButton, NcCheckboxRadioSwitch } from '@nextcloud/vue'
 
 import { mapGetters } from 'vuex'
 

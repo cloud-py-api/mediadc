@@ -32,11 +32,9 @@ use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
 
 class UtilsService {
-	/** @var SettingMapper */
-	private $settingMapper;
-
-	public function __construct(SettingMapper $settingMapper) {
-		$this->settingMapper = $settingMapper;
+	public function __construct(
+		private SettingMapper $settingMapper,
+	) {
 	}
 
 	public function checkForSettingsUpdates($app_data) {
@@ -90,9 +88,7 @@ class UtilsService {
 		}
 		foreach ($settingsToRemove as $settingName) {
 			$setting = $this->settingMapper->findByName($settingName);
-			if (isset($setting)) {
-				$this->settingMapper->delete($setting);
-			}
+			$this->settingMapper->delete($setting);
 		}
 	}
 

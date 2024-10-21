@@ -28,33 +28,29 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Controller;
 
-use Exception;
-use OCP\IRequest;
-use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\JSONResponse;
-
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\CollectorTask;
 use OCA\MediaDC\Service\CollectorService;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+
 use OCP\AppFramework\Http\DataDownloadResponse;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\OCS\OCSBadRequestException;
+use OCP\IRequest;
 
 class CollectorController extends Controller {
-	/** @var CollectorService */
-	private $service;
-
-	public function __construct(IRequest $request, CollectorService $service) {
+	public function __construct(
+		IRequest $request,
+		private readonly CollectorService $service,
+	) {
 		parent::__construct(Application::APP_ID, $request);
-
-		$this->service = $service;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param bool $recent
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function index(bool $recent = false): JSONResponse {
 		if ($recent) {
 			return new JSONResponse($this->service->getUserRecentTasks(), Http::STATUS_OK);
@@ -62,173 +58,115 @@ class CollectorController extends Controller {
 		return new JSONResponse($this->service->getUserCollectorTasks(), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $type
-	 * @param int $limit
-	 * @param int $offset
-	 */
-	public function resolved(string $type, int $limit = null, int $offset = null): JSONResponse {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function resolved(string $type, ?int $limit = null, ?int $offset = null): JSONResponse {
 		return new JSONResponse([
 			'success' => true,
 			'resolved' => $this->service->resolved($type, $limit, $offset)
 		], Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $type
-	 * @param int $fileid
-	 * @param bool $resolved
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function markResolved(string $type, int $fileId, bool $resolved = true): JSONResponse {
 		return new JSONResponse($this->service->markResolved($type, $fileId, $resolved), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $type
-	 *
-	 * @return JSONResponse
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function cleanupResolved(string $type): JSONResponse {
 		return new JSONResponse($this->service->cleanupResolved($type), Http::STATUS_OK);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $targetDirectoryIds
-	 * @param string $excludeList
-	 * @param string $collectorSettings
-	 * @param string $name
-	 */
-	public function runTask($targetDirectoryIds, $excludeList, $collectorSettings, $name): JSONResponse {
-		if ($targetDirectoryIds !== null && $excludeList !== null && $collectorSettings !== null) {
-			$params = [
-				'targetDirectoryIds' => json_decode($targetDirectoryIds),
-				'excludeList' => $excludeList,
-				'collectorSettings' => $collectorSettings,
-				'name' => $name,
-			];
-			return new JSONResponse($this->service->runTask($params), Http::STATUS_OK);
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function runTask(
+		array|string $targetDirectoryIds,
+		array|string $excludeList,
+		array|string $collectorSettings,
+		string $name,
+	): JSONResponse {
+		$params = [
+			'targetDirectoryIds' => json_decode($targetDirectoryIds),
+			'excludeList' => $excludeList,
+			'collectorSettings' => $collectorSettings,
+			'name' => $name,
+		];
+		return new JSONResponse($this->service->runTask($params), Http::STATUS_OK);
+	}
+
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function restartTask(
+		int $taskId,
+		array|string $targetDirectoryIds,
+		array|string $excludeList,
+		array|string $collectorSettings,
+		?string $name = null,
+	): JSONResponse {
+		$params = [
+			'taskId' => $taskId,
+			'targetDirectoryIds' => json_decode($targetDirectoryIds),
+			'excludeList' => $excludeList,
+			'collectorSettings' => $collectorSettings,
+			'name' => $name,
+		];
+		return new JSONResponse($this->service->restartTask($params), Http::STATUS_OK);
+	}
+
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function details(int $taskId, ?int $limit = null, ?int $page = null, array $filter = []): JSONResponse {
+		/** @var CollectorTask */
+		$collectorTask = $this->service->getCollectorTask($taskId);
+		if ($collectorTask instanceof CollectorTask) {
+			$offset = $page * $limit;
+			$collectorTaskDetails = $this->service->details($taskId, $limit, $offset);
+			return new JSONResponse([
+				'id' => $taskId,
+				'success' => $taskId === intval($collectorTask->getId()),
+				'collectorTask' => $collectorTask,
+				'collectorTaskDetails' => $collectorTaskDetails
+			], Http::STATUS_OK);
 		} else {
 			return new JSONResponse([
 				'success' => false,
-				'message' => 'Collector params not valid'
-			], Http::STATUS_OK);
+				'message' => 'Collector Task #' . $taskId . ' not found'
+			]);
 		}
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param int $taskId
-	 * @param string $targetDirectoryIds
-	 * @param string $excludeList
-	 * @param string $collectorSettings
-	 * @param string $name
-	 */
-	public function restartTask($taskId, $targetDirectoryIds, $excludeList, $collectorSettings, $name): JSONResponse {
-		if (
-			$taskId !== null && $targetDirectoryIds !== null
-			&& $excludeList !== null && $collectorSettings !== null
-		) {
-			$params = [
-				'taskId' => $taskId,
-				'targetDirectoryIds' => json_decode($targetDirectoryIds),
-				'excludeList' => $excludeList,
-				'collectorSettings' => $collectorSettings,
-				'name' => $name,
-			];
-			return new JSONResponse($this->service->restartTask($params), Http::STATUS_OK);
-		} else {
-			return new JSONResponse([
-				'success' => false,
-				'message' => 'Collector params not valid'
-			], Http::STATUS_OK);
-		}
-	}
-
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param int $taskId
-	 * @param int $limit
-	 * @param int $page
-	 * @param array $filter
-	 */
-	public function details(int $taskId, int $limit = null, int $page = null, array $filter = []): JSONResponse {
-		if ($taskId) {
-			/** @var CollectorTask */
-			$collectorTask = $this->service->getCollectorTask($taskId);
-			if ($collectorTask instanceof CollectorTask) {
-				$offset = $page * $limit;
-				$collectorTaskDetails = $this->service->details($taskId, $limit, $offset, $filter);
-				return new JSONResponse([
-					'id' => $taskId,
-					'success' => $taskId === intval($collectorTask->getId()),
-					'collectorTask' => $collectorTask,
-					'collectorTaskDetails' => $collectorTaskDetails
-				], Http::STATUS_OK);
-			} else {
-				return new JSONResponse([
-					'success' => false,
-					'message' => 'Collector Task #' . $taskId . ' not found'
-				]);
-			}
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
-	}
-
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function getTaskInfo(int $taskId): JSONResponse {
-		if ($taskId) {
-			/** @var CollectorTask */
-			$collectorTask = $this->service->getCollectorTask($taskId);
-			$collectorTaskInfo = $this->service->getTaskInfo($collectorTask);
-			return new JSONResponse([
-				'collectorTaskInfo' => [
-					'target_directories' => $collectorTaskInfo['target_directories'],
-					'exclude_directories' => $collectorTaskInfo['exclude_directories'],
-				],
-			], Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		/** @var CollectorTask */
+		$collectorTask = $this->service->getCollectorTask($taskId);
+		$collectorTaskInfo = $this->service->getTaskInfo($collectorTask);
+		return new JSONResponse([
+			'collectorTaskInfo' => [
+				'target_directories' => $collectorTaskInfo['target_directories'],
+				'exclude_directories' => $collectorTaskInfo['exclude_directories'],
+			],
+		], Http::STATUS_OK);
 	}
 
 	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
 	 * @param int $taskId target task id
 	 * @param string $format export file format (xml, json)
 	 *
-	 * @throws Exception
-	 * @return DataDownloadResponse|null
+	 * @throws OCSBadRequestException
 	 */
-	public function getTaskResultsExport(int $taskId, string $format): ?DataDownloadResponse {
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function getTaskResultsExport(int $taskId, string $format): DataDownloadResponse {
 		if (in_array($format, ['xml', 'json'])) {
 			$export = $this->service->exportTaskResults(intval($taskId), $format);
 			if ($export) {
 				return new DataDownloadResponse($export['data'], $export['filename'], $export['contentType']);
 			}
 		}
-		throw new Exception('Bad request. Requested export format is not supported.');
+		throw new OCSBadRequestException('Bad request. Requested export format is not supported.');
 	}
 
 	/**
@@ -236,17 +174,13 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function deleteTask(int $taskId): JSONResponse {
-		if ($taskId) {
-			/** @var CollectorTask */
-			$deletedTask = $this->service->delete($taskId);
-			return new JSONResponse([
-				'success' => $taskId === intval($deletedTask->getId()),
-				'taskId' => $taskId,
-				'deletedTask' => $deletedTask
-			], Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		/** @var CollectorTask */
+		$deletedTask = $this->service->delete($taskId);
+		return new JSONResponse([
+			'success' => $taskId === intval($deletedTask->getId()),
+			'taskId' => $taskId,
+			'deletedTask' => $deletedTask
+		], Http::STATUS_OK);
 	}
 
 	/**
@@ -254,13 +188,9 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function deleteTaskDetail(int $taskId, int $groupId): JSONResponse {
-		if ($taskId && $groupId) {
-			return new JSONResponse([
-				'success' => $this->service->deleteTaskDetail($taskId, $groupId) > 0,
-			], Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse([
+			'success' => $this->service->deleteTaskDetail($taskId, $groupId) > 0,
+		], Http::STATUS_OK);
 	}
 
 	/**
@@ -268,17 +198,13 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function terminateTask(int $taskId): JSONResponse {
-		if ($taskId) {
-			/** @var CollectorTask */
-			$terminatedTask = $this->service->terminate($taskId);
-			return new JSONResponse([
-				'success' => $taskId === intval($terminatedTask->getId()) && $terminatedTask->getPyPid() === 0,
-				'taskId' => $taskId,
-				'terminatedTask' => $terminatedTask
-			], Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		/** @var CollectorTask */
+		$terminatedTask = $this->service->terminate($taskId);
+		return new JSONResponse([
+			'success' => $taskId === intval($terminatedTask->getId()) && $terminatedTask->getPyPid() === 0,
+			'taskId' => $taskId,
+			'terminatedTask' => $terminatedTask
+		], Http::STATUS_OK);
 	}
 
 	/**
@@ -286,14 +212,11 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function duplicateTask(int $taskId): JSONResponse {
-		if ($taskId) {
-			$duplicatedTask = $this->service->duplicate($taskId);
-			return new JSONResponse([
-				'success' => $duplicatedTask !== null,
-				'duplicatedTask' => $duplicatedTask,
-			], Http::STATUS_OK);
-		}
-		return new JSONResponse(['success' => false], Http::STATUS_OK);
+		$duplicatedTask = $this->service->duplicate($taskId);
+		return new JSONResponse([
+			'success' => $duplicatedTask !== null,
+			'duplicatedTask' => $duplicatedTask,
+		], Http::STATUS_OK);
 	}
 
 	/**
@@ -301,11 +224,7 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function getDetailGroupFilesInfo(int $taskId, int $groupId, bool $filesizeAscending = false): JSONResponse {
-		if ($taskId) {
-			return new JSONResponse($this->service->getDetailGroupFilesInfo($taskId, $groupId, $filesizeAscending), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->getDetailGroupFilesInfo($taskId, $groupId, $filesizeAscending), Http::STATUS_OK);
 	}
 
 	/**
@@ -316,11 +235,7 @@ class CollectorController extends Controller {
 	 * @param int $groupId
 	 */
 	public function getDetailFilesTotalSize(int $taskId): JSONResponse {
-		if ($taskId) {
-			return new JSONResponse($this->service->getDetailFilesTotalSize(intval($taskId)), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->getDetailFilesTotalSize(intval($taskId)), Http::STATUS_OK);
 	}
 
 	/**
@@ -328,11 +243,7 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function deleteTaskDetailFile(int $taskId, int $groupId, int $fileId): JSONResponse {
-		if ($groupId && $fileId) {
-			return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $groupId, $fileId), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->deleteTaskDetailFile($taskId, $groupId, $fileId), Http::STATUS_OK);
 	}
 
 	// Batch editing actions
@@ -342,11 +253,7 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function removeTaskDetailGroups(int $taskId, array $groupIds): JSONResponse {
-		if ($taskId && $groupIds) {
-			return new JSONResponse($this->service->removeTaskDetailGroups($taskId, $groupIds), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->removeTaskDetailGroups($taskId, $groupIds), Http::STATUS_OK);
 	}
 
 	/**
@@ -354,11 +261,7 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function deleteTaskDetailGroupsFiles(int $taskId, array $groupIds): JSONResponse {
-		if ($taskId && $groupIds) {
-			return new JSONResponse($this->service->deleteTaskDetailGroupsFiles($taskId, $groupIds), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->deleteTaskDetailGroupsFiles($taskId, $groupIds), Http::STATUS_OK);
 	}
 
 	/**
@@ -366,11 +269,7 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function deleteTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse {
-		if ($taskId && $groupId && $fileIds) {
-			return new JSONResponse($this->service->deleteTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->deleteTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
 	}
 
 	/**
@@ -378,10 +277,6 @@ class CollectorController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function removeTaskDetailFiles(int $taskId, int $groupId, array $fileIds): JSONResponse {
-		if ($taskId && $groupId && $fileIds) {
-			return new JSONResponse($this->service->removeTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
-		} else {
-			return new JSONResponse(['success' => false], Http::STATUS_OK);
-		}
+		return new JSONResponse($this->service->removeTaskDetailFiles($taskId, $groupId, $fileIds), Http::STATUS_OK);
 	}
 }

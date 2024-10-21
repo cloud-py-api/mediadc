@@ -35,18 +35,10 @@ use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\ISettings;
 
 class AdminSettings implements ISettings {
-	/** @var SettingMapper */
-	private $settingMapper;
-
-	/** @var IInitialState */
-	private $initialState;
-
 	public function __construct(
-		IInitialState $initialState,
-		SettingMapper $settingMapper
+		private readonly IInitialState $initialState,
+		private readonly SettingMapper $settingMapper,
 	) {
-		$this->settingMapper = $settingMapper;
-		$this->initialState = $initialState;
 	}
 
 	/**

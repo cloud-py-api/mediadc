@@ -28,44 +28,28 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
+use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
+use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Migration\data\AppInitialData;
+
+use OCA\MediaDC\Service\AppDataService;
+
+use OCA\MediaDC\Service\UtilsService;
 use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
-use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
-
-use OCA\MediaDC\Migration\data\AppInitialData;
-use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Service\AppDataService;
-use OCA\MediaDC\Service\UtilsService;
-
 class AppUpdateStep implements IRepairStep {
-	/** @var IAppManager */
-	private $appManager;
-
-	/** @var UtilsService */
-	private $utils;
-
-	/** @var CPAUtilsService */
-	private $cpaUtils;
-
-	/** @var AppDataService */
-	private $appDataService;
-
 	public function __construct(
-		IAppManager $appManager,
-		UtilsService $utils,
-		CPAUtilsService $cpaUtils,
-		AppDataService $appDataService
+		private readonly IAppManager $appManager,
+		private readonly UtilsService $utils,
+		private readonly CPAUtilsService $cpaUtils,
+		private readonly AppDataService $appDataService,
 	) {
-		$this->appManager = $appManager;
-		$this->utils = $utils;
-		$this->cpaUtils = $cpaUtils;
-		$this->appDataService = $appDataService;
 	}
 
 	public function getName(): string {
-		return "Update settings and binaries along with MediaDC";
+		return 'Update settings and binaries along with MediaDC';
 	}
 
 	public function run(IOutput $output) {
@@ -76,15 +60,19 @@ class AppUpdateStep implements IRepairStep {
 		$output->warning('This step may take some time');
 		$this->appDataService->createAppDataFolder('binaries');
 		$this->appDataService->createAppDataFolder('logs');
+		$version = $this->appManager->getAppVersion(Application::APP_ID, false);
 		$url = 'https://github.com/cloud-py-api/mediadc/releases/download/v'
-			. $this->appManager->getAppVersion(Application::APP_ID, false)
+			. $version
 			. '/' . Application::APP_ID . '_' . $this->cpaUtils->getBinaryName() . '.tar.gz';
-		$this->cpaUtils->downloadPythonBinaryDir(
+		$result = $this->cpaUtils->downloadPythonBinaryDir(
 			$url, $this->appDataService->getAppDataFolder('binaries'),
 			Application::APP_ID,
 			Application::APP_ID . '_' . $this->cpaUtils->getBinaryName(),
 			true
 		);
+		if (!isset($result['downloaded']) || !$result['downloaded']) {
+			$output->warning('Failed to download app Python binary');
+		}
 
 		$output->finishProgress();
 	}

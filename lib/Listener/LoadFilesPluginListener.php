@@ -29,18 +29,17 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Listener;
 
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCA\MediaDC\AppInfo\Application;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
+
 use OCP\Util;
 
-use OCA\MediaDC\AppInfo\Application;
-
 class LoadFilesPluginListener implements IEventListener {
-	private IConfig $config;
-
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+	public function __construct(
+		private readonly IConfig $config,
+	) {
 	}
 
 	public function handle(Event $event): void {
@@ -52,7 +51,6 @@ class LoadFilesPluginListener implements IEventListener {
 
 		if ($fileActionsMenuEnabled) {
 			Util::addScript(Application::APP_ID, Application::APP_ID . '-filesplugin');
-			Util::addStyle(Application::APP_ID, 'filesplugin');
 		}
 	}
 }

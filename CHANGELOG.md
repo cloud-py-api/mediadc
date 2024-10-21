@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0 - 2024-10-21]
+
+Maintenance update. Update NC versions to support NC30+ only.
+
+### Added
+
+- Added basic ObjectStorage support (/tmp folder used to execute binary scripts)
+- Added automatic scroll to the next duplicate group opened
+
+### Changed
+
+- Update UI packages to be compatible with NC30+
+
 ## [0.3.9 - 2024-06-23]
 
 Maintenance update.

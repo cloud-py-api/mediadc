@@ -35,15 +35,10 @@ use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
 class Notifier implements INotifier {
-	/** @var IFactory */
-	private $factory;
-
-	/** @var IURLGenerator */
-	private $url;
-
-	public function __construct(IFactory $factory, IURLGenerator $urlGenerator) {
-		$this->factory = $factory;
-		$this->url = $urlGenerator;
+	public function __construct(
+		private readonly IFactory $factory,
+		private readonly IURLGenerator $url,
+	) {
 	}
 
 	public function getID(): string {

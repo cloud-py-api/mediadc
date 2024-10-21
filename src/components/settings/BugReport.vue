@@ -27,8 +27,7 @@
 		<p style="margin: 0 0 20px;">
 			{{ t('mediadc', 'Collect non sensitive system info for bug report') }}
 		</p>
-		<NcButton class="mediadc-button-vue"
-			type="secondary"
+		<NcButton type="secondary"
 			:disabled="updating"
 			:aria-label="t('mediadc', 'Collect system info')"
 			@click="collectSystemInfo">
@@ -41,7 +40,6 @@
 			<h3>{{ t('mediadc', 'System info') }}</h3>
 			<NcButton v-if="systemInfo"
 				type="tertiary"
-				class="mediadc-button-vue"
 				@click="copySystemInfoToClipboard">
 				{{ t('mediadc', 'Copy to clipboard') }}
 				<template #icon>
@@ -60,7 +58,7 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess } from '@nextcloud/dialogs'
 
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import { NcButton } from '@nextcloud/vue'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
 export default {

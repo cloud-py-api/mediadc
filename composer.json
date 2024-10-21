@@ -18,10 +18,10 @@
 	"require-dev": {
 		"nextcloud/ocp": "dev-master",
 		"roave/security-advisories": "dev-master",
-		"psalm/phar": "^4.30.0",
+		"psalm/phar": "^5.15",
 		"phpunit/phpunit": "^9.5",
-		"nextcloud/coding-standard": "^1.0",
-		"friendsofphp/php-cs-fixer": "^3.13"
+		"nextcloud/coding-standard": "^1.1",
+		"friendsofphp/php-cs-fixer": "^3.16"
 	},
 	"scripts": {
 		"lint": "find . -name \\*.php -not -path './vendor/*' -print0 | xargs -0 -n1 php -l",
@@ -41,7 +41,17 @@
 		"optimize-autoloader": true,
 		"classmap-authoritative": true,
 		"platform": {
-			"php": "7.4"
+			"php": "8.1"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"OCA\\MediaDC\\": "lib/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"OCP\\": "vendor/nextcloud/ocp/OCP"
 		}
 	}
 }

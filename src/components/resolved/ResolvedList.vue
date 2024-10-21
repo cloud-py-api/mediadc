@@ -207,10 +207,12 @@ import { generateUrl } from '@nextcloud/router'
 import Formats from '../../mixins/Formats.js'
 import ResolvedListFile from './ResolvedListFile.vue'
 
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcListItem from '@nextcloud/vue/dist/Components/NcListItem.js'
+import {
+	NcActionButton,
+	NcButton,
+	NcEmptyContent,
+	NcListItem,
+} from '@nextcloud/vue'
 import ClipboardListOutline from 'vue-material-design-icons/ClipboardListOutline.vue'
 
 import { mapActions, mapGetters } from 'vuex'

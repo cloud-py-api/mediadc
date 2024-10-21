@@ -30,22 +30,20 @@ namespace OCA\MediaDC\BackgroundJob;
 
 use OCA\MediaDC\Service\CleanupService;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\BackgroundJob\IJob;
 use OCP\BackgroundJob\TimedJob;
 
 class CollectorCleanupJob extends TimedJob {
-	/** @var CleanupService */
-	private $cleanupService;
-
 	private const collectorEveryWeekInterval = 24 * 60 * 60 * 7;
 
 	public function __construct(
 		ITimeFactory $time,
-		CleanupService $cleanupService
+		private readonly CleanupService $cleanupService,
 	) {
 		parent::__construct($time);
-		$this->cleanupService = $cleanupService;
+
 		$this->setInterval(self::collectorEveryWeekInterval);
-		$this->setTimeSensitivity(\OCP\BackgroundJob\IJob::TIME_INSENSITIVE);
+		$this->setTimeSensitivity(IJob::TIME_INSENSITIVE);
 	}
 
 	/**

@@ -35,33 +35,29 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CollectorCleanupCommand extends Command {
-	/** @var CleanupService */
-	private $cleanupService;
-
-	public function __construct(CleanupService $cleanupService) {
+	public function __construct(
+		private readonly CleanupService $cleanupService,
+	) {
 		parent::__construct();
-
-		$this->cleanupService = $cleanupService;
 	}
 
 	protected function configure(): void {
-		$this->setName("mediadc:collector:cleanup");
-		$this->setDescription("Executes Collector database cleanup mechanism");
+		$this->setName('mediadc:collector:cleanup');
+		$this->setDescription('Executes Collector database cleanup mechanism');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		try {
 			$result = $this->cleanupService->cleanup();
-			$output->writeln("Collector cleanup result:");
-			$output->writeln("Deleted photos: " . $result['photosDeleted']);
-			$output->writeln("Deleted videos: " . $result['videosDeleted']);
+			$output->writeln('Collector cleanup result:');
+			$output->writeln('Deleted photos: ' . $result['photosDeleted']);
+			$output->writeln('Deleted videos: ' . $result['videosDeleted']);
 			return 0;
 		} catch (Exception $e) {
-			$output->writeln("Collector cleanup failed.");
+			$output->writeln('Collector cleanup failed.');
 			$output->writeln($e->getMessage());
 			$output->writeln($e->getTraceAsString());
 			return 1;
 		}
-		return 1;
 	}
 }

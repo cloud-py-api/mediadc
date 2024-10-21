@@ -41,7 +41,7 @@ jobs:
     name: php-lint
     strategy:
       matrix:
-        php-versions: ["8.0", "8.1"]
+        php-versions: ["8.1", "8.2"]
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -60,7 +60,7 @@ jobs:
     name: php-cs
     strategy:
       matrix:
-        php-versions: ["8.0", "8.1"]
+        php-versions: ["8.1", "8.2"]
 
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -81,8 +81,8 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php-versions: ["7.4", "8.0", "8.1"]
-        server-versions: ['25']
+        php-versions: ["8.1", "8.2"]
+        server-versions: [ '30.0.0' ]
     name: php-psalm-analysis
 
     steps:
@@ -128,25 +128,29 @@ jobs:
         working-directory: apps/${{ env.APP_NAME }}
         run: composer run psalm
 
-  # php-security-analysis:
-  #   runs-on: ubuntu-latest
-  #   name: security analysis
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         submodules: recursive
+  php-security-analysis:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    name: security analysis
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
-  #     - name: Psalm
-  #       uses: docker://vimeo/psalm-github-actions:4.9.3
-  #       with:
-  #         security_analysis: true
-  #         composer_ignore_platform_reqs: false
-  #         report_file: results.sarif
+      - name: Psalm
+        uses: docker://vimeo/psalm-github-actions:4.30.0
+        with:
+          security_analysis: true
+          composer_ignore_platform_reqs: false
+          report_file: results.sarif
 
-  #     - name: Upload Security Analysis results to GitHub
-  #       uses: github/codeql-action/upload-sarif@v2
-  #       with:
-  #         sarif_file: results.sarif
+      - name: Upload Security Analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
 
   js-eslint:
     runs-on: ubuntu-22.04

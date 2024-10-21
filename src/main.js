@@ -43,9 +43,6 @@ __webpack_public_path__ = generateFilePath('mediadc', '', 'js/')
 sync(store, router)
 
 Vue.directive('tooltip', Tooltip)
-
-// Vue.mixin(Nextcloudl10n)
-
 window.addEventListener('DOMContentLoaded', () => {
 	if (!window.OCA.Files) {
 		window.OCA.Files = {}

@@ -191,14 +191,16 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError, showSuccess, showWarning } from '@nextcloud/dialogs'
 import { subscribe, unsubscribe, emit } from '@nextcloud/event-bus'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcActions from '@nextcloud/vue/dist/Components/NcActions.js'
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
+import {
+	NcCheckboxRadioSwitch,
+	NcButton,
+	NcActions,
+	NcActionButton,
+	NcLoadingIcon,
+} from '@nextcloud/vue'
 import MinusBoxOutline from 'vue-material-design-icons/MinusBoxOutline.vue'
 import CheckAll from 'vue-material-design-icons/CheckAll.vue'
 import CheckUnderline from 'vue-material-design-icons/CheckUnderline.vue'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 
 import { mapGetters } from 'vuex'
 

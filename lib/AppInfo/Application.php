@@ -29,13 +29,14 @@ declare(strict_types=1);
 namespace OCA\MediaDC\AppInfo;
 
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
-use OCP\AppFramework\App;
-use OCP\AppFramework\Bootstrap\IBootContext;
-use OCP\AppFramework\Bootstrap\IBootstrap;
-use OCP\AppFramework\Bootstrap\IRegistrationContext;
-
 use OCA\MediaDC\Dashboard\RecentTasksWidget;
 use OCA\MediaDC\Listener\LoadFilesPluginListener;
+use OCA\MediaDC\Notification\Notifier;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'mediadc';
@@ -46,7 +47,7 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(RecentTasksWidget::class);
-		$context->registerNotifierService(\OCA\MediaDC\Notification\Notifier::class);
+		$context->registerNotifierService(Notifier::class);
 		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadFilesPluginListener::class);
 	}
 
