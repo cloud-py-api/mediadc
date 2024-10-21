@@ -28,15 +28,15 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Service;
 
-use OCP\Files\AppData\IAppDataFactory;
-use OCP\Files\SimpleFS\ISimpleFolder;
-use RuntimeException;
-use OCP\Files\IAppData;
-use OCP\IConfig;
-use OCP\Files\NotPermittedException;
-use OCP\Files\NotFoundException;
-
 use OCA\MediaDC\AppInfo\Application;
+use OCP\Files\AppData\IAppDataFactory;
+use OCP\Files\IAppData;
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
+use OCP\Files\SimpleFS\ISimpleFolder;
+use OCP\IConfig;
+
+use RuntimeException;
 
 class AppDataService {
 	private string $ncInstanceId;
@@ -97,7 +97,7 @@ class AppDataService {
 				'folderName' => $folder->getName(),
 				'path' => $appDataFolderPath,
 			];
-		} catch (NotFoundException | RuntimeException $e) {
+		} catch (NotFoundException|RuntimeException $e) {
 			return ['success' => file_exists($appDataFolderPath), 'error' => $e->getMessage()];
 		}
 	}

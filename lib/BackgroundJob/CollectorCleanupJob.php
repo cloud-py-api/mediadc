@@ -38,7 +38,7 @@ class CollectorCleanupJob extends TimedJob {
 
 	public function __construct(
 		ITimeFactory $time,
-		private readonly CleanupService $cleanupService
+		private readonly CleanupService $cleanupService,
 	) {
 		parent::__construct($time);
 

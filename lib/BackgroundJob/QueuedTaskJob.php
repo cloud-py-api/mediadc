@@ -35,7 +35,7 @@ use OCP\BackgroundJob\QueuedJob;
 class QueuedTaskJob extends QueuedJob {
 	public function __construct(
 		ITimeFactory $time,
-		private readonly CollectorService $collectorService
+		private readonly CollectorService $collectorService,
 	) {
 		parent::__construct($time);
 	}

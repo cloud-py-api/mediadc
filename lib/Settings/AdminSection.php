@@ -28,15 +28,15 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Settings;
 
-use OC\URLGenerator;
 use OCA\MediaDC\AppInfo\Application;
 use OCP\IL10N;
+use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
 
 class AdminSection implements IIconSection {
 	public function __construct(
 		private readonly IL10N $l,
-		private readonly URLGenerator $urlGenerator
+		private readonly IURLGenerator $urlGenerator,
 	) {
 	}
 

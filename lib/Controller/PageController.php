@@ -29,19 +29,19 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Controller;
 
 use OCA\Files\Event\LoadSidebar;
+use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\Service\CollectorService;
+use OCA\MediaDC\Service\SettingsService;
 use OCA\Viewer\Event\LoadViewer;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\TemplateResponse;
+
+use OCP\AppFramework\Services\IInitialState;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IRequest;
 use OCP\Util;
-
-use OCA\MediaDC\AppInfo\Application;
-use OCA\MediaDC\Service\CollectorService;
-use OCA\MediaDC\Service\SettingsService;
-use OCP\AppFramework\Services\IInitialState;
 
 class PageController extends Controller {
 	public function __construct(
@@ -49,7 +49,7 @@ class PageController extends Controller {
 		private readonly IEventDispatcher $eventDispatcher,
 		private readonly IInitialState $initialStateService,
 		private readonly SettingsService $settingsService,
-		private readonly ?CollectorService $collectorService
+		private readonly ?CollectorService $collectorService,
 	) {
 		parent::__construct(Application::APP_ID, $request);
 	}

@@ -37,7 +37,7 @@ use OCP\Settings\ISettings;
 class AdminSettings implements ISettings {
 	public function __construct(
 		private readonly IInitialState $initialState,
-		private readonly SettingMapper $settingMapper
+		private readonly SettingMapper $settingMapper,
 	) {
 	}
 

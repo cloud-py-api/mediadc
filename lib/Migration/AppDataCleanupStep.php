@@ -28,17 +28,19 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
+use OCA\MediaDC\Service\CleanupService;
 use OCP\Migration\IOutput;
+
 use OCP\Migration\IRepairStep;
 
-use OCA\MediaDC\Service\CleanupService;
-
 class AppDataCleanupStep implements IRepairStep {
-	public function __construct(private readonly CleanupService $cleanupService) {
+	public function __construct(
+		private readonly CleanupService $cleanupService,
+	) {
 	}
 
 	public function getName(): string {
-		return "Cleanup MediaDC static tables data";
+		return 'Cleanup MediaDC static tables data';
 	}
 
 	public function run(IOutput $output) {

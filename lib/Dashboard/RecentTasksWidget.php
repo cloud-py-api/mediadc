@@ -28,14 +28,14 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Dashboard;
 
-use OCP\IL10N;
-use OCP\AppFramework\Services\IInitialState;
-use OCP\Dashboard\IWidget;
-use OCP\IURLGenerator;
-use OCP\Util;
-
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\CollectorService;
+use OCP\AppFramework\Services\IInitialState;
+use OCP\Dashboard\IWidget;
+use OCP\IL10N;
+
+use OCP\IURLGenerator;
+use OCP\Util;
 
 class RecentTasksWidget implements IWidget {
 	public function __construct(
@@ -64,7 +64,7 @@ class RecentTasksWidget implements IWidget {
 
 	/**
 	 * @return int Initial order for widget sorting
-	 *   in the range of 10-100, 0-9 are reserved for shipped apps
+	 *             in the range of 10-100, 0-9 are reserved for shipped apps
 	 * @since 20.0.0
 	 */
 	public function getOrder(): int {

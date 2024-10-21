@@ -35,7 +35,7 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 class SettingsService {
 	public function __construct(
-		private readonly SettingMapper $mapper
+		private readonly SettingMapper $mapper,
 	) {
 	}
 
@@ -54,7 +54,7 @@ class SettingsService {
 	public function getSettingById($id): ?Setting {
 		try {
 			return $this->mapper->find($id);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 			return [
 				'success' => false,
 				'message' => 'Not found'
@@ -73,7 +73,7 @@ class SettingsService {
 				'success' => true,
 				'setting' => $this->mapper->findByName($name)
 			];
-		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 			return [
 				'success' => false,
 				'message' => 'Not found'

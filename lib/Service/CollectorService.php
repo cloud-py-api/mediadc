@@ -29,31 +29,31 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Service;
 
 use DOMDocument;
-use OCA\Files_Sharing\SharedStorage;
-use OCP\Files\File;
-use OCP\Files\Node;
-use OCP\Files\Folder;
-use OCP\Files\IRootFolder;
-use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-use OCP\IConfig;
-use OCP\IL10N;
-use Psr\Log\LoggerInterface;
-use OCP\BackgroundJob\IJobList;
-use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
-use OCP\IPreview;
-
 use OCA\Cloud_Py_API\Service\PythonService;
 use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
+use OCA\Files_Sharing\SharedStorage;
 use OCA\MediaDC\AppInfo\Application;
+use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
+use OCA\MediaDC\Db\CollectorTask;
+use OCA\MediaDC\Db\CollectorTaskDetailMapper;
+use OCA\MediaDC\Db\CollectorTaskMapper;
 use OCA\MediaDC\Db\Setting;
 use OCA\MediaDC\Db\SettingMapper;
-use OCA\MediaDC\Db\CollectorTask;
-use OCA\MediaDC\Db\CollectorTaskMapper;
-use OCA\MediaDC\Db\CollectorTaskDetailMapper;
-use OCA\MediaDC\BackgroundJob\QueuedTaskJob;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\BackgroundJob\IJobList;
+use OCP\Files\File;
+
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
+use OCP\Files\Node;
+use OCP\Files\NotFoundException;
+use OCP\Files\NotPermittedException;
+use OCP\IConfig;
+use OCP\IL10N;
+use OCP\IPreview;
 use OCP\Lock\LockedException;
+use Psr\Log\LoggerInterface;
 
 class CollectorService {
 	public const TARGET_MIME_TYPE = [
@@ -67,9 +67,10 @@ class CollectorService {
 	public const TASK_TYPE_QUEUED = 'queued';
 
 	private bool $isObjectStore;
+	private Folder $userFolder;
 
 	public function __construct(
-		?string $userId,
+		private readonly ?string $userId,
 		IRootFolder $rootFolder,
 		private readonly SettingMapper $settingsMapper,
 		private readonly CollectorTaskMapper $tasksMapper,
@@ -85,7 +86,6 @@ class CollectorService {
 		IConfig $config,
 	) {
 		if ($userId !== null) {
-			$this->userId = $userId;
 			$this->userFolder = $rootFolder->getUserFolder($this->userId);
 		}
 		$this->isObjectStore = $config->getSystemValue('objectstore', null) !== null;
@@ -104,7 +104,7 @@ class CollectorService {
 		$pythonBinary = $this->settingsMapper->findByName('python_binary');
 		// $queuedTask = null;
 
-		if ($pyLimitSetting !== null && $processesRunning < (int)$pyLimitSetting->getValue()) {
+		if ($processesRunning < (int)$pyLimitSetting->getValue()) {
 			$createdTask = $this->createCollectorTask($params);
 			if ($createdTask !== null) {
 				if (json_decode($pythonBinary->getValue())) {
@@ -299,7 +299,7 @@ class CollectorService {
 		/** @var CollectorTask */
 		$collectorTask = $this->tasksMapper->find($taskId);
 		if (intval($collectorTask->getPyPid()) !== 0 && $taskId === $collectorTask->getId()) {
-			exec("kill " . intval($collectorTask->getPyPid()), $output, $result_code);
+			exec('kill ' . intval($collectorTask->getPyPid()), $output, $result_code);
 			if ($result_code === 0) {
 				$this->logger->info("CollectorTask terminated.\n" .
 					json_encode($collectorTask->jsonSerialize()));
@@ -490,7 +490,12 @@ class CollectorService {
 		return false;
 	}
 
-	private function createXmlData($data) {
+	/**
+	 * @param array[] $data
+	 *
+	 * @psalm-param array{Task: array, Results: array} $data
+	 */
+	private function createXmlData(array $data) {
 		$domxml = new DOMDocument('1.0', 'utf-8');
 		$domxml->preserveWhiteSpace = false;
 		$domxml->formatOutput = true;
@@ -500,9 +505,9 @@ class CollectorService {
 		return $domxml->saveXML();
 	}
 
-	public function array_to_xml($array, $node, &$dom) {
+	public function array_to_xml(array $array, \DOMElement|false $node, DOMDocument &$dom) {
 		foreach ($array as $key => $value) {
-			if (preg_match("/^[0-9]/", strval($key))) {
+			if (preg_match('/^[0-9]/', strval($key))) {
 				$key = "node-{$key}";
 			}
 			$key = preg_replace("/[^a-z0-9_\-]+/i", '', $key);
@@ -525,12 +530,14 @@ class CollectorService {
 	/**
 	 * @param int $taskId
 	 *
-	 * @return \OCA\MediaDC\Db\CollectorTask[]|array
+	 * @return (false|string)[]|CollectorTask
+	 *
+	 * @psalm-return CollectorTask|array{success: false, message: 'Not found'}
 	 */
-	public function getCollectorTask(int $taskId) {
+	public function getCollectorTask(int $taskId): array|CollectorTask {
 		try {
 			return $this->tasksMapper->find($taskId);
-		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 			return [
 				'success' => false,
 				'message' => 'Not found'
@@ -555,7 +562,7 @@ class CollectorService {
 	 *
 	 * @return array
 	 */
-	public function getUserRecentTasks(int $limit = null, int $offset = null): array {
+	public function getUserRecentTasks(?int $limit = null, ?int $offset = null): array {
 		return $this->tasksMapper->findRecentByOwner($this->userId, $limit, $offset);
 	}
 
@@ -682,17 +689,17 @@ class CollectorService {
 						function (array $file_x, array $file_y) {
 							return $file_x['filesize'] - $file_y['filesize'];
 						}
-						: function (array $file_x, array $file_y) {
-							return $file_y['filesize'] - $file_x['filesize'];
-						}
+					: function (array $file_x, array $file_y) {
+						return $file_y['filesize'] - $file_x['filesize'];
+					}
 				);
 			}
 			return [
 				'files' => $filesInfo,
 			];
-		} catch (DoesNotExistException | MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException|MultipleObjectsReturnedException $e) {
 			$this->logger->error("Can't find file(s) of CollectorTaskDetail (\$id = "
-				. $taskId .  ")\n");
+				. $taskId . ")\n");
 			return [
 				'success' => false,
 				'message' => 'Not found files info'
@@ -765,7 +772,7 @@ class CollectorService {
 					'success' => false,
 					'locked' => true
 				];
-			} catch (NotPermittedException | NotFoundException $e) {
+			} catch (NotPermittedException|NotFoundException $e) {
 				return [
 					'success' => false,
 					'not_permitted' => $e instanceof NotPermittedException,
@@ -937,8 +944,8 @@ class CollectorService {
 	 */
 	public function details(
 		int $taskId,
-		int $limit = null,
-		int $offset = null
+		?int $limit = null,
+		?int $offset = null,
 	): array {
 		return array_map(function ($d) {
 			$d['files'] = explode(',', $d['files']);
@@ -965,8 +972,8 @@ class CollectorService {
 	 */
 	public function detailsExtended(
 		int $taskId,
-		int $limit = null,
-		int $offset = null
+		?int $limit = null,
+		?int $offset = null,
 	): array {
 		return array_map(function ($d) {
 			$d['files'] = explode(',', $d['files']);
@@ -995,7 +1002,7 @@ class CollectorService {
 	 * @param int $limit
 	 * @param int $offset
 	 */
-	public function resolved(string $type, int $limit = null, int $offset = null) {
+	public function resolved(string $type, ?int $limit = null, ?int $offset = null) {
 		if (in_array($type, ['photos', 'videos'])) {
 			return [
 				$type => $type === 'photos'
@@ -1013,7 +1020,9 @@ class CollectorService {
 	 * @param int $fileid
 	 * @param bool $resolved
 	 *
-	 * @return int
+	 * @return bool[]
+	 *
+	 * @psalm-return array{success: bool}
 	 */
 	public function markResolved(string $type, int $fileid, bool $resolved = true): array {
 		$result = 0;
@@ -1031,7 +1040,9 @@ class CollectorService {
 	 * @param int $fileid
 	 * @param bool $resolved
 	 *
-	 * @return int
+	 * @return bool[]
+	 *
+	 * @psalm-return array{success: bool}
 	 */
 	public function markResolvedPhoto(int $fileid, bool $resolved = true): array {
 		$result = $this->photosService->resolve($fileid, $resolved);
@@ -1044,7 +1055,9 @@ class CollectorService {
 	 * @param int $fileid
 	 * @param bool $resolved
 	 *
-	 * @return int
+	 * @return bool[]
+	 *
+	 * @psalm-return array{success: bool}
 	 */
 	public function markResolvedVideo(int $fileid, bool $resolved = true): array {
 		$result = $this->videosService->resolve($fileid, $resolved);
@@ -1102,9 +1115,9 @@ class CollectorService {
 	 * @param int $targetMtype
 	 * @param array $excludeList
 	 *
-	 * @return int Valid target files size
+	 * @return float|int Valid target files size
 	 */
-	public function getTargetFolderFilesSize($folder, $targetMtype, $excludeList) {
+	public function getTargetFolderFilesSize($folder, $targetMtype, $excludeList): float|int {
 		if ($this->hasIgnoreFlag($folder)) {
 			return 0;
 		}

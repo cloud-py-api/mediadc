@@ -28,13 +28,13 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Tests\Unit\Service;
 
-use PHPUnit\Framework\TestCase;
+use OCA\MediaDC\Service\AppDataService;
+use OCP\Files\NotFoundException;
+
+use OCP\Files\NotPermittedException;
 use PHPUnit\Framework\MockObject;
 
-use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
-
-use OCA\MediaDC\Service\AppDataService;
+use PHPUnit\Framework\TestCase;
 
 class AppDataServiceTest extends TestCase {
 	/** @var AppDataService */

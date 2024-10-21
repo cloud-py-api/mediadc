@@ -33,7 +33,7 @@ use OCA\MediaDC\Db\SettingMapper;
 
 class UtilsService {
 	public function __construct(
-		private SettingMapper $settingMapper
+		private SettingMapper $settingMapper,
 	) {
 	}
 
@@ -88,9 +88,7 @@ class UtilsService {
 		}
 		foreach ($settingsToRemove as $settingName) {
 			$setting = $this->settingMapper->findByName($settingName);
-			if (isset($setting)) {
-				$this->settingMapper->delete($setting);
-			}
+			$this->settingMapper->delete($setting);
 		}
 	}
 

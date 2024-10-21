@@ -28,14 +28,14 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Tests\Integration\Service;
 
-use OCP\AppFramework\App;
-use OCP\AppFramework\Http\JSONResponse;
-
-use PHPUnit\Framework\TestCase;
-
 use OCA\MediaDC\Controller\SettingsController;
 use OCA\MediaDC\Db\Setting;
+
 use OCA\MediaDC\Db\SettingMapper;
+
+use OCP\AppFramework\App;
+use OCP\AppFramework\Http\JSONResponse;
+use PHPUnit\Framework\TestCase;
 
 class SettingsControllerIntegrationTest extends TestCase {
 	/** @var SettingsController */

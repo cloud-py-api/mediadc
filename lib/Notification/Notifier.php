@@ -37,7 +37,7 @@ use OCP\Notification\INotifier;
 class Notifier implements INotifier {
 	public function __construct(
 		private readonly IFactory $factory,
-		private readonly IURLGenerator $url
+		private readonly IURLGenerator $url,
 	) {
 	}
 

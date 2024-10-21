@@ -28,18 +28,18 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
-use OCP\App\IAppManager;
-use OCP\Migration\IOutput;
-use OCP\Migration\IRepairStep;
-
 use OCA\Cloud_Py_API\Service\UtilsService as CPAUtilsService;
-
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Db\Setting;
+
 use OCA\MediaDC\Db\SettingMapper;
+
 use OCA\MediaDC\Migration\data\AppInitialData;
 use OCA\MediaDC\Service\AppDataService;
 use OCA\MediaDC\Service\UtilsService;
+use OCP\App\IAppManager;
+use OCP\Migration\IOutput;
+use OCP\Migration\IRepairStep;
 
 class AppDataInitializationStep implements IRepairStep {
 	public function __construct(
@@ -52,7 +52,7 @@ class AppDataInitializationStep implements IRepairStep {
 	}
 
 	public function getName(): string {
-		return "Initializing MediaDC data";
+		return 'Initializing MediaDC data';
 	}
 
 	public function run(IOutput $output) {

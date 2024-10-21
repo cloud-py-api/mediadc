@@ -29,13 +29,15 @@ declare(strict_types=1);
 namespace OCA\MediaDC\Db;
 
 use Exception;
-use OCP\IDBConnection;
-use OCP\AppFramework\Db\Entity;
+use OCA\MediaDC\AppInfo\Application;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
-use OCA\MediaDC\AppInfo\Application;
+use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Photo>
+ */
 class PhotoMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_photos');
@@ -49,7 +51,7 @@ class PhotoMapper extends QBMapper {
 	 *
 	 * @return \OCA\MediaDC\Db\Photo
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): Photo {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -59,7 +61,7 @@ class PhotoMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findAllFileids(int $limit = null, int $offset = null): array {
+	public function findAllFileids(?int $limit = null, ?int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('t.id', 't.fileid')
 			->from($this->tableName, 't')
@@ -111,7 +113,7 @@ class PhotoMapper extends QBMapper {
 	 *
 	 * @return array
 	 */
-	public function findAllResolvedByUser(string $userId, int $limit = null, int $offset = null) {
+	public function findAllResolvedByUser(string $userId, ?int $limit = null, ?int $offset = null) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(
 			'ocf.fileid',

@@ -28,19 +28,19 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Controller;
 
-use OCP\AppFramework\Http\Attribute\NoAdminRequired;
-use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
-use OCP\IRequest;
-use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\JSONResponse;
-
 use OCA\Cloud_Py_API\Service\UtilsService;
-
 use OCA\MediaDC\AppInfo\Application;
 use OCA\MediaDC\Service\PhotosService;
 use OCA\MediaDC\Service\SettingsService;
 use OCA\MediaDC\Service\VideosService;
+use OCP\AppFramework\Controller;
+
+use OCP\AppFramework\Http;
+
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
 
 class SettingsController extends Controller {
 	public function __construct(
@@ -48,7 +48,7 @@ class SettingsController extends Controller {
 		private readonly SettingsService $service,
 		private readonly PhotosService $photosService,
 		private readonly VideosService $videosService,
-		private readonly UtilsService $cpaUtils
+		private readonly UtilsService $cpaUtils,
 	) {
 		parent::__construct(Application::APP_ID, $request);
 	}

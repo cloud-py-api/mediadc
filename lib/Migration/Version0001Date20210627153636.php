@@ -28,9 +28,10 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Migration;
 
+use Closure;
 use OCP\DB\ISchemaWrapper;
-use OCP\Migration\SimpleMigrationStep;
 use OCP\Migration\IOutput;
+use OCP\Migration\SimpleMigrationStep;
 
 class Version0001Date20210627153636 extends SimpleMigrationStep {
 	/**
@@ -39,7 +40,7 @@ class Version0001Date20210627153636 extends SimpleMigrationStep {
 	 * @param array $options
 	 * @return null|ISchemaWrapper
 	 */
-	public function changeSchema(IOutput $output, \Closure $schemaClosure, array $options) {
+	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
@@ -55,7 +56,7 @@ class Version0001Date20210627153636 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('hash', 'binary', [
 				'notnull' => true,
-				'default' => "",
+				'default' => '',
 				'length' => 512
 			]);
 			$table->addColumn('mtime', 'bigint', [
@@ -92,7 +93,7 @@ class Version0001Date20210627153636 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('hash', 'binary', [
 				'notnull' => true,
-				'default' => "",
+				'default' => '',
 				'length' => 2048
 			]);
 			$table->addColumn('mtime', 'bigint', [
@@ -119,18 +120,18 @@ class Version0001Date20210627153636 extends SimpleMigrationStep {
 			]);
 			$table->addColumn('name', 'string', [
 				'notnull' => true,
-				'default' => ""
+				'default' => ''
 			]);
 			$table->addColumn('value', 'json', [
 				'notnull' => true
 			]);
 			$table->addColumn('display_name', 'string', [
 				'notnull' => true,
-				'default' => ""
+				'default' => ''
 			]);
 			$table->addColumn('description', 'string', [
 				'notnull' => true,
-				'default' => ""
+				'default' => ''
 			]);
 
 			$table->setPrimaryKey(['id']);

@@ -28,13 +28,15 @@ declare(strict_types=1);
 
 namespace OCA\MediaDC\Db;
 
-use OCP\IDBConnection;
-use OCP\AppFramework\Db\Entity;
+use OCA\MediaDC\AppInfo\Application;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
-use OCA\MediaDC\AppInfo\Application;
+use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<CollectorTask>
+ */
 class CollectorTaskMapper extends QBMapper {
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, Application::APP_ID . '_tasks');
@@ -44,7 +46,7 @@ class CollectorTaskMapper extends QBMapper {
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found
 	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result
 	 */
-	public function find(int $id): Entity {
+	public function find(int $id): CollectorTask {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -54,7 +56,7 @@ class CollectorTaskMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
-	public function findAll(int $limit = null, int $offset = null): array {
+	public function findAll(?int $limit = null, ?int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -71,7 +73,7 @@ class CollectorTaskMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findAllByOwner(string $owner, int $limit = null, int $offset = null): array {
+	public function findAllByOwner(string $owner, ?int $limit = null, ?int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -83,7 +85,7 @@ class CollectorTaskMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findRecentByOwner(string $owner, int $limit = null, int $offset = null): array {
+	public function findRecentByOwner(string $owner, ?int $limit = null, ?int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
@@ -96,7 +98,7 @@ class CollectorTaskMapper extends QBMapper {
 		return $this->findEntities($qb);
 	}
 
-	public function findAllRunningByOwner(string $owner, int $limit = null, int $offset = null): array {
+	public function findAllRunningByOwner(string $owner, ?int $limit = null, ?int $offset = null): array {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->tableName)
