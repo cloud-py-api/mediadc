@@ -8,6 +8,7 @@ OC.L10N.register(
     "Select file" : "Chọn tập tin",
     "Deselect all" : "Bỏ chọn tất cả",
     "Select all" : "Chọn tất cả",
+    "Delete files" : "Delete files",
     "Remove" : "Xoá",
     "Confirm" : "Xác nhận",
     "Decline" : "Từ chối",
