@@ -34,6 +34,7 @@ OC.L10N.register(
     "Photos" : "照片",
     "Videos" : "影片",
     "Start" : "開始",
+    "Restart" : "重新啟動",
     "Duplicate" : "重複",
     "Delete" : "刪除",
     "Edit" : "編輯",
