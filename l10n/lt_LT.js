@@ -25,6 +25,7 @@ OC.L10N.register(
     "Error" : "Klaida",
     "Settings list is empty" : "Nustatymų sąrašas yra tuščias",
     "Settings successfully updated" : "Nustatymai sėkmingai atnaujinti",
+    "Some error occurred while updating settings" : "Atnaujinant nustatymus įvyko tam tikros klaidos",
     "System info" : "Sistemos informacija",
     "Copy to clipboard" : "Kopijuoti į iškarpinę",
     "Copied to clipboard" : "Nukopijuota į iškarpinę",

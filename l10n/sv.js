@@ -28,6 +28,7 @@ OC.L10N.register(
     "Photos" : "Bilder",
     "Videos" : "Videor",
     "Start" : "Start",
+    "Restart" : "Omstart",
     "Duplicate" : "Dubblett",
     "Delete" : "Radera",
     "Edit" : "Ändra",
