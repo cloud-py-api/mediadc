@@ -26,6 +26,7 @@ OC.L10N.register(
     "Duplicate" : "Duplica",
     "Delete" : "Suprimir",
     "Edit" : "Edita",
-    "Delete task" : "Esborra la tasca"
+    "Delete task" : "Esborra la tasca",
+    "Task successfully deleted" : "La tasca s'ha suprimit correctament"
 },
 "nplurals=2; plural=(n != 1);");
