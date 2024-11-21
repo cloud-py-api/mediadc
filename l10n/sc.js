@@ -20,6 +20,7 @@ OC.L10N.register(
     "Select" : "Seletziona",
     "Photos" : "Fotos",
     "Videos" : "Vìdeos",
+    "Photos and Videos" : "Fotografias e vìdeos",
     "Start" : "Cumintza",
     "Delete" : "Cantzella",
     "Edit" : "Modìfica",
