@@ -15,6 +15,7 @@ OC.L10N.register(
     "Delete files" : "Radera filer",
     "Select group" : "Välj grupp",
     "Go to page" : "Gå till sida",
+    "Are you sure you want to remove this group without deleting files?" : "Är du säker på att du vill ta bort den här gruppen utan att ta bort filer?",
     "Change to grid view" : "Växla till rutnätsvy",
     "Change to list view" : "Växla till listvy",
     "Remove" : "Ta bort",
