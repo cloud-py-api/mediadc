@@ -156,6 +156,7 @@ OC.L10N.register(
     "Photos and Videos" : "Argazkiak eta bideoak",
     "Restart Task with changed parameters" : "Berrabiarazi zeregina aldatutako parametroekin",
     "Restart task" : "Berrabiarazi zeregina",
+    "Task name" : "Zereginaren izena",
     "Finish notification" : "Bukatu jakinarazpena",
     "Choose target directory" : "Hautatu helburuko direktorioa",
     "This directory already selected" : "Direktorio hau dagoeneko hautatuta dago",
