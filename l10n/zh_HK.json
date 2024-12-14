@@ -205,7 +205,7 @@
     "Deleted files are placed in the trashbin, so that they can be restored in case of need." : "已刪除的檔案被放置在垃圾箱中，以便在需要時可以還原它們。",
     "precision: " : "精密度：",
     "Deleted: " : "已刪除︰",
-    "Restart task with current params" : "使用當前參數重啟任務",
+    "Restart task with current params" : "使用目前參數重啟任務",
     "Edit task params" : "編輯任務參數",
     "Edit" : "編輯",
     "Terminate task execution" : "終止執行任務",
