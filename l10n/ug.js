@@ -19,7 +19,7 @@ OC.L10N.register(
     "Task finished alert" : "ۋەزىپە ئاگاھلاندۇرۇشنى تاماملىدى",
     "Task \"%s\" successfully finished." : "ۋەزىپە «% s» مۇۋەپپەقىيەتلىك تاماملاندى.",
     "Task successfully finished." : "ۋەزىپە مۇۋەپپەقىيەتلىك تاماملاندى.",
-    "Task finished with status {status}" : "ۋەزىپە {ھالىتى} بىلەن تاماملاندى",
+    "Task finished with status {status}" : "ۋەزىپە {status} بىلەن تاماملاندى",
     "Task finished, check out results" : "ۋەزىپە تاماملاندى ، نەتىجىنى تەكشۈرۈپ بېقىڭ",
     "duplicated" : "كۆپەيتىلگەن",
     "MediaDC" : "MediaDC",
