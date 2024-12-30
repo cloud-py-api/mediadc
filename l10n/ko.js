@@ -28,6 +28,7 @@ OC.L10N.register(
     "Duplicate" : "복제",
     "Delete" : "삭제",
     "Edit" : "편집",
+    "Delete task" : "결과 삭제",
     "Task successfully deleted" : "작업이 성공적으로 삭제됨"
 },
 "nplurals=1; plural=0;");
