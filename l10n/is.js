@@ -7,6 +7,7 @@ OC.L10N.register(
     "Export" : "Flytja út",
     "Deselect all" : "Afvelja allt",
     "Select all" : "Select all",
+    "Delete files" : "Eyða skrám",
     "Go to page" : "Go to page",
     "Remove" : "Fjarlægja",
     "Confirm" : "Staðfesta",

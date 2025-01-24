@@ -1,4 +1,6 @@
 { "translations": {
+    "Use pre-compiled Python binaries" : "Použiť predkompilované binárky Python",
+    "Use Python part in binary format (located in the appdata folder)" : "Použiť Python v binárnom formáte (nachádza sa v adresári appdata)",
     "_%n file_::_%n files_" : ["%n súbor","%n súbory","%n súbory","%n súborov"],
     "Tasks" : "Úlohy",
     "Settings" : "Nastavenia",
@@ -27,7 +29,14 @@
     "Add mask" : "Pridať masku",
     "Error" : "Chyba",
     "Settings list is empty" : "Zoznam nastavení je prázdny",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Zdá sa, že databáza nie je správne inicializovaná. Skúste aplikáciu povoliť znova",
+    "Bug report" : "Reportovanie chyby",
+    "Settings successfully updated" : "Nastavenia boli úspešne aktualizované",
+    "Some error occurred while updating settings" : "Pri aktualizácii nastavení sa vyskytla chyba",
     "Delete file confirmation" : "Potvrdenie odstránenia súboru",
+    "Collect non sensitive system info for bug report" : "Zhromažďuje necitlivé systémové informácie pre hlásenie chyby",
+    "Collect system info" : "Zhromažďovanie infromácii o systéme",
+    "System info" : "Infromácie o systéme",
     "Copy to clipboard" : "Skopírovať do schránky",
     "Copied to clipboard" : "Skopírované do schránky",
     "Not selected" : "Nie je vybrané",
@@ -54,6 +63,7 @@
     "Task successfully deleted" : "Úloha bola úspešne zmazaná",
     "No results to export" : "Žiadne výsledky pre exportovanie",
     "Owner:" : "Vlastník:",
-    "Photos&Videos" : "Fotky a Videá"
+    "Photos&Videos" : "Fotky a Videá",
+    "_Test text_::_Test texts_" : ["Testovací text","Testovacie texty","Testovacie texty","Testovacie texty"]
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);"
 }
