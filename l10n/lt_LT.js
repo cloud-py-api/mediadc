@@ -5,6 +5,7 @@ OC.L10N.register(
     "Tasks" : "Užduotys",
     "Settings" : "Nustatymai",
     "Export" : "Eksportuoti",
+    "Select file" : "Pasirinkti failą",
     "_Delete file_::_Delete files_" : ["Ištrinti failą","Ištrinti failus","Ištrinti failus","Ištrinti failus"],
     "Group successfully removed (1 file left)" : "Grupė sėkmingai pašalinta (liko 1 failas)",
     "Wait until file has been loaded before deleting it" : "Prieš ištrindami, palaukite, kol failas bus įkeltas",
