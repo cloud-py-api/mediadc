@@ -22,6 +22,7 @@ OC.L10N.register(
     "Duplicate" : "Tvítaka",
     "Delete" : "Eyða",
     "Edit" : "Breyta",
-    "Delete task" : "Eyða verki"
+    "Delete task" : "Eyða verki",
+    "Task successfully deleted" : "Tókst að eyða verki"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");
