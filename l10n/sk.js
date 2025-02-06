@@ -20,6 +20,7 @@ OC.L10N.register(
     "Delete files" : "Zmazať súbory",
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Hromadné akcie pre %n skupinu","Hromadné akcie pre %n skupiny","Hromadné akcie pre %n skupín","Hromadné akcie pre %n skupín"],
     "Select group" : "Vybrať skupinu",
+    "Duplicate group" : "Skupina duplikátov",
     "Go to page" : "Prejisť na stránku",
     "Confirm group removal" : "Potvrdiť odstránenie skupiny",
     "Change to grid view" : "Prepnúť na zobrazenie v mriežke",
