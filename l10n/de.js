@@ -109,7 +109,7 @@ OC.L10N.register(
     "Resolved list" : "Liste der Gelösten",
     "Toggle media type" : "Medientyp umschalten",
     "Toggle resolved list media type" : "Medientyp der gelösten Liste umschalten",
-    "Toggle list view (list or grid)" : "Listenansicht umschalten (Liste oder Raster)",
+    "Toggle list view (list or grid)" : "Listenansicht umschalten (Liste oder Kacheln)",
     "Remove file from resolved list" : "Datei von der Liste der Gelösten entfernen",
     "Create a new task or work on existing ones and resolve some!" : "Eine neue Aufgabe erstellen oder an Bestehenden arbeiten und diese erledigen!",
     "Create a new one!" : "Neue erstellen!",

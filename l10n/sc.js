@@ -1,7 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
-    "_%n file_::_%n files_" : ["%n archìviu","%n archìviu"],
+    "_%n file_::_%n files_" : ["%n archìviu","%n archìvios"],
     "Tasks" : "Fainas",
     "Settings" : "Cunfiguratzione",
     "Export" : "Esporta",
