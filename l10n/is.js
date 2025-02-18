@@ -9,6 +9,8 @@ OC.L10N.register(
     "Select all" : "Select all",
     "Delete files" : "Eyða skrám",
     "Go to page" : "Go to page",
+    "Change to grid view" : "Skipta í reitasýn",
+    "Change to list view" : "Skipta í listasýn",
     "Remove" : "Fjarlægja",
     "Confirm" : "Staðfesta",
     "Decline" : "Hafna",
