@@ -154,7 +154,7 @@ OC.L10N.register(
     "Target Mime Type" : "Cél Mime tipus",
     "Photos" : "Fényképek",
     "Videos" : "Videók",
-    "Photos and Videos" : "Fényképek és Videók",
+    "Photos and Videos" : "Fényképek és videók",
     "Restart Task with changed parameters" : "Feladat újraindítása a módoított paraméterekkel",
     "Restart task" : "Feladat újraindítása",
     "Task name" : "Feladat név",
