@@ -24,7 +24,7 @@ OC.L10N.register(
     "Start" : "Start",
     "Duplicate" : "Dupliker",
     "Delete" : "Slet",
-    "Edit" : "Redigér",
+    "Edit" : "Rediger",
     "Delete task" : "Slet opgave",
     "Task successfully deleted" : "Opgaven er slettet"
 },
