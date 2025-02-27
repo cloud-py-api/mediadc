@@ -15,15 +15,14 @@ OC.L10N.register(
     "Delete files" : "Radera filer",
     "Select group" : "Välj grupp",
     "Go to page" : "Gå till sida",
-    "Are you sure you want to remove this group without deleting files?" : "Är du säker på att du vill ta bort den här gruppen utan att ta bort filer?",
     "Change to grid view" : "Växla till rutnätsvy",
     "Change to list view" : "Växla till listvy",
     "Remove" : "Ta bort",
     "Confirm" : "Bekräfta",
     "Decline" : "Avböj",
     "Error" : "Fel",
-    "Copy to clipboard" : "Kopiera till urklipp",
     "Copied to clipboard" : "Kopierat till urklipp",
+    "Copy to clipboard" : "Kopiera till urklipp",
     "Not selected" : "Ej vald",
     "Select" : "Välj",
     "Photos" : "Bilder",
@@ -32,8 +31,8 @@ OC.L10N.register(
     "Restart" : "Omstart",
     "Duplicate" : "Dubblett",
     "Delete" : "Radera",
+    "Task successfully deleted" : "Uppgiften har raderats",
     "Edit" : "Ändra",
-    "Delete task" : "Ta bort uppgift",
-    "Task successfully deleted" : "Uppgiften har raderats"
+    "Delete task" : "Ta bort uppgift"
 },
 "nplurals=2; plural=(n != 1);");

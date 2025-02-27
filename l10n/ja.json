@@ -13,6 +13,8 @@
     "Go to page" : "ページを開く",
     "Change to grid view" : "グリッド表示へ変更する",
     "Change to list view" : "リスト表示へ変更する",
+    "Settings successfully updated" : "設定が更新されました。",
+    "Some error occurred while updating settings" : "設定の更新中にエラーが発生しました。",
     "Remove" : "削除",
     "Confirm" : "承認",
     "Decline" : "拒否",
@@ -20,20 +22,18 @@
     "Settings list is empty" : "設定リストが空です",
     "Seems like database not initialized properly. Try to re-enable the app" : "データベースが正しく初期化されていないようです。\nアプリを再度有効化してみてください。",
     "Bug report" : "バグレポート",
-    "Settings successfully updated" : "設定が更新されました。",
-    "Some error occurred while updating settings" : "設定の更新中にエラーが発生しました。",
+    "Copied to clipboard" : "クリップボードにコピーされました",
     "Collect system info" : "システム情報を収集する",
     "System info" : "システム情報",
     "Copy to clipboard" : "クリップボードにコピー",
-    "Copied to clipboard" : "クリップボードにコピーされました",
     "Select" : "選択",
     "Photos" : "写真",
     "Videos" : "動画",
     "Start" : "開始",
     "Duplicate" : "複製",
     "Delete" : "削除",
+    "Task successfully deleted" : "タスクは正常に削除されました。",
     "Edit" : "編集",
-    "Delete task" : "タスクを削除",
-    "Task successfully deleted" : "タスクは正常に削除されました。"
+    "Delete task" : "タスクを削除"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

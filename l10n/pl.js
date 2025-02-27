@@ -18,8 +18,8 @@ OC.L10N.register(
     "Confirm" : "Potwierdź",
     "Decline" : "Odrzuć",
     "Error" : "Błąd",
-    "Copy to clipboard" : "Kopiuj do schowka",
     "Copied to clipboard" : "Kopiuj do schowka",
+    "Copy to clipboard" : "Kopiuj do schowka",
     "Select" : "Wybierz",
     "Target Mime Type" : "Docelowy typ MIME",
     "Photos" : "Zdjęcia",
@@ -30,11 +30,11 @@ OC.L10N.register(
     "Stop" : "Stop",
     "Duplicate" : "Zduplikuj",
     "Delete" : "Usuń",
+    "Task successfully deleted" : "Zadanie pomyślnie usunięte",
     "Here you can view task details, manage task (stop or restart), delete found duplicated photos and videos." : "Tutaj możesz wyświetlić szczegóły zadania, zarządzać zadaniem (zatrzymać lub uruchomić ponownie), usunąć znalezione zduplikowane zdjęcia i filmy.",
     "Deleted: " : "Usunięto: ",
     "Edit" : "Edytuj",
     "Delete task" : "Usuń zadanie",
-    "Task successfully deleted" : "Zadanie pomyślnie usunięte",
     "Photos&Videos" : "Zdjęcia/Filmy"
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

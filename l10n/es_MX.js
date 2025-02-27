@@ -17,8 +17,8 @@ OC.L10N.register(
     "Confirm" : "Confirmar",
     "Decline" : "Rechazar",
     "Error" : "Error",
-    "Copy to clipboard" : "Copiar al portapapeles",
     "Copied to clipboard" : "Copiado al portapapeles",
+    "Copy to clipboard" : "Copiar al portapapeles",
     "Not selected" : "No seleccionado",
     "Select" : "Seleccionar",
     "Photos" : "Fotos",
@@ -26,8 +26,8 @@ OC.L10N.register(
     "Start" : "Iniciar",
     "Duplicate" : "Duplicado",
     "Delete" : "Eliminar",
+    "Task successfully deleted" : "Tarea eliminada exitosamente",
     "Edit" : "Editar",
-    "Delete task" : "Eliminar tarea",
-    "Task successfully deleted" : "Tarea eliminada exitosamente"
+    "Delete task" : "Eliminar tarea"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

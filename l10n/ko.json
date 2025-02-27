@@ -10,23 +10,23 @@
     "Delete files" : "파일 삭제",
     "Select group" : "그룹 선택",
     "Go to page" : "페이지로 이동",
-    "Create a new one!" : "새로 만드십시오",
     "Change to grid view" : "바둑판 보기로 변경",
     "Change to list view" : "목록 보기로 변경",
+    "Create a new one!" : "새로 만드십시오",
     "Remove" : "삭제",
     "Confirm" : "확인",
     "Decline" : "거절",
     "Error" : "오류",
-    "Copy to clipboard" : "클립보드로 복사",
     "Copied to clipboard" : "클립보드로 복사됨",
+    "Copy to clipboard" : "클립보드로 복사",
     "Select" : "선택",
     "Photos" : "사진",
     "Videos" : "동영상",
     "Start" : "시작",
     "Duplicate" : "복제",
     "Delete" : "삭제",
+    "Task successfully deleted" : "작업이 성공적으로 삭제됨",
     "Edit" : "편집",
-    "Delete task" : "결과 삭제",
-    "Task successfully deleted" : "작업이 성공적으로 삭제됨"
+    "Delete task" : "결과 삭제"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

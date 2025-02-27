@@ -17,16 +17,16 @@ OC.L10N.register(
     "Confirm" : "Confirma",
     "Decline" : "Rebutja",
     "Error" : "Error",
-    "Copy to clipboard" : "Copia-ho al porta-retalls",
     "Copied to clipboard" : "Copiat al porta-retalls",
+    "Copy to clipboard" : "Copia-ho al porta-retalls",
     "Select" : "Selecciona",
     "Photos" : "Fotografies",
     "Videos" : "Vídeos",
     "Start" : "Inici",
     "Duplicate" : "Duplica",
     "Delete" : "Suprimir",
+    "Task successfully deleted" : "La tasca s'ha suprimit correctament",
     "Edit" : "Edita",
-    "Delete task" : "Esborra la tasca",
-    "Task successfully deleted" : "La tasca s'ha suprimit correctament"
+    "Delete task" : "Esborra la tasca"
 },
 "nplurals=2; plural=(n != 1);");

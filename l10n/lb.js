@@ -13,7 +13,7 @@ OC.L10N.register(
     "Select" : "Select",
     "Photos" : "Photos",
     "Delete" : "Läschen",
-    "Edit" : "Änneren",
-    "Task successfully deleted" : "Aufgab erfollegräich geläscht"
+    "Task successfully deleted" : "Aufgab erfollegräich geläscht",
+    "Edit" : "Änneren"
 },
 "nplurals=2; plural=(n != 1);");

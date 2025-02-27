@@ -15,16 +15,16 @@ OC.L10N.register(
     "Confirm" : "Staðfesta",
     "Decline" : "Hafna",
     "Error" : "Villa",
-    "Copy to clipboard" : "Afrita á klippispjald",
     "Copied to clipboard" : "Afritað á klippispjald",
+    "Copy to clipboard" : "Afrita á klippispjald",
     "Select" : "Velja",
     "Photos" : "Ljósmyndir",
     "Videos" : "Myndskeið",
     "Start" : "Start",
     "Duplicate" : "Tvítaka",
     "Delete" : "Eyða",
+    "Task successfully deleted" : "Tókst að eyða verki",
     "Edit" : "Breyta",
-    "Delete task" : "Eyða verki",
-    "Task successfully deleted" : "Tókst að eyða verki"
+    "Delete task" : "Eyða verki"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

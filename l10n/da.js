@@ -16,16 +16,16 @@ OC.L10N.register(
     "Confirm" : "Bekræft",
     "Decline" : "Afvis",
     "Error" : "Fejl",
-    "Copy to clipboard" : "Kopier til udklipsholder",
     "Copied to clipboard" : "Kopieret til udklipsholder",
+    "Copy to clipboard" : "Kopier til udklipsholder",
     "Select" : "Vælg",
     "Photos" : "Billeder",
     "Videos" : "Videoer",
     "Start" : "Start",
     "Duplicate" : "Dupliker",
     "Delete" : "Slet",
+    "Task successfully deleted" : "Opgaven er slettet",
     "Edit" : "Rediger",
-    "Delete task" : "Slet opgave",
-    "Task successfully deleted" : "Opgaven er slettet"
+    "Delete task" : "Slet opgave"
 },
 "nplurals=2; plural=(n != 1);");

@@ -12,14 +12,14 @@ OC.L10N.register(
     "Confirm" : "Confirmar",
     "Decline" : "Declinar",
     "Error" : "Error",
-    "Copy to clipboard" : "Copiar al portapapeles",
     "Copied to clipboard" : "Copiado al portapapeles",
+    "Copy to clipboard" : "Copiar al portapapeles",
     "Select" : "Seleccionar",
     "Photos" : "Fotos",
     "Videos" : "Videos",
     "Start" : "Inicio",
     "Delete" : "Eliminar",
-    "Edit" : "Editar",
-    "Task successfully deleted" : "Tarea eliminada exitosamente"
+    "Task successfully deleted" : "Tarea eliminada exitosamente",
+    "Edit" : "Editar"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

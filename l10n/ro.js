@@ -12,15 +12,15 @@ OC.L10N.register(
     "Confirm" : "Confirmă",
     "Decline" : "Refuză",
     "Error" : "Eroare",
-    "Copy to clipboard" : "Copiază în clipboard",
     "Copied to clipboard" : "Copiat în clipboard",
+    "Copy to clipboard" : "Copiază în clipboard",
     "Select" : "Selectează",
     "Photos" : "Poze",
     "Videos" : "Fișiere video",
     "Start" : "Începe",
     "Duplicate" : "Duplicat",
     "Delete" : "Șterge",
-    "Edit" : "Editează",
-    "Task successfully deleted" : "Task șters cu succes"
+    "Task successfully deleted" : "Task șters cu succes",
+    "Edit" : "Editează"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

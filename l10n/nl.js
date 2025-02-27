@@ -17,8 +17,8 @@ OC.L10N.register(
     "Confirm" : "Bevestigen",
     "Decline" : "Afwijzen",
     "Error" : "Fout",
-    "Copy to clipboard" : "Kopiëren naar het klembord",
     "Copied to clipboard" : "Gekopieerd naar het klembord",
+    "Copy to clipboard" : "Kopiëren naar het klembord",
     "Select" : "Selecteer",
     "Photos" : "Foto's",
     "Videos" : "Videos",
@@ -27,8 +27,8 @@ OC.L10N.register(
     "Restart" : "Restart",
     "Duplicate" : "Duplicaat",
     "Delete" : "Verwijder",
+    "Task successfully deleted" : "Taak succesvol verwijderd",
     "Edit" : "Bewerk",
-    "Delete task" : "Verwijder taak",
-    "Task successfully deleted" : "Taak succesvol verwijderd"
+    "Delete task" : "Verwijder taak"
 },
 "nplurals=2; plural=(n != 1);");

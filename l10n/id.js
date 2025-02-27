@@ -12,14 +12,14 @@ OC.L10N.register(
     "Confirm" : "Konfirmasi",
     "Decline" : "Tolak",
     "Error" : "Galat",
-    "Copy to clipboard" : "Salin ke papan klip",
     "Copied to clipboard" : "Disalin ke papan klip",
+    "Copy to clipboard" : "Salin ke papan klip",
     "Select" : "Pilih",
     "Photos" : "Foto",
     "Videos" : "Video",
     "Start" : "Mulai",
     "Delete" : "Hapus",
-    "Edit" : "Sunting",
-    "Task successfully deleted" : "Tugas berhasil dihapus"
+    "Task successfully deleted" : "Tugas berhasil dihapus",
+    "Edit" : "Sunting"
 },
 "nplurals=1; plural=0;");
