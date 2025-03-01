@@ -26,6 +26,7 @@ OC.L10N.register(
     "Owner:" : "Īpašnieks:",
     "Edit" : "Labot",
     "Ignored" : "Ignorēts",
+    "Here you can view resolved media files " : "Šeit var apskatīt noteiktās informācijas nesēju datnes",
     "Scan for duplicates" : "Skenējiet dublikātus",
     "Photos&Videos" : "Fotoattēli un video"
 },
