@@ -1,6 +1,8 @@
 { "translations": {
     "Hashing algorithm" : "Αλγόριθμος κατακερματισμού",
     "Hashing algorithm used by Python background script" : "Αλγόριθμος κατακερματισμού που χρησιμοποιείται από το Python script παρασκηνίου",
+    "Use pre-compiled Python binaries" : "Χρήση προ-μεταγλωττισμένων δυαδικών Python",
+    "Use Python part in binary format (located in the appdata folder)" : "Χρήση του τμήματος Python σε δυαδική μορφή (βρίσκεται στον φάκελο appdata)",
     "_%n file_::_%n files_" : ["%n αρχείο","%n αρχεία"],
     "Tasks" : "Εργασίες",
     "Settings" : "Ρυθμίσεις",
@@ -12,14 +14,23 @@
     "Select all" : "Επιλογή όλων",
     "A server error occurred" : "Παρουσιάστηκε σφάλμα διακομιστή",
     "Delete files" : "Διαγραφή αρχείων",
+    "Duplicate group" : "Ομάδα διπλοτύπων",
     "Go to page" : "Μετάβαση στη σελίδα",
     "Change to grid view" : "Αλλαγή σε προβολή πλέγματος",
     "Change to list view" : "Αλλαγή σε προβολή λίστας",
+    "Settings successfully updated" : "Οι ρυθμίσεις ενημερώθηκαν με επιτυχία",
+    "Some error occurred while updating settings" : "Παρουσιάστηκε κάποιο σφάλμα κατά την ενημέρωση των ρυθμίσεων",
     "Remove" : "Αφαίρεση",
     "Confirm" : "Επιβεβαίωση",
     "Decline" : "Απόρριψη",
     "Error" : "Σφάλμα",
+    "Settings list is empty" : "Η λίστα ρυθμίσεων είναι κενή",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Φαίνεται ότι η βάση δεδομένων δεν αρχικοποιήθηκε σωστά. Δοκιμάστε να ενεργοποιήσετε ξανά την εφαρμογή",
+    "Bug report" : "Αναφορά σφάλματος",
     "Copied to clipboard" : "Αντιγράφηκε στο πρόχειρο",
+    "Collect non sensitive system info for bug report" : "Συλλογή μη ευαίσθητων πληροφοριών συστήματος για αναφορά σφάλματος",
+    "Collect system info" : "Συλλογή πληροφοριών συστήματος",
+    "System info" : "Πληροφορίες συστήματος",
     "Copy to clipboard" : "Αντιγραφή στο πρόχειρο",
     "Select" : "Επιλογή",
     "Photos" : "Φωτογραφίες",
@@ -28,6 +39,7 @@
     "Duplicate" : "Διπλότυπο",
     "Delete" : "Διαγραφή",
     "Edit" : "Επεξεργασία",
-    "Delete task" : "Διαγραφή εργασίας"
+    "Delete task" : "Διαγραφή εργασίας",
+    "_Test text_::_Test texts_" : ["Δοκιμαστικό κείμενο","Δοκιμαστικά κείμενα"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
