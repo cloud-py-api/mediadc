@@ -5,6 +5,7 @@ OC.L10N.register(
     "Tasks" : "Tasks",
     "Settings" : "Sozlamalar",
     "Export" : "Eksport",
+    "Select file" : "Faylni tanlang",
     "Select all" : "Select all",
     "Remove" : "Remove",
     "Confirm" : "Confirm",
