@@ -11,6 +11,7 @@ OC.L10N.register(
     "Select all" : "Selecciona-ho tot",
     "Delete files" : "Suprimeix els fitxers",
     "Select group" : "Selecciona un grup",
+    "Duplicate group" : "Grup duplicat",
     "Change to grid view" : "Canvia a la visualització de quadrícula",
     "Change to list view" : "Canvia el mode de visualització a llista",
     "Remove" : "Elimina",
