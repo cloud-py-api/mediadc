@@ -16,6 +16,7 @@ OC.L10N.register(
     "Videos" : "Videos",
     "Duplicate" : "Nusxa",
     "Delete" : "Delete",
+    "Task successfully deleted" : "Vazifa muvaffaqiyatli oʻchirildi",
     "Edit" : "Tahrirlash"
 },
 "nplurals=1; plural=0;");
