@@ -30,6 +30,7 @@ OC.L10N.register(
     "Videos" : "Videod",
     "Start" : "Algus",
     "Delete" : "Kustuta",
-    "Edit" : "Redigeeri"
+    "Edit" : "Redigeeri",
+    "Delete task" : "Kustuta ülesanne"
 },
 "nplurals=2; plural=(n != 1);");
