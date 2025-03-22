@@ -28,6 +28,7 @@
     "Videos" : "Videod",
     "Start" : "Algus",
     "Delete" : "Kustuta",
+    "Task successfully deleted" : "Ülesande kustutamine õnnestus",
     "Edit" : "Redigeeri",
     "Delete task" : "Kustuta ülesanne"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
