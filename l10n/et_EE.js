@@ -29,6 +29,7 @@ OC.L10N.register(
     "Photos" : "Fotod",
     "Videos" : "Videod",
     "Start" : "Algus",
+    "Restart" : "Taaskäivita",
     "Delete" : "Kustuta",
     "Task successfully deleted" : "Ülesande kustutamine õnnestus",
     "Edit" : "Redigeeri",
