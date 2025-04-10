@@ -13,7 +13,7 @@ OC.L10N.register(
     "Photos" : "Fotoioù",
     "Videos" : "Videoioù",
     "Start" : "Kregiñ",
-    "Delete" : "Lemel",
+    "Delete" : "Dilemel",
     "Task successfully deleted" : "Trevell bet dilamet ervat",
     "Edit" : "Cheñch"
 },
