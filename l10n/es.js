@@ -115,7 +115,7 @@ OC.L10N.register(
     "The photo and video hashes will be cleaned before changing hash size.\nContinue?" : "Los valores hash correspondientes a las fotos y videos serán limpiados antes de cambiar a el tamaño del hash.\n¿Continuar?",
     "Hash size successfully updated" : "El tamaño del hash se ha actualizado correctamente",
     "An error occurred when updating the setting. Try again" : "Ocurrió algún error mientras se actualizaba la configuración. Intente de nuevo",
-    "Ignore orientation flag successfully updated" : "El ajuste para ignorar la orientación de la imagen fue actualizado exitosamente",
+    "Ignore orientation flag successfully updated" : "El indicador para ignorar la orientación de la imagen fue actualizado exitosamente",
     "Some error occurred while updating setting. Try again" : "Ocurrió algún error mientras se actualizaba la configuración. Intente de nuevo",
     "This mask already exists!" : "¡Esta máscara ya existe!",
     "Enter custom mask!" : "¡Introduzca la máscara personalizada!",
