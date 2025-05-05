@@ -30,7 +30,7 @@ OC.L10N.register(
     "A server error occurred" : "Prišlo je do napake strežnika.",
     "Duplicates list" : "Seznam podvojenih",
     "Sort groups" : "Razvrsti skupine",
-    "Delete files" : "Izbriši datoteki",
+    "Delete files" : "Izbriši datoteke",
     "Select group" : "Izbor skupine",
     "Page:" : "Stran:",
     "Go to page" : "Skoči na stran",
