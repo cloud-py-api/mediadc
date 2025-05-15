@@ -75,7 +75,7 @@
     "_file_::_files_" : ["文件"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["批量操作 %n 个组"],
     "_Remove group_::_Remove groups_" : ["移除组"],
-    "Duplicate group succesffully removed" : "已移除重复组",
+    "Duplicate group successfully removed" : "已移除重复组",
     "An error occurred while deleting duplicate group" : "删除重复组时出现错误",
     "Select group" : "选择群组",
     "Open duplicate group" : "打开重复的组",

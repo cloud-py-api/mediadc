@@ -65,7 +65,7 @@ OC.L10N.register(
     "_file_::_files_" : ["fitxategia","fitxategiak"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Sorta ekintzak %n taldeetarako","Sorta ekintzak taldeetarako"],
     "_Remove group_::_Remove groups_" : ["Ezabatu taldeak ","Ezabatu taldeak"],
-    "Duplicate group succesffully removed" : "Talde bikoiztua behar bezala kendu da",
+    "Duplicate group successfully removed" : "Talde bikoiztua behar bezala kendu da",
     "An error occurred while deleting duplicate group" : "Errore bat gertatu da talde bikoiztua ezabatzean",
     "Select group" : "Hautatu taldea",
     "Open duplicate group" : "Ireki talde bikoiztua",

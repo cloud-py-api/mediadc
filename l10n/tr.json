@@ -75,7 +75,7 @@
     "_file_::_files_" : ["dosya","dosya"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["%n grup için toplu işlemler","%n grup için toplu işlemler"],
     "_Remove group_::_Remove groups_" : ["Grubu sil","Grupları sil"],
-    "Duplicate group succesffully removed" : "Çift grup silindi",
+    "Duplicate group successfully removed" : "Çift grup silindi",
     "An error occurred while deleting duplicate group" : "Çift grup silinirken bir sorun çıktı",
     "Select group" : "Grubu seçin",
     "Open duplicate group" : "Çift grubu aç",

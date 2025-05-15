@@ -65,7 +65,7 @@
     "_file_::_files_" : ["archivo","archivos","archivos"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Acciones en lote para %n grupo","Acciones en lote para %n grupos","Acciones en lote para %n grupos"],
     "_Remove group_::_Remove groups_" : ["Eliminar grupo","Eliminar grupos","Eliminar grupos"],
-    "Duplicate group succesffully removed" : "Grupo duplicado eliminado con éxito",
+    "Duplicate group successfully removed" : "Grupo duplicado eliminado con éxito",
     "An error occurred while deleting duplicate group" : "Se produjo un error al eliminar el grupo duplicado",
     "Select group" : "Seleccionar grupo",
     "Open duplicate group" : "Abrir grupo duplicado",
