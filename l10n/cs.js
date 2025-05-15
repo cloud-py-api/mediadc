@@ -76,7 +76,7 @@ OC.L10N.register(
     "_file_::_files_" : ["soubor","soubory","souborů","soubory"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Dávková akce pro %n skupinu","Dávková akce pro %n skupiny","Dávková akce pro %n skupin","Dávková akce pro %n skupiny"],
     "_Remove group_::_Remove groups_" : ["Odebrat skupinu","Odebrat skupiny","Odebrat skupiny","Odebrat skupiny"],
-    "Duplicate group succesffully removed" : "Skupina duplicit úspěšně odebrána",
+    "Duplicate group successfully removed" : "Skupina duplicit úspěšně odebrána",
     "An error occurred while deleting duplicate group" : "Při mazání skupiny duplicit došlo k chybě",
     "Select group" : "Vybrat skupinu",
     "Open duplicate group" : "Otevřít skupinu duplicit",

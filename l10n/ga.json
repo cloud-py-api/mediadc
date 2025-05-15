@@ -75,7 +75,7 @@
     "_file_::_files_" : ["comhad","comhaid","comhaid","comhaid","comhaid"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Gníomhartha baisce le haghaidh grúpa %n","Gníomhartha baisce do %n grúpaí","Gníomhartha baisce do %n grúpaí","Gníomhartha baisce do %n grúpaí","Gníomhartha baisce do %n grúpaí"],
     "_Remove group_::_Remove groups_" : ["Bain an grúpa","Bain grúpaí","Bain grúpaí","Bain grúpaí","Bain grúpaí"],
-    "Duplicate group succesffully removed" : "Baineadh an grúpa dúblach go rathúil",
+    "Duplicate group successfully removed" : "Baineadh an grúpa dúblach go rathúil",
     "An error occurred while deleting duplicate group" : "Tharla earráid agus an grúpa dúblach á scriosadh",
     "Select group" : "Roghnaigh grúpa",
     "Open duplicate group" : "Oscail grúpa dúblach",

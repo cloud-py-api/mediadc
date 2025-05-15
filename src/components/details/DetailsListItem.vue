@@ -309,7 +309,7 @@ export default {
 					}
 					emit('updateTaskInfo')
 					this.$store.commit('setDetails', updatedDetails)
-					showSuccess(this.t('mediadc', 'Duplicate group succesffully removed'))
+					showSuccess(this.t('mediadc', 'Duplicate group successfully removed'))
 					const detailCheckedIndex = this.checkedDetailGroups.findIndex(d => d.group_id === detail.group_id)
 					if (detailCheckedIndex !== -1) {
 						const newCheckedDetailGroups = this.checkedDetailGroups

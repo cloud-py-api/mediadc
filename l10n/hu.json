@@ -63,7 +63,7 @@
     "_file_::_files_" : ["fájl","fájlok"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Kötegelt művelet %n csoporton","Kötegelt művelet %n csoporton"],
     "_Remove group_::_Remove groups_" : ["Csoport eltávolítása","Csoportok eltávolítása"],
-    "Duplicate group succesffully removed" : "A duplikált csoportok sikeresen el lettek távolítva",
+    "Duplicate group successfully removed" : "A duplikált csoportok sikeresen el lettek távolítva",
     "An error occurred while deleting duplicate group" : "Hiba történt a duplikált csoport törlése során",
     "Select group" : "Válasszon csoportot",
     "Open duplicate group" : "Duplikált csoport megnyitása",

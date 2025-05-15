@@ -77,7 +77,7 @@ OC.L10N.register(
     "_file_::_files_" : ["archivo","archivos","archivos"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Acciones en lote para %n grupo","Acciones en lote para %n grupos","Acciones en lote para %n grupos"],
     "_Remove group_::_Remove groups_" : ["Quitar grupo","Quitar grupos","Quitar grupos"],
-    "Duplicate group succesffully removed" : "El grupo de duplicados se ha quitado correctamente",
+    "Duplicate group successfully removed" : "El grupo de duplicados se ha quitado correctamente",
     "An error occurred while deleting duplicate group" : "Ocurrió un error mientras se eliminaba del grupo de duplicados",
     "Select group" : "Seleccionar grupo",
     "Open duplicate group" : "Abrir grupo duplicado",

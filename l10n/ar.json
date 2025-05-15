@@ -75,7 +75,7 @@
     "_file_::_files_" : ["الملفات","الملف","الملفات","الملفات","الملفات","الملفات"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["حزمة إجراءات لـ %n مجموعات","حزمة إجراءات لـ %nمجموعة","حزمة إجراءات لـ %n مجموعات","حزمة إجراءات لـ %n مجموعات","حزمة إجراءات لـ %nمجموعات","حزمة إجراءات لـ%n مجموعات"],
     "_Remove group_::_Remove groups_" : ["إزالة مجموعات","إزالة مجموعة","إزالة مجموعات","إزالة مجموعات","إزالة مجموعات","إزالة مجموعات"],
-    "Duplicate group succesffully removed" : "تم إزالة المجموعة المكررة",
+    "Duplicate group successfully removed" : "تم إزالة المجموعة المكررة",
     "An error occurred while deleting duplicate group" : "حدث خطأ أثناء حذف مجموعة مكررة",
     "Select group" : "إختر مجموعةً",
     "Open duplicate group" : "فتح مجموعة مكررة",

@@ -77,7 +77,7 @@ OC.L10N.register(
     "_file_::_files_" : ["檔案"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["%n 個群組的批處理操作"],
     "_Remove group_::_Remove groups_" : ["移除群組"],
-    "Duplicate group succesffully removed" : "移除了重複群組",
+    "Duplicate group successfully removed" : "移除了重複群組",
     "An error occurred while deleting duplicate group" : "刪除重複群組時發生了錯誤",
     "Select group" : "選擇群組",
     "Open duplicate group" : "打開重複群組",

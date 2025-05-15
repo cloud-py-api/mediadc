@@ -59,7 +59,7 @@
     "_file_::_files_" : ["αρχείο","αρχεία"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Μαζικές ενέργειες για %n ομάδα","Μαζικές ενέργειες για %n ομάδες"],
     "_Remove group_::_Remove groups_" : ["Αφαίρεση ομάδας","Αφαίρεση ομάδων"],
-    "Duplicate group succesffully removed" : "Η ομάδα διπλότυπων αφαιρέθηκε με επιτυχία",
+    "Duplicate group successfully removed" : "Η ομάδα διπλότυπων αφαιρέθηκε με επιτυχία",
     "An error occurred while deleting duplicate group" : "Παρουσιάστηκε σφάλμα κατά τη διαγραφή της ομάδας διπλότυπων",
     "Select group" : "Επιλογή ομάδας",
     "Open duplicate group" : "Άνοιγμα ομάδας διπλοτύπων",

@@ -75,7 +75,7 @@
     "_file_::_files_" : ["file","files"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Batch actions for %n group","Batch actions for %n groups"],
     "_Remove group_::_Remove groups_" : ["Remove group","Remove groups"],
-    "Duplicate group succesffully removed" : "Duplicate group succesffully removed",
+    "Duplicate group successfully removed" : "Duplicate group successfully removed",
     "An error occurred while deleting duplicate group" : "An error occurred while deleting duplicate group",
     "Select group" : "Select group",
     "Open duplicate group" : "Open duplicate group",

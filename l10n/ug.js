@@ -67,7 +67,7 @@ OC.L10N.register(
     "Delete files" : "ھۆججەتلەرنى ئۆچۈرۈڭ",
     "No matchings found" : "ماس كەلمىدى",
     "No duplicates found." : "كۆپەيتىلگەن نۇسخىسى تېپىلمىدى.",
-    "Duplicate group succesffully removed" : "كۆپەيتىلگەن گۇرۇپپا مۇۋەپپەقىيەتلىك ھالدا ئېلىۋېتىلدى",
+    "Duplicate group successfully removed" : "كۆپەيتىلگەن گۇرۇپپا مۇۋەپپەقىيەتلىك ھالدا ئېلىۋېتىلدى",
     "An error occurred while deleting duplicate group" : "تەكرارلانغان گۇرۇپپىنى ئۆچۈرگەندە خاتالىق كۆرۈلدى",
     "Select group" : "گۇرۇپپا تاللاڭ",
     "Open duplicate group" : "تەكرار گۇرۇپپا ئېچىڭ",

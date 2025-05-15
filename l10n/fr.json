@@ -75,7 +75,7 @@
     "_file_::_files_" : ["fichier","fichiers","fichiers"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Traitements par lot pour %n groupe","Traitements par lots pour %n groupes","Traitements par lots pour %n groupes"],
     "_Remove group_::_Remove groups_" : ["Supprimer le groupe","Supprimer les groupes","Supprimer les groupes"],
-    "Duplicate group succesffully removed" : "Groupe de doublons retiré avec succès",
+    "Duplicate group successfully removed" : "Groupe de doublons retiré avec succès",
     "An error occurred while deleting duplicate group" : "Une erreur est survenue en retirant le groupe de doublons",
     "Select group" : "Sélectionner un groupe",
     "Open duplicate group" : "Ouvrir le groupe de doublons",

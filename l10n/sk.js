@@ -77,7 +77,7 @@ OC.L10N.register(
     "_file_::_files_" : ["súbor","súbory","súbory","súbory"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Hromadné akcie pre %n skupinu","Hromadné akcie pre %n skupiny","Hromadné akcie pre %n skupín","Hromadné akcie pre %n skupín"],
     "_Remove group_::_Remove groups_" : ["Odstrániť skupinu","Odstrániť skupiny","Odstrániť skupiny","Odstrániť skupiny"],
-    "Duplicate group succesffully removed" : "Skupina duplikátov bola úspešne odstránená",
+    "Duplicate group successfully removed" : "Skupina duplikátov bola úspešne odstránená",
     "An error occurred while deleting duplicate group" : "Pri odstraňovaní skupiny duplicít sa vyskytla chyba",
     "Select group" : "Vybrať skupinu",
     "Open duplicate group" : "Otvoriť skupinu duplikátov",

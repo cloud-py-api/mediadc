@@ -77,7 +77,7 @@ OC.L10N.register(
     "_file_::_files_" : ["fil","filer"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Batchhandlinger for %n gruppe","Batchhandlinger for %n grupper"],
     "_Remove group_::_Remove groups_" : ["Fjern gruppen","Fjern gruppene"],
-    "Duplicate group succesffully removed" : "Duplikatgruppen er fjernet",
+    "Duplicate group successfully removed" : "Duplikatgruppen er fjernet",
     "An error occurred while deleting duplicate group" : "Det oppstod en feil under sletting av duplikatgruppe",
     "Select group" : "Velg gruppe",
     "Open duplicate group" : "Åpne duplikatgruppe",

@@ -49,7 +49,7 @@ OC.L10N.register(
     "Delete files" : "Вилучити файли",
     "No matchings found" : "Збігів не знайдено",
     "No duplicates found." : "Дублікатів не знайдено.",
-    "Duplicate group succesffully removed" : "Група дублікатів успішно видалено",
+    "Duplicate group successfully removed" : "Група дублікатів успішно видалено",
     "Select group" : "Обрати групу",
     "Open duplicate group" : "Відкрити дублікат групи",
     "Duplicate group" : "Група дублікатів",

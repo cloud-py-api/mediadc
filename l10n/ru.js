@@ -67,7 +67,7 @@ OC.L10N.register(
     "_file_::_files_" : ["файл","файла","файлов","файлов"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Действие с %n группой","Действие с %n группами","Действие с %n группами","Действие с %n группами"],
     "_Remove group_::_Remove groups_" : ["Убрать группу","Убрать группы","Убрать группы","Убрать группы"],
-    "Duplicate group succesffully removed" : "Группа дубликатов убрана",
+    "Duplicate group successfully removed" : "Группа дубликатов убрана",
     "An error occurred while deleting duplicate group" : "При удалении группы дубликатов произошла ошибка",
     "Select group" : "Выбрать группу",
     "Open duplicate group" : "Открыть группу дубликатов",
