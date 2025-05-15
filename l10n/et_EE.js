@@ -30,6 +30,7 @@ OC.L10N.register(
     "Videos" : "Videod",
     "Start" : "Algus",
     "Restart" : "Taaskäivita",
+    "Duplicate" : "Tee koopia",
     "Delete" : "Kustuta",
     "Task successfully deleted" : "Ülesande kustutamine õnnestus",
     "Edit" : "Redigeeri",
