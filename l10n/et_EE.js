@@ -9,6 +9,7 @@ OC.L10N.register(
     "Deselect all" : "Eemalda kogu valik",
     "Select all" : "Vali kõik",
     "Delete files" : "Kustuta failid",
+    "Select group" : "Vali grupp",
     "Change to grid view" : "Muuda ruudustikuvaateks",
     "Change to list view" : "Muuda loendivaateks",
     "Settings successfully updated" : "Seadistused edukalt uuendatud",
