@@ -42,4 +42,4 @@ However, we encourage and welcome any contributions from the community in the fo
 After Nextcloud App Ecosystem V2 finished we'll rewrite MediaDC to use the new system, and write many other amazing applications.
 
 For All Coders who want to write New Amazing Applications for 
-Nextcloud with New App Ecosystem - we are avalaible to discuss its API, prototypes, etc. in their repositories. 
+Nextcloud with New App Ecosystem - we are available to discuss its API, prototypes, etc. in their repositories. 
