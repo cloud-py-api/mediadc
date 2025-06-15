@@ -89,6 +89,8 @@
     "Auto open next group" : "Автоматичне відкриття наступної групи",
     "Show full file path" : "Показати повний шлях до файлу",
     "Copied to clipboard" : "Скопійовано",
+    "Collect non sensitive system info for bug report" : "Збирати нечутливі системні дані для звіту про помилку",
+    "Collect system info" : "Збирати інформацію про систему",
     "System info" : "Інформація про систему",
     "Copy to clipboard" : "Копіювати до буферу обміну",
     "Choose target directory" : "Виберіть цільовий каталог",
