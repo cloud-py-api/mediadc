@@ -80,7 +80,7 @@ OC.L10N.register(
     "Duplicate group succesffully removed" : "Doppelte Gruppe erfolgreich entfernt",
     "An error occurred while deleting duplicate group" : "Es ist ein Fehler beim Löschen der doppelten Gruppe aufgetreten.",
     "Select group" : "Gruppe auswählen",
-    "Open duplicate group" : "Duplettengruppe öffnen",
+    "Open duplicate group" : "Dublettengruppe öffnen",
     "Duplicate group" : "Gruppe duplizieren",
     "Remove group without deleting files" : "Gruppe entfernen ohne die Dateien zu löschen",
     "Previous duplicate group files page" : "Vorherige Seite mit doppelten Gruppendateien",
