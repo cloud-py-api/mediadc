@@ -1,0 +1,16 @@
+{ "translations": {
+    "_%n file_::_%n files_" : ["%n file","%n files"],
+    "Settings" : "Mipangilio",
+    "Export" : "Safirisha",
+    "Select all" : "Chagua zote",
+    "Delete files" : "Futa faili",
+    "Confirm" : "Thibitisha",
+    "Decline" : "Kataa",
+    "Error" : "Hitilafu",
+    "Copy to clipboard" : "Nakili kwenye ubao wa kunakili",
+    "Videos" : "Picha mjongeo",
+    "Duplicate" : "Zalisha",
+    "Delete" : "Futa",
+    "Edit" : "Hariri"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
