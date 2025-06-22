@@ -10,7 +10,9 @@ OC.L10N.register(
     "Decline" : "Kataa",
     "Error" : "Hitilafu",
     "Copy to clipboard" : "Nakili kwenye ubao wa kunakili",
+    "Photos" : "Picha",
     "Videos" : "Picha mjongeo",
+    "Restart" : "Anza upya",
     "Duplicate" : "Zalisha",
     "Delete" : "Futa",
     "Edit" : "Hariri"
