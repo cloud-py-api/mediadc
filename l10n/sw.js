@@ -2,6 +2,7 @@ OC.L10N.register(
     "mediadc",
     {
     "_%n file_::_%n files_" : ["%n file","%n files"],
+    "Tasks" : "Kazi",
     "Settings" : "Mipangilio",
     "Export" : "Safirisha",
     "Select all" : "Chagua zote",
@@ -15,6 +16,7 @@ OC.L10N.register(
     "Restart" : "Anza upya",
     "Duplicate" : "Zalisha",
     "Delete" : "Futa",
-    "Edit" : "Hariri"
+    "Edit" : "Hariri",
+    "Delete task" : "Futa jukumu"
 },
 "nplurals=2; plural=(n != 1);");

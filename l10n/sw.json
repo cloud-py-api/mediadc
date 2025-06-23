@@ -1,5 +1,6 @@
 { "translations": {
     "_%n file_::_%n files_" : ["%n file","%n files"],
+    "Tasks" : "Kazi",
     "Settings" : "Mipangilio",
     "Export" : "Safirisha",
     "Select all" : "Chagua zote",
@@ -13,6 +14,7 @@
     "Restart" : "Anza upya",
     "Duplicate" : "Zalisha",
     "Delete" : "Futa",
-    "Edit" : "Hariri"
+    "Edit" : "Hariri",
+    "Delete task" : "Futa jukumu"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
