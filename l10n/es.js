@@ -46,6 +46,7 @@ OC.L10N.register(
     "_Delete file_::_Delete files_" : ["Eliminar archivo","Eliminar archivos","Eliminar archivos"],
     "Remove file (mark resolved)" : "Quitar archivo (marcar como resuelto)",
     "Checked files successfully removed" : "Los archivos seleccionados fueron quitados existosamente",
+    "Are you sure you want to delete all files" : "Está seguro de eliminar todos los archivos",
     "Not all files deleted" : "No todos los archivos fueron eliminados",
     "A server error occurred. Files not deleted" : "Ha ocurrido un error en el servidor. Los archivos no fueron eliminados",
     "Checked files successfully deleted" : "Los archivos seleccionados fueron eliminados existosamente",
