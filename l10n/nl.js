@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use Python part in binary format (located in the appdata folder)" : "Gebruik het Python-gedeelte in binair formaat (gelegen in de appdata-map)",
     "_%n file_::_%n files_" : ["%n bestand","%n bestanden"],
     "Tasks" : "Taken",
     "Settings" : "Instellingen",
@@ -17,6 +18,7 @@ OC.L10N.register(
     "Confirm" : "Bevestigen",
     "Decline" : "Afwijzen",
     "Error" : "Fout",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Lijkt erop dat database niet goed geïnitialiseerd is. Probeer de app opnieuw in te schakelen",
     "Copied to clipboard" : "Gekopieerd naar het klembord",
     "Copy to clipboard" : "Kopiëren naar het klembord",
     "Select" : "Selecteer",

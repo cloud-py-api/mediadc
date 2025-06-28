@@ -13,6 +13,7 @@ OC.L10N.register(
     "Deselect all" : "Avmarkera alla",
     "Select all" : "Välj alla",
     "Delete files" : "Radera filer",
+    "Are you sure you want to remove this group without deleting files?" : "Är du säker på att du vill ta bort den här gruppen utan att ta bort filer?",
     "Select group" : "Välj grupp",
     "Go to page" : "Gå till sida",
     "Change to grid view" : "Växla till rutnätsvy",
