@@ -231,7 +231,9 @@
     "Photos&Videos" : "otos&Videos",
     "MediaDC Task Details" : "MediaDC Aufgaben Details",
     "MediaDC Resolved files" : "MediaDC gelöste Dateien",
+    "Some error occurred while terminating task" : "Beim Beenden der Aufgabe ist ein Fehler aufgetreten",
     "An error occurred while deleting task" : "Es ist ein Fehler beim Löschen der Aufgabe aufgetreten.",
+    "Task successfully duplicated" : "Aufgabe wurde dupliziert",
     "Task successfully started with duplicated settings!" : "Aufgabe mit duplizierten Einstellungen gestartet!",
     "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

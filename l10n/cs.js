@@ -232,7 +232,9 @@ OC.L10N.register(
     "Photos&Videos" : "Fotky a videa",
     "MediaDC Task Details" : "Podrobnosti o MediaDC úloze",
     "MediaDC Resolved files" : "Soubory vyřešené v MediaDC",
+    "Some error occurred while terminating task" : "Při ukončování úlohy se vyskytla nějaká chyba",
     "An error occurred while deleting task" : "Při mazání úlohy došlo k chybě",
+    "Task successfully duplicated" : "Úloha úspěšně zduplikována",
     "Task successfully started with duplicated settings!" : "Úloha úspěšně spuštěna s duplikovanými nastaveními!",
     "_Test text_::_Test texts_" : ["Testovací text","Testovací texty","Testovací texty","Testovací texty"]
 },

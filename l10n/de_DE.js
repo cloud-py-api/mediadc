@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Fotos&Videos",
     "MediaDC Task Details" : "MediaDC Aufgaben-Details",
     "MediaDC Resolved files" : "Von MediaDC aufgelöste Dateien",
+    "Some error occurred while terminating task" : "Beim Beenden der Aufgabe ist ein Fehler aufgetreten",
     "An error occurred while deleting task" : "Fehler beim Löschen der Aufgabe",
+    "Task successfully duplicated" : "Aufgabe wurde dupliziert",
     "Task successfully started with duplicated settings!" : "Aufgabe mit duplizierten Einstellungen gestartet!",
     "_Test text_::_Test texts_" : ["Testtext","Testtexte"]
 },
