@@ -1,6 +1,7 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "Vooraf gecompileerde Python-binaire bestanden gebruiken",
     "Use Python part in binary format (located in the appdata folder)" : "Gebruik het Python-gedeelte in binair formaat (gelegen in de appdata-map)",
     "_%n file_::_%n files_" : ["%n bestand","%n bestanden"],
     "Tasks" : "Taken",
@@ -14,12 +15,19 @@ OC.L10N.register(
     "Go to page" : "Ga naar pagina",
     "Change to grid view" : "Omschakelen roosterweergave",
     "Change to list view" : "Omschakelen naar lijstweergave",
+    "Settings successfully updated" : "Instellingen succesvol bijgewerkt",
+    "Some error occurred while updating settings" : "Er is een fout opgetreden tijdens het bijwerken van de instellingen",
     "Remove" : "Verwijderen",
     "Confirm" : "Bevestigen",
     "Decline" : "Afwijzen",
     "Error" : "Fout",
+    "Settings list is empty" : "Instellingenlijst is leeg",
     "Seems like database not initialized properly. Try to re-enable the app" : "Lijkt erop dat database niet goed geïnitialiseerd is. Probeer de app opnieuw in te schakelen",
+    "Bug report" : "Foutrapportage",
     "Copied to clipboard" : "Gekopieerd naar het klembord",
+    "Collect non sensitive system info for bug report" : "Niet-gevoelige systeeminformatie verzamelen voor foutrapportage",
+    "Collect system info" : "Systeeminfo verzamelen",
+    "System info" : "Systeeminformatie",
     "Copy to clipboard" : "Kopiëren naar het klembord",
     "Select" : "Selecteer",
     "Photos" : "Foto's",
@@ -31,6 +39,7 @@ OC.L10N.register(
     "Delete" : "Verwijder",
     "Task successfully deleted" : "Taak succesvol verwijderd",
     "Edit" : "Bewerk",
-    "Delete task" : "Verwijder taak"
+    "Delete task" : "Verwijder taak",
+    "_Test text_::_Test texts_" : ["Tekst testen","Teksten testen"]
 },
 "nplurals=2; plural=(n != 1);");

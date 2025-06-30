@@ -231,7 +231,9 @@
     "Photos&Videos" : "照片& 視像",
     "MediaDC Task Details" : "MediaDC 任務細節",
     "MediaDC Resolved files" : "MediaDC 已解決的檔案",
+    "Some error occurred while terminating task" : "終止任務時發生了錯誤",
     "An error occurred while deleting task" : "刪除任務時發生了錯誤",
+    "Task successfully duplicated" : "任務已複製",
     "Task successfully started with duplicated settings!" : "使用重複設置成功啟動任務！",
     "_Test text_::_Test texts_" : ["測試文本"]
 },"pluralForm" :"nplurals=1; plural=0;"

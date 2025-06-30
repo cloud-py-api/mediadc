@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Photos&Videos",
     "MediaDC Task Details" : "MediaDC Task Details",
     "MediaDC Resolved files" : "MediaDC Resolved files",
+    "Some error occurred while terminating task" : "Some error occurred while terminating task",
     "An error occurred while deleting task" : "An error occurred while deleting task",
+    "Task successfully duplicated" : "Task successfully duplicated",
     "Task successfully started with duplicated settings!" : "Task successfully started with duplicated settings!",
     "_Test text_::_Test texts_" : ["Test text","Test texts"]
 },

@@ -10,6 +10,7 @@ OC.L10N.register(
     "Confirm" : "Thibitisha",
     "Decline" : "Kataa",
     "Error" : "Hitilafu",
+    "Copied to clipboard" : "Nakili katika ubao wa kunakili",
     "Copy to clipboard" : "Nakili kwenye ubao wa kunakili",
     "Photos" : "Picha",
     "Videos" : "Picha mjongeo",
