@@ -7,6 +7,7 @@ OC.L10N.register(
     "Export" : "Safirisha",
     "Select all" : "Chagua zote",
     "Delete files" : "Futa faili",
+    "Remove" : "Ondoa",
     "Confirm" : "Thibitisha",
     "Decline" : "Kataa",
     "Error" : "Hitilafu",

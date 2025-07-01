@@ -48,7 +48,7 @@ OC.L10N.register(
     "Checked files successfully removed" : "İşaretlenmiş dosyalar silindi",
     "Are you sure you want to delete all files" : "Tüm dosyaları silmek istediğinize emin misiniz",
     "Not all files deleted" : "Tüm dosyalar silinmedi",
-    "A server error occurred. Files not deleted" : "Bir sunucu sorunu çıktı. Dosyalar silinmedi",
+    "A server error occurred. Files not deleted" : "Sunucuda bir sorun çıktı. Dosyalar silinmedi",
     "Checked files successfully deleted" : "İşaretlenmiş dosyalar silindi",
     "Files size sorting" : "Dosya boyutuna göre sıralama",
     "Toggle files size sorting" : "Dosya boyutuna göre sıralamayı değiştir",
@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Fotoğraflar ve görüntüler",
     "MediaDC Task Details" : "MediaDC görevi ayrıntıları",
     "MediaDC Resolved files" : "MediaDC çözümlenmiş dosyalar",
+    "Some error occurred while terminating task" : "Görev sonlandırılırken bir sorun çıktı",
     "An error occurred while deleting task" : "Görev silinirken bir sorun çıktı",
+    "Task successfully duplicated" : "Görev çoğaltıldı",
     "Task successfully started with duplicated settings!" : "Görev çift ayarları ile başlatıldı!",
     "_Test text_::_Test texts_" : ["Deneme metni","Deneme metinleri"]
 },
