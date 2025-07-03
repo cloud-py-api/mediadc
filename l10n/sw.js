@@ -13,6 +13,7 @@ OC.L10N.register(
     "Error" : "Hitilafu",
     "Copied to clipboard" : "Nakili katika ubao wa kunakili",
     "Copy to clipboard" : "Nakili kwenye ubao wa kunakili",
+    "Select" : "Chagua",
     "Photos" : "Picha",
     "Videos" : "Picha mjongeo",
     "Restart" : "Anza upya",

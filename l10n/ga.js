@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Grianghraif&Físeáin",
     "MediaDC Task Details" : "Sonraí Tasc MediaDC",
     "MediaDC Resolved files" : "MediaDC Comhaid Réitithe",
+    "Some error occurred while terminating task" : "Tharla earráid éigin agus an tasc á chríochnú",
     "An error occurred while deleting task" : "Tharla earráid agus an tasc á scriosadh",
+    "Task successfully duplicated" : "Dúblaíodh an tasc go rathúil",
     "Task successfully started with duplicated settings!" : "D'éirigh leis an tasc a thosú le socruithe dúblacha!",
     "_Test text_::_Test texts_" : ["Téacs tástála","Téacsanna tástála","Téacsanna tástála","Téacsanna tástála","Téacsanna tástála"]
 },
