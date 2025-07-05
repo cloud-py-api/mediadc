@@ -1,15 +1,25 @@
 { "translations": {
+    "Use pre-compiled Python binaries" : "Use pre-compiled Python binaries",
+    "Use Python part in binary format (located in the appdata folder)" : "Use Python part in binary format (located in the appdata folder)",
     "_%n file_::_%n files_" : ["%n file","%n files"],
     "Tasks" : "Kazi",
     "Settings" : "Mipangilio",
     "Export" : "Safirisha",
     "Select all" : "Chagua zote",
     "Delete files" : "Futa faili",
+    "Settings successfully updated" : "Mipangilio imesasishwa kikamilifu",
+    "Some error occurred while updating settings" : "Hitilafu fulani imetokea wakati wa kusasisha mipangilio",
     "Remove" : "Ondoa",
     "Confirm" : "Thibitisha",
     "Decline" : "Kataa",
     "Error" : "Hitilafu",
+    "Settings list is empty" : "Orodha ya mipangilio ni tupu",
+    "Seems like database not initialized properly. Try to re-enable the app" : "Seems like database not initialized properly. Try to re-enable the app",
+    "Bug report" : "Bug report",
     "Copied to clipboard" : "Nakili katika ubao wa kunakili",
+    "Collect non sensitive system info for bug report" : "Collect non sensitive system info for bug report",
+    "Collect system info" : "Collect system info",
+    "System info" : "System info",
     "Copy to clipboard" : "Nakili kwenye ubao wa kunakili",
     "Select" : "Chagua",
     "Photos" : "Picha",
@@ -18,6 +28,7 @@
     "Duplicate" : "Zalisha",
     "Delete" : "Futa",
     "Edit" : "Hariri",
-    "Delete task" : "Futa jukumu"
+    "Delete task" : "Futa jukumu",
+    "_Test text_::_Test texts_" : ["Test text","Test texts"]
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

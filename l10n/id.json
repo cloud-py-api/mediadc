@@ -18,6 +18,7 @@
     "Start" : "Mulai",
     "Delete" : "Hapus",
     "Task successfully deleted" : "Tugas berhasil dihapus",
-    "Edit" : "Sunting"
+    "Edit" : "Sunting",
+    "Delete task" : "Hapus tugas"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

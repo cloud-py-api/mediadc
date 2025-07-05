@@ -20,6 +20,7 @@ OC.L10N.register(
     "Start" : "Mulai",
     "Delete" : "Hapus",
     "Task successfully deleted" : "Tugas berhasil dihapus",
-    "Edit" : "Sunting"
+    "Edit" : "Sunting",
+    "Delete task" : "Hapus tugas"
 },
 "nplurals=1; plural=0;");
