@@ -231,7 +231,9 @@
     "Photos&Videos" : "Фотографије и видео снимци",
     "MediaDC Task Details" : "MediaDC детаљи задатка",
     "MediaDC Resolved files" : "MediaDC разрешени фајлови",
+    "Some error occurred while terminating task" : "Дошло је до грешке током укидања задатка",
     "An error occurred while deleting task" : "Дошло је до грешке током брисања задатка",
+    "Task successfully duplicated" : "Задатак је успешно дуплиран",
     "Task successfully started with duplicated settings!" : "Задатак је успешно покренут са дуплираним подешавањима!",
     "_Test text_::_Test texts_" : ["Тест текст","Тест текста","Тест текстова"]
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"

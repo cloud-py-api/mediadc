@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Фотографије и видео снимци",
     "MediaDC Task Details" : "MediaDC детаљи задатка",
     "MediaDC Resolved files" : "MediaDC разрешени фајлови",
+    "Some error occurred while terminating task" : "Дошло је до грешке током укидања задатка",
     "An error occurred while deleting task" : "Дошло је до грешке током брисања задатка",
+    "Task successfully duplicated" : "Задатак је успешно дуплиран",
     "Task successfully started with duplicated settings!" : "Задатак је успешно покренут са дуплираним подешавањима!",
     "_Test text_::_Test texts_" : ["Тест текст","Тест текста","Тест текстова"]
 },
