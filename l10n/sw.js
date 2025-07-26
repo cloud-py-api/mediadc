@@ -7,6 +7,7 @@ OC.L10N.register(
     "Tasks" : "Kazi",
     "Settings" : "Mipangilio",
     "Export" : "Safirisha",
+    "Select file" : "Select file",
     "Select all" : "Chagua zote",
     "Delete files" : "Futa faili",
     "Settings successfully updated" : "Mipangilio imesasishwa kikamilifu",
