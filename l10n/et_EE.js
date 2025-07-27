@@ -37,6 +37,7 @@ OC.L10N.register(
     "Collect system info" : "Süsteemi info kogumine",
     "System info" : "Süsteemiinfo",
     "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
+    "Not selected" : "Pole valitud",
     "Select" : "Vali",
     "Photos" : "Fotod",
     "Videos" : "Videod",
