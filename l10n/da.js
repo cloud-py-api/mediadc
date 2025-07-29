@@ -9,6 +9,7 @@ OC.L10N.register(
     "Deselect all" : "Fravælg alle",
     "Select all" : "Vælg alle",
     "Delete files" : "Slet filer",
+    "Select group" : "Vælg grupper",
     "Duplicate group" : "Dubletgruppe",
     "Change to grid view" : "Skift til gittervisning",
     "Change to list view" : "Skift til listevisning",
