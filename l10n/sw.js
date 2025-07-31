@@ -8,6 +8,7 @@ OC.L10N.register(
     "Settings" : "Mipangilio",
     "Export" : "Safirisha",
     "Select file" : "Select file",
+    "Deselect all" : "Deselect all",
     "Select all" : "Chagua zote",
     "Delete files" : "Futa faili",
     "Settings successfully updated" : "Mipangilio imesasishwa kikamilifu",
@@ -30,6 +31,7 @@ OC.L10N.register(
     "Restart" : "Anza upya",
     "Duplicate" : "Zalisha",
     "Delete" : "Futa",
+    "Task successfully deleted" : "Task successfully deleted",
     "Edit" : "Hariri",
     "Delete task" : "Futa jukumu",
     "_Test text_::_Test texts_" : ["Test text","Test texts"]
