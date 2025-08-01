@@ -22,7 +22,10 @@ OC.L10N.register(
     "Confirm" : "Bekräfta",
     "Decline" : "Avböj",
     "Error" : "Fel",
+    "Bug report" : "Felrapport",
     "Copied to clipboard" : "Kopierat till urklipp",
+    "Collect system info" : "Samla in systeminfo",
+    "System info" : "Systeminfo",
     "Copy to clipboard" : "Kopiera till urklipp",
     "Not selected" : "Ej vald",
     "Select" : "Välj",
@@ -34,6 +37,7 @@ OC.L10N.register(
     "Delete" : "Radera",
     "Task successfully deleted" : "Uppgiften har raderats",
     "Edit" : "Ändra",
-    "Delete task" : "Ta bort uppgift"
+    "Delete task" : "Ta bort uppgift",
+    "_Test text_::_Test texts_" : ["Testtext","Testtexter"]
 },
 "nplurals=2; plural=(n != 1);");
