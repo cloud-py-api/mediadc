@@ -28,6 +28,7 @@ OC.L10N.register(
     "Select" : "Chagua",
     "Photos" : "Picha",
     "Videos" : "Picha mjongeo",
+    "Start" : "Start",
     "Restart" : "Anza upya",
     "Duplicate" : "Zalisha",
     "Delete" : "Futa",
