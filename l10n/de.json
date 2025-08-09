@@ -85,7 +85,7 @@
     "_file_::_files_" : ["Datei","Dateien"],
     "_Batch actions for %n group_::_Batch actions for %n groups_" : ["Stapelaktionen für %n Gruppe","Stapelaktionen für %n Gruppen"],
     "_Remove group_::_Remove groups_" : ["Gruppe entfernen","Gruppen entfernen"],
-    "Are you sure you want to remove this group without deleting files?" : "Möchtest du wirklich die Gruppe entfernen ohne die Dateien zu löschen?",
+    "Are you sure you want to remove this group without deleting files?" : "Soll die Gruppe wirklich entfernt werden, ohne dass die Dateien gelöscht werden?",
     "Confirm group removal" : "Bestätige die Entfernung der Gruppe.",
     "Duplicate group succesffully removed" : "Doppelte Gruppe erfolgreich entfernt",
     "An error occurred while deleting duplicate group" : "Es ist ein Fehler beim Löschen der doppelten Gruppe aufgetreten.",
