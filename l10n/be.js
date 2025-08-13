@@ -5,6 +5,7 @@ OC.L10N.register(
     "Tasks" : "Задачы",
     "Settings" : "Налады",
     "Delete files" : "Выдаліць файлы",
+    "Remove" : "Выдаліць",
     "Confirm" : "Пацвердзіць",
     "Decline" : "Адхіліць",
     "Error" : "Памылка",
