@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Fotos y Videos",
     "MediaDC Task Details" : "Detalles de la tarea MediaDC",
     "MediaDC Resolved files" : "Archivos resueltos MediaDC",
+    "Some error occurred while terminating task" : "Ocurrió algún error mientras se intentaba terminar la tarea",
     "An error occurred while deleting task" : "Ocurrió un error al eliminar la tarea",
+    "Task successfully duplicated" : "La tarea se duplicó exitosamente",
     "Task successfully started with duplicated settings!" : "¡La tarea se inició de forma exitosa con parámetros duplicados!",
     "_Test text_::_Test texts_" : ["Texto de prueba","Textos de prueba","Textos de prueba"]
 },
