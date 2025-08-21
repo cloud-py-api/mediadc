@@ -32,7 +32,7 @@ OC.L10N.register(
     "Edit" : "Labot",
     "Ignored" : "Ignorēts",
     "Here you can view resolved media files " : "Šeit var apskatīt noteiktās informācijas nesēju datnes",
-    "Scan for duplicates" : "Skenējiet dublikātus",
+    "Scan for duplicates" : "Meklēt dublikātus",
     "Photos&Videos" : "Fotoattēli un video"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
