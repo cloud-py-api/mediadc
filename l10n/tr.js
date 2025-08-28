@@ -237,6 +237,6 @@ OC.L10N.register(
     "An error occurred while deleting task" : "Görev silinirken bir sorun çıktı",
     "Task successfully duplicated" : "Görev çoğaltıldı",
     "Task successfully started with duplicated settings!" : "Görev çift ayarları ile başlatıldı!",
-    "_Test text_::_Test texts_" : ["Deneme metni","Deneme metinleri"]
+    "_Test text_::_Test texts_" : ["Deneme yazısı","Deneme yazıları"]
 },
 "nplurals=2; plural=(n > 1);");
