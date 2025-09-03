@@ -3,5 +3,5 @@ scipy
 pywavelets
 pillow==10.3.0
 hexhamming
-nc-py-api==0.0.11
+nc-py-api==0.21.1
 pi-heif>=0.9.0
