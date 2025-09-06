@@ -46,7 +46,7 @@ OC.L10N.register(
     "_Delete file_::_Delete files_" : ["Eliminar ficheiro","Eliminar ficheiros"],
     "Remove file (mark resolved)" : "Retirar o ficheiro (marcar como resolto)",
     "Checked files successfully removed" : "Os ficheiros marcados foron retirados correctamente",
-    "Are you sure you want to delete all files" : "Confirma que quere eliminar todos os ficheiros",
+    "Are you sure you want to delete all files" : "Confirma que quere eliminar todos os ficheiros?",
     "Not all files deleted" : "Non se eliminaron todos os ficheiros",
     "A server error occurred. Files not deleted" : "Produciuse un erro no servidor. Os ficheiros non foron eliminados",
     "Checked files successfully deleted" : "Os ficheiros marcados foron eliminados correctamente",
@@ -233,7 +233,9 @@ OC.L10N.register(
     "Photos&Videos" : "Fotos e vídeos",
     "MediaDC Task Details" : "Detalles da tarefa MediaDC",
     "MediaDC Resolved files" : "Ficheiros resoltos MediaDC",
+    "Some error occurred while terminating task" : "Produciuse algún erro ao rematar a tarefa",
     "An error occurred while deleting task" : "Produciuse un erro ao eliminar a tarefa",
+    "Task successfully duplicated" : "A tarefa foi duplicada satisfactoriamente",
     "Task successfully started with duplicated settings!" : "A tarefa foi iniciada satisfactoriamente cos axustes duplicados!",
     "_Test text_::_Test texts_" : ["Texto de proba","Textos de proba"]
 },
