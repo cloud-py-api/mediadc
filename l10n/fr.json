@@ -19,7 +19,7 @@
     "Task successfully finished." : "Tâche terminée avec succès.",
     "_%n file_::_%n files_" : ["%n fichier","%n fichiers","%n fichiers"],
     "_Found %n duplicate group_::_Found %n duplicate groups_" : ["%n groupe doublon trouvé","%n groupes doublons trouvés","%n groupes doublons trouvés"],
-    "Task finished with status {status}" : "Tâche terminée avec l'état « {status} »",
+    "Task finished with status {status}" : "Tâche terminée avec l'état \"{status}\"",
     "Task finished, check out results" : "Tâche terminée, vérifier les résultats",
     "duplicated" : "dupliqué",
     "MediaDC" : "MediaDC",
