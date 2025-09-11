@@ -26,7 +26,7 @@ OC.L10N.register(
     "Duplicate" : "Dupliker",
     "Delete" : "Slet",
     "Task successfully deleted" : "Opgaven er slettet",
-    "Edit" : "Rediger",
+    "Edit" : "Redigér",
     "Delete task" : "Slet opgave"
 },
 "nplurals=2; plural=(n != 1);");
