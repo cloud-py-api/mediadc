@@ -27,6 +27,7 @@ OC.L10N.register(
     "Collect system info" : "Collect system info",
     "System info" : "System info",
     "Copy to clipboard" : "Nakili kwenye ubao wa kunakili",
+    "Not selected" : "Not selected",
     "Select" : "Chagua",
     "Photos" : "Picha",
     "Videos" : "Picha mjongeo",
