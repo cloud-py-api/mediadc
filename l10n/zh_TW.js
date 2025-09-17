@@ -35,6 +35,7 @@ OC.L10N.register(
     "Videos" : "影片",
     "Start" : "開始",
     "Restart" : "重新啟動",
+    "Stop" : "停止",
     "Duplicate" : "重複",
     "Delete" : "刪除",
     "Task successfully deleted" : "已成功刪除工作項目",
