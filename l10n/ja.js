@@ -36,6 +36,7 @@ OC.L10N.register(
     "Delete" : "削除",
     "Task successfully deleted" : "タスクは正常に削除されました。",
     "Edit" : "編集",
-    "Delete task" : "タスクを削除"
+    "Delete task" : "タスクを削除",
+    "Ignored" : "無視する"
 },
 "nplurals=1; plural=0;");
