@@ -1,6 +1,8 @@
 OC.L10N.register(
     "mediadc",
     {
+    "Use pre-compiled Python binaries" : "Użyj wstępnie skompilowanych binariów Pythona",
+    "Use Python part in binary format (located in the appdata folder)" : "Użyj części Pythona w formacie binarnym (zlokalizowanej w folderze appdata)",
     "_%n file_::_%n files_" : ["%n plik","%n pliki","%n plików","%n plików"],
     "Tasks" : "Zadania",
     "Settings" : "Ustawienia",
@@ -19,6 +21,7 @@ OC.L10N.register(
     "Decline" : "Odrzuć",
     "Error" : "Błąd",
     "Copied to clipboard" : "Kopiuj do schowka",
+    "System info" : "Informacje o systemie",
     "Copy to clipboard" : "Kopiuj do schowka",
     "Select" : "Wybierz",
     "Target Mime Type" : "Docelowy typ MIME",
