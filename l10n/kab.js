@@ -1,9 +1,11 @@
 OC.L10N.register(
     "mediadc",
     {
+    "_%n file_::_%n files_" : ["%n n ufaylu","%n n ifuyla"],
     "Settings" : "Iɣewwaṛen",
     "Deselect all" : "Kkes afran i meṛṛa",
     "Select all" : "Fren akk",
+    "Delete files" : "Kkes ifuyla",
     "Remove" : "Kkes",
     "Confirm" : "Serggeg",
     "Error" : "Erreur",
