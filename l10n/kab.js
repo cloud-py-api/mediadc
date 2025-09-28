@@ -10,8 +10,9 @@ OC.L10N.register(
     "Confirm" : "Serggeg",
     "Error" : "Erreur",
     "Copied to clipboard" : "Aḍris yettwanγel γef afus",
-    "Copy to clipboard" : "Copier dans le presse-papiers",
+    "Copy to clipboard" : "Nɣel-it ar tecfawit",
     "Select" : "Fren",
+    "Photos" : "Tiwlafin",
     "Videos" : "Tividyutin",
     "Delete" : "Kkes",
     "Edit" : "Ẓreg"
