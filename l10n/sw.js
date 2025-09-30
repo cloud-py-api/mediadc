@@ -12,6 +12,7 @@ OC.L10N.register(
     "Select all" : "Chagua zote",
     "Delete files" : "Futa faili",
     "Select group" : "Select group",
+    "Duplicate group" : "Duplicate group",
     "Change to grid view" : "Change to grid view",
     "Change to list view" : "Change to list view",
     "Settings successfully updated" : "Mipangilio imesasishwa kikamilifu",
