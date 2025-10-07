@@ -2,7 +2,7 @@ OC.L10N.register(
     "mediadc",
     {
     "_%n file_::_%n files_" : ["%n файл","%n файлы","%n файлаў","%n файлаў"],
-    "Tasks" : "Задачы",
+    "Tasks" : "Заданні",
     "Settings" : "Налады",
     "Export" : "Экспарт",
     "Deselect all" : "Скасаваць выбар усіх",
@@ -26,6 +26,7 @@ OC.L10N.register(
     "Restart" : "Перазапусціць",
     "Stop" : "Спыніць",
     "Delete" : "Выдаліць",
+    "Task successfully deleted" : "Заданне паспяхова выдалена",
     "Owner:" : "Уладальнік:",
     "Edit" : "Рэдагаваць",
     "Delete task" : "Выдаліць заданне"
