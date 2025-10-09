@@ -21,7 +21,7 @@ env:
 
 jobs:
   xml-lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: info.xml lint
 
     steps:
@@ -37,7 +37,7 @@ jobs:
           xml-schema-file: ./info.xsd
 
   php-lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: php-lint
     strategy:
       matrix:
@@ -56,7 +56,7 @@ jobs:
         run: composer run lint
 
   php-cs:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: php-cs
     strategy:
       matrix:
@@ -78,7 +78,7 @@ jobs:
         run: composer run cs:check || ( echo 'Please run `composer run cs:fix` to format your code' && exit 1 )
 
   php-psalm-analysis:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         php-versions: ["8.1", "8.2"]
@@ -129,7 +129,7 @@ jobs:
         run: composer run psalm
 
   php-security-analysis:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       actions: read
@@ -153,7 +153,7 @@ jobs:
           sarif_file: results.sarif
 
   js-eslint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: eslint
 
     steps:
@@ -165,7 +165,7 @@ jobs:
         run: npm run lint
 
   stylelint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     name: stylelint
 
