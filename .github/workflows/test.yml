@@ -91,7 +91,7 @@ jobs:
 
       - name: Check PHPUnit config file existence
         id: check_phpunit
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
 
@@ -132,7 +132,7 @@ jobs:
 
       - name: Check PHPUnit integration config file existence
         id: check_integration
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
@@ -238,7 +238,7 @@ jobs:
 
       - name: Check PHPUnit config file existence
         id: check_phpunit
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_CONFIG }}
 
@@ -276,7 +276,7 @@ jobs:
 
       - name: Check PHPUnit integration config file existence
         id: check_integration
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: apps/${{ env.APP_NAME }}/${{ env.PHPUNIT_INTEGRATION_CONFIG }}
 
